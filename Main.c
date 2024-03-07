@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#include <stdlib.h>
 //Ebbe Wertz
 //Mathias Houwen
 
@@ -27,7 +27,9 @@
 */
 
 
-//struct defenitie
+/* ==============================================
+	Position defenitie
+   ============================================== */
 struct position {
 	float x;
 	float y;
@@ -35,18 +37,37 @@ struct position {
 };
 typedef struct position Position; //position struct type kan nu genoemd worden door alleen "Position"
 
-//functie signatures (implementatie onderaan)
+/* ==============================================
+	functie signatures(implementatie onderaan)
+   ============================================== */
+//printers:
 void printUitkomsten(int indices[], Position data[]);
 void printPosition(Position position);
+//random:
+void initaliseerRandom();
+double randomDouble0Tot100();
 
+/* ==============================================
+	main
+   ============================================== */
 
 int main() {
 	Position testPos;
-	testPos.x = 10.123;
-	testPos.y = 11.321;
-	testPos.z = 12.456;
+	testPos.x = randomDouble0Tot100();
+	testPos.y = randomDouble0Tot100();
+	testPos.z = randomDouble0Tot100();
 	printPosition(testPos);
 	return 0;
+}
+
+/* ==============================================
+	functies
+   ============================================== */
+
+
+double randomDouble0Tot100() {
+	double tussen0en1 = (double)rand() / (double)RAND_MAX;	//randmax = internal uit stdlib
+	return tussen0en1 * 100;
 }
 
 

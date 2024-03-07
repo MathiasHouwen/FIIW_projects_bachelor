@@ -52,6 +52,7 @@ double randomDouble0Tot100();
    ============================================== */
 
 int main() {
+	initaliseerRandom();
 	Position testPos;
 	testPos.x = randomDouble0Tot100();
 	testPos.y = randomDouble0Tot100();
@@ -64,6 +65,10 @@ int main() {
 	functies
    ============================================== */
 
+void initaliseerRandom() {
+	int seed = time(NULL);	//huidig exact tijdstip = onvoorspelbaar
+	srand(seed);
+}
 
 double randomDouble0Tot100() {
 	double tussen0en1 = (double)rand() / (double)RAND_MAX;	//randmax = internal uit stdlib

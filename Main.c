@@ -46,17 +46,14 @@ void printPosition(Position position);
 //random:
 void initaliseerRandom();
 double randomDouble0Tot100();
-
+Position randomPosition();
 /* ==============================================
 	main
    ============================================== */
 
 int main() {
 	initaliseerRandom();
-	Position testPos;
-	testPos.x = randomDouble0Tot100();
-	testPos.y = randomDouble0Tot100();
-	testPos.z = randomDouble0Tot100();
+	Position testPos = randomPosition();
 	printPosition(testPos);
 	return 0;
 }
@@ -73,6 +70,14 @@ void initaliseerRandom() {
 double randomDouble0Tot100() {
 	double tussen0en1 = (double)rand() / (double)RAND_MAX;	//randmax = internal uit stdlib
 	return tussen0en1 * 100;
+}
+
+Position randomPosition() {
+	Position pos;
+	pos.x = randomDouble0Tot100();
+	pos.y = randomDouble0Tot100();
+	pos.z = randomDouble0Tot100();
+	return pos;
 }
 
 

@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
+
+#define N 5
 //Ebbe Wertz
 //Mathias Houwen
 
@@ -52,14 +55,31 @@ void initaliseerRandom();
 double randomDouble0Tot100();
 Position randomPosition();
 void generateRandomeListWithDuplicates();
+
+//indices, data arrays
+void optimaliseer(Position initieleData[N], int indices[], Position data[]);
+bool arrayBevatPos(Position pos, Position array[]);
+int getIndex(Position pos, Position array[]);
+bool posZijnGelijk(Position pos1, Position pos2);
+
+
 /* ==============================================
 	main
    ============================================== */
 
 int main() {
 	initaliseerRandom();
-	Position testPos = randomPosition();
-	printPosition(testPos);
+	Position p1 = randomPosition();
+	Position p2 = randomPosition();
+	Position p3 = randomPosition();
+	
+	Position initieleData[N] = { p1, p3, p1, p2, p3 };
+	int indices[N];
+	Position verkleindeData[N];
+
+	optimaliseer(initieleData, indices, verkleindeData);
+
+
 	return 0;
 }
 
@@ -85,6 +105,50 @@ Position randomPosition() {
 	return pos;
 }
 
+void optimaliseer(Position initieleData[], int indices[], Position data[]) {
+	int dataIteratieIndex = 0;	//omdat data geen dupl. bevat en initeledata wel kan data geen zelfde index van een for in initieledata gebruiken
+	for (int i = 0; i < N; i++) {
+		Position pos = initieleData[i];
+		//Als pos=uniek? -> pos in data
+		if (!arrayBevatPos(pos, data)) {
+			data[dataIteratieIndex] = pos;
+			dataIteratieIndex++;
+		}
+		//steek data-index van pos in de indices array
+		int indexInData = getIndex(pos, data);
+		indices[i] = indexInData;
+	}
+	//maak overige plaats in data leeg voor duidelijke leesbaarhied
+	for (int i = dataIteratieIndex; i < N; i++) {
+		Position niks;
+		niks.x = 0;
+		niks.y = 0;
+		niks.z = 0;
+		data[i] = niks;
+	}
+}
+
+bool arrayBevatPos(Position pos, Position array[]) {
+	int index = getIndex(pos, array);
+	return index >= 0;
+}
+
+int getIndex(Position pos, Position array[]) {
+	for (int i = 0; i < N; i++) {
+		Position posInArray = array[i];
+		if (posZijnGelijk(pos, posInArray)) {
+			return i;	//hier al meteen return en niet bewaren in variable -> sneller want niet altijd wacht op hele for loop
+		}
+	}
+	return -1;
+}
+
+bool posZijnGelijk(Position pos1, Position pos2) {
+	bool xgelijk = pos1.x == pos2.x;
+	bool ygelijk = pos1.y == pos2.y;
+	bool zgelijk = pos1.z == pos2.z;
+	return xgelijk && ygelijk && zgelijk;
+}
 
 void printUitkomsten(int indices[], Position data[]) {
 	//

@@ -99,18 +99,25 @@ Position randomPosition() {
 }
 
 void optimaliseer(Position initieleData[], int indices[], Position data[]) {
-	//structs worden wel met 0 geinitialiseerd, dus de data array hoef niet leeg gemaakt op voorhand
-	int dataIndex = 0;	//omdat data geen dupl. bevat en initeledata wel kan data geen zelfde index van een for in initieledata gebruiken
+	int dataIteratieIndex = 0;	//omdat data geen dupl. bevat en initeledata wel kan data geen zelfde index van een for in initieledata gebruiken
 	for (int i = 0; i < N; i++) {
 		Position pos = initieleData[i];
 		//Als pos=uniek? -> pos in data
-		if (arrayBevatPos(pos, data)) {
-			data[dataIndex] = pos;
-			dataIndex++;
+		if (!arrayBevatPos(pos, data)) {
+			data[dataIteratieIndex] = pos;
+			dataIteratieIndex++;
 		}
 		//steek data-index van pos in de indices array
 		int indexInData = getIndex(pos, data);
 		indices[i] = indexInData;
+	}
+	//maak overige plaats in data leeg voor duidelijke leesbaarhied
+	for (int i = dataIteratieIndex; i < N; i++) {
+		Position niks;
+		niks.x = 0;
+		niks.y = 0;
+		niks.z = 0;
+		data[i] = niks;
 	}
 }
 

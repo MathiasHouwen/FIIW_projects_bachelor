@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+
+#define N 5
 //Ebbe Wertz
 //Mathias Houwen
 
@@ -47,14 +49,25 @@ void printPosition(Position position);
 void initaliseerRandom();
 double randomDouble0Tot100();
 Position randomPosition();
+//indices, data arrays
+void optimaliseer(Position initieleData[N], int indices[], Position data[]);
 /* ==============================================
 	main
    ============================================== */
 
 int main() {
 	initaliseerRandom();
-	Position testPos = randomPosition();
-	printPosition(testPos);
+	Position p1 = randomPosition();
+	Position p2 = randomPosition();
+	Position p3 = randomPosition();
+	
+	Position initieleData[N] = { p1, p3, p1, p2, p3 };
+	int indices[N];
+	Position verkleindeData[N];
+
+	optimaliseer(initieleData, indices, verkleindeData);
+
+
 	return 0;
 }
 
@@ -80,10 +93,18 @@ Position randomPosition() {
 	return pos;
 }
 
+void optimaliseer(Position initieleData[], int indices[], Position data[]) {
+	int dataIndex = 0;	//omdat data geen dupl. bevat en initeledata wel kan data geen zelfde index van een for in initieledata gebruiken
+	for (int i = 0; i < N; i++) {
+		Position pos = initieleData[i];
+		printPosition(pos);
+	}
+}
+
 
 void printUitkomsten(int indices[], Position data[]) {
 	//
 }
 void printPosition(Position position) {
-	printf("x:%f y:%f z:%f", position.x, position.y, position.z);
+	printf("x:%f y:%f z:%f\n", position.x, position.y, position.z);
 }

@@ -109,7 +109,8 @@ void optimaliseer(Position initieleData[], int indices[], Position data[]) {
 			dataIndex++;
 		}
 		//steek data-index van pos in de indices array
-
+		int indexInData = getIndex(pos, data);
+		indices[i] = indexInData;
 	}
 }
 

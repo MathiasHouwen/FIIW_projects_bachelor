@@ -35,7 +35,7 @@ int getIndex(Position pos, Position array[]);
 bool posZijnGelijk(Position pos1, Position pos2);
 
 //printers:
-void printUitkomsten(int indices[], Position data[]);
+void printUitkomsten(Position dataInitieel[], int indices[], Position data[]);
 void printPosition(Position position);
 
 
@@ -55,6 +55,7 @@ int main() {
 
 	optimaliseer(initieleData, indices, verkleindeData);
 
+	printUitkomsten(initieleData, indices, verkleindeData);
 
 	return 0;
 }
@@ -150,10 +151,26 @@ bool posZijnGelijk(Position pos1, Position pos2) {
 	functies: printers
    ============================================== */
 
-void printUitkomsten(int indices[], Position data[]) {
-	//
+void printUitkomsten(Position dataInitieel[], int indices[], Position data[]) {
+	printf("======DATA_ORIGINEEL======  -  IND  -  ========DATA_NIEUW========\n");
+	for (int i = 0; i < ARRAYLEN; i++) {
+		printPosition(dataInitieel[i]);
+		printf("  -  %.3d  -  ", indices[i]);
+		printPosition(data[i]);
+		printf("\n");
+	}
+
 }
 void printPosition(Position position) {
-	printf("x:%f y:%f z:%f", position.x, position.y, position.z);
+	double x = position.x;
+	double y = position.y;
+	double z = position.z;
+	if (x == 0 && y == 0 && z == 0) {
+		printf("_________( nul )__________");
+	}
+	else {
+		printf("x:%06.2f y:%06.2f z:%06.2f", x, y, z);
+	}
+	
 }
 

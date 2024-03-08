@@ -25,7 +25,10 @@
 	er zijn dan 2 indices die naar datzelfde punt wijzen)
 
 */
-
+/*===============================================
+   Define
+  ===============================================*/
+#define LengteArray 1000;
 
 /* ==============================================
 	Position defenitie
@@ -47,6 +50,7 @@ void printPosition(Position position);
 void initaliseerRandom();
 double randomDouble0Tot100();
 Position randomPosition();
+void generateRandomeListWithDuplicates();
 /* ==============================================
 	main
    ============================================== */
@@ -86,4 +90,8 @@ void printUitkomsten(int indices[], Position data[]) {
 }
 void printPosition(Position position) {
 	printf("x:%f y:%f z:%f", position.x, position.y, position.z);
+}
+
+void generateRandomeListWithDuplicates() {
+	//
 }

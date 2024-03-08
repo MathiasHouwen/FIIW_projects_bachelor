@@ -5,8 +5,8 @@
 //Ebbe Wertz
 //Mathias Houwen
 
-#define ARRAYLEN 20
-#define ETD 5 //Elemtents tussen diplucates 
+#define ARRAYLEN 25
+#define ETD 4 //Elemtents tussen diplucates 
 
 /* ==============================================
 	Position defenitie
@@ -53,6 +53,8 @@ int main() {
 	int indices[ARRAYLEN];
 	Position verkleindeData[ARRAYLEN];
 
+	generateRandomeListWithDuplicates(initieleData);
+
 	optimaliseer(initieleData, indices, verkleindeData);
 
 	printUitkomsten(initieleData, indices, verkleindeData);
@@ -95,7 +97,6 @@ void generateRandomeListWithDuplicates(Position result[ARRAYLEN]) {
 			result[i] = result[j];
 		}
 	}
-	return result;
 }
 
 /* ==============================================
@@ -152,12 +153,12 @@ bool posZijnGelijk(Position pos1, Position pos2) {
    ============================================== */
 
 void printUitkomsten(Position dataInitieel[], int indices[], Position data[]) {
-	printf("======DATA_ORIGINEEL======  -  IND  -  ========DATA_NIEUW========\n");
+	printf("======DATA_ORIGINEEL======  ->  || IND + ============DATA_NIEUW=========||\n");
 	for (int i = 0; i < ARRAYLEN; i++) {
 		printPosition(dataInitieel[i]);
-		printf("  -  %.3d  -  ", indices[i]);
+		printf("      || %.3d   %.3d: ", indices[i],i);
 		printPosition(data[i]);
-		printf("\n");
+		printf("||\n");
 	}
 
 }

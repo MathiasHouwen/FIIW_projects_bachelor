@@ -28,7 +28,8 @@
 /*===============================================
    Define
   ===============================================*/
-#define LengteArray 1000;
+#define LengteArray 1000
+#define ETD 5 //Elemtents tussen diplucates 
 
 /* ==============================================
 	Position defenitie
@@ -92,6 +93,18 @@ void printPosition(Position position) {
 	printf("x:%f y:%f z:%f", position.x, position.y, position.z);
 }
 
-void generateRandomeListWithDuplicates() {
-	//
+void generateRandomeListWithDuplicates(Position result[LengteArray]) {
+	for (int i = 0 ; i < LengteArray; i++) {
+		if ((i % ETD != 0) || (i ==0)) {
+			// Als het niet het vijde elment is generate randome waarden
+			result[i] = randomPosition();
+		}
+		else
+		{	
+			// Om het 5de element pak een duplicant
+			int j = i / ETD;
+			result[i] = result[j];
+		}
+	}
+	return result;
 }

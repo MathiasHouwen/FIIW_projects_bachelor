@@ -104,10 +104,12 @@ void optimaliseer(Position initieleData[], int indices[], Position data[]) {
 
 bool arrayBevatPos(Position pos, Position array[]) {
 	for (int i = 0; i < N; i++) {
-		Position pos = array[i];
-
-		printPosition(pos);
+		Position posInArray = array[i];
+		if (posZijnGelijk(pos, posInArray)) {
+			return true;
+		}
 	}
+	return false;
 }
 
 bool posZijnGelijk(Position pos1, Position pos2) {

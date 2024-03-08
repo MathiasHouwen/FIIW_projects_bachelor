@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #define N 5
 //Ebbe Wertz
@@ -101,6 +102,20 @@ void optimaliseer(Position initieleData[], int indices[], Position data[]) {
 	}
 }
 
+bool arrayBevatPos(Position pos, Position array[]) {
+	for (int i = 0; i < N; i++) {
+		Position pos = array[i];
+
+		printPosition(pos);
+	}
+}
+
+bool posZijnGelijk(Position pos1, Position pos2) {
+	bool xgelijk = pos1.x == pos2.x;
+	bool ygelijk = pos1.y == pos2.y;
+	bool zgelijk = pos1.z == pos2.z;
+	return xgelijk && ygelijk && zgelijk;
+}
 
 void printUitkomsten(int indices[], Position data[]) {
 	//

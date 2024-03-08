@@ -2,37 +2,11 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#define N 5
 //Ebbe Wertz
 //Mathias Houwen
 
-/*
-* =======================
-*     OPGAVE
-* =======================
-
-	geheugen:
-		1 array met data (elk data element is een instantie van de position struct
-		1 array met indices die refereren naar data elementen in de data array
-
-	voorbeeld uitvoer:
-	"
-		Position Data
-			1 : x : 0.1 y : 0.8 z : 1.5
-			2 : x : 0.2 y : 0.7 z : 0.1
-			3 ...
-	"
-	Deze punten worden gelezen vanaf de indices array.
-	(die kan bvb 2 punten hebben met dezelfde coordinaten.
-	In de data array is dan eig maar 1 van dat punt opgeslagen
-	er zijn dan 2 indices die naar datzelfde punt wijzen)
-
-*/
-/*===============================================
-   Define
-  ===============================================*/
-#define LengteArray 1000
-#define ETD 5 //Elemtents tussen diplucates 
+#define ARRAYLEN 25
+#define ETD 4 //Elemtents tussen diplucates 
 
 /* ==============================================
 	Position defenitie
@@ -47,20 +21,22 @@ typedef struct position Position; //position struct type kan nu genoemd worden d
 /* ==============================================
 	functie signatures(implementatie onderaan)
    ============================================== */
-//printers:
-void printUitkomsten(int indices[], Position data[]);
-void printPosition(Position position);
+
 //random:
 void initaliseerRandom();
 double randomDouble0Tot100();
 Position randomPosition();
-void generateRandomeListWithDuplicates();
+void generateRandomeListWithDuplicates(Position result[ARRAYLEN]);
 
 //indices, data arrays
-void optimaliseer(Position initieleData[N], int indices[], Position data[]);
+void optimaliseer(Position initieleData[], int indices[], Position data[]);
 bool arrayBevatPos(Position pos, Position array[]);
 int getIndex(Position pos, Position array[]);
 bool posZijnGelijk(Position pos1, Position pos2);
+
+//printers:
+void printUitkomsten(Position dataInitieel[], int indices[], Position data[]);
+void printPosition(Position position);
 
 
 /* ==============================================
@@ -73,18 +49,21 @@ int main() {
 	Position p2 = randomPosition();
 	Position p3 = randomPosition();
 	
-	Position initieleData[N] = { p1, p3, p1, p2, p3 };
-	int indices[N];
-	Position verkleindeData[N];
+	Position initieleData[ARRAYLEN] = { p1, p3, p1, p2, p3 };
+	int indices[ARRAYLEN];
+	Position verkleindeData[ARRAYLEN];
+
+	generateRandomeListWithDuplicates(initieleData);
 
 	optimaliseer(initieleData, indices, verkleindeData);
 
+	printUitkomsten(initieleData, indices, verkleindeData);
 
 	return 0;
 }
 
 /* ==============================================
-	functies
+	functies: random
    ============================================== */
 
 void initaliseerRandom() {
@@ -105,9 +84,28 @@ Position randomPosition() {
 	return pos;
 }
 
+void generateRandomeListWithDuplicates(Position result[ARRAYLEN]) {
+	for (int i = 0; i < ARRAYLEN; i++) {
+		if ((i % ETD != 0) || (i == 0)) {
+			// Als het niet het vijde elment is generate randome waarden
+			result[i] = randomPosition();
+		}
+		else
+		{
+			// Om het 5de element pak een duplicant
+			int j = i / ETD;
+			result[i] = result[j];
+		}
+	}
+}
+
+/* ==============================================
+	functies: indices, data arrays
+   ============================================== */
+
 void optimaliseer(Position initieleData[], int indices[], Position data[]) {
 	int dataIteratieIndex = 0;	//omdat data geen dupl. bevat en initeledata wel kan data geen zelfde index van een for in initieledata gebruiken
-	for (int i = 0; i < N; i++) {
+	for (int i = 0; i < ARRAYLEN; i++) {
 		Position pos = initieleData[i];
 		//Als pos=uniek? -> pos in data
 		if (!arrayBevatPos(pos, data)) {
@@ -119,7 +117,7 @@ void optimaliseer(Position initieleData[], int indices[], Position data[]) {
 		indices[i] = indexInData;
 	}
 	//maak overige plaats in data leeg voor duidelijke leesbaarhied
-	for (int i = dataIteratieIndex; i < N; i++) {
+	for (int i = dataIteratieIndex; i < ARRAYLEN; i++) {
 		Position niks;
 		niks.x = 0;
 		niks.y = 0;
@@ -134,7 +132,7 @@ bool arrayBevatPos(Position pos, Position array[]) {
 }
 
 int getIndex(Position pos, Position array[]) {
-	for (int i = 0; i < N; i++) {
+	for (int i = 0; i < ARRAYLEN; i++) {
 		Position posInArray = array[i];
 		if (posZijnGelijk(pos, posInArray)) {
 			return i;	//hier al meteen return en niet bewaren in variable -> sneller want niet altijd wacht op hele for loop
@@ -150,25 +148,30 @@ bool posZijnGelijk(Position pos1, Position pos2) {
 	return xgelijk && ygelijk && zgelijk;
 }
 
-void printUitkomsten(int indices[], Position data[]) {
-	//
+/* ==============================================
+	functies: printers
+   ============================================== */
+
+void printUitkomsten(Position dataInitieel[], int indices[], Position data[]) {
+	printf("======DATA_ORIGINEEL======  ->  || IND + ============DATA_NIEUW=========||\n");
+	for (int i = 0; i < ARRAYLEN; i++) {
+		printPosition(dataInitieel[i]);
+		printf("      || %.3d   %.3d: ", indices[i],i);
+		printPosition(data[i]);
+		printf("||\n");
+	}
+
 }
 void printPosition(Position position) {
-	printf("x:%f y:%f z:%f", position.x, position.y, position.z);
+	double x = position.x;
+	double y = position.y;
+	double z = position.z;
+	if (x == 0 && y == 0 && z == 0) {
+		printf("_________( nul )__________");
+	}
+	else {
+		printf("x:%06.2f y:%06.2f z:%06.2f", x, y, z);
+	}
+	
 }
 
-void generateRandomeListWithDuplicates(Position result[LengteArray]) {
-	for (int i = 0 ; i < LengteArray; i++) {
-		if ((i % ETD != 0) || (i ==0)) {
-			// Als het niet het vijde elment is generate randome waarden
-			result[i] = randomPosition();
-		}
-		else
-		{	
-			// Om het 5de element pak een duplicant
-			int j = i / ETD;
-			result[i] = result[j];
-		}
-	}
-	return result;
-}

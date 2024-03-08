@@ -28,7 +28,11 @@
 	er zijn dan 2 indices die naar datzelfde punt wijzen)
 
 */
-
+/*===============================================
+   Define
+  ===============================================*/
+#define LengteArray 1000
+#define ETD 5 //Elemtents tussen diplucates 
 
 /* ==============================================
 	Position defenitie
@@ -50,11 +54,14 @@ void printPosition(Position position);
 void initaliseerRandom();
 double randomDouble0Tot100();
 Position randomPosition();
+void generateRandomeListWithDuplicates();
+
 //indices, data arrays
 void optimaliseer(Position initieleData[N], int indices[], Position data[]);
 bool arrayBevatPos(Position pos, Position array[]);
 int getIndex(Position pos, Position array[]);
 bool posZijnGelijk(Position pos1, Position pos2);
+
 
 /* ==============================================
 	main
@@ -147,5 +154,21 @@ void printUitkomsten(int indices[], Position data[]) {
 	//
 }
 void printPosition(Position position) {
-	printf("x:%f y:%f z:%f\n", position.x, position.y, position.z);
+	printf("x:%f y:%f z:%f", position.x, position.y, position.z);
+}
+
+void generateRandomeListWithDuplicates(Position result[LengteArray]) {
+	for (int i = 0 ; i < LengteArray; i++) {
+		if ((i % ETD != 0) || (i ==0)) {
+			// Als het niet het vijde elment is generate randome waarden
+			result[i] = randomPosition();
+		}
+		else
+		{	
+			// Om het 5de element pak een duplicant
+			int j = i / ETD;
+			result[i] = result[j];
+		}
+	}
+	return result;
 }

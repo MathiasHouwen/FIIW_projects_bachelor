@@ -52,6 +52,10 @@ double randomDouble0Tot100();
 Position randomPosition();
 //indices, data arrays
 void optimaliseer(Position initieleData[N], int indices[], Position data[]);
+bool arrayBevatPos(Position pos, Position array[]);
+int getIndex(Position pos, Position array[]);
+bool posZijnGelijk(Position pos1, Position pos2);
+
 /* ==============================================
 	main
    ============================================== */
@@ -95,21 +99,33 @@ Position randomPosition() {
 }
 
 void optimaliseer(Position initieleData[], int indices[], Position data[]) {
+	//structs worden wel met 0 geinitialiseerd, dus de data array hoef niet leeg gemaakt op voorhand
 	int dataIndex = 0;	//omdat data geen dupl. bevat en initeledata wel kan data geen zelfde index van een for in initieledata gebruiken
 	for (int i = 0; i < N; i++) {
 		Position pos = initieleData[i];
-		printPosition(pos);
+		//Als pos=uniek? -> pos in data
+		if (arrayBevatPos(pos, data)) {
+			data[dataIndex] = pos;
+			dataIndex++;
+		}
+		//steek data-index van pos in de indices array
+
 	}
 }
 
 bool arrayBevatPos(Position pos, Position array[]) {
+	int index = getIndex(pos, array);
+	return index >= 0;
+}
+
+int getIndex(Position pos, Position array[]) {
 	for (int i = 0; i < N; i++) {
 		Position posInArray = array[i];
 		if (posZijnGelijk(pos, posInArray)) {
-			return true;
+			return i;	//hier al meteen return en niet bewaren in variable -> sneller want niet altijd wacht op hele for loop
 		}
 	}
-	return false;
+	return -1;
 }
 
 bool posZijnGelijk(Position pos1, Position pos2) {

@@ -40,6 +40,7 @@ bool posZijnGelijk(Position pos1, Position pos2);
 
 //printers:
 void printUitkomsten(Position dataInitieel[], int indices[], Position data[]);
+void printUitkomsten_PA(Position *dataInitieel, int *indices, Position *data);
 void printPosition(Position position);
 
 
@@ -78,7 +79,7 @@ int main() {
 
 	optimaliseer_PA(initieleData, indices, verkleindeData);
 
-	printUitkomsten(initieleData, indices, verkleindeData);
+	printUitkomsten_PA(initieleData, indices, verkleindeData);
 
 	return 0;
 }
@@ -234,6 +235,17 @@ void printUitkomsten(Position dataInitieel[], int indices[], Position data[]) {
 	}
 
 }
+
+void printUitkomsten_PA(Position *dataIntitieel, int *indices, Position *data) {
+	printf("======DATA_ORIGINEEL======  ->  || IND + ============DATA_NIEUW=========||\n");
+	for (int i = 0; i < ARRAYLEN; i++) {
+		printPosition(*(dataIntitieel + i));
+		printf("      || %.3d   %.3d: ", *(indices + i), i);
+		printPosition(*(data + i));
+		printf("||\n");
+	}
+}
+
 void printPosition(Position position) {
 	double x = position.x;
 	double y = position.y;

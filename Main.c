@@ -27,15 +27,20 @@ void initaliseerRandom();
 double randomDouble0Tot100();
 Position randomPosition();
 void generateRandomeListWithDuplicates(Position result[ARRAYLEN]);
+void generateRandomeListWithDuplicates_PA(Position *resulte);
 
 //indices, data arrays
 void optimaliseer(Position initieleData[], int indices[], Position data[]);
+void optimaliseer_PA(Position *initieleData, int *indices, Position *data);
 bool arrayBevatPos(Position pos, Position array[]);
+bool arrayBevatPos_PA(Position pos, Position* arr);
 int getIndex(Position pos, Position array[]);
+int getIndex_PA(Position pos, Position *arr);
 bool posZijnGelijk(Position pos1, Position pos2);
 
 //printers:
 void printUitkomsten(Position dataInitieel[], int indices[], Position data[]);
+void printUitkomsten_PA(Position *dataInitieel, int *indices, Position *data);
 void printPosition(Position position);
 
 
@@ -44,20 +49,21 @@ void printPosition(Position position);
    ============================================== */
 
 int main() {
-	initaliseerRandom();
-	Position p1 = randomPosition();
-	Position p2 = randomPosition();
-	Position p3 = randomPosition();
-	
-	Position initieleData[ARRAYLEN] = { p1, p3, p1, p2, p3 };
+	Position initieleData[ARRAYLEN];
 	int indices[ARRAYLEN];
 	Position verkleindeData[ARRAYLEN];
 
+	initaliseerRandom();
+
+	// "Gewoone" functies
 	generateRandomeListWithDuplicates(initieleData);
-
 	optimaliseer(initieleData, indices, verkleindeData);
-
 	printUitkomsten(initieleData, indices, verkleindeData);
+
+	// Functies met pointer aritmitiek
+	generateRandomeListWithDuplicates_PA(initieleData);
+	optimaliseer_PA(initieleData, indices, verkleindeData);
+	printUitkomsten_PA(initieleData, indices, verkleindeData);
 
 	return 0;
 }
@@ -99,6 +105,22 @@ void generateRandomeListWithDuplicates(Position result[ARRAYLEN]) {
 	}
 }
 
+void generateRandomeListWithDuplicates_PA(Position *result) {
+	for (int i = 0; i < ARRAYLEN; i++) {
+		if ((i % ETD != 0) || (i == 0)) {
+			// Als het niet het vijde elment is generate randome waarden
+			*(result + i) = randomPosition();
+		}
+		else
+		{
+			// Om het 5de element pak een duplicant
+			int j = i / ETD;
+			*(result + i) = *(result + j);
+		}
+	}
+}
+
+
 /* ==============================================
 	functies: indices, data arrays
    ============================================== */
@@ -126,8 +148,33 @@ void optimaliseer(Position initieleData[], int indices[], Position data[]) {
 	}
 }
 
+void optimaliseer_PA(Position *initieleData, int *indices, Position *data) {
+	int dataIteratieIndex = 0;
+	for (int i = 0; i < ARRAYLEN; i++) {
+		Position pos = *(initieleData + i);
+		if (!arrayBevatPos_PA(pos, data)) {
+			*(data + dataIteratieIndex) = pos;
+			dataIteratieIndex++;
+		}
+		int indexInData = getIndex_PA(pos, data);
+		*(indices + i) = indexInData;
+	}
+	for (int i = dataIteratieIndex; i < ARRAYLEN; i++) {
+		Position niks;
+		niks.x = 0;
+		niks.y = 0;
+		niks.z = 0;
+		data[i] = niks;
+	}
+}
+
 bool arrayBevatPos(Position pos, Position array[]) {
 	int index = getIndex(pos, array);
+	return index >= 0;
+}
+
+bool arrayBevatPos_PA(Position pos, Position *arr) {
+	int index = getIndex_PA(pos, arr);
 	return index >= 0;
 }
 
@@ -136,6 +183,16 @@ int getIndex(Position pos, Position array[]) {
 		Position posInArray = array[i];
 		if (posZijnGelijk(pos, posInArray)) {
 			return i;	//hier al meteen return en niet bewaren in variable -> sneller want niet altijd wacht op hele for loop
+		}
+	}
+	return -1;
+}
+
+int getIndex_PA(Position pos, Position *arr) {
+	for (int i = 0; i < ARRAYLEN; i++) {
+		Position posInArray = *(arr + i);
+		if (posZijnGelijk(pos, posInArray)) {
+			return i;
 		}
 	}
 	return -1;
@@ -162,6 +219,17 @@ void printUitkomsten(Position dataInitieel[], int indices[], Position data[]) {
 	}
 
 }
+
+void printUitkomsten_PA(Position *dataIntitieel, int *indices, Position *data) {
+	printf("======DATA_ORIGINEEL======  ->  || IND + ============DATA_NIEUW=========||\n");
+	for (int i = 0; i < ARRAYLEN; i++) {
+		printPosition(*(dataIntitieel + i));
+		printf("      || %.3d   %.3d: ", *(indices + i), i);
+		printPosition(*(data + i));
+		printf("||\n");
+	}
+}
+
 void printPosition(Position position) {
 	double x = position.x;
 	double y = position.y;

@@ -31,6 +31,7 @@ void generateRandomeListWithDuplicates_PA(Position *resulte);
 
 //indices, data arrays
 void optimaliseer(Position initieleData[], int indices[], Position data[]);
+void optimaliseer_PA(Position *initieleData, int *indices, Position *data);
 bool arrayBevatPos(Position pos, Position array[]);
 bool arrayBevatPos_PA(Position pos, Position* arr);
 int getIndex(Position pos, Position array[]);
@@ -75,7 +76,7 @@ int main() {
 
 	generateRandomeListWithDuplicates_PA(initieleData);
 
-	optimaliseer(initieleData, indices, verkleindeData);
+	optimaliseer_PA(initieleData, indices, verkleindeData);
 
 	printUitkomsten(initieleData, indices, verkleindeData);
 
@@ -153,6 +154,26 @@ void optimaliseer(Position initieleData[], int indices[], Position data[]) {
 		indices[i] = indexInData;
 	}
 	//maak overige plaats in data leeg voor duidelijke leesbaarhied
+	for (int i = dataIteratieIndex; i < ARRAYLEN; i++) {
+		Position niks;
+		niks.x = 0;
+		niks.y = 0;
+		niks.z = 0;
+		data[i] = niks;
+	}
+}
+
+void optimaliseer_PA(Position *initieleData, int *indices, Position *data) {
+	int dataIteratieIndex = 0;
+	for (int i = 0; i < ARRAYLEN; i++) {
+		Position pos = *(initieleData + i);
+		if (!arrayBevatPos_PA(pos, data)) {
+			*(data + dataIteratieIndex) = pos;
+			dataIteratieIndex++;
+		}
+		int indexInData = getIndex_PA(pos, data);
+		*(indices + i) = indexInData;
+	}
 	for (int i = dataIteratieIndex; i < ARRAYLEN; i++) {
 		Position niks;
 		niks.x = 0;

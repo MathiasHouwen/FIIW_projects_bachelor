@@ -37,6 +37,7 @@ bool arrayBevatPos_PA(Position pos, Position* arr);
 int getIndex(Position pos, Position array[]);
 int getIndex_PA(Position pos, Position *arr);
 bool posZijnGelijk(Position pos1, Position pos2);
+Position legePos();
 
 //printers:
 void printUitkomsten(Position dataInitieel[], int indices[], Position data[]);
@@ -140,10 +141,7 @@ void optimaliseer(Position initieleData[], int indices[], Position data[]) {
 	}
 	//maak overige plaats in data leeg voor duidelijke leesbaarhied
 	for (int i = dataIteratieIndex; i < ARRAYLEN; i++) {
-		Position niks;
-		niks.x = 0;
-		niks.y = 0;
-		niks.z = 0;
+		Position niks = legePos();
 		data[i] = niks;
 	}
 }
@@ -160,12 +158,17 @@ void optimaliseer_PA(Position *initieleData, int *indices, Position *data) {
 		*(indices + i) = indexInData;
 	}
 	for (int i = dataIteratieIndex; i < ARRAYLEN; i++) {
-		Position niks;
-		niks.x = 0;
-		niks.y = 0;
-		niks.z = 0;
-		data[i] = niks;
+		Position niks = legePos();
+		*(data + i) = niks;
 	}
+}
+
+Position legePos() {
+	Position niks;
+	niks.x = 0;
+	niks.y = 0;
+	niks.z = 0;
+	return niks;
 }
 
 bool arrayBevatPos(Position pos, Position array[]) {

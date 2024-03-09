@@ -26,8 +26,8 @@ typedef struct position Position; //position struct type kan nu genoemd worden d
 void initaliseerRandom();
 double randomDouble0Tot100();
 Position randomPosition();
-void generateRandomeListWithDuplicates(Position result[ARRAYLEN]);
-void generateRandomeListWithDuplicates_PA(Position *resulte);
+void maakWillekeurigeLijst(Position result[ARRAYLEN]);
+void maakWillekeurigeLijst_PA(Position *resulte);
 
 //indices, data arrays
 void optimaliseer(Position initieleData[], int indices[], Position data[]);
@@ -37,6 +37,7 @@ bool arrayBevatPos_PA(Position pos, Position* arr);
 int getIndex(Position pos, Position array[]);
 int getIndex_PA(Position pos, Position *arr);
 bool posZijnGelijk(Position pos1, Position pos2);
+Position legePos();
 
 //printers:
 void printUitkomsten(Position dataInitieel[], int indices[], Position data[]);
@@ -56,12 +57,12 @@ int main() {
 	initaliseerRandom();
 
 	// "Gewoone" functies
-	generateRandomeListWithDuplicates(initieleData);
+	maakWillekeurigeLijst(initieleData);
 	optimaliseer(initieleData, indices, verkleindeData);
 	printUitkomsten(initieleData, indices, verkleindeData);
 
 	// Functies met pointer aritmitiek
-	generateRandomeListWithDuplicates_PA(initieleData);
+	maakWillekeurigeLijst_PA(initieleData);
 	optimaliseer_PA(initieleData, indices, verkleindeData);
 	printUitkomsten_PA(initieleData, indices, verkleindeData);
 
@@ -90,31 +91,25 @@ Position randomPosition() {
 	return pos;
 }
 
-void generateRandomeListWithDuplicates(Position result[ARRAYLEN]) {
+void maakWillekeurigeLijst(Position result[ARRAYLEN]) {
 	for (int i = 0; i < ARRAYLEN; i++) {
 		if ((i % ETD != 0) || (i == 0)) {
-			// Als het niet het vijde elment is generate randome waarden
-			result[i] = randomPosition();
+			result[i] = randomPosition(); // Als het niet het vijde elment is generate randome waarden
 		}
-		else
-		{
-			// Om het 5de element pak een duplicant
-			int j = i / ETD;
+		else {
+			int j = i / ETD; // Om het 5de element pak een duplicant
 			result[i] = result[j];
 		}
 	}
 }
 
-void generateRandomeListWithDuplicates_PA(Position *result) {
+void maakWillekeurigeLijst_PA(Position *result) {
 	for (int i = 0; i < ARRAYLEN; i++) {
 		if ((i % ETD != 0) || (i == 0)) {
-			// Als het niet het vijde elment is generate randome waarden
-			*(result + i) = randomPosition();
+			*(result + i) = randomPosition(); //Als het niet het vijde elment is generate randome waarden
 		}
-		else
-		{
-			// Om het 5de element pak een duplicant
-			int j = i / ETD;
+		else {
+			int j = i / ETD; //Om het 5de element pak een duplicant
 			*(result + i) = *(result + j);
 		}
 	}
@@ -140,10 +135,7 @@ void optimaliseer(Position initieleData[], int indices[], Position data[]) {
 	}
 	//maak overige plaats in data leeg voor duidelijke leesbaarhied
 	for (int i = dataIteratieIndex; i < ARRAYLEN; i++) {
-		Position niks;
-		niks.x = 0;
-		niks.y = 0;
-		niks.z = 0;
+		Position niks = legePos();
 		data[i] = niks;
 	}
 }
@@ -160,12 +152,17 @@ void optimaliseer_PA(Position *initieleData, int *indices, Position *data) {
 		*(indices + i) = indexInData;
 	}
 	for (int i = dataIteratieIndex; i < ARRAYLEN; i++) {
-		Position niks;
-		niks.x = 0;
-		niks.y = 0;
-		niks.z = 0;
-		data[i] = niks;
+		Position niks = legePos();
+		*(data + i) = niks;
 	}
+}
+
+Position legePos() {
+	Position niks;
+	niks.x = 0;
+	niks.y = 0;
+	niks.z = 0;
+	return niks;
 }
 
 bool arrayBevatPos(Position pos, Position array[]) {

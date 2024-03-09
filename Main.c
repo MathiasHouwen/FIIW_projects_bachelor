@@ -49,36 +49,20 @@ void printPosition(Position position);
    ============================================== */
 
 int main() {
-	/*initaliseerRandom();
-	Position p1 = randomPosition();
-	Position p2 = randomPosition();
-	Position p3 = randomPosition();
-	
-	Position initieleData[ARRAYLEN] = { p1, p3, p1, p2, p3 };
+	Position initieleData[ARRAYLEN];
 	int indices[ARRAYLEN];
 	Position verkleindeData[ARRAYLEN];
-
-	generateRandomeListWithDuplicates_PA(initieleData);
-
-	optimaliseer(initieleData, indices, verkleindeData);
-
-	printUitkomsten(initieleData, indices, verkleindeData);
-
-	return 0;*/
 
 	initaliseerRandom();
-	Position p1 = randomPosition();
-	Position p2 = randomPosition();
-	Position p3 = randomPosition();
 
-	Position initieleData[ARRAYLEN] = { p1, p3, p1, p2, p3 };
-	int indices[ARRAYLEN];
-	Position verkleindeData[ARRAYLEN];
+	// "Gewoone" functies
+	generateRandomeListWithDuplicates(initieleData);
+	optimaliseer(initieleData, indices, verkleindeData);
+	printUitkomsten(initieleData, indices, verkleindeData);
 
+	// Functies met pointer aritmitiek
 	generateRandomeListWithDuplicates_PA(initieleData);
-
 	optimaliseer_PA(initieleData, indices, verkleindeData);
-
 	printUitkomsten_PA(initieleData, indices, verkleindeData);
 
 	return 0;

@@ -33,6 +33,7 @@ void generateRandomeListWithDuplicates_PA(Position *resulte);
 void optimaliseer(Position initieleData[], int indices[], Position data[]);
 bool arrayBevatPos(Position pos, Position array[]);
 int getIndex(Position pos, Position array[]);
+int getIndex_PA(Position pos, Position *arr);
 bool posZijnGelijk(Position pos1, Position pos2);
 
 //printers:
@@ -170,6 +171,16 @@ int getIndex(Position pos, Position array[]) {
 		Position posInArray = array[i];
 		if (posZijnGelijk(pos, posInArray)) {
 			return i;	//hier al meteen return en niet bewaren in variable -> sneller want niet altijd wacht op hele for loop
+		}
+	}
+	return -1;
+}
+
+int getIndex_PA(Position pos, Position* arr) {
+	for (int i = 0; i < ARRAYLEN; i++) {
+		Position posInArray = *(arr + i);
+		if (posZijnGelijk(pos, posInArray)) {
+			return i;
 		}
 	}
 	return -1;

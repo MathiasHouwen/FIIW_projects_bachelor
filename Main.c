@@ -32,6 +32,7 @@ void generateRandomeListWithDuplicates_PA(Position *resulte);
 //indices, data arrays
 void optimaliseer(Position initieleData[], int indices[], Position data[]);
 bool arrayBevatPos(Position pos, Position array[]);
+bool arrayBevatPos_PA(Position pos, Position* arr);
 int getIndex(Position pos, Position array[]);
 int getIndex_PA(Position pos, Position *arr);
 bool posZijnGelijk(Position pos1, Position pos2);
@@ -166,6 +167,11 @@ bool arrayBevatPos(Position pos, Position array[]) {
 	return index >= 0;
 }
 
+bool arrayBevatPos_PA(Position pos, Position *arr) {
+	int index = getIndex_PA(pos, arr);
+	return index >= 0;
+}
+
 int getIndex(Position pos, Position array[]) {
 	for (int i = 0; i < ARRAYLEN; i++) {
 		Position posInArray = array[i];
@@ -176,7 +182,7 @@ int getIndex(Position pos, Position array[]) {
 	return -1;
 }
 
-int getIndex_PA(Position pos, Position* arr) {
+int getIndex_PA(Position pos, Position *arr) {
 	for (int i = 0; i < ARRAYLEN; i++) {
 		Position posInArray = *(arr + i);
 		if (posZijnGelijk(pos, posInArray)) {

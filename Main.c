@@ -27,6 +27,7 @@ void initaliseerRandom();
 double randomDouble0Tot100();
 Position randomPosition();
 void generateRandomeListWithDuplicates(Position result[ARRAYLEN]);
+void generateRandomeListWithDuplicates_PA(Position *resulte);
 
 //indices, data arrays
 void optimaliseer(Position initieleData[], int indices[], Position data[]);
@@ -44,7 +45,7 @@ void printPosition(Position position);
    ============================================== */
 
 int main() {
-	initaliseerRandom();
+	/*initaliseerRandom();
 	Position p1 = randomPosition();
 	Position p2 = randomPosition();
 	Position p3 = randomPosition();
@@ -53,7 +54,24 @@ int main() {
 	int indices[ARRAYLEN];
 	Position verkleindeData[ARRAYLEN];
 
-	generateRandomeListWithDuplicates(initieleData);
+	generateRandomeListWithDuplicates_PA(initieleData);
+
+	optimaliseer(initieleData, indices, verkleindeData);
+
+	printUitkomsten(initieleData, indices, verkleindeData);
+
+	return 0;*/
+
+	initaliseerRandom();
+	Position p1 = randomPosition();
+	Position p2 = randomPosition();
+	Position p3 = randomPosition();
+
+	Position initieleData[ARRAYLEN] = { p1, p3, p1, p2, p3 };
+	int indices[ARRAYLEN];
+	Position verkleindeData[ARRAYLEN];
+
+	generateRandomeListWithDuplicates_PA(initieleData);
 
 	optimaliseer(initieleData, indices, verkleindeData);
 
@@ -98,6 +116,22 @@ void generateRandomeListWithDuplicates(Position result[ARRAYLEN]) {
 		}
 	}
 }
+
+void generateRandomeListWithDuplicates_PA(Position *result) {
+	for (int i = 0; i < ARRAYLEN; i++) {
+		if ((i % ETD != 0) || (i == 0)) {
+			// Als het niet het vijde elment is generate randome waarden
+			*(result + i) = randomPosition();
+		}
+		else
+		{
+			// Om het 5de element pak een duplicant
+			int j = i / ETD;
+			*(result + i) = *(result + j);
+		}
+	}
+}
+
 
 /* ==============================================
 	functies: indices, data arrays

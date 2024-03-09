@@ -26,8 +26,8 @@ typedef struct position Position; //position struct type kan nu genoemd worden d
 void initaliseerRandom();
 double randomDouble0Tot100();
 Position randomPosition();
-void generateRandomeListWithDuplicates(Position result[ARRAYLEN]);
-void generateRandomeListWithDuplicates_PA(Position *resulte);
+void maakWillekeurigeLijst(Position result[ARRAYLEN]);
+void maakWillekeurigeLijst_PA(Position *resulte);
 
 //indices, data arrays
 void optimaliseer(Position initieleData[], int indices[], Position data[]);
@@ -57,12 +57,12 @@ int main() {
 	initaliseerRandom();
 
 	// "Gewoone" functies
-	generateRandomeListWithDuplicates(initieleData);
+	maakWillekeurigeLijst(initieleData);
 	optimaliseer(initieleData, indices, verkleindeData);
 	printUitkomsten(initieleData, indices, verkleindeData);
 
 	// Functies met pointer aritmitiek
-	generateRandomeListWithDuplicates_PA(initieleData);
+	maakWillekeurigeLijst_PA(initieleData);
 	optimaliseer_PA(initieleData, indices, verkleindeData);
 	printUitkomsten_PA(initieleData, indices, verkleindeData);
 
@@ -91,7 +91,7 @@ Position randomPosition() {
 	return pos;
 }
 
-void generateRandomeListWithDuplicates(Position result[ARRAYLEN]) {
+void maakWillekeurigeLijst(Position result[ARRAYLEN]) {
 	for (int i = 0; i < ARRAYLEN; i++) {
 		if ((i % ETD != 0) || (i == 0)) {
 			result[i] = randomPosition(); // Als het niet het vijde elment is generate randome waarden
@@ -103,13 +103,13 @@ void generateRandomeListWithDuplicates(Position result[ARRAYLEN]) {
 	}
 }
 
-void generateRandomeListWithDuplicates_PA(Position *result) {
+void maakWillekeurigeLijst_PA(Position *result) {
 	for (int i = 0; i < ARRAYLEN; i++) {
 		if ((i % ETD != 0) || (i == 0)) {
-			*(result + i) = randomPosition(); // Als het niet het vijde elment is generate randome waarden
+			*(result + i) = randomPosition(); //Als het niet het vijde elment is generate randome waarden
 		}
 		else {
-			int j = i / ETD; // Om het 5de element pak een duplicant
+			int j = i / ETD; //Om het 5de element pak een duplicant
 			*(result + i) = *(result + j);
 		}
 	}

@@ -94,13 +94,10 @@ Position randomPosition() {
 void generateRandomeListWithDuplicates(Position result[ARRAYLEN]) {
 	for (int i = 0; i < ARRAYLEN; i++) {
 		if ((i % ETD != 0) || (i == 0)) {
-			// Als het niet het vijde elment is generate randome waarden
-			result[i] = randomPosition();
+			result[i] = randomPosition(); // Als het niet het vijde elment is generate randome waarden
 		}
-		else
-		{
-			// Om het 5de element pak een duplicant
-			int j = i / ETD;
+		else {
+			int j = i / ETD; // Om het 5de element pak een duplicant
 			result[i] = result[j];
 		}
 	}
@@ -109,13 +106,10 @@ void generateRandomeListWithDuplicates(Position result[ARRAYLEN]) {
 void generateRandomeListWithDuplicates_PA(Position *result) {
 	for (int i = 0; i < ARRAYLEN; i++) {
 		if ((i % ETD != 0) || (i == 0)) {
-			// Als het niet het vijde elment is generate randome waarden
-			*(result + i) = randomPosition();
+			*(result + i) = randomPosition(); // Als het niet het vijde elment is generate randome waarden
 		}
-		else
-		{
-			// Om het 5de element pak een duplicant
-			int j = i / ETD;
+		else {
+			int j = i / ETD; // Om het 5de element pak een duplicant
 			*(result + i) = *(result + j);
 		}
 	}

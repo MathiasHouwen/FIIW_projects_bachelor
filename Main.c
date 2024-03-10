@@ -1,3 +1,10 @@
+/* ==============================================
+	Practicum 1 BESC:
+	Team 12
+		- Ebbe Wertz
+		- Mathias Houwen
+   ============================================== */
+
 #include <stdio.h>
 #include <stdlib.h>	//voor random functies
 #include <stdbool.h>

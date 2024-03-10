@@ -1,16 +1,23 @@
+/* ==============================================
+	Practicum 1 BESC:
+
+	Team 12
+		- Ebbe Wertz
+		- Mathias Houwen
+
+   ============================================== */
+
 #include <stdio.h>
-#include <stdlib.h>
+#include <stdlib.h>	//voor random functies
 #include <stdbool.h>
 
-//Ebbe Wertz
-//Mathias Houwen
+#define ARRAYLEN 25	//lengte initele data array (aantal positions)
+#define ETD 4 //Aanral elemtenten tussen diplucaten (zie maakWillekeurigeLijst)
 
-#define ARRAYLEN 25
-#define ETD 4 //Elemtents tussen diplucates 
+   /* ==============================================
+	   Position defenitie
+	  ============================================== */
 
-/* ==============================================
-	Position defenitie
-   ============================================== */
 struct position {
 	float x;
 	float y;
@@ -22,26 +29,33 @@ typedef struct position Position; //position struct type kan nu genoemd worden d
 	functie signatures(implementatie onderaan)
    ============================================== */
 
-//random:
-void initaliseerRandom();
-double randomDouble0Tot100();
-Position randomPosition();
-void maakWillekeurigeLijst(Position result[ARRAYLEN]);
-void maakWillekeurigeLijst_PA(Position *resulte);
+   //..._PA = versie met pointer arithmetic
 
-//indices, data arrays
+   //random:
+void initaliseerRandom();	//zet rand seed
+float randomDouble0Tot100();
+Position randomPosition();
+
+void maakWillekeurigeLijst(Position result[ARRAYLEN]);
+void maakWillekeurigeLijst_PA(Position* resulte);
+
+//indices, data arrays:
 void optimaliseer(Position initieleData[], int indices[], Position data[]);
-void optimaliseer_PA(Position *initieleData, int *indices, Position *data);
+void optimaliseer_PA(Position* initieleData, int* indices, Position* data);
+
 bool arrayBevatPos(Position pos, Position array[]);
 bool arrayBevatPos_PA(Position pos, Position* arr);
-int getIndex(Position pos, Position array[]);
-int getIndex_PA(Position pos, Position *arr);
 bool posZijnGelijk(Position pos1, Position pos2);
-Position legePos();
+
+int getIndex(Position pos, Position array[]);
+int getIndex_PA(Position pos, Position* arr);
+
+Position legePos();	//pos: x=0, y=0, z=0
 
 //printers:
 void printUitkomsten(Position dataInitieel[], int indices[], Position data[]);
-void printUitkomsten_PA(Position *dataInitieel, int *indices, Position *data);
+void printUitkomsten_PA(Position* dataInitieel, int* indices, Position* data);
+
 void printPosition(Position position);
 
 
@@ -50,16 +64,22 @@ void printPosition(Position position);
    ============================================== */
 
 int main() {
+
 	Position initieleData[ARRAYLEN];
+
 	int indices[ARRAYLEN];
 	Position verkleindeData[ARRAYLEN];
 
 	initaliseerRandom();
 
+	printf("\n\n\"Gewone\" versie:\n\n");
+
 	// "Gewoone" functies
 	maakWillekeurigeLijst(initieleData);
 	optimaliseer(initieleData, indices, verkleindeData);
 	printUitkomsten(initieleData, indices, verkleindeData);
+
+	printf("\n\nVersie met pointer arithmetic:\n\n");
 
 	// Functies met pointer aritmitiek
 	maakWillekeurigeLijst_PA(initieleData);
@@ -74,12 +94,12 @@ int main() {
    ============================================== */
 
 void initaliseerRandom() {
-	int seed = time(NULL);	//huidig exact tijdstip = onvoorspelbaar
-	srand(seed);
+	int seed = time(NULL);	//huidig exact tijdstip = (redelijk) onvoorspelbaar
+	srand(seed);			//vooral om niet elke run dezelde sequence te krijgen
 }
 
-double randomDouble0Tot100() {
-	double tussen0en1 = (double)rand() / (double)RAND_MAX;	//randmax = internal uit stdlib
+float randomDouble0Tot100() {
+	float tussen0en1 = (float)rand() / (float)RAND_MAX;	//randmax: intern gedefinieerd in stdlib
 	return tussen0en1 * 100;
 }
 
@@ -103,13 +123,14 @@ void maakWillekeurigeLijst(Position result[ARRAYLEN]) {
 	}
 }
 
-void maakWillekeurigeLijst_PA(Position *result) {
+void maakWillekeurigeLijst_PA(Position* result) {
+	//comments: zie niet-PA verise
 	for (int i = 0; i < ARRAYLEN; i++) {
 		if ((i % ETD != 0) || (i == 0)) {
-			*(result + i) = randomPosition(); //Als het niet het vijde elment is generate randome waarden
+			*(result + i) = randomPosition();
 		}
 		else {
-			int j = i / ETD; //Om het 5de element pak een duplicant
+			int j = i / ETD;
 			*(result + i) = *(result + j);
 		}
 	}
@@ -121,7 +142,7 @@ void maakWillekeurigeLijst_PA(Position *result) {
    ============================================== */
 
 void optimaliseer(Position initieleData[], int indices[], Position data[]) {
-	int dataIteratieIndex = 0;	//omdat data geen dupl. bevat en initeledata wel kan data geen zelfde index van een for in initieledata gebruiken
+	int dataIteratieIndex = 0;	//data word langzamer gevuld dan initieleData word gelezen, kan dus i niet hergebruiken als index
 	for (int i = 0; i < ARRAYLEN; i++) {
 		Position pos = initieleData[i];
 		//Als pos=uniek? -> pos in data
@@ -129,18 +150,20 @@ void optimaliseer(Position initieleData[], int indices[], Position data[]) {
 			data[dataIteratieIndex] = pos;
 			dataIteratieIndex++;
 		}
-		//steek data-index van pos in de indices array
+		//steek data-index van pos (altijd) in de indices array
 		int indexInData = getIndex(pos, data);
 		indices[i] = indexInData;
 	}
-	//maak overige plaats in data leeg voor duidelijke leesbaarhied
+	//maak overige plaatsen in data leeg voor duidelijke leesbaarhied
+	//! enkel voor onze leesbaarheid in een print, als efficient programma mag dit weggelaten
 	for (int i = dataIteratieIndex; i < ARRAYLEN; i++) {
 		Position niks = legePos();
 		data[i] = niks;
 	}
 }
 
-void optimaliseer_PA(Position *initieleData, int *indices, Position *data) {
+void optimaliseer_PA(Position* initieleData, int* indices, Position* data) {
+	//comments: zie niet-PA verise
 	int dataIteratieIndex = 0;
 	for (int i = 0; i < ARRAYLEN; i++) {
 		Position pos = *(initieleData + i);
@@ -158,19 +181,21 @@ void optimaliseer_PA(Position *initieleData, int *indices, Position *data) {
 }
 
 Position legePos() {
-	Position niks;
-	niks.x = 0;
-	niks.y = 0;
-	niks.z = 0;
-	return niks;
+	Position leeg;
+	leeg.x = 0;
+	leeg.y = 0;
+	leeg.z = 0;
+	return leeg;
 }
 
 bool arrayBevatPos(Position pos, Position array[]) {
+	//De getIndex zal -1 returnen wanneer pos niet in array
 	int index = getIndex(pos, array);
 	return index >= 0;
 }
 
-bool arrayBevatPos_PA(Position pos, Position *arr) {
+bool arrayBevatPos_PA(Position pos, Position* arr) {
+	//comments: zie niet-PA verise
 	int index = getIndex_PA(pos, arr);
 	return index >= 0;
 }
@@ -179,13 +204,14 @@ int getIndex(Position pos, Position array[]) {
 	for (int i = 0; i < ARRAYLEN; i++) {
 		Position posInArray = array[i];
 		if (posZijnGelijk(pos, posInArray)) {
-			return i;	//hier al meteen return en niet bewaren in variable -> sneller want niet altijd wacht op hele for loop
+			return i; //eteen return, niet bewaren in var. -> sneller want hoef niet altijd te wachten op hele for loop
 		}
 	}
-	return -1;
+	return -1;	//return i zal functie vroeg stoppen, dus deze lijn word alleen gezien als pos niet in array
 }
 
-int getIndex_PA(Position pos, Position *arr) {
+int getIndex_PA(Position pos, Position* arr) {
+	//comments: zie niet-PA verise
 	for (int i = 0; i < ARRAYLEN; i++) {
 		Position posInArray = *(arr + i);
 		if (posZijnGelijk(pos, posInArray)) {
@@ -210,14 +236,16 @@ void printUitkomsten(Position dataInitieel[], int indices[], Position data[]) {
 	printf("======DATA_ORIGINEEL======  ->  || IND + ============DATA_NIEUW=========||\n");
 	for (int i = 0; i < ARRAYLEN; i++) {
 		printPosition(dataInitieel[i]);
-		printf("      || %.3d   %.3d: ", indices[i],i);
+		//.3 = 3 cijfers (kleine getallen worden bijgevuld met 0-en) -> maakt kolommen even breed -> mooie print
+		printf("      || %.3d   %.3d: ", indices[i], i);
 		printPosition(data[i]);
 		printf("||\n");
 	}
 
 }
 
-void printUitkomsten_PA(Position *dataIntitieel, int *indices, Position *data) {
+void printUitkomsten_PA(Position* dataIntitieel, int* indices, Position* data) {
+	//comments: zie niet-PA verise
 	printf("======DATA_ORIGINEEL======  ->  || IND + ============DATA_NIEUW=========||\n");
 	for (int i = 0; i < ARRAYLEN; i++) {
 		printPosition(*(dataIntitieel + i));
@@ -228,15 +256,17 @@ void printUitkomsten_PA(Position *dataIntitieel, int *indices, Position *data) {
 }
 
 void printPosition(Position position) {
-	double x = position.x;
-	double y = position.y;
-	double z = position.z;
+	//gekozen om geen "posIsLeeg" functie te maken omdat we de x, y, en z vars kunnen hergebruiken in de else
+	float x = position.x;
+	float y = position.y;
+	float z = position.z;
 	if (x == 0 && y == 0 && z == 0) {
-		printf("_________( nul )__________");
+		printf("_________( nul )__________");	//duidelijke leesbaarheid
 	}
 	else {
+		//6.2: 2=2decimalen, 6=6characters inc. punt -> 3 getallen voor punt
 		printf("x:%06.2f y:%06.2f z:%06.2f", x, y, z);
 	}
-	
+
 }
 

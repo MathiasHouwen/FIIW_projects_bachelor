@@ -26,3 +26,8 @@ void koop(int index, int aantal) {
 void produceer(int index, int aantal) {
 	//
 }
+
+void printKoop(int consumer, int aantal, int index) {
+	printf("Consumer %d has acquired %d of product %d.", consumer, aantal, index);
+}
+

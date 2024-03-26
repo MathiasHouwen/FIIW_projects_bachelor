@@ -55,7 +55,6 @@ int main() {
     initialiseerStock();
     printf("Stock geinitialiseerd met %d producten met count: %d\n", STOCK_PROD, STOCK_INIT_CNT);
     koopRanomProducten();
-	return 0;
 }
 
 
@@ -67,7 +66,7 @@ void koop(int id, int aantal) {
     Product* product = getProductViaID(id);
     //poiner want anders krijgen we een kopie die niet automatisch update in de stock array
     if(product->productCount < aantal){
-        printf("product %d is out of stock. (requested: %d, stock: %d)\n", id, aantal, product->productCount);
+        printTeWeinigStock(aantal, product->productCount, id);
         return; //guard clause: Door de return in de bad case kan de rest van de functie volledig gebruikt worden voor de good case
     }
     product->productCount -= aantal;
@@ -99,6 +98,7 @@ _Noreturn void produceerRanomProducten(){    //_Noreturn = een suggestie door de
         int productID = randomInteger(0, STOCK_PROD);
         int count = randomInteger(1, MAX_PROD_CNT);
         koop(productID, count);
+        sleep(1);
     }
 }
 
@@ -142,5 +142,8 @@ void printAankoop(int consumer, int aantal, int id) {
 void printProductie(int producer, int aantalGeproduceerd, int nieuwAantalInStock, int id){
     printf("stock of product %d is replenised to %d(= +%d) by producer %d\n",
            id, nieuwAantalInStock, aantalGeproduceerd, producer);
+}
+void printTeWeinigStock(int gewenstAantal, int aantalInStock, int id){
+    printf("product %d is out of stock. (requested: %d, stock: %d)\n", id, gewenstAantal, aantalInStock);
 }
 

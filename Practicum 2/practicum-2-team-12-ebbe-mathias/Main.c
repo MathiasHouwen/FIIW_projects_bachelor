@@ -15,7 +15,8 @@
 #define MAX_CONS_CNT 5 //maximaal # prod die een consumer in 1 keer kan kopen
 #define MAX_PROD_CNT 5  //maximaal # prod die een producer in 1 keer kan maken
 
-
+#define CONSUMERS 5 //aantal comsumers
+#define PRODUCERS 2 //aantal producers
 
 /*
  * TODO:
@@ -46,21 +47,25 @@ typedef struct {
 
 Product stock[STOCK_PROD];
 
+pthread_mutex_t mutex;
+
 /* ==============================================
 	functie signatures(implementatie onderaan)
    ============================================== */
 
 //SERVER/stock:
-void koop(int id, int aantal);
-void produceer(int id, int aantal);
+void koop(int id, int aantal, int consumer);
+void produceer(int id, int aantal, int producer);
 //HELPERS:
 Product* getProductViaID(int id);
-void initialiseerStock();
+void initStock();
 void initRandom();
 int randomInteger(int minInclusief, int maxExclusief);
+void maakThreads(pthread_t consumerThreads[CONSUMERS], pthread_t producerThreads[PRODUCERS]);
+void joinThreads(pthread_t consumerThreads[CONSUMERS], pthread_t producerThreads[PRODUCERS]);
 //consumers/producers:
-_Noreturn void koopRanomProducten();
-_Noreturn void produceerRanomProducten();
+void* koopRandomProducten(void* consumerNr);
+void* produceerRanomProducten(void* producerNr);
 //printers:
 void printAankoop(int consumer, int aantal, int id);
 void printProductie(int producer, int aantalGeproduceerd, int nieuwAantalInStock, int id);
@@ -72,47 +77,61 @@ void printTeWeinigStock(int gewenstAantal, int aantalInStock, int id);
 
 int main() {
     initRandom();
-    initialiseerStock();
+    initStock();
     printf("Stock geinitialiseerd met %d producten met count: %d\n", STOCK_PROD, STOCK_INIT_CNT);
-    koopRanomProducten();
+
+    pthread_t consumerThreads[CONSUMERS];   //alle consumer threads
+    pthread_t producerThreads[PRODUCERS];   //alle producer threads
+
+    maakThreads(consumerThreads, producerThreads);
+    joinThreads(consumerThreads, producerThreads);
 }
 
 /* ==============================================
 	functies: producer/consumer
    ============================================== */
 
-void koop(int id, int aantal) {
+void koop(int id, int aantal, int consumer) {
     Product* product = getProductViaID(id);
     //poiner want anders krijgen we een kopie die niet automatisch update in de stock array
     if(product->productCount < aantal){
         printTeWeinigStock(aantal, product->productCount, id);
         return; //guard clause: Door de return in de bad case kan de rest van de functie volledig gebruikt worden voor de good case
     }
+    pthread_mutex_lock(&mutex);
+
     product->productCount -= aantal;
-    int consumer = 0; // TODO
     printAankoop(consumer, aantal, id);
+
+    pthread_mutex_unlock(&mutex);
 }
-void produceer(int id, int aantal) {
+void produceer(int id, int aantal, int producer) {
     Product* product = getProductViaID(id);
+
+    pthread_mutex_lock(&mutex);
+
     product->productCount += aantal;
-    int producer = 0; //TODO
     printProductie(producer, aantal, product->productCount, id);
+
+    pthread_mutex_unlock(&mutex);
 }
 
-_Noreturn void koopRanomProducten(){    //_Noreturn = een suggestie door de IDE
+void* koopRandomProducten(void* consumerNr){    //_Noreturn = een suggestie door de IDE
     while(1){
         int productID = randomInteger(0, STOCK_PROD);
         int count = randomInteger(1, MAX_CONS_CNT);
-        koop(productID, count);
+        int* consumer = (int*) consumerNr;
+        koop(productID, count, *consumer);
         sleep(1);
     }
 }
 
-_Noreturn void produceerRanomProducten(){    //_Noreturn = een suggestie door de IDE
+void* produceerRanomProducten(void* producerNr){    //_Noreturn = een suggestie door de IDE
     while(1){
         int productID = randomInteger(0, STOCK_PROD);
         int count = randomInteger(1, MAX_PROD_CNT);
-        koop(productID, count);
+        int* producer = (int*) producerNr;
+        produceer(productID, count, *producer);
         sleep(1);
     }
 }
@@ -121,7 +140,7 @@ _Noreturn void produceerRanomProducten(){    //_Noreturn = een suggestie door de
 	functies: helpers
    ============================================== */
 
-void initialiseerStock() {
+void initStock() {
     //maakt van elk product een stock aan van count=STOCK_INIT_CNT
     for(int productID = 0; productID<STOCK_PROD; productID++){
         Product product;
@@ -146,6 +165,36 @@ int randomInteger(int minInclusief, int maxExclusief){
     return minInclusief + (int) (tussen0en1 * (float)(maxExclusief - minInclusief));
 }
 
+void maakThreads(pthread_t consumerThreads[CONSUMERS], pthread_t producerThreads[PRODUCERS]){
+    int consumerNrs[CONSUMERS];
+    int producerNrs[PRODUCERS]; //onthoud alle nummers van 0 tot CONSUMERS
+    //want i veranderd telkens dus een pointer naar i zal uiteindelijk altijd de laatste iteratie zien
+    //moeten allemaal hier buiten de for zitten, anders worden ze van de stack gegooid na de for
+    for(int i=0; i<CONSUMERS; i++){
+        consumerNrs[i] = i;
+        pthread_t* thread = &consumerThreads[i];
+        int* consumerNr = &consumerNrs[i];
+        pthread_create(thread, NULL, koopRandomProducten, (void*) consumerNr);
+    }
+    for(int i=0; i < PRODUCERS; i++){
+        producerNrs[i] = i;
+        pthread_t* thread = &producerThreads[i];
+        int* producerNr = &consumerNrs[i];
+        pthread_create(thread, NULL, produceerRanomProducten, (void*) producerNr);
+    }
+}
+void joinThreads(pthread_t consumerThreads[CONSUMERS], pthread_t producerThreads[PRODUCERS]){
+    for(int i=0; i < CONSUMERS; i++){
+        pthread_t thread = consumerThreads[i];
+        pthread_join(thread, NULL);
+
+    }
+    for(int i=0; i < PRODUCERS; i++){
+        pthread_t thread = producerThreads[i];
+        pthread_join(thread, NULL);
+    }
+}
+
 /* ==============================================
 	functies: printers
    ============================================== */
@@ -155,8 +204,8 @@ void printAankoop(int consumer, int aantal, int id) {
 	printf("Consumer %d has acquired %d of product %d.\n", consumer, aantal, id);
 }
 void printProductie(int producer, int aantalGeproduceerd, int nieuwAantalInStock, int id){
-    printf("stock of product %d is replenised to %d(= +%d) by producer %d\n",
-           id, nieuwAantalInStock, aantalGeproduceerd, producer);
+    printf("producer %d replenised product %d by %d (now %d)\n",
+           producer, id, aantalGeproduceerd, nieuwAantalInStock);
 }
 void printTeWeinigStock(int gewenstAantal, int aantalInStock, int id){
     printf("product %d is out of stock. (requested: %d, stock: %d)\n", id, gewenstAantal, aantalInStock);

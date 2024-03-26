@@ -1,5 +1,6 @@
 #include <stdio.h>
-#define STOCK_CNT 20    //stock count (aantal unieke prods in stock)
+#define STOCK_PROD 20    //aantal unieke producten in stock
+#define STOCK_INIT_CNT 50 // initele product count voor alles in stock
 
 
 typedef struct {
@@ -28,7 +29,8 @@ typedef struct {
 void koop(int id, int aantal);
 void produceer(int index, int aantal);
 //HELPERS:
-Product getProductViaID(Product stock[STOCK_CNT], int id);
+Product getProductViaID(Product stock[STOCK_PROD], int id);
+void initialiseerStock();
 //consumers/producers:
 void koopRanomProducten();
 void produceerRanomProducten();
@@ -36,17 +38,18 @@ void produceerRanomProducten();
 void printAankoop(int consumer, int aantal, int id);
 
 int main() {
-    printf("hello world");
+    initialiseerStock();
+    printf("Stock geinitialiseerd met %d producten met count: %d", STOCK_PROD, STOCK_INIT_CNT);
 	return 0;
 }
 
 void initialiseerStock() {
     //maakt van elk product een stock aan van 50
-    Product stock[STOCK_CNT];
-    for(int productID = 0; productID<STOCK_CNT; productID++){
+    Product stock[STOCK_PROD];
+    for(int productID = 0; productID<STOCK_PROD; productID++){
         Product product;
         product.productID = productID;
-        product.productCount = 50;
+        product.productCount = STOCK_INIT_CNT;
         stock[productID] = product;
     }
 }
@@ -83,7 +86,7 @@ void produceerRanomProducten(){
  * HELPERS:
  */
 
-Product getProductViaID(Product stock[STOCK_CNT], int id){
+Product getProductViaID(Product stock[STOCK_PROD], int id){
     Product product;
     //
     return product;

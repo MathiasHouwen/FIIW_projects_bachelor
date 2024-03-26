@@ -1,26 +1,24 @@
+/* ==============================================
+	Practicum 2 BESC:
+	Team 12
+		- Ebbe Wertz
+		- Mathias Houwen
+   ============================================== */
 #include <stdio.h>
 #include <stdlib.h>	//voor random functies
-#include <time.h>
-#include<unistd.h>
-#include <pthread.h>
+#include <time.h>   //voor random seed
+#include<unistd.h>  //voor sleep
+#include <pthread.h>    //voor threading
 
 #define STOCK_PROD 20    //aantal unieke producten in stock
 #define STOCK_INIT_CNT 30 // initele product count voor alles in stock
 #define MAX_CONS_CNT 5 //maximaal # prod die een consumer in 1 keer kan kopen
-#define MAX_PROD_CNT 5
+#define MAX_PROD_CNT 5  //maximaal # prod die een producer in 1 keer kan maken
 
-typedef struct {
-	int productID;  // == index in stock[]
-	int productCount;
-} Product;
-/*
- * Server:get order van consumer (aantal , id)
- *  1) kijk of productcount >= aantal
- *  2.a) ja -> productcount--; geef product aan consumer
- *  2.b) nee -> message (en niks anders doen) -> efficient via guard clause
- */
+
 
 /*
+ * TODO:
  * Que maken.
  * eig gewoon een stack maken maar dan FIFO ipv LIFO
  *
@@ -31,8 +29,26 @@ typedef struct {
  *
  */
 
-//globale variable
+
+
+/* ==============================================
+	struct defenities
+   ============================================== */
+
+typedef struct {
+    int productID;  // == index in stock[]
+    int productCount;
+} Product;
+
+/* ==============================================
+	globale variabelen
+   ============================================== */
+
 Product stock[STOCK_PROD];
+
+/* ==============================================
+	functie signatures(implementatie onderaan)
+   ============================================== */
 
 //SERVER/stock:
 void koop(int id, int aantal);
@@ -50,6 +66,10 @@ void printAankoop(int consumer, int aantal, int id);
 void printProductie(int producer, int aantalGeproduceerd, int nieuwAantalInStock, int id);
 void printTeWeinigStock(int gewenstAantal, int aantalInStock, int id);
 
+/* ==============================================
+	main
+   ============================================== */
+
 int main() {
     initRandom();
     initialiseerStock();
@@ -57,10 +77,9 @@ int main() {
     koopRanomProducten();
 }
 
-
-/*
- * SERVER/stock:
- */
+/* ==============================================
+	functies: producer/consumer
+   ============================================== */
 
 void koop(int id, int aantal) {
     Product* product = getProductViaID(id);
@@ -80,15 +99,11 @@ void produceer(int id, int aantal) {
     printProductie(producer, aantal, product->productCount, id);
 }
 
-/*
- * PRODUCER/CONSUMER:
- */
-
 _Noreturn void koopRanomProducten(){    //_Noreturn = een suggestie door de IDE
     while(1){
         int productID = randomInteger(0, STOCK_PROD);
         int count = randomInteger(1, MAX_CONS_CNT);
-        koop(0, count);
+        koop(productID, count);
         sleep(1);
     }
 }
@@ -102,9 +117,9 @@ _Noreturn void produceerRanomProducten(){    //_Noreturn = een suggestie door de
     }
 }
 
-/*
- * HELPERS:
- */
+/* ==============================================
+	functies: helpers
+   ============================================== */
 
 void initialiseerStock() {
     //maakt van elk product een stock aan van count=STOCK_INIT_CNT
@@ -131,9 +146,9 @@ int randomInteger(int minInclusief, int maxExclusief){
     return minInclusief + (int) (tussen0en1 * (float)(maxExclusief - minInclusief));
 }
 
-/*
- * PRINTERS:
- */
+/* ==============================================
+	functies: printers
+   ============================================== */
 
 //consumer int komt van thread nummer
 void printAankoop(int consumer, int aantal, int id) {

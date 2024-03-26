@@ -44,11 +44,11 @@ void initRandom();
 int randomInteger(int minInclusief, int maxExclusief);
 //consumers/producers:
 _Noreturn void koopRanomProducten();
-
 _Noreturn void produceerRanomProducten();
 //printers:
 void printAankoop(int consumer, int aantal, int id);
 void printProductie(int producer, int aantalGeproduceerd, int nieuwAantalInStock, int id);
+void printTeWeinigStock(int gewenstAantal, int aantalInStock, int id);
 
 int main() {
     initRandom();

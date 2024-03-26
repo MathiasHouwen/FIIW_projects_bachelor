@@ -41,12 +41,14 @@ int main() {
 }
 
 void initialiseerStock() {
+    //maakt van elk product een stock aan van 50
     Product stock[STOCK_CNT];
-    Product iPhone = { 0, 50 }; //EBBE PAS DIT AUB AAN DAT DAT IN EEN FORLOOP WORDT GEDIFEND
-    Product lenovoLaptop = { 1, 50 }; // IDK HOW
-    Product samsungPhone = { 2, 50 };
-    Product windowsPhone = { 3, 50 };
-    Product hpLaptop = { 4, 50 };
+    for(int productID = 0; productID<STOCK_CNT; productID++){
+        Product product;
+        product.productID = productID;
+        product.productCount = 50;
+        stock[productID] = product;
+    }
 }
 
 

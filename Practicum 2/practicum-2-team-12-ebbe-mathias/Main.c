@@ -1,7 +1,13 @@
 #include <stdio.h>
-#define STOCK_PROD 20    //aantal unieke producten in stock
-#define STOCK_INIT_CNT 50 // initele product count voor alles in stock
+#include <stdlib.h>	//voor random functies
+#include <time.h>
+#include<unistd.h>
+#include <pthread.h>
 
+#define STOCK_PROD 20    //aantal unieke producten in stock
+#define STOCK_INIT_CNT 30 // initele product count voor alles in stock
+#define MAX_CONS_CNT 5 //maximaal # prod die een consumer in 1 keer kan kopen
+#define MAX_PROD_CNT 5
 
 typedef struct {
 	int productID;  // == index in stock[]
@@ -25,33 +31,31 @@ typedef struct {
  *
  */
 
+//globale variable
+Product stock[STOCK_PROD];
+
 //SERVER/stock:
 void koop(int id, int aantal);
-void produceer(int index, int aantal);
+void produceer(int id, int aantal);
 //HELPERS:
-Product getProductViaID(Product stock[STOCK_PROD], int id);
+Product* getProductViaID(int id);
 void initialiseerStock();
+void initRandom();
+int randomInteger(int minInclusief, int maxExclusief);
 //consumers/producers:
-void koopRanomProducten();
-void produceerRanomProducten();
+_Noreturn void koopRanomProducten();
+
+_Noreturn void produceerRanomProducten();
 //printers:
 void printAankoop(int consumer, int aantal, int id);
+void printProductie(int producer, int aantalGeproduceerd, int nieuwAantalInStock, int id);
 
 int main() {
+    initRandom();
     initialiseerStock();
-    printf("Stock geinitialiseerd met %d producten met count: %d", STOCK_PROD, STOCK_INIT_CNT);
+    printf("Stock geinitialiseerd met %d producten met count: %d\n", STOCK_PROD, STOCK_INIT_CNT);
+    koopRanomProducten();
 	return 0;
-}
-
-void initialiseerStock() {
-    //maakt van elk product een stock aan van 50
-    Product stock[STOCK_PROD];
-    for(int productID = 0; productID<STOCK_PROD; productID++){
-        Product product;
-        product.productID = productID;
-        product.productCount = STOCK_INIT_CNT;
-        stock[productID] = product;
-    }
 }
 
 
@@ -60,36 +64,71 @@ void initialiseerStock() {
  */
 
 void koop(int id, int aantal) {
-	//1) Product = getProductViaID
-    //2) product.count -= aantal;
+    Product* product = getProductViaID(id);
+    //poiner want anders krijgen we een kopie die niet automatisch update in de stock array
+    if(product->productCount < aantal){
+        printf("product %d is out of stock. (requested: %d, stock: %d)\n", id, aantal, product->productCount);
+        return; //guard clause: Door de return in de bad case kan de rest van de functie volledig gebruikt worden voor de good case
+    }
+    product->productCount -= aantal;
+    int consumer = 0; // TODO
+    printAankoop(consumer, aantal, id);
 }
 void produceer(int id, int aantal) {
-	//
+    Product* product = getProductViaID(id);
+    product->productCount += aantal;
+    int producer = 0; //TODO
+    printProductie(producer, aantal, product->productCount, id);
 }
 
 /*
  * PRODUCER/CONSUMER:
  */
 
-void koopRanomProducten(){
-    //1 willekeurig product kiezen
-    //willekeurig aantal kopen
-
-    //2x random int -> koop(int1, int2);
+_Noreturn void koopRanomProducten(){    //_Noreturn = een suggestie door de IDE
+    while(1){
+        int productID = randomInteger(0, STOCK_PROD);
+        int count = randomInteger(1, MAX_CONS_CNT);
+        koop(0, count);
+        sleep(1);
+    }
 }
 
-void produceerRanomProducten(){
-    //
+_Noreturn void produceerRanomProducten(){    //_Noreturn = een suggestie door de IDE
+    while(1){
+        int productID = randomInteger(0, STOCK_PROD);
+        int count = randomInteger(1, MAX_PROD_CNT);
+        koop(productID, count);
+    }
 }
 
 /*
  * HELPERS:
  */
 
-Product getProductViaID(Product stock[STOCK_PROD], int id){
-    Product product;
-    //
-    return product;
+void initialiseerStock() {
+    //maakt van elk product een stock aan van count=STOCK_INIT_CNT
+    for(int productID = 0; productID<STOCK_PROD; productID++){
+        Product product;
+        product.productID = productID;
+        product.productCount = STOCK_INIT_CNT;
+        stock[productID] = product;
+    }
+}
+
+void initRandom(){
+    long long seed = time(NULL);
+    srand(seed);
+}
+
+Product* getProductViaID(int id){
+    return &(stock[id]);
+}
+
+int randomInteger(int minInclusief, int maxExclusief){
+    //maximum is exclusief: nummers van 0 tot (niet t.e.m.) max
+    float tussen0en1 = (float)rand() / (float)RAND_MAX;	//randmax: intern gedefinieerd in stdlib
+    return minInclusief + (int) (tussen0en1 * (float)(maxExclusief - minInclusief));
 }
 
 /*
@@ -98,6 +137,10 @@ Product getProductViaID(Product stock[STOCK_PROD], int id){
 
 //consumer int komt van thread nummer
 void printAankoop(int consumer, int aantal, int id) {
-	printf("Consumer %d has acquired %d of product %d.", consumer, aantal, id);
+	printf("Consumer %d has acquired %d of product %d.\n", consumer, aantal, id);
+}
+void printProductie(int producer, int aantalGeproduceerd, int nieuwAantalInStock, int id){
+    printf("stock of product %d is replenised to %d(= +%d) by producer %d\n",
+           id, nieuwAantalInStock, aantalGeproduceerd, producer);
 }
 

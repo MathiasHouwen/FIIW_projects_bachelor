@@ -9,6 +9,8 @@
 #include <time.h>   //voor random seed
 #include<unistd.h>  //voor sleep
 #include <pthread.h>    //voor threading
+#include <stdbool.h>
+
 
 #define STOCK_PROD 20    //aantal unieke producten in stock
 #define STOCK_INIT_CNT 30 // initele product count voor alles in stock
@@ -17,6 +19,8 @@
 
 #define CONSUMERS 5 //aantal comsumers
 #define PRODUCERS 2 //aantal producers
+
+#define QUE_LENGHT 256
 
 /*
  * TODO:
@@ -41,11 +45,28 @@ typedef struct {
     int productCount;
 } Product;
 
+typedef struct {
+    Product *product;
+    int aantal;
+    int consumer;
+} Order;
+
+typedef struct {
+    Product *product;
+    Product *stock[STOCK_PROD];
+    Order *queue[QUE_LENGHT];
+} Server;
+
 /* ==============================================
 	globale variabelen
    ============================================== */
 
 Product stock[STOCK_PROD];
+
+Order queue[QUE_LENGHT];
+int kop = 0;
+int next = 0;
+int queueSize = 0;
 
 pthread_mutex_t mutex;
 
@@ -54,8 +75,12 @@ pthread_mutex_t mutex;
    ============================================== */
 
 //SERVER/stock:
-void koop(int id, int aantal, int consumer);
+bool koop(int id, int aantal, int consumer);
 void produceer(int id, int aantal, int producer);
+
+bool addQueue(Order order);
+void requestKoop(int id, int aantal, int consumer);
+
 //HELPERS:
 Product* getProductViaID(int id);
 void initStock();
@@ -76,6 +101,8 @@ void printTeWeinigStock(int gewenstAantal, int aantalInStock, int id);
    ============================================== */
 
 int main() {
+
+
     initRandom();
     initStock();
     printf("Stock geinitialiseerd met %d producten met count: %d\n", STOCK_PROD, STOCK_INIT_CNT);
@@ -90,21 +117,20 @@ int main() {
 /* ==============================================
 	functies: producer/consumer
    ============================================== */
-
-void koop(int id, int aantal, int consumer) {
+bool koop(int id, int aantal, int consumer) {
     Product* product = getProductViaID(id);
     //poiner want anders krijgen we een kopie die niet automatisch update in de stock array
     if(product->productCount < aantal){
         printTeWeinigStock(aantal, product->productCount, id);
-        return; //guard clause: Door de return in de bad case kan de rest van de functie volledig gebruikt worden voor de good case
+        return false; //guard clause: Door de return in de bad case kan de rest van de functie volledig gebruikt worden voor de good case
     }
     pthread_mutex_lock(&mutex);
-
     product->productCount -= aantal;
     printAankoop(consumer, aantal, id);
-
     pthread_mutex_unlock(&mutex);
+    return true;
 }
+
 void produceer(int id, int aantal, int producer) {
     Product* product = getProductViaID(id);
 
@@ -121,7 +147,7 @@ void* koopRandomProducten(void* consumerNr){    //_Noreturn = een suggestie door
         int productID = randomInteger(0, STOCK_PROD);
         int count = randomInteger(1, MAX_CONS_CNT);
         int* consumer = (int*) consumerNr;
-        koop(productID, count, *consumer);
+        requestKoop(productID, count, *consumer);
         sleep(1);
     }
 }
@@ -133,9 +159,41 @@ void* produceerRanomProducten(void* producerNr){    //_Noreturn = een suggestie 
         int* producer = (int*) producerNr;
         produceer(productID, count, *producer);
         sleep(1);
+
     }
 }
 
+/* ==============================================
+	functies: Queue
+   ============================================== */
+bool addQueue(Order order){
+    if(queueSize == QUE_LENGHT){return false;}
+    queue[next] = order;
+    queueSize++;
+    next = (next+1)%QUE_LENGHT;
+    return true;
+}
+
+void requestKoop(int id, int aantal, int consumer){
+    Product *product = getProductViaID(id);
+    Order order;
+    order.product = product;
+    order.aantal = aantal;
+    order.consumer = consumer;
+    addQueue(order);
+}
+void verwijderVanQue(Order order){
+    //
+}
+
+void handelQueAf(){ // JA KUT NAAM IDK
+    for (int i=0; i<queueSize; ++i){
+        Order order = queue[i];
+        if(koop(order.product->productID, order.aantal, order.consumer)){
+            // REMOVE FROM LIST
+        }
+    }
+}
 /* ==============================================
 	functies: helpers
    ============================================== */

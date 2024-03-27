@@ -68,6 +68,8 @@ int next = 0;
 int queueSize = 0;
 int head =0;
 
+int *startStock;
+
 pthread_mutex_t mutex;
 
 /* ==============================================
@@ -103,6 +105,12 @@ void printTeWeinigStock(int gewenstAantal, int aantalInStock, int id);
    ============================================== */
 
 int main() {
+
+    startStock = malloc(STOCK_PROD * sizeof(Product));
+    if (startStock == NULL){
+        exit(0);
+    }
+
     initRandom();
     initStock();
     printf("Stock geinitialiseerd met %d producten met count: %d\n", STOCK_PROD, STOCK_INIT_CNT);
@@ -117,6 +125,8 @@ int main() {
         sleep(2);
         handelQueAf();
     }
+
+    // free(startStock);
 }
 
 /* ==============================================
@@ -206,9 +216,13 @@ void handelQueAf(){ // JA KUT NAAM IDK
     }
     head = 0;
 }
+
 /* ==============================================
 	functies: helpers
    ============================================== */
+void verhoogMEM(int *ptr){
+    startStock = realloc(startStock, STOCK_PROD*sizeof(Product));
+}
 
 void initStock() {
     //maakt van elk product een stock aan van count=STOCK_INIT_CNT

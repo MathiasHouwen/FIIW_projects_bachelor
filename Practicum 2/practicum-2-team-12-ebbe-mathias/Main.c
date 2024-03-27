@@ -51,11 +51,11 @@ typedef struct {
     int consumer;
 } Order;
 
-typedef struct {
-    Product *product;
-    Product *stock[STOCK_PROD];
-    Order *queue[QUE_LENGHT];
-} Server;
+//typedef struct {
+//    Product *product;
+ //  Product *stock[STOCK_PROD];
+ //   Order *queue[QUE_LENGHT];
+//} Server;
 
 /* ==============================================
 	globale variabelen
@@ -64,9 +64,9 @@ typedef struct {
 Product stock[STOCK_PROD];
 
 Order queue[QUE_LENGHT];
-int kop = 0;
 int next = 0;
 int queueSize = 0;
+int head =0;
 
 pthread_mutex_t mutex;
 
@@ -80,6 +80,8 @@ void produceer(int id, int aantal, int producer);
 
 bool addQueue(Order order);
 void requestKoop(int id, int aantal, int consumer);
+void verwijderVanQue(int index);
+void handelQueAf();
 
 //HELPERS:
 Product* getProductViaID(int id);
@@ -101,8 +103,6 @@ void printTeWeinigStock(int gewenstAantal, int aantalInStock, int id);
    ============================================== */
 
 int main() {
-
-
     initRandom();
     initStock();
     printf("Stock geinitialiseerd met %d producten met count: %d\n", STOCK_PROD, STOCK_INIT_CNT);
@@ -112,6 +112,11 @@ int main() {
 
     maakThreads(consumerThreads, producerThreads);
     joinThreads(consumerThreads, producerThreads);
+
+    while (1){
+        sleep(2);
+        handelQueAf();
+    }
 }
 
 /* ==============================================
@@ -159,7 +164,6 @@ void* produceerRanomProducten(void* producerNr){    //_Noreturn = een suggestie 
         int* producer = (int*) producerNr;
         produceer(productID, count, *producer);
         sleep(1);
-
     }
 }
 
@@ -182,17 +186,25 @@ void requestKoop(int id, int aantal, int consumer){
     order.consumer = consumer;
     addQueue(order);
 }
-void verwijderVanQue(Order order){
-    //
+void verwijderVanQue(int index){
+    Order nullOrder;
+    nullOrder.aantal = -1;
+    queue[index] = nullOrder;
 }
 
 void handelQueAf(){ // JA KUT NAAM IDK
     for (int i=0; i<queueSize; ++i){
         Order order = queue[i];
         if(koop(order.product->productID, order.aantal, order.consumer)){
-            // REMOVE FROM LIST
+            verwijderVanQue(i);
+            queueSize--;
+        } else{
+            verwijderVanQue(i);
+           queue[head] = order;
+           head++;
         }
     }
+    head = 0;
 }
 /* ==============================================
 	functies: helpers

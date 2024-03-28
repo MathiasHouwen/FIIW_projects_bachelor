@@ -106,10 +106,10 @@ void printTeWeinigStock(int gewenstAantal, int aantalInStock, int id);
 
 int main() {
 
-    startStock = malloc(STOCK_PROD * sizeof(Product));
-    if (startStock == NULL){
+    //startStock = malloc(STOCK_PROD * sizeof(Product));
+    /*if (startStock == NULL){
         exit(0);
-    }
+    }*/
 
     initRandom();
     initStock();
@@ -119,12 +119,13 @@ int main() {
     pthread_t producerThreads[PRODUCERS];   //alle producer threads
 
     maakThreads(consumerThreads, producerThreads);
-    joinThreads(consumerThreads, producerThreads);
 
     while (1){
         sleep(2);
         handelQueAf();
     }
+
+    joinThreads(consumerThreads, producerThreads);
 
     // free(startStock);
 }
@@ -215,14 +216,15 @@ void handelQueAf(){ // JA KUT NAAM IDK
         }
     }
     head = 0;
+    next = 0;
 }
 
 /* ==============================================
 	functies: helpers
    ============================================== */
-void verhoogMEM(int *ptr){
+/*void verhoogMEM(int *ptr){
     startStock = realloc(startStock, STOCK_PROD*sizeof(Product));
-}
+}*/
 
 void initStock() {
     //maakt van elk product een stock aan van count=STOCK_INIT_CNT

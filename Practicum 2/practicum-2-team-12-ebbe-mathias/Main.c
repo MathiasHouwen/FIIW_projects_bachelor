@@ -56,23 +56,16 @@ typedef struct {
     int consumer;
 } Order;
 
-//typedef struct {
-//    Product *product;
- //  Product *stock[STOCK_PROD];
- //   Order *queue[QUE_LENGHT];
-//} Server;
-
 /* ==============================================
 	globale variabelen
    ============================================== */
 
-Product stock[STOCK_PROD];
+// Product stock[STOCK_PROD];
+Product *stock;
 
 Order queue[QUE_LENGHT];
 int queWriteIndex = 0;
 int queReadIndex = 0;
-
-int *startStock;
 
 pthread_mutex_t mutex;
 
@@ -109,10 +102,10 @@ void printTeWeinigStock(int gewenstAantal, int aantalInStock, int id);
    ============================================== */
 int main() {
 
-    //startStock = malloc(STOCK_PROD * sizeof(Product));
-    /*if (startStock == NULL){
+    stock = malloc(STOCK_PROD * sizeof(Product));
+    if (stock == NULL){
         exit(0);
-    }*/
+    }
 
     initRandom();
     initStock();
@@ -130,8 +123,8 @@ int main() {
     }
 
     joinThreads(consumerThreads, producerThreads);
+    free(stock);
 
-    // free(startStock);
 }
 
 /* ==============================================

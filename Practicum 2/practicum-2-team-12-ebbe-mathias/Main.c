@@ -4,6 +4,7 @@
 		- Ebbe Wertz
 		- Mathias Houwen
    ============================================== */
+// Nieuwe versie
 #include <stdio.h>
 #include <stdlib.h>	//voor random functies
 #include <time.h>   //voor random seed
@@ -66,6 +67,9 @@ Product stock[STOCK_PROD];
 Order queue[QUE_LENGHT];
 int next = 0;
 int queueSize = 0;
+
+int in = -1;
+int out = -1;
 
 int *startStock;
 
@@ -183,6 +187,7 @@ void* produceerRanomProducten(void* producerNr){    //_Noreturn = een suggestie 
    ============================================== */
 bool addQueue(Order order){
     if(queueSize == QUE_LENGHT){return false;}
+
     queue[next] = order;
     queueSize++;
     next = (next+1)%QUE_LENGHT;
@@ -222,7 +227,7 @@ void handelQueAf(){ // JA KUT NAAM IDK
 /* ==============================================
 	functies: helpers
    ============================================== */
-/*void verhoogMEM(int *ptr){
+/*void verhoogStockCAP(int *ptr){
     startStock = realloc(startStock, STOCK_PROD*sizeof(Product));
 }*/
 

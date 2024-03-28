@@ -4,7 +4,7 @@
 		- Ebbe Wertz
 		- Mathias Houwen
    ============================================== */
-// Nieuwe versie'verbeterd door ebbe
+
 #include <stdio.h>
 #include <stdlib.h>	//voor random functies
 #include <time.h>   //voor random seed
@@ -26,20 +26,6 @@
 #define PRODUCERS 5 //aantal producers
 
 #define QUE_LENGHT 50
-
-/*
- * TODO:
- * Que maken.
- * eig gewoon een stack maken maar dan FIFO ipv LIFO
- *
- *     -> array (size = ? moet als groot genoege buffer dienen)
- *     ofwel: array volledig hervullen om items de verschuiven
- *     ofwel: geen vast begin/eindpunt in array, maar een stack pointer
- *              probleem: het is niet LIFO dus wss 2 stackpointers
- *
- */
-
-
 
 /* ==============================================
 	struct defenities
@@ -76,12 +62,9 @@ pthread_mutex_t mutex;
 //SERVER/stock:
 bool koop(int id, int aantal, int consumer);
 void produceer(int id, int aantal, int producer);
-
 bool addQueue(Order order);
 void requestKoop(int id, int aantal, int consumer);
-void verwijderVanQue(int index);
 bool handelQueAf();
-
 //HELPERS:
 Product* getProductViaID(int id);
 void initStock();
@@ -222,13 +205,6 @@ void requestKoop(int id, int aantal, int consumer){
     order.consumer = consumer;
     addQueue(order);
 }
-void verwijderVanQue(int index){
-    Order nullOrder;
-    nullOrder.aantal = -1;
-    queue[index] = nullOrder;
-}
-
-
 
 /* ==============================================
 	functies: helpers

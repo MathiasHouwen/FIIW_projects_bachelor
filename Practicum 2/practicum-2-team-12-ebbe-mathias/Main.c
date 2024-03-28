@@ -13,7 +13,7 @@
 #include <stdbool.h>
 
 
-#define STOCK_PROD 20    //aantal unieke producten in stock
+#define STOCK_PROD 3    //aantal unieke producten in stock
 #define STOCK_INIT_CNT 30 // initele product count voor alles in stock
 #define MAX_CONS_CNT 10 //maximaal # prod die een consumer in 1 keer kan kopen
 #define MAX_PROD_CNT 2  //maximaal # prod die een producer in 1 keer kan maken
@@ -48,7 +48,7 @@ typedef struct {
 
 // Product stock[STOCK_PROD];
 Product *stock;
-
+int stocklen = STOCK_PROD;
 Order queue[QUE_LENGHT];
 int queWriteIndex = 0;
 int queReadIndex = 0;
@@ -80,12 +80,14 @@ void printAankoop(int consumer, int aantal, int id);
 void printProductie(int producer, int aantalGeproduceerd, int nieuwAantalInStock, int id);
 void printTeWeinigStock(int gewenstAantal, int aantalInStock, int id);
 
+
+void verhoogStockCAP();
 /* ==============================================
 	main
    ============================================== */
 int main() {
 
-    stock = malloc(STOCK_PROD * sizeof(Product));
+    stock = malloc(stocklen * sizeof(Product));
     if (stock == NULL){
         exit(0);
     }
@@ -93,6 +95,15 @@ int main() {
     initRandom();
     initStock();
     printf("Stock geinitialiseerd met %d producten met count: %d\n", STOCK_PROD, STOCK_INIT_CNT);
+
+    while(1){
+    verhoogStockCAP();
+    Product p;
+    p.productCount = 10;
+    p.productID = 10;
+    stock[stocklen-1] = p;
+    }
+
 
     pthread_t consumerThreads[CONSUMERS];   //alle consumer threads
     pthread_t producerThreads[PRODUCERS];   //alle producer threads
@@ -104,6 +115,9 @@ int main() {
         sleep(SERVER_TIJD);
         handelQueAf();
     }
+
+
+
 
     joinThreads(consumerThreads, producerThreads);
     free(stock);
@@ -209,8 +223,9 @@ void requestKoop(int id, int aantal, int consumer){
 /* ==============================================
 	functies: helpers
    ============================================== */
-void verhoogStockCAP(int *ptr){
-    stock = realloc(stock, STOCK_PROD*sizeof(Product));
+void verhoogStockCAP(){
+    stocklen++;
+    stock = realloc(stock, stocklen*sizeof(Product));
 }
 
 void initStock() {

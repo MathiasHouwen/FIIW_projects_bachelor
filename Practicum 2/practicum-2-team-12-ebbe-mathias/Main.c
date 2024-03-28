@@ -103,7 +103,6 @@ void printTeWeinigStock(int gewenstAantal, int aantalInStock, int id);
 /* ==============================================
 	main
    ============================================== */
-
 int main() {
 
     //startStock = malloc(STOCK_PROD * sizeof(Product));
@@ -119,7 +118,8 @@ int main() {
     pthread_t producerThreads[PRODUCERS];   //alle producer threads
 
     maakThreads(consumerThreads, producerThreads);
-
+    //pthread_t queueT;
+    //pthread_create(&queueT, NULL, NULL, NULL);
     while (1){
         sleep(2);
         handelQueAf();

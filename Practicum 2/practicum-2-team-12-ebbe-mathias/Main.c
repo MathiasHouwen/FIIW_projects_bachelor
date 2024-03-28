@@ -4,7 +4,7 @@
 		- Ebbe Wertz
 		- Mathias Houwen
    ============================================== */
-// Nieuwe versie
+// Nieuwe versie'verbeterd door ebbe
 #include <stdio.h>
 #include <stdlib.h>	//voor random functies
 #include <time.h>   //voor random seed
@@ -15,13 +15,17 @@
 
 #define STOCK_PROD 20    //aantal unieke producten in stock
 #define STOCK_INIT_CNT 30 // initele product count voor alles in stock
-#define MAX_CONS_CNT 5 //maximaal # prod die een consumer in 1 keer kan kopen
-#define MAX_PROD_CNT 5  //maximaal # prod die een producer in 1 keer kan maken
+#define MAX_CONS_CNT 10 //maximaal # prod die een consumer in 1 keer kan kopen
+#define MAX_PROD_CNT 2  //maximaal # prod die een producer in 1 keer kan maken
+
+#define CONSUME_TIJD 1
+#define PRODUCE_TIJD 15
+#define SERVER_TIJD 1
 
 #define CONSUMERS 5 //aantal comsumers
-#define PRODUCERS 2 //aantal producers
+#define PRODUCERS 5 //aantal producers
 
-#define QUE_LENGHT 256
+#define QUE_LENGHT 50
 
 /*
  * TODO:
@@ -65,11 +69,8 @@ typedef struct {
 Product stock[STOCK_PROD];
 
 Order queue[QUE_LENGHT];
-int next = 0;
-int queueSize = 0;
-
-int in = -1;
-int out = -1;
+int queWriteIndex = 0;
+int queReadIndex = 0;
 
 int *startStock;
 
@@ -86,7 +87,7 @@ void produceer(int id, int aantal, int producer);
 bool addQueue(Order order);
 void requestKoop(int id, int aantal, int consumer);
 void verwijderVanQue(int index);
-void handelQueAf();
+bool handelQueAf();
 
 //HELPERS:
 Product* getProductViaID(int id);
@@ -124,7 +125,7 @@ int main() {
     //pthread_t queueT;
     //pthread_create(&queueT, NULL, NULL, NULL);
     while (1){
-        sleep(2);
+        sleep(SERVER_TIJD);
         handelQueAf();
     }
 
@@ -168,17 +169,18 @@ void* koopRandomProducten(void* consumerNr){    //_Noreturn = een suggestie door
         int productID = randomInteger(0, STOCK_PROD);
         int count = randomInteger(1, MAX_CONS_CNT);
         requestKoop(productID, count, consumer);
-        sleep(1);
+        sleep(CONSUME_TIJD);
     }
 }
 
 void* produceerRanomProducten(void* producerNr){    //_Noreturn = een suggestie door de IDE
+    int* producerPointer = (int*) producerNr;
+    int producer = *producerPointer;
     while(1){
         int productID = randomInteger(0, STOCK_PROD);
         int count = randomInteger(1, MAX_PROD_CNT);
-        int* producer = (int*) producerNr;
-        produceer(productID, count, *producer);
-        sleep(1);
+        produceer(productID, count, producer);
+        sleep(PRODUCE_TIJD);
     }
 }
 
@@ -186,11 +188,36 @@ void* produceerRanomProducten(void* producerNr){    //_Noreturn = een suggestie 
 	functies: Queue
    ============================================== */
 bool addQueue(Order order){
-    if(queueSize == QUE_LENGHT){return false;}
+    //returnt false als de queue helemaal vol zit
+    if(abs(queReadIndex - queWriteIndex) >= QUE_LENGHT){
+        printf("\033[31mWarning: Je probeert iets in de queue te steken terwijl ze vol is; Order genegeert\033[0m\n");
+        return false;
+    }
+    queue[queWriteIndex] = order;
+    queWriteIndex++;
+    if(queWriteIndex >= QUE_LENGHT){
+        queWriteIndex = 0;
+    }
+    return true;
+}
+bool handelQueAf(){
+    //returnt fasle bij consumer error (=out of stock)
+    //of: als er niks in de que zit
+    if(abs(queReadIndex - queWriteIndex) == 0){
+        printf("\033[31mWarning: Je probeert te lezen uit queue terwijl ze leeg is; Actie genegeert\033[0m\n");
+        return false;
+    }
+    Order order = queue[queReadIndex];
 
-    queue[next] = order;
-    queueSize++;
-    next = (next+1)%QUE_LENGHT;
+    bool succes = koop(order.product->productID, order.aantal, order.consumer);
+    if(!succes){
+        printf("\033[31mWarning: out of stock error. Deze order is terug achteraan de que toegevoegd\033[0m\n");
+        addQueue(order);
+    }
+    queReadIndex++;
+    if(queReadIndex >= QUE_LENGHT){
+        queReadIndex = 0;
+    }
     return true;
 }
 
@@ -208,21 +235,7 @@ void verwijderVanQue(int index){
     queue[index] = nullOrder;
 }
 
-void handelQueAf(){ // JA KUT NAAM IDK
-    next = 0;
-    int staticSize = queueSize;
-    for (int i=0; i<staticSize; ++i){
-        Order order = queue[i];
-        if(koop(order.product->productID, order.aantal, order.consumer)){
-            verwijderVanQue(i);
-            --queueSize;
-        } else{
-            verwijderVanQue(i);
-            queue[next] = order;
-            next++;
-        }
-    }
-}
+
 
 /* ==============================================
 	functies: helpers
@@ -270,7 +283,7 @@ void maakThreads(pthread_t consumerThreads[CONSUMERS], pthread_t producerThreads
     for(int i=0; i < PRODUCERS; i++){
         producerNrs[i] = i;
         pthread_t* thread = &producerThreads[i];
-        int* producerNr = &consumerNrs[i];
+        int* producerNr = &producerNrs[i];
         pthread_create(thread, NULL, produceerRanomProducten, (void*) producerNr);
     }
 }

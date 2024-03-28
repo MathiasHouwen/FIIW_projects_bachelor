@@ -209,9 +209,9 @@ void requestKoop(int id, int aantal, int consumer){
 /* ==============================================
 	functies: helpers
    ============================================== */
-/*void verhoogStockCAP(int *ptr){
-    startStock = realloc(startStock, STOCK_PROD*sizeof(Product));
-}*/
+void verhoogStockCAP(int *ptr){
+    stock = realloc(stock, STOCK_PROD*sizeof(Product));
+}
 
 void initStock() {
     //maakt van elk product een stock aan van count=STOCK_INIT_CNT

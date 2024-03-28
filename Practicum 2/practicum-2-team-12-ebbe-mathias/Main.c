@@ -66,7 +66,6 @@ Product stock[STOCK_PROD];
 Order queue[QUE_LENGHT];
 int next = 0;
 int queueSize = 0;
-int head =0;
 
 int *startStock;
 
@@ -159,11 +158,12 @@ void produceer(int id, int aantal, int producer) {
 }
 
 void* koopRandomProducten(void* consumerNr){    //_Noreturn = een suggestie door de IDE
+    int* consumerPointer = (int*) consumerNr;
+    int consumer = *consumerPointer;
     while(1){
         int productID = randomInteger(0, STOCK_PROD);
         int count = randomInteger(1, MAX_CONS_CNT);
-        int* consumer = (int*) consumerNr;
-        requestKoop(productID, count, *consumer);
+        requestKoop(productID, count, consumer);
         sleep(1);
     }
 }
@@ -204,19 +204,19 @@ void verwijderVanQue(int index){
 }
 
 void handelQueAf(){ // JA KUT NAAM IDK
-    for (int i=0; i<queueSize; ++i){
+    next = 0;
+    int staticSize = queueSize;
+    for (int i=0; i<staticSize; ++i){
         Order order = queue[i];
         if(koop(order.product->productID, order.aantal, order.consumer)){
             verwijderVanQue(i);
-            queueSize--;
+            --queueSize;
         } else{
             verwijderVanQue(i);
-           queue[head] = order;
-           head++;
+            queue[next] = order;
+            next++;
         }
     }
-    head = 0;
-    next = 0;
 }
 
 /* ==============================================

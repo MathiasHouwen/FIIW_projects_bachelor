@@ -37,7 +37,7 @@ typedef struct {
 } Product;
 
 typedef struct {
-    Product *product;
+    int productID;
     int aantal;
     int consumer;
 } Order;
@@ -96,15 +96,6 @@ int main() {
     initStock();
     printf("Stock geinitialiseerd met %d producten met count: %d\n", STOCK_PROD, STOCK_INIT_CNT);
 
-    while(1){
-    verhoogStockCAP();
-    Product p;
-    p.productCount = 10;
-    p.productID = 10;
-    stock[stocklen-1] = p;
-    }
-
-
     pthread_t consumerThreads[CONSUMERS];   //alle consumer threads
     pthread_t producerThreads[PRODUCERS];   //alle producer threads
 
@@ -113,7 +104,10 @@ int main() {
     //pthread_create(&queueT, NULL, NULL, NULL);
     while (1){
         sleep(SERVER_TIJD);
+        pthread_mutex_lock(&mutex);
         handelQueAf();
+        pthread_mutex_unlock(&mutex);
+
     }
 
 
@@ -134,32 +128,37 @@ bool koop(int id, int aantal, int consumer) {
         printTeWeinigStock(aantal, product->productCount, id);
         return false; //guard clause: Door de return in de bad case kan de rest van de functie volledig gebruikt worden voor de good case
     }
-    pthread_mutex_lock(&mutex);
     product->productCount -= aantal;
     printAankoop(consumer, aantal, id);
-    pthread_mutex_unlock(&mutex);
     return true;
 }
 
 void produceer(int id, int aantal, int producer) {
     Product* product = getProductViaID(id);
-
-    pthread_mutex_lock(&mutex);
-
     product->productCount += aantal;
     printProductie(producer, aantal, product->productCount, id);
+}
 
-    pthread_mutex_unlock(&mutex);
+void maakNiewProduct(int aantal, int producer){
+    verhoogStockCAP();
+    Product product;
+    product.productCount = aantal;
+    product.productID = stocklen-1;
+    stock[stocklen-1] = product;
+    printf("niew product gemaakt: %d\n", stocklen-1);
 }
 
 void* koopRandomProducten(void* consumerNr){    //_Noreturn = een suggestie door de IDE
     int* consumerPointer = (int*) consumerNr;
     int consumer = *consumerPointer;
     while(1){
-        int productID = randomInteger(0, STOCK_PROD);
+        pthread_mutex_lock(&mutex);
+        int productID = randomInteger(0, stocklen);
         int count = randomInteger(1, MAX_CONS_CNT);
         requestKoop(productID, count, consumer);
+        pthread_mutex_unlock(&mutex);
         sleep(CONSUME_TIJD);
+
     }
 }
 
@@ -167,9 +166,16 @@ void* produceerRanomProducten(void* producerNr){    //_Noreturn = een suggestie 
     int* producerPointer = (int*) producerNr;
     int producer = *producerPointer;
     while(1){
-        int productID = randomInteger(0, STOCK_PROD);
+        pthread_mutex_lock(&mutex);
         int count = randomInteger(1, MAX_PROD_CNT);
-        produceer(productID, count, producer);
+        int productID = randomInteger(0, stocklen+1);
+        if(productID < stocklen) {
+            produceer(productID, count, producer);
+        } else {
+            maakNiewProduct(count, producer);
+        }
+        pthread_mutex_unlock(&mutex);
+
         sleep(PRODUCE_TIJD);
     }
 }
@@ -178,16 +184,19 @@ void* produceerRanomProducten(void* producerNr){    //_Noreturn = een suggestie 
 	functies: Queue
    ============================================== */
 bool addQueue(Order order){
+
     //returnt false als de queue helemaal vol zit
     if(abs(queReadIndex - queWriteIndex) >= QUE_LENGHT){
         printf("\033[31mWarning: Je probeert iets in de queue te steken terwijl ze vol is; Order genegeert\033[0m\n");
         return false;
     }
     queue[queWriteIndex] = order;
+    printf("added to que %d\n", order.productID);
     queWriteIndex++;
     if(queWriteIndex >= QUE_LENGHT){
         queWriteIndex = 0;
     }
+
     return true;
 }
 bool handelQueAf(){
@@ -198,8 +207,8 @@ bool handelQueAf(){
         return false;
     }
     Order order = queue[queReadIndex];
-
-    bool succes = koop(order.product->productID, order.aantal, order.consumer);
+    printf("que ziet order %d\n", order.productID);
+    bool succes = koop(order.productID, order.aantal, order.consumer);
     if(!succes){
         printf("\033[31mWarning: out of stock error. Deze order is terug achteraan de que toegevoegd\033[0m\n");
         addQueue(order);
@@ -212,12 +221,14 @@ bool handelQueAf(){
 }
 
 void requestKoop(int id, int aantal, int consumer){
-    Product *product = getProductViaID(id);
     Order order;
-    order.product = product;
+    order.productID = id;
     order.aantal = aantal;
     order.consumer = consumer;
+
+
     addQueue(order);
+
 }
 
 /* ==============================================

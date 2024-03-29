@@ -12,30 +12,13 @@
 #include <pthread.h>    //voor threading
 #include <stdbool.h>
 
-
-#define STOCK_PROD 3    //aantal unieke producten in stock
-#define STOCK_INIT_CNT 30 // initele product count voor alles in stock
-#define MAX_CONS_CNT 10 //maximaal # prod die een consumer in 1 keer kan kopen
-#define MAX_PROD_CNT 2  //maximaal # prod die een producer in 1 keer kan maken
-
-#define CONSUME_TIJD 1
-#define PRODUCE_TIJD 15
-#define SERVER_TIJD 1
-
-#define CONSUMERS 5 //aantal comsumers
-#define PRODUCERS 5 //aantal producers
-
-#define QUE_LENGHT 50
+#define AANTALCONSUMERS 5 //aantal comsumers
+#define AANTAL_PRODUCERS 5 //aantal producers
+#define QUE_GROOTTE 50
 
 /* ==============================================
 	struct defenities
    ============================================== */
-
-typedef struct {
-    int productID;  // == index in stock[]
-    int productCount;
-} Product;
-
 typedef struct {
     int productID;
     int aantal;
@@ -45,13 +28,9 @@ typedef struct {
 /* ==============================================
 	globale variabelen
    ============================================== */
-
-// Product stock[STOCK_PROD];
-Product *stock;
-int stocklen = STOCK_PROD;
-Order queue[QUE_LENGHT];
-int queWriteIndex = 0;
-int queReadIndex = 0;
+Order queue[QUE_GROOTTE];
+int queSchrijfIndex = 0;
+int queLeesIndex = 0;
 
 pthread_mutex_t mutex;
 
@@ -59,57 +38,54 @@ pthread_mutex_t mutex;
 	functie signatures(implementatie onderaan)
    ============================================== */
 
+
 //SERVER/stock:
-bool koop(int id, int aantal, int consumer);
-void produceer(int id, int aantal, int producer);
-bool addQueue(Order order);
-void requestKoop(int id, int aantal, int consumer);
-bool handelQueAf();
+
+bool queue_voegOrderToe(Order order);
+bool queue_haalOrderErUit(Order* order);
 //HELPERS:
-Product* getProductViaID(int id);
-void initStock();
+
 void initRandom();
 int randomInteger(int minInclusief, int maxExclusief);
-void maakThreads(pthread_t consumerThreads[CONSUMERS], pthread_t producerThreads[PRODUCERS]);
-void joinThreads(pthread_t consumerThreads[CONSUMERS], pthread_t producerThreads[PRODUCERS]);
+Order compacteConstructor(int id, int aantal, int consumer);
+
 //consumers/producers:
-void* koopRandomProducten(void* consumerNr);
-void* produceerRanomProducten(void* producerNr);
+
 //printers:
-void printAankoop(int consumer, int aantal, int id);
-void printProductie(int producer, int aantalGeproduceerd, int nieuwAantalInStock, int id);
-void printTeWeinigStock(int gewenstAantal, int aantalInStock, int id);
 
 
-void verhoogStockCAP();
+#include "Server.c"
+#include "Consumer.c"
+#include "Producer.c"
+
+int verhoogIndexMetRotate(int index, int grens){
+    index++;
+    if(index >= grens){
+        index = 0;
+    }
+    return index;
+}
+
+void maakThreads(pthread_t consumerThreads[AANTALCONSUMERS], pthread_t producerThreads[AANTAL_PRODUCERS]);
+void joinThreads(pthread_t consumerThreads[AANTALCONSUMERS], pthread_t producerThreads[AANTAL_PRODUCERS]);
+
 /* ==============================================
 	main
    ============================================== */
 int main() {
 
-    stock = malloc(stocklen * sizeof(Product));
-    if (stock == NULL){
-        exit(0);
-    }
+
 
     initRandom();
-    initStock();
-    printf("Stock geinitialiseerd met %d producten met count: %d\n", STOCK_PROD, STOCK_INIT_CNT);
 
-    pthread_t consumerThreads[CONSUMERS];   //alle consumer threads
-    pthread_t producerThreads[PRODUCERS];   //alle producer threads
+    pthread_t consumerThreads[AANTALCONSUMERS];   //alle consumer threads
+    pthread_t producerThreads[AANTAL_PRODUCERS];   //alle producer threads
 
     maakThreads(consumerThreads, producerThreads);
-    //pthread_t queueT;
-    //pthread_create(&queueT, NULL, NULL, NULL);
-    while (1){
-        sleep(SERVER_TIJD);
-        pthread_mutex_lock(&mutex);
-        handelQueAf();
-        pthread_mutex_unlock(&mutex);
+    pthread_t serverThread;
+    pthread_create(&serverThread, NULL, server_main, NULL);
 
-    }
-
+    pthread_join(serverThread, NULL);
 
 
 
@@ -118,145 +94,52 @@ int main() {
 
 }
 
-/* ==============================================
-	functies: producer/consumer
-   ============================================== */
-bool koop(int id, int aantal, int consumer) {
-    Product* product = getProductViaID(id);
-    //poiner want anders krijgen we een kopie die niet automatisch update in de stock array
-    if(product->productCount < aantal){
-        printTeWeinigStock(aantal, product->productCount, id);
-        return false; //guard clause: Door de return in de bad case kan de rest van de functie volledig gebruikt worden voor de good case
-    }
-    product->productCount -= aantal;
-    printAankoop(consumer, aantal, id);
-    return true;
-}
-
-void produceer(int id, int aantal, int producer) {
-    Product* product = getProductViaID(id);
-    product->productCount += aantal;
-    printProductie(producer, aantal, product->productCount, id);
-}
-
-void maakNiewProduct(int aantal, int producer){
-    verhoogStockCAP();
-    Product product;
-    product.productCount = aantal;
-    product.productID = stocklen-1;
-    stock[stocklen-1] = product;
-    printf("niew product gemaakt: %d\n", stocklen-1);
-}
-
-void* koopRandomProducten(void* consumerNr){    //_Noreturn = een suggestie door de IDE
-    int* consumerPointer = (int*) consumerNr;
-    int consumer = *consumerPointer;
-    while(1){
-        pthread_mutex_lock(&mutex);
-        int productID = randomInteger(0, stocklen);
-        int count = randomInteger(1, MAX_CONS_CNT);
-        requestKoop(productID, count, consumer);
-        pthread_mutex_unlock(&mutex);
-        sleep(CONSUME_TIJD);
-
-    }
-}
-
-void* produceerRanomProducten(void* producerNr){    //_Noreturn = een suggestie door de IDE
-    int* producerPointer = (int*) producerNr;
-    int producer = *producerPointer;
-    while(1){
-        pthread_mutex_lock(&mutex);
-        int count = randomInteger(1, MAX_PROD_CNT);
-        int productID = randomInteger(0, stocklen+1);
-        if(productID < stocklen) {
-            produceer(productID, count, producer);
-        } else {
-            maakNiewProduct(count, producer);
-        }
-        pthread_mutex_unlock(&mutex);
-
-        sleep(PRODUCE_TIJD);
-    }
-}
 
 /* ==============================================
 	functies: Queue
    ============================================== */
-bool addQueue(Order order){
-
+bool queue_voegOrderToe(Order order){
     //returnt false als de queue helemaal vol zit
-    if(abs(queReadIndex - queWriteIndex) >= QUE_LENGHT){
+    if(abs(queLeesIndex - queSchrijfIndex) >= QUE_GROOTTE){
         printf("\033[31mWarning: Je probeert iets in de queue te steken terwijl ze vol is; Order genegeert\033[0m\n");
         return false;
     }
-    queue[queWriteIndex] = order;
-    printf("added to que %d\n", order.productID);
-    queWriteIndex++;
-    if(queWriteIndex >= QUE_LENGHT){
-        queWriteIndex = 0;
-    }
-
+    queue[queSchrijfIndex] = order;
+    queSchrijfIndex = verhoogIndexMetRotate(queSchrijfIndex, QUE_GROOTTE);
     return true;
 }
-bool handelQueAf(){
+bool queue_haalOrderErUit(Order* order){
     //returnt fasle bij consumer error (=out of stock)
     //of: als er niks in de que zit
-    if(abs(queReadIndex - queWriteIndex) == 0){
+    if(abs(queLeesIndex - queSchrijfIndex) == 0){
         printf("\033[31mWarning: Je probeert te lezen uit queue terwijl ze leeg is; Actie genegeert\033[0m\n");
         return false;
     }
-    Order order = queue[queReadIndex];
-    printf("que ziet order %d\n", order.productID);
-    bool succes = koop(order.productID, order.aantal, order.consumer);
-    if(!succes){
-        printf("\033[31mWarning: out of stock error. Deze order is terug achteraan de que toegevoegd\033[0m\n");
-        addQueue(order);
-    }
-    queReadIndex++;
-    if(queReadIndex >= QUE_LENGHT){
-        queReadIndex = 0;
-    }
+    *order = queue[queLeesIndex];
+    queLeesIndex = verhoogIndexMetRotate(queLeesIndex, QUE_GROOTTE);
     return true;
 }
 
-void requestKoop(int id, int aantal, int consumer){
+Order compacteConstructor(int id, int aantal, int consumer){
     Order order;
     order.productID = id;
     order.aantal = aantal;
     order.consumer = consumer;
-
-
-    addQueue(order);
-
+    return order;
 }
 
 /* ==============================================
 	functies: helpers
    ============================================== */
-void verhoogStockCAP(){
-    stocklen++;
-    stock = realloc(stock, stocklen*sizeof(Product));
-}
 
-void initStock() {
-    //maakt van elk product een stock aan van count=STOCK_INIT_CNT
-    for(int productID = 0; productID<STOCK_PROD; productID++){
-        Product product;
-        product.productID = productID;
-        product.productCount = STOCK_INIT_CNT;
-        stock[productID] = product;
-    }
-}
+
+
 
 void initRandom(){
     long long seed = time(NULL);
     srand(seed);
 }
 
-Product* getProductViaID(int id){
-    return &(stock[id]);
-}
 
 int randomInteger(int minInclusief, int maxExclusief){
     //maximum is exclusief: nummers van 0 tot (niet t.e.m.) max
@@ -264,49 +147,32 @@ int randomInteger(int minInclusief, int maxExclusief){
     return minInclusief + (int) (tussen0en1 * (float)(maxExclusief - minInclusief));
 }
 
-void maakThreads(pthread_t consumerThreads[CONSUMERS], pthread_t producerThreads[PRODUCERS]){
-    int consumerNrs[CONSUMERS];
-    int producerNrs[PRODUCERS]; //onthoud alle nummers van 0 tot CONSUMERS
+void maakThreads(pthread_t consumerThreads[AANTALCONSUMERS], pthread_t producerThreads[AANTAL_PRODUCERS]){
+    int consumerNrs[AANTALCONSUMERS];
+    int producerNrs[AANTAL_PRODUCERS]; //onthoud alle nummers van 0 tot AANTALCONSUMERS
     //want i veranderd telkens dus een pointer naar i zal uiteindelijk altijd de laatste iteratie zien
     //moeten allemaal hier buiten de for zitten, anders worden ze van de stack gegooid na de for
-    for(int i=0; i<CONSUMERS; i++){
+    for(int i=0; i < AANTALCONSUMERS; i++){
         consumerNrs[i] = i;
         pthread_t* thread = &consumerThreads[i];
         int* consumerNr = &consumerNrs[i];
-        pthread_create(thread, NULL, koopRandomProducten, (void*) consumerNr);
+        pthread_create(thread, NULL, consumer_main, (void *) consumerNr);
     }
-    for(int i=0; i < PRODUCERS; i++){
+    for(int i=0; i < AANTAL_PRODUCERS; i++){
         producerNrs[i] = i;
         pthread_t* thread = &producerThreads[i];
         int* producerNr = &producerNrs[i];
-        pthread_create(thread, NULL, produceerRanomProducten, (void*) producerNr);
+        pthread_create(thread, NULL, producer_main, (void*) producerNr);
     }
 }
-void joinThreads(pthread_t consumerThreads[CONSUMERS], pthread_t producerThreads[PRODUCERS]){
-    for(int i=0; i < CONSUMERS; i++){
+void joinThreads(pthread_t consumerThreads[AANTALCONSUMERS], pthread_t producerThreads[AANTAL_PRODUCERS]){
+    for(int i=0; i < AANTALCONSUMERS; i++){
         pthread_t thread = consumerThreads[i];
         pthread_join(thread, NULL);
 
     }
-    for(int i=0; i < PRODUCERS; i++){
+    for(int i=0; i < AANTAL_PRODUCERS; i++){
         pthread_t thread = producerThreads[i];
         pthread_join(thread, NULL);
     }
 }
-
-/* ==============================================
-	functies: printers
-   ============================================== */
-
-//consumer int komt van thread nummer
-void printAankoop(int consumer, int aantal, int id) {
-	printf("Consumer %d has acquired %d of product %d.\n", consumer, aantal, id);
-}
-void printProductie(int producer, int aantalGeproduceerd, int nieuwAantalInStock, int id){
-    printf("producer %d replenised product %d by %d (now %d)\n",
-           producer, id, aantalGeproduceerd, nieuwAantalInStock);
-}
-void printTeWeinigStock(int gewenstAantal, int aantalInStock, int id){
-    printf("product %d is out of stock. (requested: %d, stock: %d)\n", id, gewenstAantal, aantalInStock);
-}
-

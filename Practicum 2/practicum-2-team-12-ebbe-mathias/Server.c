@@ -64,6 +64,7 @@ _Noreturn void* server_main(){
 /* ==============================================
 	functies: Stock
    ============================================== */
+//zet initele stock op heap
 void server_mallocDynamischeStock() {
     stock = malloc( server_StockGrootte * sizeof(Product));
     if (stock == NULL){
@@ -71,6 +72,7 @@ void server_mallocDynamischeStock() {
         exit(-1);
     }
 }
+//vult de stock met initele producten
 void server_initStock() {
     server_mallocDynamischeStock();
     //maakt van elk product een stock aan van count=SERVER_STOCK_INIT_PRODUCTCOUNT
@@ -81,6 +83,7 @@ void server_initStock() {
         stock[productID] = product;
     }
 }
+//maakt de stock 1 element groter
 void server_verhoogStockGrootte(){
     server_StockGrootte++;
     Product* nieuwStock = realloc(stock, server_StockGrootte * sizeof(Product));
@@ -94,6 +97,7 @@ void server_verhoogStockGrootte(){
 /* ==============================================
 	functies: Consume/Produceer
    ============================================== */
+//leest een order van queue en koopt die uit stock
 void server_koopOrderVanQueue(){
     Order order;
     bool queSucces = queue_haalOrderErUit(&order);
@@ -105,6 +109,7 @@ void server_koopOrderVanQueue(){
         }
     }
 }
+//koop een product uit stock
 bool server_koopProduct(int id, int aantal, int consumer) {
     Product* product = &(stock[id]);
     //poiner want anders krijgen we een kopie die niet automatisch update in de stock array
@@ -116,6 +121,7 @@ bool server_koopProduct(int id, int aantal, int consumer) {
     server_printAankoop(consumer, aantal, id);
     return true;
 }
+//produceer een product naar stock
 void server_produceerProduct(int id, int aantal, int producer){
     if(id < server_StockGrootte) {
         server_vulProductBij(id, aantal, producer);
@@ -123,11 +129,13 @@ void server_produceerProduct(int id, int aantal, int producer){
         server_maakNiewProduct(aantal, producer);
     }
 }
+//produceer, specifiek: vul de count van een bestaand product bij
 void server_vulProductBij(int id, int aantal, int producer) {
     Product* product = &(stock[id]);
     product->productCount += aantal;
     server_printProductBijgevuld(producer, aantal, product->productCount, id);
 }
+//produceer, specifiek: voeg een volledig nieuw product aan stock toe
 void server_maakNiewProduct(int aantal, int producer){
     server_verhoogStockGrootte();
     int id = server_StockGrootte-1;

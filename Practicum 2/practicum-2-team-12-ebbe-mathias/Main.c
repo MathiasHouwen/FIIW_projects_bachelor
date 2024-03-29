@@ -14,7 +14,7 @@
 
 #define AANTAL_CONSUMERS 5 //aantal comsumers
 #define AANTAL_PRODUCERS 5 //aantal producers
-#define QUE_GROOTTE 50
+#define QUEUE_GROOTTE 50
 
 /* ==============================================
 	struct defenities
@@ -28,11 +28,16 @@ typedef struct {
 /* ==============================================
 	globale variabelen
    ============================================== */
-Order queue[QUE_GROOTTE];
-int queSchrijfIndex = 0;
-int queLeesIndex = 0;
+Order queue[QUEUE_GROOTTE];
+int queueSchrijfIndex = 0;
+int queueLeesIndex = 0;
 
 pthread_mutex_t mutex;
+
+int consumerNrs[AANTAL_CONSUMERS];
+int producerNrs[AANTAL_PRODUCERS]; //onthoud alle nummers van 0 tot AANTAL_CONSUMERS
+//Als deze niet globaal staan (als ik pointer maak binnen een functie of for loop; zelfs met kopie-variabelen),
+//verdwijnen deze nummers uit het stack sommige pointers hiernaar kunnen dus breken.
 
 /* ==============================================
 	functie signatures(implementatie onderaan) OVERAL BESCHIKBAAR
@@ -73,7 +78,7 @@ int main() {
     pthread_t producerThreads[AANTAL_PRODUCERS];   //alle producer threads
 
     pthread_create(&serverThread, NULL, server_main, NULL);
-    sleep(1);
+    sleep(1);   //wacht zodat prod/cons threads sowieso niks gaan doen als er nog geen stock is ge-init
     maakThreads(consumerThreads, producerThreads);  //create producer en consumer threads
 
     pthread_join(serverThread, NULL);
@@ -88,23 +93,23 @@ int main() {
 //voegt een order toe achteraan de queue
 //returnt false als de queue helemaal vol zit
 bool queue_voegOrderToe(Order order){
-    if(abs(queLeesIndex - queSchrijfIndex) >= QUE_GROOTTE){
+    if(abs(queueLeesIndex - queueSchrijfIndex) >= QUEUE_GROOTTE){
         queue_printQueVolWarning();
         return false;
     }
-    queue[queSchrijfIndex] = order;
-    queSchrijfIndex = verhoogIndexMetRotate(queSchrijfIndex, QUE_GROOTTE);
+    queue[queueSchrijfIndex] = order;
+    queueSchrijfIndex = verhoogIndexMetRotate(queueSchrijfIndex, QUEUE_GROOTTE);
     return true;
 }
 //haalt een order uit vooraan de queue, via OUT-parameter
 //returnt fasle als er niks in de que zit
 bool queue_haalOrderErUit(Order* order){
-    if(abs(queLeesIndex - queSchrijfIndex) == 0){
+    if(abs(queueLeesIndex - queueSchrijfIndex) == 0){
         queue_printQueLeegInfo();
         return false;
     }
-    *order = queue[queLeesIndex];
-    queLeesIndex = verhoogIndexMetRotate(queLeesIndex, QUE_GROOTTE);
+    *order = queue[queueLeesIndex];
+    queueLeesIndex = verhoogIndexMetRotate(queueLeesIndex, QUEUE_GROOTTE);
     return true;
 }
 //om als oneliner een order te maken
@@ -132,25 +137,22 @@ int randomInteger(int minInclusief, int maxExclusief){
 }
 //maakt de threads can cons en prod
 void maakThreads(pthread_t consumerThreads[AANTAL_CONSUMERS], pthread_t producerThreads[AANTAL_PRODUCERS]){
-    int consumerNrs[AANTAL_CONSUMERS];
-    int producerNrs[AANTAL_PRODUCERS]; //onthoud alle nummers van 0 tot AANTAL_CONSUMERS
-    //want i veranderd telkens dus een pointer naar i zal uiteindelijk altijd de laatste iteratie zien
-    //moeten allemaal hier buiten de for zitten, anders worden ze van de stack gegooid na de for
-
-    for(int i=0; i < AANTAL_PRODUCERS; i++){
-        producerNrs[i] = i;
-        pthread_t* thread = &producerThreads[i];
-        int* producerNr = &producerNrs[i];
-        pthread_create(thread, NULL, producer_main, (void*) producerNr);
-    }
+    //Ik kan voor die 2 stukken geen abstracte functie maken.
+    //want als ik de void* start_routine doorheen een extra functie als parameter vraag,
+    //wordt de functie achter die pointer opeens niet meer gevonden.
+    //vandaar de dubbele code hieronder.
     for(int i=0; i < AANTAL_CONSUMERS; i++){
         consumerNrs[i] = i;
         pthread_t* thread = &consumerThreads[i];
         int* consumerNr = &consumerNrs[i];
         pthread_create(thread, NULL, consumer_main, (void *) consumerNr);
     }
-
-
+    for(int j=0; j < AANTAL_PRODUCERS; j++){
+        producerNrs[j] = j;
+        pthread_t* thread = &producerThreads[j];
+        int* producerNr = &producerNrs[j];
+        pthread_create(thread, NULL, producer_main, (void*) producerNr);
+    }
 }
 //joint de threads van cons en prod
 void joinThreads(const pthread_t consumerThreads[AANTAL_CONSUMERS], const pthread_t producerThreads[AANTAL_PRODUCERS]){

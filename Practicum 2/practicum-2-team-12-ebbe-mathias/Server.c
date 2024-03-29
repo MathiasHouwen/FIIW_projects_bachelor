@@ -38,9 +38,14 @@ void server_maakNiewProduct(int aantal, int producer);
 //printers
 void server_printAankoop(int consumer, int aantal, int id);
 void server_printProductBijgevuld(int producer, int aantalGeproduceerd, int nieuwAantalInStock, int id);
-void server_printTeWeinigStock(int gewenstAantal, int aantalInStock, int id);
 void server_printNieuwProduct(int producer, int aantal, int id);
-void server_printStockInit(int stockGrootte, int productCount);
+
+void server_printStockInitInfo(int stockGrootte, int productCount);
+void server_printFailOrderOpniewInQueueInfo();
+
+void server_printTeWeinigStockWarning(int gewenstAantal, int aantalInStock, int id);
+void server_printStockMallocError();
+void server_printStockReallocError();
 
 /* ==============================================
 	functies: Main
@@ -48,7 +53,7 @@ void server_printStockInit(int stockGrootte, int productCount);
 _Noreturn void* server_main(){
     server_mallocDynamischeStock();
     server_initStock();
-    server_printStockInit(server_StockGrootte, SERVER_STOCK_INIT_PRODUCTCOUNT);
+    server_printStockInitInfo(server_StockGrootte, SERVER_STOCK_INIT_PRODUCTCOUNT);
     while (1){
         sleep(SERVER_TIJD);
         pthread_mutex_lock(&mutex);
@@ -62,7 +67,7 @@ _Noreturn void* server_main(){
 void server_mallocDynamischeStock() {
     stock = malloc( server_StockGrootte * sizeof(Product));
     if (stock == NULL){
-        printf("\033[31mMalloc error: kan stock niet op heap zetten.\033[0m\n");
+        server_printStockMallocError();
         exit(-1);
     }
 }
@@ -80,7 +85,7 @@ void server_verhoogStockGrootte(){
     server_StockGrootte++;
     Product* nieuwStock = realloc(stock, server_StockGrootte * sizeof(Product));
     if (nieuwStock == NULL){
-        printf("\033[31mRealloc error: kan stock size niet vergroten.\033[0m\n");
+        server_printStockReallocError();
         exit(-1);
     }
     stock = nieuwStock;
@@ -95,8 +100,8 @@ void server_koopOrderVanQueue(){
     if(queSucces){
         bool koopSucces = server_koopProduct(order.productID, order.aantal, order.consumer);
         if(!koopSucces){
-            printf("\033[31mWarning: out of stock error. Deze order is terug achteraan de que toegevoegd\033[0m\n");
             queue_voegOrderToe(order);
+            server_printFailOrderOpniewInQueueInfo();
         }
     }
 }
@@ -104,7 +109,7 @@ bool server_koopProduct(int id, int aantal, int consumer) {
     Product* product = &(stock[id]);
     //poiner want anders krijgen we een kopie die niet automatisch update in de stock array
     if(product->productCount < aantal){
-        server_printTeWeinigStock(aantal, product->productCount, id);
+        server_printTeWeinigStockWarning(aantal, product->productCount, id);
         return false; //guard clause: Door de return in de bad case kan de rest van de functie volledig gebruikt worden voor de good case
     }
     product->productCount -= aantal;
@@ -145,9 +150,18 @@ void server_printProductBijgevuld(int producer, int aantalGeproduceerd, int nieu
 void server_printNieuwProduct(int producer, int aantal, int id){
     printf("[Server] producer %d created a new product: %d and made %d of it.\n", producer, id, aantal);
 }
-void server_printTeWeinigStock(int gewenstAantal, int aantalInStock, int id){
-    printf("[Server] product %d is out of stock. (requested: %d, stock: %d)\n", id, gewenstAantal, aantalInStock);
+void server_printTeWeinigStockWarning(int gewenstAantal, int aantalInStock, int id){
+    printf("\033[31m[SERVER: WARNING]: product %d is out of stock. (requested: %d, stock: %d)\033[0m\n", id, gewenstAantal, aantalInStock);
 }
-void server_printStockInit(int stockGrootte, int productCount){
-    printf("Stock geinitialiseerd met %d producten met count: %d\n", server_StockGrootte, SERVER_STOCK_INIT_PRODUCTCOUNT);
+void server_printStockInitInfo(int stockGrootte, int productCount){
+    printf("\033[34m[SERVER: INFO]: Stock geinitialiseerd met %d producten met count: %d\033[0m\n", stockGrootte, productCount);
+}
+void server_printFailOrderOpniewInQueueInfo(){
+    printf("\033[34m[SERVER: INFO]: Mislukte order is terug achteraan de queue gezet.\033[0m\n");
+}
+void server_printStockMallocError(){
+    printf("\033[31m[SERVER: ERROR]Malloc error: kan stock niet op heap zetten.\033[0m\n");
+}
+void server_printStockReallocError(){
+    printf("\033[31m[SERVER: ERROR] Realloc error: kan stock size niet vergroten.\033[0m\n");
 }

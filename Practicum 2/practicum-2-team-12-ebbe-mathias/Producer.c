@@ -2,8 +2,8 @@
 // Created by ebbew on 29-3-2024.
 //
 
-#define PRODUCER_MAX_PROD_AANTAL 2  //maximaal # prod die een producer in 1 keer kan maken
-#define PRODUCER_TIJD 15
+#define PRODUCER_MAX_PROD_AANTAL 10  //maximaal # prod die een producer in 1 keer kan maken
+#define PRODUCER_TIJD 5
 
 /* ==============================================
 	functie signatures(implementatie onderaan)

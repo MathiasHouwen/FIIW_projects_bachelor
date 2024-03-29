@@ -3,6 +3,10 @@
 	Team 12
 		- Ebbe Wertz
 		- Mathias Houwen
+    Zie ook:
+        - Server.c
+        - Consumer.c
+        - Producer.c
    ============================================== */
 
 #include <stdio.h>

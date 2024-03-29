@@ -1,6 +1,9 @@
-//
-// Created by ebbew on 29-3-2024.
-//
+/* ==============================================
+	Practicum 2 BESC:
+	Team 12
+		- Ebbe Wertz
+		- Mathias Houwen
+   ============================================== */
 
 #define SERVER_INIT_STOCKGROOTTE 3 //initeel aantal unieke producten in stock
 #define SERVER_STOCK_INIT_PRODUCTCOUNT 30 // initele product count voor alles in stock

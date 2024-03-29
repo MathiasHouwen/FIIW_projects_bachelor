@@ -1,6 +1,9 @@
-//
-// Created by ebbew on 29-3-2024.
-//
+/* ==============================================
+	Practicum 2 BESC:
+	Team 12
+		- Ebbe Wertz
+		- Mathias Houwen
+   ============================================== */
 
 #define CONSUMER_MAX_PROD_AANTAL 10 //maximaal # prod die een consumer in 1 keer kan kopen
 #define CONSUMER_TIJD 1

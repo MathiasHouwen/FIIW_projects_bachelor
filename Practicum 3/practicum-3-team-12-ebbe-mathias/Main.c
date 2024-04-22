@@ -29,9 +29,12 @@ struct MovieNode {
 
 MovieData* newMovie(const char* name, int year);
 void movieTestCode();
+ActorData* newActor(const char* name);
+void acteurTestCode();
 
 int main() {
     movieTestCode();
+    acteurTestCode();
     return 0;
 }
 
@@ -53,6 +56,20 @@ MovieData* newMovie(const char* name, int year) {
     return new_movie;
 }
 
+// Functie om een nieuwe acteurstructuur te maken
+ActorData* newActor(const char* name) {
+    // Geheugen toewijzen
+    ActorData* new_actor = (ActorData*)malloc(sizeof(ActorData));
+    if (new_actor == NULL) {
+        printf("Geheugen kon niet worden toegewezen voor de nieuwe acteur.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    new_actor->name = name;
+
+    return new_actor;
+}
+
 void movieTestCode() {
     MovieData* movie1 = newMovie("Inception", 2010);
     MovieData* movie2 = newMovie("The Shawshank Redemption", 1994);
@@ -62,4 +79,15 @@ void movieTestCode() {
 
     free(movie1);
     free(movie2);
+}
+
+void acteurTestCode() {
+    ActorData* actor1 = newActor("Leonardo DiCaprio");
+    ActorData* actor2 = newActor("Morgan Freeman");
+
+    printf("Acteur 1: %s\n", actor1->name);
+    printf("Acteur 2: %s\n", actor2->name);
+
+    free(actor1);
+    free(actor2);
 }

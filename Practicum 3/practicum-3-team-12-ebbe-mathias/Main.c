@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct ActorData ActorData;
 typedef struct ActorNode ActorNode;
@@ -28,15 +29,19 @@ struct MovieNode {
 };
 
 MovieData* newMovie(const char* name, int year);
-void movieTestCode();
 ActorData* newActor(const char* name);
+int compareMovies(MovieData* movie1, MovieData* movie2);
+
+void movieTestCode();
 void acteurTestCode();
+void compareMoviesTestCode();
 
 int main() {
-    movieTestCode();
-    acteurTestCode();
+    compareMoviesTestCode();
     return 0;
 }
+
+/* =============================[Functies]===========================================*/
 
 // Functie om een nieuwe filmstructuur te maken
 MovieData* newMovie(const char* name, int year) {
@@ -70,6 +75,19 @@ ActorData* newActor(const char* name) {
     return new_actor;
 }
 
+// return: >0 Als movie1 eerder dan movie2
+int compareMovies(MovieData* movie1, MovieData* movie2) {
+    int vergelijking = strcmp(movie1->name, movie2->name);
+
+    // Als de naam niet gelijk is aan elkaar
+    if (vergelijking != 0) {
+        return vergelijking;
+    }
+
+    return movie1->year - movie2->year;
+}
+
+/* =============================[TEST CODE]===========================================*/
 void movieTestCode() {
     MovieData* movie1 = newMovie("Inception", 2010);
     MovieData* movie2 = newMovie("The Shawshank Redemption", 1994);
@@ -90,4 +108,22 @@ void acteurTestCode() {
 
     free(actor1);
     free(actor2);
+}
+
+void compareMoviesTestCode() {
+    // Maak een array van films
+    MovieData movies[] = {
+        {"b", 2010},
+        {"a", 2008},
+        {"b", 1994}
+    };
+
+    // Sorteer de array van films
+    qsort(movies, sizeof(movies) / sizeof(movies[0]), sizeof(struct MovieData), compareMovies);
+
+    // Geef de gesorteerde films weer
+    printf("Gesorteerde films:\n");
+    for (int i = 0; i < sizeof(movies) / sizeof(movies[0]); i++) {
+        printf("%s (%d)\n", movies[i].name, movies[i].year);
+    }
 }

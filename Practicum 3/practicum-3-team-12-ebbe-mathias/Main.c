@@ -20,7 +20,7 @@ struct ActorNode {
 struct MovieData {
     const char* name;
     int year;
-    struct ActorNode* actors;
+    ActorNode* actors;
 };
 
 struct MovieNode {
@@ -33,14 +33,18 @@ ActorData* newActor(const char* name);
 int compareMovies(MovieData* movie1, MovieData* movie2);
 void insertMovie(MovieNode** head, MovieNode* newNode);
 MovieNode* newMovieNode(MovieData* movie);
+int compareActors(ActorData* actor1, ActorData* actor2);
+void insertActor(MovieNode* head, ActorNode* newNode);
+ActorNode* newActorNode(ActorData* actor);
 
 void movieTestCode();
 void acteurTestCode();
 void compareMoviesTestCode();
 void insertMovieTestCode();
+void insertActorTestCode();
 
 int main() {
-    insertMovieTestCode();
+    insertActorTestCode();
     return 0;
 }
 
@@ -94,9 +98,7 @@ int compareActors(ActorData* actor1, ActorData* actor2) {
     return strcmp(actor1->name, actor2->name);
 }
 
-// Functie om een nieuwe filmstructuur te maken
 MovieNode* newMovieNode(MovieData* movie) {
-    // Geheugen toewijzen
     MovieNode* new_node = (MovieNode*)malloc(sizeof(MovieNode));
     if (new_node == NULL) {
         printf("Geheugen kon niet worden toegewezen voor de nieuwe node.\n");
@@ -107,6 +109,54 @@ MovieNode* newMovieNode(MovieData* movie) {
     new_node->next = NULL;
 
     return new_node;
+}
+
+ActorNode* newActorNode(ActorData* actor){
+    ActorNode* new_node = (ActorNode*)malloc(sizeof(ActorNode));
+    if (new_node == NULL) {
+        printf("Geheugen kon niet worden toegewezen voor de nieuwe node.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    new_node->actor = actor;
+    new_node->next = NULL;
+    new_node->previous = NULL;
+
+    return new_node;
+}
+
+void insertActor(MovieNode* head, ActorNode* newNode){
+    // Als er nog geen acteurs bij de films zijn
+    MovieData *mover = head->movie;
+    if(mover->actors == NULL){
+        mover->actors = newNode;
+        return;
+    }
+
+    ActorNode *current = mover->actors;
+    ActorNode *prev = NULL;
+
+    while (current != NULL && compareActors(newNode->actor, current->actor) > 0){
+        // TRAVEL THRUE LIST
+        prev = current;
+        current = current->next;
+    }
+
+    if(prev == NULL) {
+        // HEAD
+        mover->actors = newNode;
+        current->previous = newNode;
+        newNode->next = current;
+    } else if (current == NULL) {
+        // TAIL
+        prev->next = newNode;
+        newNode->previous = prev;
+    } else {
+        prev->next = newNode;
+        newNode->next = current;
+        newNode->previous  = prev;
+        current->previous = newNode;
+    }
 }
 
 void insertMovie(MovieNode** head, MovieNode* newNode) {
@@ -120,7 +170,7 @@ void insertMovie(MovieNode** head, MovieNode* newNode) {
     }
 
     if (prev == NULL) {
-        // Head van linkedlist TODO: THIS IS SOMEHOW BAD FIX MATHIAS
+        // Head van linkedlist
         newNode->next = *head;
         *head = newNode;
     } else if (current == NULL) {
@@ -178,7 +228,31 @@ void compareMoviesTestCode() {
     }
 }
 
+void insertActorTestCode() {
+    MovieData* movieData = newMovie("Pulp Fiction", 1994);
+    MovieNode* movie = newMovieNode(movieData);
+
+    ActorData* actor1 = newActor("Tom Hanks");
+    ActorData* actor2 = newActor("Meryl Streep");
+    ActorData* actor3 = newActor("Leonardo DiCaprio");
+    ActorData* actor4 = newActor("Jennifer Lawrence");
+    ActorData* actor5 = newActor("Brad Pitt");
+
+    ActorNode* actorNode1 = newActorNode(actor1);
+    ActorNode* actorNode2 = newActorNode(actor2);
+    ActorNode* actorNode3 = newActorNode(actor3);
+    ActorNode* actorNode4 = newActorNode(actor4);
+    ActorNode* actorNode5 = newActorNode(actor5);
+
+    insertActor(movie, actorNode1);
+    insertActor(movie, actorNode2);
+    insertActor(movie, actorNode3);
+    insertActor(movie, actorNode4);
+    insertActor(movie, actorNode5);
+}
+
 void insertMovieTestCode() {
+    // WOUW ZO MOOIE CODE AMMAAI
     MovieData* movie1 = newMovie("Inception", 2010);
     MovieData* movie2 = newMovie("The Shawshank Redemption", 1994);
     MovieData* movie3 = newMovie("Pulp Fiction", 1994);
@@ -196,4 +270,16 @@ void insertMovieTestCode() {
     insertMovie(head, movieNode3);
     insertMovie(head, movieNode4);
     insertMovie(head, movieNode5);
+
+    //FREE MEM
+    free(movieNode1);
+    free(movieNode2);
+    free(movieNode3);
+    free(movieNode4);
+    free(movieNode5);
+    free(movie1);
+    free(movie2);
+    free(movie3);
+    free(movie4);
+    free(movie5);
 }

@@ -126,7 +126,41 @@ ActorNode* newActorNode(ActorData* actor){
 
     return new_node;
 }
+void deleteActor(MovieNode* head, ActorData* acteur){
+    // Als er nog geen acteurs bij de films zijn
+    MovieData *mover = head->movie;
+    if(mover->actors == NULL){
+        printf("Movie heeft geen acteurs jonge.\n");
+        return;
+    }
 
+    ActorNode *current = mover->actors;
+    ActorNode *prev = NULL;
+
+    while (current != NULL && compareActors(acteur, current->actor) > 0){
+        // TRAVEL THRUE LIST
+        prev = current;
+        current = current->next;
+    }
+
+    if(current == NULL){
+        // Tail van de linkedlist
+        printf("Acteur bestaat niet jonge.\n");
+        return;
+    } else if (prev == NULL){
+        mover->actors = current->next;
+        current->next->previous = NULL;
+    } else {
+        prev->next = current->next;
+        current->previous = prev;
+    }
+
+    free(acteur);
+    free(current->actor);
+    free(current);
+}
+
+// TODO: TEST
 void insertActor(MovieNode* head, ActorNode* newNode){
     // Als er nog geen acteurs bij de films zijn
     MovieData *mover = head->movie;

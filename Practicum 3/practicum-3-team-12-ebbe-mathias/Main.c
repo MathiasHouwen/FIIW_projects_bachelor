@@ -36,15 +36,17 @@ MovieNode* newMovieNode(MovieData* movie);
 int compareActors(ActorData* actor1, ActorData* actor2);
 void insertActor(MovieNode* head, ActorNode* newNode);
 ActorNode* newActorNode(ActorData* actor);
+void deleteMovie(MovieNode** head, MovieData* movie);
 
 void movieTestCode();
 void acteurTestCode();
 void compareMoviesTestCode();
 void insertMovieTestCode();
 void insertActorTestCode();
+void deleteMovieTestCode();
 
 int main() {
-    insertActorTestCode();
+    deleteMovieTestCode();
     return 0;
 }
 
@@ -184,6 +186,32 @@ void insertMovie(MovieNode** head, MovieNode* newNode) {
     }
 }
 
+void deleteMovie(MovieNode** head, MovieData* movie){
+    MovieNode* current = *head;
+    MovieNode* prev = NULL;
+
+    while (current != NULL && compareMovies(movie, current->movie) > 0) {
+        prev = current;
+        current = current->next;
+    }
+
+    if (current == NULL) {
+        // Tail van de linkedlist
+        printf("Movie bestaat niet jonge.\n");
+        return;
+    } else if (prev == NULL) {
+        // Head van linkedlist
+        *head = current->next;
+    } else {
+        // Middel van de linkedlist
+        prev->next = current->next;
+    }
+
+    free(movie);
+    free(current->movie);
+    free(current);
+}
+
 /* =============================[TEST CODE]===========================================*/
 void movieTestCode() {
     MovieData* movie1 = newMovie("Inception", 2010);
@@ -282,4 +310,26 @@ void insertMovieTestCode() {
     free(movie3);
     free(movie4);
     free(movie5);
+}
+
+void deleteMovieTestCode(){
+    MovieData* movie1 = newMovie("Inception", 2010);
+    MovieData* movie2 = newMovie("The Shawshank Redemption", 1994);
+    MovieData* movie3 = newMovie("Pulp Fiction", 1994);
+    MovieData* movie4 = newMovie("The Godfather", 1972);
+    MovieData* movie5 = newMovie("Forrest Gump", 1994);
+
+    MovieNode* movieNode1 = newMovieNode(movie1);
+    MovieNode* movieNode2 = newMovieNode(movie2);
+    MovieNode* movieNode3 = newMovieNode(movie3);
+    MovieNode* movieNode4 = newMovieNode(movie4);
+    MovieNode* movieNode5 = newMovieNode(movie5);
+
+    MovieNode** head =&movieNode1;
+    insertMovie(head, movieNode2);
+    insertMovie(head, movieNode3);
+    insertMovie(head, movieNode4);
+    insertMovie(head, movieNode5);
+
+    deleteMovie(head, movie3);
 }

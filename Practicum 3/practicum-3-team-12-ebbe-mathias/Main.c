@@ -28,15 +28,25 @@ struct MovieNode {
     MovieNode* next;
 };
 
+//constructors
 MovieData* newMovie(const char* name, int year);
 ActorData* newActor(const char* name);
+MovieNode* newMovieNode(MovieData* movieData);
+ActorNode* newActorNode(ActorData* actorData);
+//compare
 int compareMovies(MovieData* movie1, MovieData* movie2);
-void insertMovie(MovieNode** head, MovieNode* newNode);
-MovieNode* newMovieNode(MovieData* movie);
 int compareActors(ActorData* actor1, ActorData* actor2);
-void insertActor(MovieNode* head, ActorNode* newNode);
-ActorNode* newActorNode(ActorData* actor);
-void deleteMovie(MovieNode** head, MovieData* movie);
+//insert
+void insertMovie(MovieNode** head, MovieNode* movieNode);
+void insertActor(ActorNode** head, ActorNode* movieNode);
+//delete
+void deleteMovie(MovieNode** head, MovieNode* movieData);
+void deleteActor(ActorNode** head, ActorNode* actorNode);
+//search
+void searchMovies(char startChar, MovieNode* headIn, MovieNode* headFilteredOut);
+void searchActors(char startChar, ActorNode* headIn, ActorNode* headFilteredOut);
+//extra helpers
+void addActorToMovie(MovieNode* movieHead, ActorNode* actorNode);
 
 void movieTestCode();
 void acteurTestCode();
@@ -51,6 +61,24 @@ int main() {
 }
 
 /* =============================[Functies]===========================================*/
+void newOrInsertMovie(MovieNode** head, MovieNode* newNode){
+
+}
+void searchMovies(char startChar, MovieNode* headIn, MovieNode* headFilteredOut){
+    if(!headIn){
+        return;
+    }
+    const char* name = headIn->movie->name;
+    if(name[0] == startChar){
+        //add aan headFilteredOut
+    }
+    MovieNode* nextMovie = headIn->next;
+    searchMovies(startChar, nextMovie, headFilteredOut)
+}
+
+void searchActors(char startChar, ActorNode* headIn, ActorNode* headFilteredOut){
+}
+
 
 // Functie om een nieuwe filmstructuur te maken
 MovieData* newMovie(const char* name, int year) {
@@ -100,27 +128,27 @@ int compareActors(ActorData* actor1, ActorData* actor2) {
     return strcmp(actor1->name, actor2->name);
 }
 
-MovieNode* newMovieNode(MovieData* movie) {
+MovieNode* newMovieNode(MovieData* movieData) {
     MovieNode* new_node = (MovieNode*)malloc(sizeof(MovieNode));
     if (new_node == NULL) {
         printf("Geheugen kon niet worden toegewezen voor de nieuwe node.\n");
         exit(EXIT_FAILURE);
     }
 
-    new_node->movie = movie;
+    new_node->movie = movieData;
     new_node->next = NULL;
 
     return new_node;
 }
 
-ActorNode* newActorNode(ActorData* actor){
+ActorNode* newActorNode(ActorData* actorData){
     ActorNode* new_node = (ActorNode*)malloc(sizeof(ActorNode));
     if (new_node == NULL) {
         printf("Geheugen kon niet worden toegewezen voor de nieuwe node.\n");
         exit(EXIT_FAILURE);
     }
 
-    new_node->actor = actor;
+    new_node->actor = actorData;
     new_node->next = NULL;
     new_node->previous = NULL;
 
@@ -161,18 +189,18 @@ void deleteActor(MovieNode* head, ActorData* acteur){
 }
 
 // TODO: TEST
-void insertActor(MovieNode* head, ActorNode* newNode){
+void addActorToMovie(MovieNode* movieHead, ActorNode* actorNode){
     // Als er nog geen acteurs bij de films zijn
-    MovieData *mover = head->movie;
+    MovieData *mover = movieHead->movie;
     if(mover->actors == NULL){
-        mover->actors = newNode;
+        mover->actors = actorNode;
         return;
     }
 
     ActorNode *current = mover->actors;
     ActorNode *prev = NULL;
 
-    while (current != NULL && compareActors(newNode->actor, current->actor) > 0){
+    while (current != NULL && compareActors(actorNode->actor, current->actor) > 0){
         // TRAVEL THRUE LIST
         prev = current;
         current = current->next;
@@ -180,51 +208,51 @@ void insertActor(MovieNode* head, ActorNode* newNode){
 
     if(prev == NULL) {
         // HEAD
-        mover->actors = newNode;
-        current->previous = newNode;
-        newNode->next = current;
+        mover->actors = actorNode;
+        current->previous = actorNode;
+        actorNode->next = current;
     } else if (current == NULL) {
         // TAIL
-        prev->next = newNode;
-        newNode->previous = prev;
+        prev->next = actorNode;
+        actorNode->previous = prev;
     } else {
-        prev->next = newNode;
-        newNode->next = current;
-        newNode->previous  = prev;
-        current->previous = newNode;
+        prev->next = actorNode;
+        actorNode->next = current;
+        actorNode->previous  = prev;
+        current->previous = actorNode;
     }
 }
 
-void insertMovie(MovieNode** head, MovieNode* newNode) {
+void insertMovie(MovieNode** head, MovieNode* movieNode) {
     MovieNode* current = *head;
     MovieNode* prev = NULL;
 
     // Ga door de lijst tot bij de plaats waar die moet geinsert worden
-    while (current != NULL && compareMovies(newNode->movie, current->movie) > 0) {
+    while (current != NULL && compareMovies(movieNode->movie, current->movie) > 0) {
         prev = current;
         current = current->next;
     }
 
     if (prev == NULL) {
         // Head van linkedlist
-        newNode->next = *head;
-        *head = newNode;
+        movieNode->next = *head;
+        *head = movieNode;
     } else if (current == NULL) {
         // Tail van de linkedlist
-        prev->next = newNode;
-        newNode->next = NULL;
+        prev->next = movieNode;
+        movieNode->next = NULL;
     } else {
         // Middel van de linkedlist
-        prev->next = newNode;
-        newNode->next = current;
+        prev->next = movieNode;
+        movieNode->next = current;
     }
 }
 
-void deleteMovie(MovieNode** head, MovieData* movie){
+void deleteMovie(MovieNode** head, MovieNode* movieData){
     MovieNode* current = *head;
     MovieNode* prev = NULL;
 
-    while (current != NULL && compareMovies(movie, current->movie) > 0) {
+    while (current != NULL && compareMovies(movieData, current->movie) > 0) {
         prev = current;
         current = current->next;
     }
@@ -241,11 +269,31 @@ void deleteMovie(MovieNode** head, MovieData* movie){
         prev->next = current->next;
     }
 
-    free(movie);
+    free(movieData);
     free(current->movie);
     free(current);
 }
 
+
+
+
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
 /* =============================[TEST CODE]===========================================*/
 void movieTestCode() {
     MovieData* movie1 = newMovie("Inception", 2010);
@@ -306,11 +354,11 @@ void insertActorTestCode() {
     ActorNode* actorNode4 = newActorNode(actor4);
     ActorNode* actorNode5 = newActorNode(actor5);
 
-    insertActor(movie, actorNode1);
-    insertActor(movie, actorNode2);
-    insertActor(movie, actorNode3);
-    insertActor(movie, actorNode4);
-    insertActor(movie, actorNode5);
+    addActorToMovie(movie, actorNode1);
+    addActorToMovie(movie, actorNode2);
+    addActorToMovie(movie, actorNode3);
+    addActorToMovie(movie, actorNode4);
+    addActorToMovie(movie, actorNode5);
 }
 
 void insertMovieTestCode() {

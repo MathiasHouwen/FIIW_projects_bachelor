@@ -29,8 +29,8 @@ struct MovieNode {
 };
 
 //constructors
-MovieData* newMovie(const char* name, int year);
-ActorData* newActor(const char* name);
+MovieData newMovie(const char* name, int year);
+ActorData newActor(const char* name);
 MovieNode* newMovieNode(MovieData* movieData);
 ActorNode* newActorNode(ActorData* actorData);
 //compare
@@ -47,6 +47,8 @@ void searchMovies(char startChar, MovieNode* headIn, MovieNode* headFilteredOut)
 void searchActors(char startChar, ActorNode* headIn, ActorNode* headFilteredOut);
 //extra helpers
 void addActorToMovie(MovieNode* movieHead, ActorNode* actorNode);
+void printMallocErr(const char* type, const char* name);
+
 
 void movieTestCode();
 void acteurTestCode();
@@ -56,61 +58,103 @@ void insertActorTestCode();
 void deleteMovieTestCode();
 
 int main() {
-    deleteMovieTestCode();
+    printMallocErr("Movie", "inception");
     return 0;
 }
+/*  =========================================================================
+    ==       Helpers                                                       ==
+    =========================================================================*/
 
-/* =============================[Functies]===========================================*/
-void newOrInsertMovie(MovieNode** head, MovieNode* newNode){
 
-}
-void searchMovies(char startChar, MovieNode* headIn, MovieNode* headFilteredOut){
-    if(!headIn){
-        return;
-    }
-    const char* name = headIn->movie->name;
-    if(name[0] == startChar){
-        //add aan headFilteredOut
-    }
-    MovieNode* nextMovie = headIn->next;
-    searchMovies(startChar, nextMovie, headFilteredOut)
+
+void printMallocErr(const char* type, const char* name){
+    printf("\033[31m[ERROR] Geheugen kon niet worden toegewezen voor de nieuwe %s: '%s'\033[0m\n", type, name);
 }
 
-void searchActors(char startChar, ActorNode* headIn, ActorNode* headFilteredOut){
+/*  =========================================================================
+    ==       constructors                                                  ==
+    =========================================================================*/
+
+// Functie om een nieuwe movie struct te maken
+MovieData newMovie(const char* name, int year) {
+    MovieData movieData;
+    movieData.name = name;
+    movieData.year = year;
+    movieData.actors = NULL; // leeg bij init, kan achteraf gevuld worden
+    return movieData;
 }
 
+// Functie om een nieuwe acteur struct te maken
+ActorData newActor(const char* name) {
+    ActorData actorData;
+    actorData.name = name;
+    return actorData;
+}
 
-// Functie om een nieuwe filmstructuur te maken
-MovieData* newMovie(const char* name, int year) {
-    // Geheugen toewijzen
-    MovieData* new_movie = (MovieData*)malloc(sizeof(MovieData));
-    if (new_movie == NULL) {
-        printf("Geheugen kon niet worden toegewezen voor de nieuwe film.\n");
+MovieNode* newMovieNode(MovieData* movieData) {
+    //Geheugen alloceren op heap
+    MovieNode* movieNode = malloc(sizeof(MovieNode));
+    if (!movieNode) {
+        printMallocErr("Movie", movieData->name);
         exit(EXIT_FAILURE);
     }
-
-    new_movie->name = name;
-    new_movie->year = year;
-
-    // De lijst van acteurs initialiseren als leeg voor begin
-    new_movie->actors = NULL;
-
-    return new_movie;
+    //data
+    movieNode->movie = movieData;
+    movieNode->next = NULL;
+    return movieNode;
 }
 
-// Functie om een nieuwe acteurstructuur te maken
-ActorData* newActor(const char* name) {
-    // Geheugen toewijzen
-    ActorData* new_actor = (ActorData*)malloc(sizeof(ActorData));
-    if (new_actor == NULL) {
-        printf("Geheugen kon niet worden toegewezen voor de nieuwe acteur.\n");
+ActorNode* newActorNode(ActorData* actorData){
+    //Geheugen alloceren op heap
+    ActorNode* actorNode = malloc(sizeof(ActorNode));
+    if (!actorNode) {
+        printMallocErr("Actor", actorData->name);
         exit(EXIT_FAILURE);
     }
-
-    new_actor->name = name;
-
-    return new_actor;
+    //data
+    actorNode->actor = actorData;
+    actorNode->next = NULL;
+    actorNode->previous = NULL;
+    return actorNode;
 }
+
+/*  =========================================================================
+    ==       Builders                                                      ==
+    =========================================================================*/
+
+void insertMovie(MovieNode** head, MovieNode* movieNode) {
+    MovieNode* current = *head;
+    MovieNode* prev = NULL;
+
+    // Ga door de lijst tot bij de plaats waar die moet geinsert worden
+    while (current != NULL && compareMovies(movieNode->movie, current->movie) > 0) {
+        prev = current;
+        current = current->next;
+    }
+
+    if (prev == NULL) {
+        // Head van linkedlist
+        movieNode->next = *head;
+        *head = movieNode;
+    } else if (current == NULL) {
+        // Tail van de linkedlist
+        prev->next = movieNode;
+        movieNode->next = NULL;
+    } else {
+        // Middel van de linkedlist
+        prev->next = movieNode;
+        movieNode->next = current;
+    }
+}
+
+void insertActor(ActorNode** head, ActorNode* movieNode){
+
+}
+
+
+
+
+/*
 
 // return: >0 Als movie1 eerder dan movie2
 int compareMovies(MovieData* movie1, MovieData* movie2) {
@@ -128,32 +172,9 @@ int compareActors(ActorData* actor1, ActorData* actor2) {
     return strcmp(actor1->name, actor2->name);
 }
 
-MovieNode* newMovieNode(MovieData* movieData) {
-    MovieNode* new_node = (MovieNode*)malloc(sizeof(MovieNode));
-    if (new_node == NULL) {
-        printf("Geheugen kon niet worden toegewezen voor de nieuwe node.\n");
-        exit(EXIT_FAILURE);
-    }
 
-    new_node->movie = movieData;
-    new_node->next = NULL;
 
-    return new_node;
-}
 
-ActorNode* newActorNode(ActorData* actorData){
-    ActorNode* new_node = (ActorNode*)malloc(sizeof(ActorNode));
-    if (new_node == NULL) {
-        printf("Geheugen kon niet worden toegewezen voor de nieuwe node.\n");
-        exit(EXIT_FAILURE);
-    }
-
-    new_node->actor = actorData;
-    new_node->next = NULL;
-    new_node->previous = NULL;
-
-    return new_node;
-}
 void deleteActor(MovieNode* head, ActorData* acteur){
     // Als er nog geen acteurs bij de films zijn
     MovieData *mover = head->movie;
@@ -223,30 +244,7 @@ void addActorToMovie(MovieNode* movieHead, ActorNode* actorNode){
     }
 }
 
-void insertMovie(MovieNode** head, MovieNode* movieNode) {
-    MovieNode* current = *head;
-    MovieNode* prev = NULL;
 
-    // Ga door de lijst tot bij de plaats waar die moet geinsert worden
-    while (current != NULL && compareMovies(movieNode->movie, current->movie) > 0) {
-        prev = current;
-        current = current->next;
-    }
-
-    if (prev == NULL) {
-        // Head van linkedlist
-        movieNode->next = *head;
-        *head = movieNode;
-    } else if (current == NULL) {
-        // Tail van de linkedlist
-        prev->next = movieNode;
-        movieNode->next = NULL;
-    } else {
-        // Middel van de linkedlist
-        prev->next = movieNode;
-        movieNode->next = current;
-    }
-}
 
 void deleteMovie(MovieNode** head, MovieNode* movieData){
     MovieNode* current = *head;
@@ -275,26 +273,43 @@ void deleteMovie(MovieNode** head, MovieNode* movieData){
 }
 
 
+void newOrInsertMovie(MovieNode** head, MovieNode* newNode){
 
+}
+void searchMovies(char startChar, MovieNode* headIn, MovieNode* headFilteredOut){
+    if(!headIn){
+        return;
+    }
+    const char* name = headIn->movie->name;
+    if(name[0] == startChar){
+        //add aan headFilteredOut
+    }
+    MovieNode* nextMovie = headIn->next;
+    searchMovies(startChar, nextMovie, headFilteredOut)
+}
+void searchActors(char startChar, ActorNode* headIn, ActorNode* headFilteredOut){
+}
+*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
+/* =============================[TEST CODE]===========================================*/
 
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
+/*
 void movieTestCode() {
     MovieData* movie1 = newMovie("Inception", 2010);
     MovieData* movie2 = newMovie("The Shawshank Redemption", 1994);
@@ -328,8 +343,8 @@ void compareMoviesTestCode() {
     };
 
     // Sorteer de array van films
-    qsort(movies, sizeof(movies) / sizeof(movies[0]), sizeof(struct MovieData),
-          (_CoreCrtNonSecureSearchSortCompareFunction) compareMovies);
+    //qsort(movies, sizeof(movies) / sizeof(movies[0]), sizeof(struct MovieData),
+    //      (_CoreCrtNonSecureSearchSortCompareFunction) compareMovies);
 
     // Geef de gesorteerde films weer
     printf("Gesorteerde films:\n");
@@ -414,4 +429,4 @@ void deleteMovieTestCode(){
     insertMovie(head, movieNode5);
 
     deleteMovie(head, movie3);
-}
+}*/

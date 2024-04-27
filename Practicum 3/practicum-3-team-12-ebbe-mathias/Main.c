@@ -38,7 +38,9 @@ int compareMovies(MovieData* movie1, MovieData* movie2);
 int compareActors(ActorData* actor1, ActorData* actor2);
 //insert
 void insertMovie(MovieNode** head, MovieNode* movieNode);
-void insertActor(ActorNode** head, ActorNode* movieNode);
+void insertActor(ActorNode** head, ActorNode* actorNode);
+void createOrInsertMovie(MovieNode** head, MovieNode* movieNode);
+void createOrInsertActor(ActorNode** head, ActorNode* actorNode);
 //delete
 void deleteMovie(MovieNode** head, MovieNode* movieData);
 void deleteActor(ActorNode** head, ActorNode* actorNode);
@@ -58,14 +60,23 @@ void insertActorTestCode();
 void deleteMovieTestCode();
 
 int main() {
-    printMallocErr("Movie", "inception");
+    MovieData mov1 = newMovie("Mov1", 1);
+    MovieData mov2 = newMovie("Mov2", 1);
+    MovieData mov4 = newMovie("Mov4", 1);
+    MovieData mov0 = newMovie("Mov0", 1);
+    MovieData mov3 = newMovie("Mov3", 1);
+    MovieNode* movieHead;
+
+    createOrInsertMovie(&movieHead, newMovieNode(&mov1));
+    createOrInsertMovie(&movieHead, newMovieNode(&mov2));
+    createOrInsertMovie(&movieHead, newMovieNode(&mov4));
+    createOrInsertMovie(&movieHead, newMovieNode(&mov0));
+    createOrInsertMovie(&movieHead, newMovieNode(&mov3));
     return 0;
 }
 /*  =========================================================================
     ==       Helpers                                                       ==
     =========================================================================*/
-
-
 
 void printMallocErr(const char* type, const char* name){
     printf("\033[31m[ERROR] Geheugen kon niet worden toegewezen voor de nieuwe %s: '%s'\033[0m\n", type, name);
@@ -122,21 +133,22 @@ ActorNode* newActorNode(ActorData* actorData){
     ==       Builders                                                      ==
     =========================================================================*/
 
+//voegt een movie toe aan een bestaande linked list
 void insertMovie(MovieNode** head, MovieNode* movieNode) {
     MovieNode* current = *head;
     MovieNode* prev = NULL;
 
-    // Ga door de lijst tot bij de plaats waar die moet geinsert worden
-    while (current != NULL && compareMovies(movieNode->movie, current->movie) > 0) {
+    // Ga door de lijst tot bij de plaats waar die moet ge-insert worden
+    while (current && compareMovies(movieNode->movie, current->movie) > 0) {
         prev = current;
         current = current->next;
     }
 
-    if (prev == NULL) {
+    if (!prev) {
         // Head van linkedlist
         movieNode->next = *head;
         *head = movieNode;
-    } else if (current == NULL) {
+    } else if (!current) {
         // Tail van de linkedlist
         prev->next = movieNode;
         movieNode->next = NULL;
@@ -147,14 +159,55 @@ void insertMovie(MovieNode** head, MovieNode* movieNode) {
     }
 }
 
-void insertActor(ActorNode** head, ActorNode* movieNode){
+//voegt een actor toe aan een bestaande linked list
+void insertActor(ActorNode** head, ActorNode* actorNode){
+    ActorNode *current = *head;
+    ActorNode *prev = NULL;
 
+    // Ga door de lijst tot bij de plaats waar die moet ge-insert worden
+    while (current && compareActors(actorNode->actor, current->actor) > 0){
+        prev = current;
+        current = current->next;
+    }
+
+    if(!prev) {
+        // HEAD
+        actorNode->next = *head;
+        (*head)->previous = actorNode;
+        *head = actorNode;
+    } else if (!current) {
+        // TAIL
+        prev->next = actorNode;
+        actorNode->previous = prev;
+    } else {
+        prev->next = actorNode;
+        actorNode->previous  = prev;
+        actorNode->next = current;
+        current->previous = actorNode;
+    }
 }
 
+//voegt een movie toe een linked list, of initialiseert de list als ze nog niet bestaat
+void createOrInsertMovie(MovieNode** head, MovieNode* movieNode){
+    if(head){
+        insertMovie(head, movieNode);
+    } else {
+        *head = movieNode;
+    }
+}
 
+//voegt een actor toe een linked list, of initialiseert de list als ze nog niet bestaat
+void createOrInsertActor(ActorNode** head, ActorNode* actorNode){
+    if(head){
+        insertActor(head, actorNode);
+    } else {
+        *head = actorNode;
+    }
+}
 
-
-/*
+/*  =========================================================================
+    ==       Compare                                                       ==
+    =========================================================================*/
 
 // return: >0 Als movie1 eerder dan movie2
 int compareMovies(MovieData* movie1, MovieData* movie2) {
@@ -173,7 +226,7 @@ int compareActors(ActorData* actor1, ActorData* actor2) {
 }
 
 
-
+/*
 
 void deleteActor(MovieNode* head, ActorData* acteur){
     // Als er nog geen acteurs bij de films zijn

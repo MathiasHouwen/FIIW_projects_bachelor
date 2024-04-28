@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define EXAMPLE_MOVIES_ACTORS_AMOUNT 7
+#define EXAMPLE_MAX_MOVIES_PER_ACTOR 3
+
 typedef struct ActorData ActorData;
 typedef struct ActorNode ActorNode;
 typedef struct MovieData MovieData;
@@ -36,22 +39,20 @@ ActorNode* newActorNode(ActorData* actorData);
 //compare
 int compareMovies(MovieData* movie1, MovieData* movie2);
 int compareActors(ActorData* actor1, ActorData* actor2);
-//insert
+//list builders
 void insertMovie(MovieNode** head, MovieNode* movieNode);
 void insertActor(ActorNode** head, ActorNode* actorNode);
 void createOrInsertMovie(MovieNode** head, MovieNode* movieNode);
 void createOrInsertActor(ActorNode** head, ActorNode* actorNode);
+void addActorToMovie(MovieData* movieData, ActorData* actorData);
 //delete
 void deleteMovie(MovieNode** head, MovieNode* movieData);
 void deleteActor(ActorNode** head, ActorNode* actorNode);
 //search
-void searchMovies(char startChar, MovieNode* headIn, MovieNode* headFilteredOut);
-void searchActors(char startChar, ActorNode* headIn, ActorNode* headFilteredOut);
-//extra helpers
-void addActorToMovie(MovieData* movieData, ActorData* actorData);
+void searchMovies(char startChar, MovieNode* headIn, MovieNode** headFilteredOut);
+void searchActors(char startChar, ActorNode* headIn, ActorNode** headFilteredOut);
+//extra helpers en printers
 void printMallocErr(const char* type, const char* name);
-
-
 void movieTestCode();
 void acteurTestCode();
 void compareMoviesTestCode();
@@ -60,40 +61,53 @@ void insertActorTestCode();
 void deleteMovieTestCode();
 
 int main() {
-    MovieData mov0 = newMovie("Movie 0", 1995);
-    MovieData mov1 = newMovie("Movie 1", 1996);
-    MovieData mov2 = newMovie("Movie 2", 1997);
-    MovieData mov3 = newMovie("Movie 3", 1998);
-    MovieData mov4 = newMovie("Movie 4", 1999);
-    MovieData mov5 = newMovie("Movie 5", 2000);
-    MovieData mov6 = newMovie("Movie 6", 2001);
-
-    ActorData act0 = newActor("Actor 0");
-    ActorData act1 = newActor("Actor 1");
-    ActorData act2 = newActor("Actor 2");
-    ActorData act3 = newActor("Actor 3");
-    ActorData act4 = newActor("Actor 4");
-    ActorData act5 = newActor("Actor 5");
-    ActorData act6 = newActor("Actor 6");
-
-    addActorToMovie(&mov3, &act2);
-    addActorToMovie(&mov3, &act3);
-    addActorToMovie(&mov3, &act0);
+    MovieData movieDatas[EXAMPLE_MOVIES_ACTORS_AMOUNT] = {
+            newMovie("B Movie 0", 1995),
+            newMovie("A Movie 1", 1996),
+            newMovie("C Movie 2", 1997),
+            newMovie("B Movie 3", 1998),
+            newMovie("C Movie 4", 1999),
+            newMovie("Dubbel movie", 2000),
+            newMovie("Dubbel movie", 2001)
+    };
+    ActorData actorDatas[EXAMPLE_MOVIES_ACTORS_AMOUNT] = {
+            newActor("A Actor 0"),
+            newActor("C Actor 1"),
+            newActor("B Actor 2"),
+            newActor("B Actor 3"),
+            newActor("C Actor 4"),
+            newActor("A Actor 5"),
+            newActor("B Actor 6")
+    };
+    int actorsPerMovie[EXAMPLE_MOVIES_ACTORS_AMOUNT][EXAMPLE_MAX_MOVIES_PER_ACTOR] = {
+            {6, 5, 2},
+            {0, 1, 3},
+            {4, 0,-1},
+            {1,-1,-1},
+            {2, 3,-1},
+            {3, 4, 0},
+            {5, 6,-1},
+    };// -1 = geen actor. Dan hoef niet elke movie exact 3 actors
 
     MovieNode* movieHead = NULL;
     ActorNode* actorHead = NULL;
 
-    createOrInsertActor(&actorHead, newActorNode(&act1));
-    createOrInsertActor(&actorHead, newActorNode(&act2));
-    createOrInsertActor(&actorHead, newActorNode(&act4));
-    createOrInsertActor(&actorHead, newActorNode(&act0));
-    createOrInsertActor(&actorHead, newActorNode(&act3));
+    for(int i=0; i<EXAMPLE_MOVIES_ACTORS_AMOUNT; i++){
+        createOrInsertMovie(&movieHead, newMovieNode(&movieDatas[i]));
+        createOrInsertActor(&actorHead, newActorNode(&actorDatas[i]));
+        for(int j=0; j<EXAMPLE_MAX_MOVIES_PER_ACTOR; j++){
+            int actorIndex = actorsPerMovie[i][j];
+            if(actorIndex != -1){
+                addActorToMovie(&movieDatas[i], &actorDatas[actorIndex]);
+            }
+        }
+    }
 
-    createOrInsertMovie(&movieHead, newMovieNode(&mov1));
-    createOrInsertMovie(&movieHead, newMovieNode(&mov2));
-    createOrInsertMovie(&movieHead, newMovieNode(&mov4));
-    createOrInsertMovie(&movieHead, newMovieNode(&mov0));
-    createOrInsertMovie(&movieHead, newMovieNode(&mov3));
+    MovieNode* filteredMovieHead = NULL;
+    ActorNode * filteredActorsHead = NULL;
+
+    searchMovies('B', movieHead, &filteredMovieHead);
+    searchActors('A', actorHead, &filteredActorsHead);
 
     return 0;
 }
@@ -290,11 +304,6 @@ void deleteActor(MovieNode* head, ActorData* acteur){
     free(current->actor);
     free(current);
 }
-
-
-
-
-
 void deleteMovie(MovieNode** head, MovieNode* movieData){
     MovieNode* current = *head;
     MovieNode* prev = NULL;
@@ -320,22 +329,37 @@ void deleteMovie(MovieNode** head, MovieNode* movieData){
     free(current->movie);
     free(current);
 }
-
-
-void searchMovies(char startChar, MovieNode* headIn, MovieNode* headFilteredOut){
-    if(!headIn){
-        return;
-    }
-    const char* name = headIn->movie->name;
-    if(name[0] == startChar){
-        //add aan headFilteredOut
-    }
-    MovieNode* nextMovie = headIn->next;
-    searchMovies(startChar, nextMovie, headFilteredOut)
-}
-void searchActors(char startChar, ActorNode* headIn, ActorNode* headFilteredOut){
-}
 */
+
+/*  =========================================================================
+    ==       Search                                                        ==
+    =========================================================================*/
+
+void searchMovies(char startChar, MovieNode* headIn, MovieNode** headFilteredOut){
+    if(!headIn){
+        return; //na de call van Tail->next zal deze NULL zijn en kan recursie stoppen
+    }
+    MovieData* movieData = headIn->movie;
+    const char* name = movieData->name;
+    if(name[0] == startChar){
+        createOrInsertMovie(headFilteredOut, newMovieNode(movieData));
+    }
+    //ga recursief verder
+    searchMovies(startChar, headIn->next, headFilteredOut);
+}
+void searchActors(char startChar, ActorNode* headIn, ActorNode** headFilteredOut){
+    if(!headIn){
+        return; //na de call van Tail->next zal deze NULL zijn en kan recursie stoppen
+    }
+    ActorData * actorData = headIn->actor;
+    const char* name = actorData->name;
+    if(name[0] == startChar){
+        createOrInsertActor(headFilteredOut, newActorNode(actorData));
+    }
+    //ga recursief verder
+    searchActors(startChar, headIn->next, headFilteredOut);
+}
+
 /* =============================[TEST CODE]===========================================*/
 /* =============================[TEST CODE]===========================================*/
 /* =============================[TEST CODE]===========================================*/

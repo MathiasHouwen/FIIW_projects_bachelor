@@ -48,7 +48,7 @@ void deleteActor(ActorNode** head, ActorNode* actorNode);
 void searchMovies(char startChar, MovieNode* headIn, MovieNode* headFilteredOut);
 void searchActors(char startChar, ActorNode* headIn, ActorNode* headFilteredOut);
 //extra helpers
-void addActorToMovie(MovieNode* movieHead, ActorNode* actorNode);
+void addActorToMovie(MovieData* movieData, ActorData* actorData);
 void printMallocErr(const char* type, const char* name);
 
 
@@ -60,18 +60,41 @@ void insertActorTestCode();
 void deleteMovieTestCode();
 
 int main() {
-    MovieData mov1 = newMovie("Mov1", 1);
-    MovieData mov2 = newMovie("Mov2", 1);
-    MovieData mov4 = newMovie("Mov4", 1);
-    MovieData mov0 = newMovie("Mov0", 1);
-    MovieData mov3 = newMovie("Mov3", 1);
-    MovieNode* movieHead;
+    MovieData mov0 = newMovie("Movie 0", 1995);
+    MovieData mov1 = newMovie("Movie 1", 1996);
+    MovieData mov2 = newMovie("Movie 2", 1997);
+    MovieData mov3 = newMovie("Movie 3", 1998);
+    MovieData mov4 = newMovie("Movie 4", 1999);
+    MovieData mov5 = newMovie("Movie 5", 2000);
+    MovieData mov6 = newMovie("Movie 6", 2001);
+
+    ActorData act0 = newActor("Actor 0");
+    ActorData act1 = newActor("Actor 1");
+    ActorData act2 = newActor("Actor 2");
+    ActorData act3 = newActor("Actor 3");
+    ActorData act4 = newActor("Actor 4");
+    ActorData act5 = newActor("Actor 5");
+    ActorData act6 = newActor("Actor 6");
+
+    addActorToMovie(&mov3, &act2);
+    addActorToMovie(&mov3, &act3);
+    addActorToMovie(&mov3, &act0);
+
+    MovieNode* movieHead = NULL;
+    ActorNode* actorHead = NULL;
+
+    createOrInsertActor(&actorHead, newActorNode(&act1));
+    createOrInsertActor(&actorHead, newActorNode(&act2));
+    createOrInsertActor(&actorHead, newActorNode(&act4));
+    createOrInsertActor(&actorHead, newActorNode(&act0));
+    createOrInsertActor(&actorHead, newActorNode(&act3));
 
     createOrInsertMovie(&movieHead, newMovieNode(&mov1));
     createOrInsertMovie(&movieHead, newMovieNode(&mov2));
     createOrInsertMovie(&movieHead, newMovieNode(&mov4));
     createOrInsertMovie(&movieHead, newMovieNode(&mov0));
     createOrInsertMovie(&movieHead, newMovieNode(&mov3));
+
     return 0;
 }
 /*  =========================================================================
@@ -189,7 +212,7 @@ void insertActor(ActorNode** head, ActorNode* actorNode){
 
 //voegt een movie toe een linked list, of initialiseert de list als ze nog niet bestaat
 void createOrInsertMovie(MovieNode** head, MovieNode* movieNode){
-    if(head){
+    if(*head){
         insertMovie(head, movieNode);
     } else {
         *head = movieNode;
@@ -198,22 +221,26 @@ void createOrInsertMovie(MovieNode** head, MovieNode* movieNode){
 
 //voegt een actor toe een linked list, of initialiseert de list als ze nog niet bestaat
 void createOrInsertActor(ActorNode** head, ActorNode* actorNode){
-    if(head){
+    if(*head){
         insertActor(head, actorNode);
     } else {
         *head = actorNode;
     }
 }
 
+void addActorToMovie(MovieData* movieData, ActorData* actorData){
+    createOrInsertActor(&(movieData->actors), newActorNode(actorData));
+}
+
 /*  =========================================================================
     ==       Compare                                                       ==
     =========================================================================*/
 
-// return: >0 Als movie1 eerder dan movie2
+// return: > 0 Als movie1 eerder dan movie2
 int compareMovies(MovieData* movie1, MovieData* movie2) {
-    int vergelijking = strcmp(movie1->name, movie2->name);
+    const int vergelijking = strcmp(movie1->name, movie2->name);
 
-    // Als de naam niet gelijk is aan elkaar
+    // Guard clause: ongelijke naam = prioriteit
     if (vergelijking != 0) {
         return vergelijking;
     }
@@ -225,9 +252,11 @@ int compareActors(ActorData* actor1, ActorData* actor2) {
     return strcmp(actor1->name, actor2->name);
 }
 
+/*  =========================================================================
+    ==       Delete                                                        ==
+    =========================================================================*/
 
 /*
-
 void deleteActor(MovieNode* head, ActorData* acteur){
     // Als er nog geen acteurs bij de films zijn
     MovieData *mover = head->movie;
@@ -262,40 +291,7 @@ void deleteActor(MovieNode* head, ActorData* acteur){
     free(current);
 }
 
-// TODO: TEST
-void addActorToMovie(MovieNode* movieHead, ActorNode* actorNode){
-    // Als er nog geen acteurs bij de films zijn
-    MovieData *mover = movieHead->movie;
-    if(mover->actors == NULL){
-        mover->actors = actorNode;
-        return;
-    }
 
-    ActorNode *current = mover->actors;
-    ActorNode *prev = NULL;
-
-    while (current != NULL && compareActors(actorNode->actor, current->actor) > 0){
-        // TRAVEL THRUE LIST
-        prev = current;
-        current = current->next;
-    }
-
-    if(prev == NULL) {
-        // HEAD
-        mover->actors = actorNode;
-        current->previous = actorNode;
-        actorNode->next = current;
-    } else if (current == NULL) {
-        // TAIL
-        prev->next = actorNode;
-        actorNode->previous = prev;
-    } else {
-        prev->next = actorNode;
-        actorNode->next = current;
-        actorNode->previous  = prev;
-        current->previous = actorNode;
-    }
-}
 
 
 
@@ -326,9 +322,6 @@ void deleteMovie(MovieNode** head, MovieNode* movieData){
 }
 
 
-void newOrInsertMovie(MovieNode** head, MovieNode* newNode){
-
-}
 void searchMovies(char startChar, MovieNode* headIn, MovieNode* headFilteredOut){
     if(!headIn){
         return;

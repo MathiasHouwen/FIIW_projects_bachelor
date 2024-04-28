@@ -47,8 +47,10 @@ void createOrInsertMovie(MovieNode** head, MovieNode* movieNode);
 void createOrInsertActor(ActorNode** head, ActorNode* actorNode);
 void addActorToMovie(MovieData* movieData, ActorData* actorData);
 //delete
-void deleteMovie(MovieNode** head, MovieNode* movieData);
-void deleteActor(ActorNode** head, ActorNode* actorNode);
+void deleteMovie(MovieNode** head, MovieData* movieData);
+void deleteActor(MovieNode** movieHead, ActorNode** actorHead, ActorData* actorData);
+void deleteActorFromActorList(ActorNode** head, ActorData* actorData);
+void deleteActorFromMovie(MovieData* movieData, ActorData* actorData);
 //search
 void searchMovies(char startChar, MovieNode* headIn, MovieNode** headFilteredOut);
 void searchActors(char startChar, ActorNode* headIn, ActorNode** headFilteredOut);
@@ -288,41 +290,7 @@ int compareActors(ActorData* actor1, ActorData* actor2) {
     ==       Delete                                                        ==
     =========================================================================*/
 
-/*
-void deleteActor(MovieNode* head, ActorData* acteur){
-    // Als er nog geen acteurs bij de films zijn
-    MovieData *mover = head->movie;
-    if(mover->actors == NULL){
-        printf("Movie heeft geen acteurs jonge.\n");
-        return;
-    }
-
-    ActorNode *current = mover->actors;
-    ActorNode *prev = NULL;
-
-    while (current != NULL && compareActors(acteur, current->actor) > 0){
-        // TRAVEL THRUE LIST
-        prev = current;
-        current = current->next;
-    }
-
-    if(current == NULL){
-        // Tail van de linkedlist
-        printf("Acteur bestaat niet jonge.\n");
-        return;
-    } else if (prev == NULL){
-        mover->actors = current->next;
-        current->next->previous = NULL;
-    } else {
-        prev->next = current->next;
-        current->previous = prev;
-    }
-
-    free(acteur);
-    free(current->actor);
-    free(current);
-}
-void deleteMovie(MovieNode** head, MovieNode* movieData){
+void deleteMovie(MovieNode** head, MovieData* movieData){
     MovieNode* current = *head;
     MovieNode* prev = NULL;
 
@@ -331,11 +299,8 @@ void deleteMovie(MovieNode** head, MovieNode* movieData){
         current = current->next;
     }
 
-    if (current == NULL) {
-        // Tail van de linkedlist
-        printf("Movie bestaat niet jonge.\n");
-        return;
-    } else if (prev == NULL) {
+    if (!current) return; //movie zit niet in lijst
+    if (!prev) {
         // Head van linkedlist
         *head = current->next;
     } else {
@@ -343,11 +308,43 @@ void deleteMovie(MovieNode** head, MovieNode* movieData){
         prev->next = current->next;
     }
 
-    free(movieData);
-    free(current->movie);
     free(current);
 }
-*/
+void deleteActorFromActorList(ActorNode** head, ActorData* actorData){
+    ActorNode* current = *head;
+    ActorNode* prev = NULL;
+
+    while (current != NULL && compareActors(actorData, current->actor) > 0){
+        prev = current;
+        current = current->next;
+    }
+
+    if(!current) return; //actor zit niet in lijst
+    if (prev == NULL){
+        //Head
+        *head = current->next;
+        current->next->previous = NULL;
+    } else {
+        //Mid
+        prev->next = current->next;
+        current->previous = prev;
+    }
+
+    free(current);
+}
+void deleteActor(MovieNode** movieHead, ActorNode** actorHead, ActorData* actorData){
+    MovieNode* currentMovie = *movieHead;
+    while(currentMovie){
+        //deleteActorFromActorList in deleteActorFromMovie negeert al actors die niet aanwezig zijn
+        deleteActorFromMovie(currentMovie->movie, actorData);
+        currentMovie = currentMovie->next;
+    }
+    deleteActorFromActorList(actorHead, actorData);
+}
+void deleteActorFromMovie(MovieData* movieData, ActorData* actorData){
+    deleteActorFromActorList(&(movieData->actors), actorData);
+}
+
 
 /*  =========================================================================
     ==       Search                                                        ==

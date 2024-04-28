@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #define EXAMPLE_MOVIES_ACTORS_AMOUNT 7
 #define EXAMPLE_MAX_MOVIES_PER_ACTOR 3
@@ -51,8 +52,12 @@ void deleteActor(ActorNode** head, ActorNode* actorNode);
 //search
 void searchMovies(char startChar, MovieNode* headIn, MovieNode** headFilteredOut);
 void searchActors(char startChar, ActorNode* headIn, ActorNode** headFilteredOut);
-//extra helpers en printers
+void searchCoactorSingleMovie(MovieData* movieData, ActorData* actorData, ActorNode** coActorsHead);
+void searchCoactor(MovieNode* movieHead, ActorData* actorData, ActorNode** coActorsHead);
+bool containsActor(ActorNode* actorHead, ActorData* actorData);
+//printers
 void printMallocErr(const char* type, const char* name);
+
 void movieTestCode();
 void acteurTestCode();
 void compareMoviesTestCode();
@@ -105,9 +110,12 @@ int main() {
 
     MovieNode* filteredMovieHead = NULL;
     ActorNode * filteredActorsHead = NULL;
+    ActorNode * coActorsHead = NULL;
 
     searchMovies('B', movieHead, &filteredMovieHead);
     searchActors('A', actorHead, &filteredActorsHead);
+
+    searchCoactor(movieHead, &actorDatas[2], &coActorsHead);
 
     return 0;
 }
@@ -198,11 +206,15 @@ void insertMovie(MovieNode** head, MovieNode* movieNode) {
 
 //voegt een actor toe aan een bestaande linked list
 void insertActor(ActorNode** head, ActorNode* actorNode){
-    ActorNode *current = *head;
-    ActorNode *prev = NULL;
+    ActorNode* current = *head;
+    ActorNode* prev = NULL;
 
     // Ga door de lijst tot bij de plaats waar die moet ge-insert worden
-    while (current && compareActors(actorNode->actor, current->actor) > 0){
+    while (current) {
+        int compare = compareActors(actorNode->actor, current->actor);
+        if(compare<0) break;
+        //om een duplicate insert te negeren
+        if(compare==0) return;
         prev = current;
         current = current->next;
     }
@@ -351,13 +363,40 @@ void searchActors(char startChar, ActorNode* headIn, ActorNode** headFilteredOut
     if(!headIn){
         return; //na de call van Tail->next zal deze NULL zijn en kan recursie stoppen
     }
-    ActorData * actorData = headIn->actor;
+    ActorData* actorData = headIn->actor;
     const char* name = actorData->name;
     if(name[0] == startChar){
         createOrInsertActor(headFilteredOut, newActorNode(actorData));
     }
     //ga recursief verder
     searchActors(startChar, headIn->next, headFilteredOut);
+}
+
+void searchCoactorSingleMovie(MovieData* movieData, ActorData* actorData, ActorNode** coActorsHead){
+    ActorNode* actorNodeInMovie = movieData->actors;
+    while(actorNodeInMovie){
+        ActorData* actorDataInMovie = actorNodeInMovie->actor;
+        //insert elke actor die niet deze actor is
+        if(actorDataInMovie != actorData){
+            createOrInsertActor(coActorsHead, newActorNode(actorDataInMovie));
+        }
+        actorNodeInMovie = actorNodeInMovie->next;
+    }
+}
+
+void searchCoactor(MovieNode* movieHead, ActorData* actorData, ActorNode** coActorsHead){
+    if(!movieHead) return;
+    MovieData* movieData = movieHead->movie;
+    if(containsActor(movieData->actors, actorData)){
+        searchCoactorSingleMovie(movieData, actorData, coActorsHead);
+    }
+    searchCoactor(movieHead->next, actorData, coActorsHead);
+}
+
+bool containsActor(ActorNode* actorHead, ActorData* actorData){
+    if(!actorHead) return false;
+    if(actorHead->actor == actorData) return true;
+    return containsActor(actorHead->next, actorData);
 }
 
 /* =============================[TEST CODE]===========================================*/

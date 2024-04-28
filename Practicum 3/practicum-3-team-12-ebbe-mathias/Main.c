@@ -55,6 +55,8 @@ void searchActors(char startChar, ActorNode* headIn, ActorNode** headFilteredOut
 void searchCoactorSingleMovie(MovieData* movieData, ActorData* actorData, ActorNode** coActorsHead);
 void searchCoactor(MovieNode* movieHead, ActorData* actorData, ActorNode** coActorsHead);
 bool containsActor(ActorNode* actorHead, ActorData* actorData);
+//build index
+void buildIndex(MovieNode* movieHead, MovieNode* index[26]);
 //printers
 void printMallocErr(const char* type, const char* name);
 
@@ -107,6 +109,10 @@ int main() {
             }
         }
     }
+
+    //Er zijn altijd 26 letters. Dat kan nooit veranderen dus 26 is hardcoded
+    MovieNode * index[26];
+    buildIndex(movieHead, index);
 
     MovieNode* filteredMovieHead = NULL;
     ActorNode * filteredActorsHead = NULL;
@@ -212,7 +218,7 @@ void insertActor(ActorNode** head, ActorNode* actorNode){
     // Ga door de lijst tot bij de plaats waar die moet ge-insert worden
     while (current) {
         int compare = compareActors(actorNode->actor, current->actor);
-        if(compare<0) break;
+        if(compare>0) break;
         //om een duplicate insert te negeren
         if(compare==0) return;
         prev = current;
@@ -378,6 +384,7 @@ void searchCoactorSingleMovie(MovieData* movieData, ActorData* actorData, ActorN
         ActorData* actorDataInMovie = actorNodeInMovie->actor;
         //insert elke actor die niet deze actor is
         if(actorDataInMovie != actorData){
+            //(inserActor negeert zelf al duplicaten)
             createOrInsertActor(coActorsHead, newActorNode(actorDataInMovie));
         }
         actorNodeInMovie = actorNodeInMovie->next;
@@ -399,143 +406,29 @@ bool containsActor(ActorNode* actorHead, ActorData* actorData){
     return containsActor(actorHead->next, actorData);
 }
 
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
-/* =============================[TEST CODE]===========================================*/
+/*  =========================================================================
+    ==       buildIndex                                                    ==
+    =========================================================================*/
 
-/*
-void movieTestCode() {
-    MovieData* movie1 = newMovie("Inception", 2010);
-    MovieData* movie2 = newMovie("The Shawshank Redemption", 1994);
-
-    printf("Film 1: %s (%d)\n", movie1->name, movie1->year);
-    printf("Film 2: %s (%d)\n", movie2->name, movie2->year);
-
-    free(movie1);
-    free(movie2);
-}
-
-void acteurTestCode() {
-    ActorData* actor1 = newActor("Leonardo DiCaprio");
-    ActorData* actor2 = newActor("Morgan Freeman");
-
-    printf("Acteur 1: %s\n", actor1->name);
-    printf("Acteur 2: %s\n", actor2->name);
-
-    free(actor1);
-    free(actor2);
-}
-
-void compareMoviesTestCode() {
-    // Maak een array van films
-    MovieData movies[] = {
-        {"Inception", 2010},
-        {"The Shawshank Redemption", 1994},
-        {"Pulp Fiction", 1994},
-        {"The Godfather", 1972},
-        {"Forrest Gump", 1994}
-    };
-
-    // Sorteer de array van films
-    //qsort(movies, sizeof(movies) / sizeof(movies[0]), sizeof(struct MovieData),
-    //      (_CoreCrtNonSecureSearchSortCompareFunction) compareMovies);
-
-    // Geef de gesorteerde films weer
-    printf("Gesorteerde films:\n");
-    for (int i = 0; i < sizeof(movies) / sizeof(movies[0]); i++) {
-        printf("%s (%d)\n", movies[i].name, movies[i].year);
+void buildIndex(MovieNode* movieHead, MovieNode* index[26]){
+    memset(index, 0, sizeof(MovieNode)*26);
+    //de buitenste loop voor films, binnenste voor index.
+    //er kunnen makkelijk meer dan 26 films zijn en voor elke
+    //index die geen film heeft, zou anders de hele movies list bekeken moeten worden
+    //dit is dus sneller
+    MovieNode * current = movieHead;
+    while(current){
+        const char* name = current->movie->name;
+        char fistChar = name[0];
+        //char kan ge-interpreteerd worden als een integer. Deze hebben al een alfabetische volgorde
+        int indexPos_A = fistChar-'A';
+        int indexPos_a = fistChar-'a';
+        //kleine letters komen na grote. Als 'a'-afstand negatief is, is het dus een grote letter
+        int indexPos = indexPos_a < 0 ? indexPos_A : indexPos_a;
+        //als nog niet in index, dan toevoegen
+        if(!index[indexPos]){
+            index[indexPos] = current;
+        }
+        current = current->next;
     }
 }
-
-void insertActorTestCode() {
-    MovieData* movieData = newMovie("Pulp Fiction", 1994);
-    MovieNode* movie = newMovieNode(movieData);
-
-    ActorData* actor1 = newActor("Tom Hanks");
-    ActorData* actor2 = newActor("Meryl Streep");
-    ActorData* actor3 = newActor("Leonardo DiCaprio");
-    ActorData* actor4 = newActor("Jennifer Lawrence");
-    ActorData* actor5 = newActor("Brad Pitt");
-
-    ActorNode* actorNode1 = newActorNode(actor1);
-    ActorNode* actorNode2 = newActorNode(actor2);
-    ActorNode* actorNode3 = newActorNode(actor3);
-    ActorNode* actorNode4 = newActorNode(actor4);
-    ActorNode* actorNode5 = newActorNode(actor5);
-
-    addActorToMovie(movie, actorNode1);
-    addActorToMovie(movie, actorNode2);
-    addActorToMovie(movie, actorNode3);
-    addActorToMovie(movie, actorNode4);
-    addActorToMovie(movie, actorNode5);
-}
-
-void insertMovieTestCode() {
-    // WOUW ZO MOOIE CODE AMMAAI
-    MovieData* movie1 = newMovie("Inception", 2010);
-    MovieData* movie2 = newMovie("The Shawshank Redemption", 1994);
-    MovieData* movie3 = newMovie("Pulp Fiction", 1994);
-    MovieData* movie4 = newMovie("The Godfather", 1972);
-    MovieData* movie5 = newMovie("Forrest Gump", 1994);
-
-    MovieNode* movieNode1 = newMovieNode(movie1);
-    MovieNode* movieNode2 = newMovieNode(movie2);
-    MovieNode* movieNode3 = newMovieNode(movie3);
-    MovieNode* movieNode4 = newMovieNode(movie4);
-    MovieNode* movieNode5 = newMovieNode(movie5);
-
-    MovieNode** head =&movieNode1;
-    insertMovie(head, movieNode2);
-    insertMovie(head, movieNode3);
-    insertMovie(head, movieNode4);
-    insertMovie(head, movieNode5);
-
-    //FREE MEM
-    free(movieNode1);
-    free(movieNode2);
-    free(movieNode3);
-    free(movieNode4);
-    free(movieNode5);
-    free(movie1);
-    free(movie2);
-    free(movie3);
-    free(movie4);
-    free(movie5);
-}
-
-void deleteMovieTestCode(){
-    MovieData* movie1 = newMovie("Inception", 2010);
-    MovieData* movie2 = newMovie("The Shawshank Redemption", 1994);
-    MovieData* movie3 = newMovie("Pulp Fiction", 1994);
-    MovieData* movie4 = newMovie("The Godfather", 1972);
-    MovieData* movie5 = newMovie("Forrest Gump", 1994);
-
-    MovieNode* movieNode1 = newMovieNode(movie1);
-    MovieNode* movieNode2 = newMovieNode(movie2);
-    MovieNode* movieNode3 = newMovieNode(movie3);
-    MovieNode* movieNode4 = newMovieNode(movie4);
-    MovieNode* movieNode5 = newMovieNode(movie5);
-
-    MovieNode** head =&movieNode1;
-    insertMovie(head, movieNode2);
-    insertMovie(head, movieNode3);
-    insertMovie(head, movieNode4);
-    insertMovie(head, movieNode5);
-
-    deleteMovie(head, movie3);
-}*/

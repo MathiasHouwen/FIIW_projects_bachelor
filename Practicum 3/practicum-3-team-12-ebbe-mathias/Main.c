@@ -1,3 +1,11 @@
+
+/* ==============================================
+	Practicum 3 BESC:
+	Team 12
+		- Ebbe Wertz
+		- Mathias Houwen
+   ============================================== */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -59,10 +67,13 @@ void searchCoactor(MovieNode* movieHead, ActorData* actorData, ActorNode** coAct
 bool containsActor(ActorNode* actorHead, ActorData* actorData);
 //build index
 void buildIndex(MovieNode* movieHead, MovieNode* index[26]);
-//printers
+//printers / extra
 void printMallocErr(const char* type, const char* name);
-
 void freeAll(MovieNode** movieHead, ActorNode** actorHead);
+
+/*  =========================================================================
+    ==       MAIN                                                          ==
+    =========================================================================*/
 
 int main() {
     MovieData movieDatas[EXAMPLE_MOVIES_ACTORS_AMOUNT] = {
@@ -156,6 +167,7 @@ ActorData newActor(const char* name) {
     return actorData;
 }
 
+//maakt een nieuwe node van een movie
 MovieNode* newMovieNode(MovieData* movieData) {
     //Geheugen alloceren op heap
     MovieNode* movieNode = malloc(sizeof(MovieNode));
@@ -169,6 +181,7 @@ MovieNode* newMovieNode(MovieData* movieData) {
     return movieNode;
 }
 
+//maakt een nieuwe node van een actor
 ActorNode* newActorNode(ActorData* actorData){
     //Geheugen alloceren op heap
     ActorNode* actorNode = malloc(sizeof(ActorNode));
@@ -263,6 +276,7 @@ void createOrInsertActor(ActorNode** head, ActorNode* actorNode){
     }
 }
 
+//voegt actor to aan de actors list van een movie
 void addActorToMovie(MovieData* movieData, ActorData* actorData){
     createOrInsertActor(&(movieData->actors), newActorNode(actorData));
 }
@@ -294,6 +308,7 @@ int compareActors(void* actor1, void* actor2) {
     ==       Delete                                                        ==
     =========================================================================*/
 
+//verwijderd movie (free ook de actors list van die movie)
 void deleteMovie(MovieNode** head, MovieData* movieData){
     MovieNode* current = *head;
     MovieNode* prev = NULL;
@@ -303,6 +318,7 @@ void deleteMovie(MovieNode** head, MovieData* movieData){
         current = current->next;
     }
 
+    //free actors list
     ActorNode* actorInMovie = movieData->actors;
     while(actorInMovie){
         deleteActorFromMovie(movieData, actorInMovie->actor);
@@ -320,6 +336,7 @@ void deleteMovie(MovieNode** head, MovieData* movieData){
 
     free(current);
 }
+//verwijderd een actor van een actors list
 void deleteActorFromActorList(ActorNode** head, ActorData* actorData){
     ActorNode* current = *head;
     ActorNode* prev = NULL;
@@ -349,6 +366,7 @@ void deleteActorFromActorList(ActorNode** head, ActorData* actorData){
 
     free(current);
 }
+//verwijderd actors van list en ook uit alle movies
 void deleteActor(MovieNode** movieHead, ActorNode** actorHead, ActorData* actorData){
     MovieNode* currentMovie = *movieHead;
     while(currentMovie){
@@ -358,6 +376,7 @@ void deleteActor(MovieNode** movieHead, ActorNode** actorHead, ActorData* actorD
     }
     deleteActorFromActorList(actorHead, actorData);
 }
+//verwijderd actor uit actors list van movie
 void deleteActorFromMovie(MovieData* movieData, ActorData* actorData){
     deleteActorFromActorList(&(movieData->actors), actorData);
 }
@@ -367,6 +386,7 @@ void deleteActorFromMovie(MovieData* movieData, ActorData* actorData){
     ==       Search                                                        ==
     =========================================================================*/
 
+//maakt list met movies met beginletter startChar
 void searchMovies(char startChar, MovieNode* headIn, MovieNode** headFilteredOut){
     if(!headIn){
         return; //na de call van Tail->next zal deze NULL zijn en kan recursie stoppen
@@ -379,6 +399,7 @@ void searchMovies(char startChar, MovieNode* headIn, MovieNode** headFilteredOut
     //ga recursief verder
     searchMovies(startChar, headIn->next, headFilteredOut);
 }
+//maakt list met actos met beginletter startChar
 void searchActors(char startChar, ActorNode* headIn, ActorNode** headFilteredOut){
     if(!headIn){
         return; //na de call van Tail->next zal deze NULL zijn en kan recursie stoppen
@@ -391,7 +412,7 @@ void searchActors(char startChar, ActorNode* headIn, ActorNode** headFilteredOut
     //ga recursief verder
     searchActors(startChar, headIn->next, headFilteredOut);
 }
-
+//geeft alle andere actors coactors naast een gegeven actor in 1 movie
 void searchCoactorSingleMovie(MovieData* movieData, ActorData* actorData, ActorNode** coActorsHead){
     ActorNode* actorNodeInMovie = movieData->actors;
     while(actorNodeInMovie){
@@ -404,7 +425,7 @@ void searchCoactorSingleMovie(MovieData* movieData, ActorData* actorData, ActorN
         actorNodeInMovie = actorNodeInMovie->next;
     }
 }
-
+//zoekt coactors via alle movies
 void searchCoactor(MovieNode* movieHead, ActorData* actorData, ActorNode** coActorsHead){
     if(!movieHead) return;
     MovieData* movieData = movieHead->movie;
@@ -413,7 +434,7 @@ void searchCoactor(MovieNode* movieHead, ActorData* actorData, ActorNode** coAct
     }
     searchCoactor(movieHead->next, actorData, coActorsHead);
 }
-
+//boolean of een actors lijst een actor bevat
 bool containsActor(ActorNode* actorHead, ActorData* actorData){
     if(!actorHead) return false;
     if(actorHead->actor == actorData) return true;
@@ -424,6 +445,7 @@ bool containsActor(ActorNode* actorHead, ActorData* actorData){
     ==       buildIndex                                                    ==
     =========================================================================*/
 
+//maakt de index array
 void buildIndex(MovieNode* movieHead, MovieNode* index[26]){
     memset(index, 0, sizeof(MovieNode)*26);
     //de buitenste loop voor films, binnenste voor index.
@@ -446,6 +468,8 @@ void buildIndex(MovieNode* movieHead, MovieNode* index[26]){
         current = current->next;
     }
 }
+
+//verwijdert en free't alles
 void freeAll(MovieNode** movieHead, ActorNode** actorHead){
     ActorNode* currentActor = *actorHead;
     MovieNode* currentMovie = *movieHead;

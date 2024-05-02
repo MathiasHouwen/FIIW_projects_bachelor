@@ -38,8 +38,8 @@ ActorData newActor(const char* name);
 MovieNode* newMovieNode(MovieData* movieData);
 ActorNode* newActorNode(ActorData* actorData);
 //compare
-int compareMovies(MovieData* movie1, MovieData* movie2);
-int compareActors(ActorData* actor1, ActorData* actor2);
+int compareMovies(void* movie1, void* movie2);
+int compareActors(void* actor1, void* actor2);
 //list builders
 void insertMovie(MovieNode** head, MovieNode* movieNode);
 void insertActor(ActorNode** head, ActorNode* actorNode);
@@ -62,12 +62,7 @@ void buildIndex(MovieNode* movieHead, MovieNode* index[26]);
 //printers
 void printMallocErr(const char* type, const char* name);
 
-void movieTestCode();
-void acteurTestCode();
-void compareMoviesTestCode();
-void insertMovieTestCode();
-void insertActorTestCode();
-void deleteMovieTestCode();
+void freeAll(MovieNode** movieHead, ActorNode** actorHead);
 
 int main() {
     MovieData movieDatas[EXAMPLE_MOVIES_ACTORS_AMOUNT] = {
@@ -129,6 +124,7 @@ int main() {
 
     deleteActor(&movieHead, &actorHead, &actorDatas[2]);
 
+    freeAll(&movieHead, &actorHead);
     return 0;
 }
 /*  =========================================================================
@@ -275,19 +271,22 @@ void addActorToMovie(MovieData* movieData, ActorData* actorData){
     =========================================================================*/
 
 // return: > 0 Als movie1 eerder dan movie2
-int compareMovies(MovieData* movie1, MovieData* movie2) {
-    const int vergelijking = strcmp(movie1->name, movie2->name);
-
+int compareMovies(void* movie1, void* movie2) {
+    MovieData* movieData1 = (MovieData*)movie1;
+    MovieData* movieData2 = (MovieData*)movie2;
+    const int vergelijking = strcmp(movieData1->name, movieData2->name);
     // Guard clause: ongelijke naam = prioriteit
     if (vergelijking != 0) {
         return vergelijking;
     }
 
-    return movie1->year - movie2->year;
+    return movieData1->year - movieData2->year;
 }
 
-int compareActors(ActorData* actor1, ActorData* actor2) {
-    return strcmp(actor1->name, actor2->name);
+int compareActors(void* actor1, void* actor2) {
+    ActorData* actorData1 = (ActorData*)actor1;
+    ActorData* actorData2 = (ActorData*)actor2;
+    return strcmp(actorData1->name, actorData2->name);
 }
 
 /*  =========================================================================
@@ -301,6 +300,12 @@ void deleteMovie(MovieNode** head, MovieData* movieData){
     while (current != NULL && compareMovies(movieData, current->movie) > 0) {
         prev = current;
         current = current->next;
+    }
+
+    ActorNode* actorInMovie = movieData->actors;
+    while(actorInMovie){
+        deleteActorFromMovie(movieData, actorInMovie->actor);
+        actorInMovie = actorInMovie->next;
     }
 
     if (!current) return; //movie zit niet in lijst
@@ -434,5 +439,17 @@ void buildIndex(MovieNode* movieHead, MovieNode* index[26]){
             index[indexPos] = current;
         }
         current = current->next;
+    }
+}
+void freeAll(MovieNode** movieHead, ActorNode** actorHead){
+    ActorNode* currentActor = *actorHead;
+    MovieNode* currentMovie = *movieHead;
+    while(currentMovie){
+        deleteMovie(movieHead, currentMovie->movie);
+        currentMovie = currentMovie->next;
+    }
+    while(currentActor){
+        deleteActor(movieHead, actorHead, currentActor->actor);
+        currentActor = currentActor->next;
     }
 }

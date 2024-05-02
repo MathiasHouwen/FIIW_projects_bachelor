@@ -114,16 +114,20 @@ int main() {
 
     //Er zijn altijd 26 letters. Dat kan nooit veranderen dus 26 is hardcoded
     MovieNode * index[26];
-    buildIndex(movieHead, index);
-
     MovieNode* filteredMovieHead = NULL;
     ActorNode * filteredActorsHead = NULL;
     ActorNode * coActorsHead = NULL;
+
+    buildIndex(movieHead, index);
 
     searchMovies('B', movieHead, &filteredMovieHead);
     searchActors('A', actorHead, &filteredActorsHead);
 
     searchCoactor(movieHead, &actorDatas[2], &coActorsHead);
+
+    deleteMovie(&movieHead, &movieDatas[3]);
+
+    deleteActor(&movieHead, &actorHead, &actorDatas[2]);
 
     return 0;
 }
@@ -220,7 +224,7 @@ void insertActor(ActorNode** head, ActorNode* actorNode){
     // Ga door de lijst tot bij de plaats waar die moet ge-insert worden
     while (current) {
         int compare = compareActors(actorNode->actor, current->actor);
-        if(compare>0) break;
+        if(compare<0) break;
         //om een duplicate insert te negeren
         if(compare==0) return;
         prev = current;
@@ -320,14 +324,17 @@ void deleteActorFromActorList(ActorNode** head, ActorData* actorData){
     }
 
     if(!current) return; //actor zit niet in lijst
-    if (prev == NULL){
+    if (!prev){
         //Head
         *head = current->next;
         current->next->previous = NULL;
     } else {
         //Mid
-        prev->next = current->next;
-        current->previous = prev;
+        ActorNode* next = current->next;
+        prev->next = next;
+        if(next){
+            next->previous = prev;
+        }
     }
 
     free(current);

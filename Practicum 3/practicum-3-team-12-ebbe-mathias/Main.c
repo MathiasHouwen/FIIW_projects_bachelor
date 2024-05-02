@@ -125,6 +125,7 @@ int main() {
     deleteActor(&movieHead, &actorHead, &actorDatas[2]);
 
     freeAll(&movieHead, &actorHead);
+
     return 0;
 }
 /*  =========================================================================
@@ -332,7 +333,11 @@ void deleteActorFromActorList(ActorNode** head, ActorData* actorData){
     if (!prev){
         //Head
         *head = current->next;
-        current->next->previous = NULL;
+        ActorNode* next = current->next;
+        //Een lijst van 1 lang kan head en tail zijn
+        if(next){
+            next->previous = NULL;
+        }
     } else {
         //Mid
         ActorNode* next = current->next;

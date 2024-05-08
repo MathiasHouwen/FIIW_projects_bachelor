@@ -12,12 +12,12 @@
 #include <stdbool.h>
 
 #include "acteur.h"
+#include "film.h"
 
 #define EXAMPLE_MOVIES_ACTORS_AMOUNT 7
 #define EXAMPLE_MAX_MOVIES_PER_ACTOR 3
 
 typedef struct ActorNode ActorNode;
-typedef struct MovieData MovieData;
 typedef struct MovieNode MovieNode;
 
 struct ActorNode {
@@ -26,23 +26,14 @@ struct ActorNode {
     ActorNode* previous;
 };
 
-struct MovieData {
-    const char* name;
-    int year;
-    ActorNode* actors;
-};
-
 struct MovieNode {
     MovieData* movie;
     MovieNode* next;
 };
 
 //constructors
-MovieData newMovie(const char* name, int year);
 MovieNode* newMovieNode(MovieData* movieData);
 ActorNode* newActorNode(ActorData* actorData);
-//compare
-int compareMovies(void* movie1, void* movie2);
 //list builders
 void insertMovie(MovieNode** head, MovieNode* movieNode);
 void insertActor(ActorNode** head, ActorNode* actorNode);
@@ -145,15 +136,6 @@ void printMallocErr(const char* type, const char* name) {
 /*  =========================================================================
     ==       constructors                                                  ==
     =========================================================================*/
-
-    // Functie om een nieuwe movie struct te maken
-MovieData newMovie(const char* name, int year) {
-    MovieData movieData;
-    movieData.name = name;
-    movieData.year = year;
-    movieData.actors = NULL; // leeg bij init, kan achteraf gevuld worden
-    return movieData;
-}
 
 //maakt een nieuwe node van een movie
 MovieNode* newMovieNode(MovieData* movieData) {
@@ -273,23 +255,6 @@ void createOrInsertActor(ActorNode** head, ActorNode* actorNode) {
 //voegt actor to aan de actors list van een movie
 void addActorToMovie(MovieData* movieData, ActorData* actorData) {
     createOrInsertActor(&(movieData->actors), newActorNode(actorData));
-}
-
-/*  =========================================================================
-    ==       Compare                                                       ==
-    =========================================================================*/
-
-    // return: > 0 Als movie1 eerder dan movie2
-int compareMovies(void* movie1, void* movie2) {
-    MovieData* movieData1 = (MovieData*)movie1;
-    MovieData* movieData2 = (MovieData*)movie2;
-    const int vergelijking = strcmp(movieData1->name, movieData2->name);
-    // Guard clause: ongelijke naam = prioriteit
-    if (vergelijking != 0) {
-        return vergelijking;
-    }
-
-    return movieData1->year - movieData2->year;
 }
 
 /*  =========================================================================

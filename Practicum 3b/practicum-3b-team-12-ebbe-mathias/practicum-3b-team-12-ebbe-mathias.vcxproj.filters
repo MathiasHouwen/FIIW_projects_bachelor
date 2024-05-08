@@ -21,9 +21,15 @@
     <ClCompile Include="acteur.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="film.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="acteur.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="film.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

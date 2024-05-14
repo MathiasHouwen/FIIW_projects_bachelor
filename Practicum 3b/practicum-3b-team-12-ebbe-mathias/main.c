@@ -11,40 +11,15 @@
 #include <string.h>
 #include <stdbool.h>
 
-#include "acteur.h"
-#include "film.h"
+#include "data.h"
+#include "movieList.h"
+#include "actorList.h"
 
 #define EXAMPLE_MOVIES_ACTORS_AMOUNT 7
 #define EXAMPLE_MAX_MOVIES_PER_ACTOR 3
+#define NUMBERS_IN_ALPHABHET 26
 
-typedef struct ActorNode ActorNode;
-typedef struct MovieNode MovieNode;
 
-struct ActorNode {
-    ActorData* actor;
-    ActorNode* next;
-    ActorNode* previous;
-};
-
-struct MovieNode {
-    MovieData* movie;
-    MovieNode* next;
-};
-
-//constructors
-MovieNode* newMovieNode(MovieData* movieData);
-ActorNode* newActorNode(ActorData* actorData);
-//list builders
-void insertMovie(MovieNode** head, MovieNode* movieNode);
-void insertActor(ActorNode** head, ActorNode* actorNode);
-void createOrInsertMovie(MovieNode** head, MovieNode* movieNode);
-void createOrInsertActor(ActorNode** head, ActorNode* actorNode);
-void addActorToMovie(MovieData* movieData, ActorData* actorData);
-//delete
-void deleteMovie(MovieNode** head, MovieData* movieData);
-void deleteActor(MovieNode** movieHead, ActorNode** actorHead, ActorData* actorData);
-void deleteActorFromActorList(ActorNode** head, ActorData* actorData);
-void deleteActorFromMovie(MovieData* movieData, ActorData* actorData);
 //search
 void searchMovies(char startChar, MovieNode* headIn, MovieNode** headFilteredOut);
 void searchActors(char startChar, ActorNode* headIn, ActorNode** headFilteredOut);
@@ -52,7 +27,7 @@ void searchCoactorSingleMovie(MovieData* movieData, ActorData* actorData, ActorN
 void searchCoactor(MovieNode* movieHead, ActorData* actorData, ActorNode** coActorsHead);
 bool containsActor(ActorNode* actorHead, ActorData* actorData);
 //build index
-void buildIndex(MovieNode* movieHead, MovieNode* index[26]);
+void buildIndex(MovieNode* movieHead, MovieNode* index[NUMBERS_IN_ALPHABHET]);
 //printers / extra
 void printMallocErr(const char* type, const char* name);
 void freeAll(MovieNode** movieHead, ActorNode** actorHead);
@@ -104,8 +79,7 @@ int main() {
         }
     }
 
-    //Er zijn altijd 26 letters. Dat kan nooit veranderen dus 26 is hardcoded
-    MovieNode* index[26];
+    MovieNode* index[NUMBERS_IN_ALPHABHET];
     MovieNode* filteredMovieHead = NULL;
     ActorNode* filteredActorsHead = NULL;
     ActorNode* coActorsHead = NULL;
@@ -132,210 +106,6 @@ int main() {
 void printMallocErr(const char* type, const char* name) {
     printf("\033[31m[ERROR] Geheugen kon niet worden toegewezen voor de nieuwe %s: '%s'\033[0m\n", type, name);
 }
-
-/*  =========================================================================
-    ==       constructors                                                  ==
-    =========================================================================*/
-
-//maakt een nieuwe node van een movie
-MovieNode* newMovieNode(MovieData* movieData) {
-    //Geheugen alloceren op heap
-    MovieNode* movieNode = malloc(sizeof(MovieNode));
-    if (!movieNode) {
-        printMallocErr("Movie", movieData->name);
-        exit(EXIT_FAILURE);
-    }
-    //data
-    movieNode->movie = movieData;
-    movieNode->next = NULL;
-    return movieNode;
-}
-
-//maakt een nieuwe node van een actor
-ActorNode* newActorNode(ActorData* actorData) {
-    //Geheugen alloceren op heap
-    ActorNode* actorNode = malloc(sizeof(ActorNode));
-    if (!actorNode) {
-        printMallocErr("Actor", actorData->name);
-        exit(EXIT_FAILURE);
-    }
-    //data
-    actorNode->actor = actorData;
-    actorNode->next = NULL;
-    actorNode->previous = NULL;
-    return actorNode;
-}
-
-/*  =========================================================================
-    ==       Builders                                                      ==
-    =========================================================================*/
-
-    //voegt een movie toe aan een bestaande linked list
-void insertMovie(MovieNode** head, MovieNode* movieNode) {
-    MovieNode* current = *head;
-    MovieNode* prev = NULL;
-
-    // Ga door de lijst tot bij de plaats waar die moet ge-insert worden
-    while (current && compareMovies(movieNode->movie, current->movie) > 0) {
-        prev = current;
-        current = current->next;
-    }
-
-    if (!prev) {
-        // Head van linkedlist
-        movieNode->next = *head;
-        *head = movieNode;
-    }
-    else if (!current) {
-        // Tail van de linkedlist
-        prev->next = movieNode;
-        movieNode->next = NULL;
-    }
-    else {
-        // Middel van de linkedlist
-        prev->next = movieNode;
-        movieNode->next = current;
-    }
-}
-
-//voegt een actor toe aan een bestaande linked list
-void insertActor(ActorNode** head, ActorNode* actorNode) {
-    ActorNode* current = *head;
-    ActorNode* prev = NULL;
-
-    // Ga door de lijst tot bij de plaats waar die moet ge-insert worden
-    while (current) {
-        int compare = compareActors(actorNode->actor, current->actor);
-        if (compare < 0) break;
-        //om een duplicate insert te negeren
-        if (compare == 0) return;
-        prev = current;
-        current = current->next;
-    }
-
-    if (!prev) {
-        // HEAD
-        actorNode->next = *head;
-        (*head)->previous = actorNode;
-        *head = actorNode;
-    }
-    else if (!current) {
-        // TAIL
-        prev->next = actorNode;
-        actorNode->previous = prev;
-    }
-    else {
-        prev->next = actorNode;
-        actorNode->previous = prev;
-        actorNode->next = current;
-        current->previous = actorNode;
-    }
-}
-
-//voegt een movie toe een linked list, of initialiseert de list als ze nog niet bestaat
-void createOrInsertMovie(MovieNode** head, MovieNode* movieNode) {
-    if (*head) {
-        insertMovie(head, movieNode);
-    }
-    else {
-        *head = movieNode;
-    }
-}
-
-//voegt een actor toe een linked list, of initialiseert de list als ze nog niet bestaat
-void createOrInsertActor(ActorNode** head, ActorNode* actorNode) {
-    if (*head) {
-        insertActor(head, actorNode);
-    }
-    else {
-        *head = actorNode;
-    }
-}
-
-//voegt actor to aan de actors list van een movie
-void addActorToMovie(MovieData* movieData, ActorData* actorData) {
-    createOrInsertActor(&(movieData->actors), newActorNode(actorData));
-}
-
-/*  =========================================================================
-    ==       Delete                                                        ==
-    =========================================================================*/
-
-    //verwijderd movie (free ook de actors list van die movie)
-void deleteMovie(MovieNode** head, MovieData* movieData) {
-    MovieNode* current = *head;
-    MovieNode* prev = NULL;
-
-    while (current != NULL && compareMovies(movieData, current->movie) > 0) {
-        prev = current;
-        current = current->next;
-    }
-
-    //free actors list
-    ActorNode* actorInMovie = movieData->actors;
-    while (actorInMovie) {
-        deleteActorFromMovie(movieData, actorInMovie->actor);
-        actorInMovie = actorInMovie->next;
-    }
-
-    if (!current) return; //movie zit niet in lijst
-    if (!prev) {
-        // Head van linkedlist
-        *head = current->next;
-    }
-    else {
-        // Middel van de linkedlist
-        prev->next = current->next;
-    }
-
-    free(current);
-}
-//verwijderd een actor van een actors list
-void deleteActorFromActorList(ActorNode** head, ActorData* actorData) {
-    ActorNode* current = *head;
-    ActorNode* prev = NULL;
-
-    while (current != NULL && compareActors(actorData, current->actor) > 0) {
-        prev = current;
-        current = current->next;
-    }
-
-    if (!current) return; //actor zit niet in lijst
-    if (!prev) {
-        //Head
-        *head = current->next;
-        ActorNode* next = current->next;
-        //Een lijst van 1 lang kan head en tail zijn
-        if (next) {
-            next->previous = NULL;
-        }
-    }
-    else {
-        //Mid
-        ActorNode* next = current->next;
-        prev->next = next;
-        if (next) {
-            next->previous = prev;
-        }
-    }
-
-    free(current);
-}
-//verwijderd actors van list en ook uit alle movies
-void deleteActor(MovieNode** movieHead, ActorNode** actorHead, ActorData* actorData) {
-    MovieNode* currentMovie = *movieHead;
-    while (currentMovie) {
-        //deleteActorFromActorList in deleteActorFromMovie negeert al actors die niet aanwezig zijn
-        deleteActorFromMovie(currentMovie->movie, actorData);
-        currentMovie = currentMovie->next;
-    }
-    deleteActorFromActorList(actorHead, actorData);
-}
-//verwijderd actor uit actors list van movie
-void deleteActorFromMovie(MovieData* movieData, ActorData* actorData) {
-    deleteActorFromActorList(&(movieData->actors), actorData);
-}
-
 
 /*  =========================================================================
     ==       Search                                                        ==
@@ -401,8 +171,8 @@ bool containsActor(ActorNode* actorHead, ActorData* actorData) {
     =========================================================================*/
 
     //maakt de index array
-void buildIndex(MovieNode* movieHead, MovieNode* index[26]) {
-    memset(index, 0, sizeof(MovieNode) * 26);
+void buildIndex(MovieNode* movieHead, MovieNode* index[NUMBERS_IN_ALPHABHET]) {
+    memset(index, 0, sizeof(MovieNode) * NUMBERS_IN_ALPHABHET);
     //de buitenste loop voor films, binnenste voor index.
     //er kunnen makkelijk meer dan 26 films zijn en voor elke
     //index die geen film heeft, zou anders de hele movies list bekeken moeten worden

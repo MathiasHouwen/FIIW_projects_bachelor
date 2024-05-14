@@ -127,13 +127,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="acteur.c" />
-    <ClCompile Include="film.c" />
+    <ClCompile Include="actorList.c" />
+    <ClCompile Include="data.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="movieList.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="acteur.h" />
-    <ClInclude Include="film.h" />
+    <ClInclude Include="actorList.h" />
+    <ClInclude Include="data.h" />
+    <ClInclude Include="movieList.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

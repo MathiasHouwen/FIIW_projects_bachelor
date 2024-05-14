@@ -18,18 +18,24 @@
     <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="acteur.c">
+    <ClCompile Include="data.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="film.c">
+    <ClCompile Include="movieList.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="actorList.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="acteur.h">
+    <ClInclude Include="data.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="film.h">
+    <ClInclude Include="movieList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="actorList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

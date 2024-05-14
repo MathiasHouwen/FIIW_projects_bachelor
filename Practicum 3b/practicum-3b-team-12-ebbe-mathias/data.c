@@ -1,5 +1,12 @@
 #include <stdio.h>
-#include "film.h"
+#include "data.h"
+
+// Functie om een nieuwe acteur struct te maken
+ActorData newActor(const char* name) {
+    ActorData actorData;
+    actorData.name = name;
+    return actorData;
+}
 
 // Functie om een nieuwe movie struct te maken
 MovieData newMovie(const char* name, int year) {
@@ -21,4 +28,10 @@ int compareMovies(void* movie1, void* movie2) {
     }
 
     return movieData1->year - movieData2->year;
+}
+
+int compareActors(void* actor1, void* actor2) {
+    ActorData* actorData1 = (ActorData*)actor1;
+    ActorData* actorData2 = (ActorData*)actor2;
+    return strcmp(actorData1->name, actorData2->name);
 }

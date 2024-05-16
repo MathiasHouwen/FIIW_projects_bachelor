@@ -18,4 +18,8 @@ void addActorToMovie(MovieData* movieData, ActorData* actorData);
 void deleteMovie(MovieNode** head, MovieData* movieData);
 void deleteActorFromMovie(MovieData* movieData, ActorData* actorData);
 
+void searchMovies(char startChar, MovieNode* headIn, MovieNode** headFilteredOut);
+void searchCoactorSingleMovie(MovieData* movieData, ActorData* actorData, ActorNode** coActorsHead);
+void searchCoactor(MovieNode* movieHead, ActorData* actorData, ActorNode** coActorsHead);
+
 #endif

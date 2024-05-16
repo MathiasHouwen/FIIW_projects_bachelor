@@ -102,3 +102,24 @@ void deleteActor(MovieNode** movieHead, ActorNode** actorHead, ActorData* actorD
     }
     deleteActorFromActorList(actorHead, actorData);
 }
+
+//maakt list met actos met beginletter startChar
+void searchActors(char startChar, ActorNode* headIn, ActorNode** headFilteredOut) {
+    if (!headIn) {
+        return; //na de call van Tail->next zal deze NULL zijn en kan recursie stoppen
+    }
+    ActorData* actorData = headIn->actor;
+    const char* name = actorData->name;
+    if (name[0] == startChar) {
+        createOrInsertActor(headFilteredOut, newActorNode(actorData));
+    }
+    //ga recursief verder
+    searchActors(startChar, headIn->next, headFilteredOut);
+}
+
+//boolean of een actors lijst een actor bevat
+bool containsActor(ActorNode* actorHead, ActorData* actorData) {
+    if (!actorHead) return false;
+    if (actorHead->actor == actorData) return true;
+    return containsActor(actorHead->next, actorData);
+}

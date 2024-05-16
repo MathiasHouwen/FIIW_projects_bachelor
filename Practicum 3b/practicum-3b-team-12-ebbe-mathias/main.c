@@ -6,7 +6,6 @@
         - Mathias Houwen
    ============================================== */
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
@@ -14,23 +13,11 @@
 #include "data.h"
 #include "movieList.h"
 #include "actorList.h"
+#include "helper.h"
 
 #define EXAMPLE_MOVIES_ACTORS_AMOUNT 7
 #define EXAMPLE_MAX_MOVIES_PER_ACTOR 3
-#define NUMBERS_IN_ALPHABHET 26
 
-
-//search
-void searchMovies(char startChar, MovieNode* headIn, MovieNode** headFilteredOut);
-void searchActors(char startChar, ActorNode* headIn, ActorNode** headFilteredOut);
-void searchCoactorSingleMovie(MovieData* movieData, ActorData* actorData, ActorNode** coActorsHead);
-void searchCoactor(MovieNode* movieHead, ActorData* actorData, ActorNode** coActorsHead);
-bool containsActor(ActorNode* actorHead, ActorData* actorData);
-//build index
-void buildIndex(MovieNode* movieHead, MovieNode* index[NUMBERS_IN_ALPHABHET]);
-//printers / extra
-void printMallocErr(const char* type, const char* name);
-void freeAll(MovieNode** movieHead, ActorNode** actorHead);
 
 /*  =========================================================================
     ==       MAIN                                                          ==
@@ -99,111 +86,4 @@ int main() {
 
     return 0;
 }
-/*  =========================================================================
-    ==       Helpers                                                       ==
-    =========================================================================*/
 
-void printMallocErr(const char* type, const char* name) {
-    printf("\033[31m[ERROR] Geheugen kon niet worden toegewezen voor de nieuwe %s: '%s'\033[0m\n", type, name);
-}
-
-/*  =========================================================================
-    ==       Search                                                        ==
-    =========================================================================*/
-
-    //maakt list met movies met beginletter startChar
-void searchMovies(char startChar, MovieNode* headIn, MovieNode** headFilteredOut) {
-    if (!headIn) {
-        return; //na de call van Tail->next zal deze NULL zijn en kan recursie stoppen
-    }
-    MovieData* movieData = headIn->movie;
-    const char* name = movieData->name;
-    if (name[0] == startChar) {
-        createOrInsertMovie(headFilteredOut, newMovieNode(movieData));
-    }
-    //ga recursief verder
-    searchMovies(startChar, headIn->next, headFilteredOut);
-}
-//maakt list met actos met beginletter startChar
-void searchActors(char startChar, ActorNode* headIn, ActorNode** headFilteredOut) {
-    if (!headIn) {
-        return; //na de call van Tail->next zal deze NULL zijn en kan recursie stoppen
-    }
-    ActorData* actorData = headIn->actor;
-    const char* name = actorData->name;
-    if (name[0] == startChar) {
-        createOrInsertActor(headFilteredOut, newActorNode(actorData));
-    }
-    //ga recursief verder
-    searchActors(startChar, headIn->next, headFilteredOut);
-}
-//geeft alle andere actors coactors naast een gegeven actor in 1 movie
-void searchCoactorSingleMovie(MovieData* movieData, ActorData* actorData, ActorNode** coActorsHead) {
-    ActorNode* actorNodeInMovie = movieData->actors;
-    while (actorNodeInMovie) {
-        ActorData* actorDataInMovie = actorNodeInMovie->actor;
-        //insert elke actor die niet deze actor is
-        if (actorDataInMovie != actorData) {
-            //(inserActor negeert zelf al duplicaten)
-            createOrInsertActor(coActorsHead, newActorNode(actorDataInMovie));
-        }
-        actorNodeInMovie = actorNodeInMovie->next;
-    }
-}
-//zoekt coactors via alle movies
-void searchCoactor(MovieNode* movieHead, ActorData* actorData, ActorNode** coActorsHead) {
-    if (!movieHead) return;
-    MovieData* movieData = movieHead->movie;
-    if (containsActor(movieData->actors, actorData)) {
-        searchCoactorSingleMovie(movieData, actorData, coActorsHead);
-    }
-    searchCoactor(movieHead->next, actorData, coActorsHead);
-}
-//boolean of een actors lijst een actor bevat
-bool containsActor(ActorNode* actorHead, ActorData* actorData) {
-    if (!actorHead) return false;
-    if (actorHead->actor == actorData) return true;
-    return containsActor(actorHead->next, actorData);
-}
-
-/*  =========================================================================
-    ==       buildIndex                                                    ==
-    =========================================================================*/
-
-    //maakt de index array
-void buildIndex(MovieNode* movieHead, MovieNode* index[NUMBERS_IN_ALPHABHET]) {
-    memset(index, 0, sizeof(MovieNode) * NUMBERS_IN_ALPHABHET);
-    //de buitenste loop voor films, binnenste voor index.
-    //er kunnen makkelijk meer dan 26 films zijn en voor elke
-    //index die geen film heeft, zou anders de hele movies list bekeken moeten worden
-    //dit is dus sneller
-    MovieNode* current = movieHead;
-    while (current) {
-        const char* name = current->movie->name;
-        char fistChar = name[0];
-        //char kan ge-interpreteerd worden als een integer. Deze hebben al een alfabetische volgorde
-        int indexPos_A = fistChar - 'A';
-        int indexPos_a = fistChar - 'a';
-        //kleine letters komen na grote. Als 'a'-afstand negatief is, is het dus een grote letter
-        int indexPos = indexPos_a < 0 ? indexPos_A : indexPos_a;
-        //als nog niet in index, dan toevoegen
-        if (!index[indexPos]) {
-            index[indexPos] = current;
-        }
-        current = current->next;
-    }
-}
-
-//verwijdert en free't alles
-void freeAll(MovieNode** movieHead, ActorNode** actorHead) {
-    ActorNode* currentActor = *actorHead;
-    MovieNode* currentMovie = *movieHead;
-    while (currentMovie) {
-        deleteMovie(movieHead, currentMovie->movie);
-        currentMovie = currentMovie->next;
-    }
-    while (currentActor) {
-        deleteActor(movieHead, actorHead, currentActor->actor);
-        currentActor = currentActor->next;
-    }
-}

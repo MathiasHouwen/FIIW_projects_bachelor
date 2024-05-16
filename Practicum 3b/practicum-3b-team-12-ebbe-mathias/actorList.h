@@ -17,4 +17,7 @@ void createOrInsertActor(ActorNode** head, ActorNode* actorNode);
 void deleteActor(MovieNode** movieHead, ActorNode** actorHead, ActorData* actorData);
 void deleteActorFromActorList(ActorNode** head, ActorData* actorData);
 
+void searchActors(char startChar, ActorNode* headIn, ActorNode** headFilteredOut);
+bool containsActor(ActorNode* actorHead, ActorData* actorData);
+
 #endif

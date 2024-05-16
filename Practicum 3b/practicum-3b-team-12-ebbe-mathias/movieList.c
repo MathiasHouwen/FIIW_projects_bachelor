@@ -92,3 +92,40 @@ void deleteMovie(MovieNode** head, MovieData* movieData) {
 void deleteActorFromMovie(MovieData* movieData, ActorData* actorData) {
     deleteActorFromActorList(&(movieData->actors), actorData);
 }
+
+//maakt list met movies met beginletter startChar
+void searchMovies(char startChar, MovieNode* headIn, MovieNode** headFilteredOut) {
+    if (!headIn) {
+        return; //na de call van Tail->next zal deze NULL zijn en kan recursie stoppen
+    }
+    MovieData* movieData = headIn->movie;
+    const char* name = movieData->name;
+    if (name[0] == startChar) {
+        createOrInsertMovie(headFilteredOut, newMovieNode(movieData));
+    }
+    //ga recursief verder
+    searchMovies(startChar, headIn->next, headFilteredOut);
+}
+
+//geeft alle andere actors coactors naast een gegeven actor in 1 movie
+void searchCoactorSingleMovie(MovieData* movieData, ActorData* actorData, ActorNode** coActorsHead) {
+    ActorNode* actorNodeInMovie = movieData->actors;
+    while (actorNodeInMovie) {
+        ActorData* actorDataInMovie = actorNodeInMovie->actor;
+        //insert elke actor die niet deze actor is
+        if (actorDataInMovie != actorData) {
+            //(inserActor negeert zelf al duplicaten)
+            createOrInsertActor(coActorsHead, newActorNode(actorDataInMovie));
+        }
+        actorNodeInMovie = actorNodeInMovie->next;
+    }
+}
+//zoekt coactors via alle movies
+void searchCoactor(MovieNode* movieHead, ActorData* actorData, ActorNode** coActorsHead) {
+    if (!movieHead) return;
+    MovieData* movieData = movieHead->movie;
+    if (containsActor(movieData->actors, actorData)) {
+        searchCoactorSingleMovie(movieData, actorData, coActorsHead);
+    }
+    searchCoactor(movieHead->next, actorData, coActorsHead);
+}

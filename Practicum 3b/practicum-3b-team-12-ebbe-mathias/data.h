@@ -1,7 +1,7 @@
 #ifndef DATA_H
 #define DATA_H
 
-#include "main.c"
+#include "actorList.h"
 
 typedef struct ActorData ActorData;
 typedef struct MovieData MovieData;

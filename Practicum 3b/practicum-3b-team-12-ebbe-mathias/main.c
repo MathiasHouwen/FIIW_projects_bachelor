@@ -6,10 +6,6 @@
         - Mathias Houwen
    ============================================== */
 
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
-
 #include "data.h"
 #include "movieList.h"
 #include "actorList.h"

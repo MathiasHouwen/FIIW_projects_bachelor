@@ -1,4 +1,8 @@
-#include <stdio.h>
+
+#include <malloc.h>
+#include <stdlib.h>
+
+#include "helper.h"
 #include "actorList.h"
 
 //maakt een nieuwe node van een actor

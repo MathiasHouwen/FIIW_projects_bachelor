@@ -6,7 +6,7 @@
 #define CHATURAJI_FILEIO_H
 
 
-class Fileio {
+class FileIO {
 
 };
 

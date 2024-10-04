@@ -1,0 +1,12 @@
+
+
+#ifndef CHATURAJI_BOARDPRINTER_H
+#define CHATURAJI_BOARDPRINTER_H
+
+
+class BoardPrinter {
+
+};
+
+
+#endif //CHATURAJI_BOARDPRINTER_H

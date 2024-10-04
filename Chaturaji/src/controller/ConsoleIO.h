@@ -1,0 +1,12 @@
+
+
+#ifndef CHATURAJI_CONSOLEIO_H
+#define CHATURAJI_CONSOLEIO_H
+
+
+class ConsoleIO {
+
+};
+
+
+#endif //CHATURAJI_CONSOLEIO_H

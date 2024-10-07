@@ -12,7 +12,7 @@ ConsoleIO::ConsoleIO() {
 
 QPoint ConsoleIO::getCords() {
     string cord;
-    cout << "Please enter the coordinate ";
+    cout << "Please enter the coordinate: ";
     cin >> cord;
 
     if(cord == "Q" || cord == "q"){
@@ -21,7 +21,9 @@ QPoint ConsoleIO::getCords() {
     }
 
     int x = cord[0] - 'A';
-    int y = cord[1] - 1;
+    // cout << "x: " << x;
+    int y = cord[1] - '0' - 1;
+    // cout << "y: " << y;
 
     return QPoint{x, y};
 }

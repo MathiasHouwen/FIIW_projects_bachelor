@@ -10,16 +10,19 @@ Controller::Controller(const Game &gameModel, const GameView &gameView)
 }
 
 bool Controller::update() {
-    //input TODO:Vervangen met ConsoleIO
-    char command;
-    std::cin >> command;
+    ConsoleIO console{};
+
+    if(console.exit()){
+        return !console.exit();
+    }
     //model update
     //model.???()
     //view update
     gameView.printBoard();
+
     //exit condition
-    bool exit = command == 'Q' || command == 'q';
-    return !exit;
+    // bool exit = command == 'Q' || command == 'q';
+    // return !exit;
 }
 
 void Controller::startGameLoop() {

@@ -3,7 +3,6 @@
 #ifndef CHATURAJI_BOARD_H
 #define CHATURAJI_BOARD_H
 
-
 class Board {
     private:
         static const int height = 8;
@@ -13,8 +12,11 @@ class Board {
     public:
         void setCell(int row, int col, bool value);
         bool getCell(int row, int col);
+        bool (*getBoard())[width];
         void move(int toRow, int toCol, int fromRow, int fromCol);
-
+        int getHeight();
+        void setAllTrue();
+        int getWidth();
 };
 
 

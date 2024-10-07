@@ -16,10 +16,10 @@ add_executable(Chaturaji
         src/main.cpp
         src/model/Game.h
         src/model/Game.cpp
-        src/view/BoardPrinter.h
+        src/view/GameView.h
         src/controller/ConsoleIO.h
         src/controller/ConsoleIO.cpp
-        src/view/BoardPrinter.cpp
+        src/view/GameView.cpp
         src/model/Board.h
         src/model/Board.cpp
 )

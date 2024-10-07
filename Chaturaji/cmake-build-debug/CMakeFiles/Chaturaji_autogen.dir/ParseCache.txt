@@ -8,3 +8,5 @@ C:/Users/robin/Documents/3e jaar/OOP/practicum-team4/Chaturaji/src/main.cpp
 C:/Users/robin/Documents/3e jaar/OOP/practicum-team4/Chaturaji/src/model/Board.cpp
 C:/Users/robin/Documents/3e jaar/OOP/practicum-team4/Chaturaji/src/model/Game.cpp
 C:/Users/robin/Documents/3e jaar/OOP/practicum-team4/Chaturaji/src/view/BoardPrinter.cpp
+C:/Users/robin/Documents/3e jaar/OOP/practicum-team4/Chaturaji/src/view/GameView.h
+C:/Users/robin/Documents/3e jaar/OOP/practicum-team4/Chaturaji/src/view/GameView.cpp

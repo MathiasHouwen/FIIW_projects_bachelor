@@ -22,6 +22,8 @@ add_executable(Chaturaji
         src/view/GameView.cpp
         src/model/Board.h
         src/model/Board.cpp
+        src/controller/Controller.h
+        src/controller/Controller.cpp
 )
 target_link_libraries(Chaturaji Qt${QT_VERSION_MAJOR}::Core)
 

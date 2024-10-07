@@ -6,14 +6,11 @@
 
 class GameView {
 private:
-    Board board;
-    Game game;
+    Board gameBoard;
+    // player turn
+    // ...?
 public:
-    GameView(const Board &board, const Game &game)
-        : board(board),
-          game(game) {
-    }
-
+    explicit GameView(const Game &game);
     void printBoard();
 };
 

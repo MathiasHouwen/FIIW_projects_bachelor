@@ -1,18 +1,16 @@
 #include <QCoreApplication>
-#include <QDebug>
-
+#include <iostream>
 #include "view/GameView.h"
-#include "model/Board.h"
 #include "model/Game.h"
-
-#include "./view/GameView.h"
+#include "controller/Controller.h"
 
 int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
-    const Board board{};
-    const Game game{};
-    GameView view(board, game);
-    view.printBoard();
-    return QCoreApplication::exec();
+    const Game model{};
+    const GameView view(model);
+    Controller controller(model, view);
+    controller.startGameLoop();
+    QCoreApplication::quit();
+    return 0;
 }

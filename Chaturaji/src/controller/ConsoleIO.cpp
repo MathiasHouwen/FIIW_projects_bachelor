@@ -20,12 +20,10 @@ QPoint ConsoleIO::getCords() {
         return QPoint{-1, -1};
     }
 
-    int x = cord[0] - 'A';
-    // cout << "x: " << x;
-    int y = cord[1] - '0' - 1;
-    // cout << "y: " << y;
+    int col = cord[0] - 'A';
+    int row = 8 -(cord[1] - '0');
 
-    return QPoint{x, y};
+    return QPoint{col, row};
 }
 
 bool ConsoleIO::exit() {

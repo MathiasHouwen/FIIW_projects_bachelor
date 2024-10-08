@@ -12,10 +12,6 @@ void Board::setCell(int row, int col, bool value) {
     board[row][col] = value;
 }
 
-bool (*Board::getBoard())[width] {
-    return board;
-}
-
 void Board::move(int toRow, int toCol, int fromRow, int fromCol) {
     if(fromRow + toRow <= width * 2
     && fromCol + toCol <= height * 2

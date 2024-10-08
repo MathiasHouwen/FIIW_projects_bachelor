@@ -7,20 +7,21 @@ using namespace std;
 
 void GameView::printBoard() {
     Board gameBoard = model.getBoard();
-    gameBoard.setCell(4,5,true);
-    const bool (*playBoard)[8] = gameBoard.getBoard();
+    gameBoard.setCell(1,2,true);
     cout << "     ";
     for(int i=0;i<8;i++) {
         char letter = 'A'+i;
-        cout << "   [" << letter << "]";
+        cout << "    [" << letter << "]";
     }
 
     cout << endl;
 
-    for(int i = 0; i < gameBoard.getWidth(); i++) {
-        cout << "[" << 8-i << "]   |  ";
-        for(int j = 0; j < gameBoard.getHeight(); j++) {
-            cout << playBoard[i][j] << "  |  ";
+    for(int row = 0; row < gameBoard.getHeight(); row++) {
+        cout << "[" << 8-row << "]   |  ";
+        for(int col = 0; col < gameBoard.getWidth(); col++) {
+            bool cell = gameBoard.getCell(row, col);
+            std::string celSymbol = cell ? "[]" : "..";
+            cout << celSymbol << "  |  ";
         }
         cout << endl;
     }

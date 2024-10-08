@@ -9,12 +9,9 @@ private:
     Board board;
 public:
     Game();
-    const Board &getBoard() const;
+    const Board& getBoard() const;
+    void setCell(int row, int col, bool value);
 };
-
-
-
-
 
 
 #endif //CHATURAJI_GAME_H

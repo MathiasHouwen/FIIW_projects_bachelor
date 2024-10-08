@@ -24,6 +24,8 @@ add_executable(Chaturaji
         src/model/Board.cpp
         src/controller/Controller.h
         src/controller/Controller.cpp
+        src/model/PatternMover.h
+        src/model/PatternMover.cpp
 )
 target_link_libraries(Chaturaji Qt${QT_VERSION_MAJOR}::Core)
 

@@ -6,6 +6,7 @@
 using namespace std;
 
 void GameView::printBoard() {
+    Board gameBoard = model.getBoard();
     gameBoard.setCell(4,5,true);
     const bool (*playBoard)[8] = gameBoard.getBoard();
     cout << "     ";
@@ -25,4 +26,7 @@ void GameView::printBoard() {
     }
 }
 
-GameView::GameView(const Game &game) : gameBoard(game.getBoard()) {}
+GameView::GameView(Game &game) : model{game} {
+    std::cout << "GameView model\t" << &model  << std::endl;
+    std::cout << "GameView model->board\t" << &(model.getBoard())  << std::endl;
+}

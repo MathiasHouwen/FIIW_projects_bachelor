@@ -5,7 +5,7 @@
 #include <QPoint>
 #include "Controller.h"
 
-Controller::Controller(const Game &gameModel, const GameView &gameView)
+Controller::Controller(Game &gameModel, GameView &gameView)
     : gameModel(gameModel), gameView(gameView){
     io = ConsoleIO();
 }
@@ -16,11 +16,8 @@ bool Controller::update() {
     if(console.exit()){
         return !console.exit();
     }
-
-    Board board = gameModel.getBoard();
-    board.setCell(point.x(), point.y(), true);
+    gameModel.setCell(point.x(), point.y(), true);
     gameView.printBoard();
-
     return true;
     //exit condition
     // bool exit = command == 'Q' || command == 'q';

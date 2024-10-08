@@ -6,12 +6,11 @@
 
 class GameView {
 private:
-    Board gameBoard;
-    // player turn
-    // ...?
+    Game& model;
 public:
-    explicit GameView(const Game &game);
+    explicit GameView(Game &game);
     void printBoard();
+
 };
 
 #endif //CHATURAJI_GAMEVIEW_H

@@ -11,12 +11,12 @@
 
 class Controller {
 private:
-    Game gameModel;
-    GameView gameView;
+    Game& gameModel;
+    GameView& gameView;
     bool update();
     ConsoleIO io;
 public:
-    Controller(const Game &gameModel, const GameView &gameView);
+    Controller(Game &gameModel, GameView &gameView);
     void startGameLoop();
 };
 

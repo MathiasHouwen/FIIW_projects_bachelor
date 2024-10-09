@@ -7,6 +7,7 @@
 
 #include <QSet>
 #include <QPoint>
+#include "Board.h"
 
 //
 // Boat         2F2S
@@ -26,8 +27,9 @@ private:
     bool forwardOnly;
     bool infinite;
     QSet<QPoint> createPatternLayer(int d);
+    Board& board;
 public:
-    PatternMover(int forward, const QList<int> &sideways, bool forwardOnly, bool infinite);
+    PatternMover(int forward, const QList<int> &sideways, bool forwardOnly, bool infinite, Board& board);
 
     QSet<QPoint> possibleMoves();
 };

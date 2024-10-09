@@ -8,20 +8,19 @@
 PatternMover::PatternMover(Board& board) : board(board) {}
 
 QSet<QPoint> PatternMover::getPossibleMoves(Pattern pattern, QPoint cell) {
+    QVarLengthArray<bool> validQuadrants(4*pattern.sideways.size(), true);
     if(pattern.infinite){
         QSet<QPoint> moves;
         for(int distance = 1; distance <= board.getSize()/pattern.forward; distance++){
-            moves.unite(createPatternLayer(distance, pattern, cell));
+            moves.unite(createPatternLayer(distance, pattern, cell, validQuadrants));
         }
         return moves;
     }
-    return createPatternLayer(1, pattern, cell);
+    return createPatternLayer(1, pattern, cell, validQuadrants);
 }
 
-QSet<QPoint> PatternMover::createPatternLayer(int distance, Pattern pattern, QPoint cell) {
-
+QSet<QPoint> PatternMover::createPatternLayer(int distance, Pattern pattern, QPoint cell, QVarLengthArray<bool>& validQuadrants) {
     QSet<QPoint> moves;
-    QVarLengthArray<bool> validQuadrants(4*pattern.sideways.size(), true);
     for(int sw : pattern.sideways){
         int quadrant = 0;
         for(int toggler : {0,1}){

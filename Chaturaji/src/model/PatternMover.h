@@ -32,7 +32,7 @@ public:
     QSet<QPoint> getPossibleMoves(Pattern pattern, QPoint cell);
 private:
     Pattern pattern;
-    QSet<QPoint> createPatternLayer(int d, Pattern pattern, QPoint cell);
+    QSet<QPoint> createPatternLayer(int d, Pattern pattern, QPoint cell, QVarLengthArray<bool>& validQuadrants);
     Board& board;
 
 };

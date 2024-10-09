@@ -3,6 +3,7 @@
 #include "view/GameView.h"
 #include "model/Game.h"
 #include "controller/Controller.h"
+#include "model/PatternMover.h"
 
 int main(int argc, char *argv[])
 {

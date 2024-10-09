@@ -21,17 +21,20 @@
 
 
 class PatternMover {
-private:
-    int forward;
-    QList<int> sideways;
-    bool forwardOnly;
-    bool infinite;
-    QSet<QPoint> createPatternLayer(int d);
-    Board& board;
 public:
-    PatternMover(int forward, const QList<int> &sideways, bool forwardOnly, bool infinite, Board& board);
+    struct Pattern{
+        int forward;
+        QList<int> sideways;
+        bool forwardOnly;
+        bool infinite;
+    };
+    PatternMover(Board& board);
+    QSet<QPoint> getPossibleMoves(Pattern pattern, QPoint cell);
+private:
+    Pattern pattern;
+    QSet<QPoint> createPatternLayer(int d, Pattern pattern, QPoint cell);
+    Board& board;
 
-    QSet<QPoint> possibleMoves();
 };
 
 

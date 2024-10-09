@@ -4,6 +4,7 @@
 #include <iostream>
 #include <QPoint>
 #include "Controller.h"
+#include "../model/Piece.h"
 
 Controller::Controller(Game &gameModel, GameView &gameView)
     : gameModel(gameModel), gameView(gameView){
@@ -13,15 +14,12 @@ Controller::Controller(Game &gameModel, GameView &gameView)
 bool Controller::update() {
     ConsoleIO console{};
     QPoint point = console.getCords();
-    if(console.exit()){
-        return !console.exit();
-    }
+    if(console.exit()) return !console.exit();
+
+
     gameModel.setCell(point, true);
     gameView.printBoard();
     return true;
-    //exit condition
-    // bool exit = command == 'Q' || command == 'q';
-    // return !exit;
 }
 
 void Controller::startGameLoop() {

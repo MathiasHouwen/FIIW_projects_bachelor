@@ -16,7 +16,7 @@ bool Controller::update() {
     if(console.exit()){
         return !console.exit();
     }
-    gameModel.setCell(point.y(), point.x(), true);
+    gameModel.setCell(point, true);
     gameView.printBoard();
     return true;
     //exit condition

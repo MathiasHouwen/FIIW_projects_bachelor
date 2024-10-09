@@ -7,7 +7,6 @@ using namespace std;
 
 void GameView::printBoard() {
     Board gameBoard = model.getBoard();
-    gameBoard.setCell(1,2,true);
     cout << "     ";
     for(int i=0;i<8;i++) {
         char letter = 'A'+i;
@@ -19,7 +18,7 @@ void GameView::printBoard() {
     for(int row = 0; row < gameBoard.getSize(); row++) {
         cout << "[" << 8-row << "]   |  ";
         for(int col = 0; col < gameBoard.getSize(); col++) {
-            bool cell = gameBoard.getCell(row, col);
+            bool cell = gameBoard.getCell({col, row});
             std::string celSymbol = cell ? "[]" : "..";
             cout << celSymbol << "  |  ";
         }
@@ -27,7 +26,4 @@ void GameView::printBoard() {
     }
 }
 
-GameView::GameView(Game &game) : model{game} {
-    std::cout << "GameView model\t" << &model  << std::endl;
-    std::cout << "GameView model->board\t" << &(model.getBoard())  << std::endl;
-}
+GameView::GameView(Game &game) : model{game} {}

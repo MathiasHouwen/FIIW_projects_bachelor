@@ -7,6 +7,6 @@ Game::Game() : board() {}
 const Board& Game::getBoard() const {
     return board;
 }
-void Game::setCell(int row, int col, bool value) {
-    board.setCell(row, col, value);
+void Game::setCell(QPoint cell, bool value) {
+    board.setCell(cell, value);
 }

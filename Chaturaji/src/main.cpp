@@ -8,8 +8,6 @@ int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
     Game model;
-    std::cout << "Main model\t" << &model  << std::endl;
-    std::cout << "Main model->board\t" << &(model.getBoard())  << std::endl;
     GameView view(model);
     Controller controller(model, view);
     controller.startGameLoop();

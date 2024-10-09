@@ -9,12 +9,13 @@ class Board {
     private:
         static const int size = 8;
         bool board[size][size];
+        void errorIfOutOfRane(QPoint cell);
 
     public:
-        void setCell(int row, int col, bool value);
+        void setCell(QPoint cell, bool value);
         bool isCellEmpty(QPoint cell);
-        bool getCell(int row, int col);
-        void move(int toRow, int toCol, int fromRow, int fromCol);
+        bool getCell(QPoint cell);
+        void move(QPoint fromCell, QPoint toCell);
         void setAllTrue();
         bool isInRange(QPoint cell);
 

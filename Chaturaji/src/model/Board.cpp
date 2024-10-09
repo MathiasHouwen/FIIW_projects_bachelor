@@ -13,8 +13,8 @@ void Board::setCell(int row, int col, bool value) {
 }
 
 void Board::move(int toRow, int toCol, int fromRow, int fromCol) {
-    if(fromRow + toRow <= width * 2
-    && fromCol + toCol <= height * 2
+    if(fromRow + toRow <= size * 2
+    && fromCol + toCol <= size * 2
     && toCol >= 0
     && toRow >= 0) {
          setCell(fromRow, fromCol, false);
@@ -23,20 +23,26 @@ void Board::move(int toRow, int toCol, int fromRow, int fromCol) {
     else{cout << "invalid cell at " << toRow << ", " << toCol << endl;}
 }
 
-int Board::getWidth() {
-    return width;
-}
-
-int Board::getHeight() {
-    return height;
-}
-
 void Board::setAllTrue() {
-    for (int i = 0; i < width; ++i) {
-        for (int j = 0; j < height; ++j) {
+    for (int i = 0; i < size; ++i) {
+        for (int j = 0; j < size; ++j) {
             board[i][j] = true;
         }
     }
+}
+
+const int Board::getSize() {
+    return size;
+}
+
+bool Board::isInRange(QPoint cell) {
+    bool xInRange = cell.x() >= 0 && cell.x() <size;
+    bool yInRange = cell.y() >= 0 && cell.y() <size;
+    return xInRange && yInRange;
+}
+
+bool Board::isCellEmpty(QPoint cell) {
+    return getCell(cell.x(), cell.y()) == 0;
 }
 
 

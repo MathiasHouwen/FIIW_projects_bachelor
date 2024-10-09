@@ -16,9 +16,9 @@ void GameView::printBoard() {
 
     cout << endl;
 
-    for(int row = 0; row < gameBoard.getHeight(); row++) {
+    for(int row = 0; row < gameBoard.getSize(); row++) {
         cout << "[" << 8-row << "]   |  ";
-        for(int col = 0; col < gameBoard.getWidth(); col++) {
+        for(int col = 0; col < gameBoard.getSize(); col++) {
             bool cell = gameBoard.getCell(row, col);
             std::string celSymbol = cell ? "[]" : "..";
             cout << celSymbol << "  |  ";

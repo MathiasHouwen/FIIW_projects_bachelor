@@ -21,15 +21,17 @@
 
 class PatternMover {
 private:
-    bool straight;
-    bool diagonal;
+    int forward;
+    QList<int> sideways;
     bool forwardOnly;
-    int distance;
-    int offset;
+    bool infinite;
+    QSet<QPoint> createPatternLayer(int d);
 public:
-    PatternMover(bool straight, bool diagonal, bool forwardOnly, int distance, int offset);
+    PatternMover(int forward, const QList<int> &sideways, bool forwardOnly, bool infinite);
+
     QSet<QPoint> possibleMoves();
 };
+
 
 
 #endif //CHATURAJI_PATTERNMOVER_H

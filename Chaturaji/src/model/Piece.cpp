@@ -9,7 +9,7 @@ Piece::Type Piece::getType() const {
     return type;
 }
 
-Piece::Piece(Piece::Type type, QPoint direction) : type(type) {
+Piece::Piece(Piece::Type type, QPoint direction, Player player) : type(type), player(player){
     switch (type) {
         case Type::BOAT:
             walkPattern = {2, {2}, false, false, direction};

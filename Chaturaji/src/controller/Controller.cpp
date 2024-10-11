@@ -12,12 +12,21 @@ Controller::Controller(Game &gameModel, GameView &gameView)
 }
 
 bool Controller::update() {
-    ConsoleIO console{};
-    QPoint point = console.getCords();
-    if(console.exit()) return !console.exit();
+    Player player("Test", Player::colour::RED);
 
+    bool validSelection;
+    do{
+        QPoint fromCell = io.getCords();
+        if(io.exit()) return false;
+        validSelection = true; // game.select
+    } while(validSelection);
+    QPoint toCell;
+    do{
+        toCell = io.getCords();
+        if(io.exit()) return false;
+        validSelection = true; // game.is...
+    } while(validSelection);
 
-    gameModel.setCell(point, true);
     gameView.printBoard();
     return true;
 }

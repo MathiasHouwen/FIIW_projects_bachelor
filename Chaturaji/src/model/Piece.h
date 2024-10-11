@@ -7,6 +7,7 @@
 
 
 #include "PatternMover.h"
+#include "Player.h"
 
 class Piece {
 public:
@@ -15,8 +16,9 @@ public:
     const PatternMover::Pattern &getWalkPattern() const;
     const PatternMover::Pattern &getAttackPattern() const;
     Type getType() const;
-    explicit Piece(Type type, QPoint direction);
+    explicit Piece(Type type, QPoint direction, Player player);
 private:
+    Player player;
     PatternMover::Pattern walkPattern;
     PatternMover::Pattern attackPattern;
     Type type;

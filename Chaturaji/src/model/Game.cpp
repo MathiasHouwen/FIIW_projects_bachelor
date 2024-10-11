@@ -5,20 +5,7 @@
 #include "Game.h"
 #include "Piece.h"
 
-Game::Game() : board() {
-
-    QPoint testCell = {4,3};
-    Piece testPiece(Piece::Type::PAWN, {0,1});
-    PatternMover mover(board);
-    setCell(testCell, true);
-    setCell({6,3}, true);
-    setCell({4,5}, true);
-    QSet<QPoint> moves = mover.getPossibleMoves(testPiece.getWalkPattern(), testCell);
-    for(QPoint p : moves){
-        std::cout << p.x() << ", "<<p.y() << std::endl;
-        setCell(p, true);
-    }
-
+Game::Game() : board(), mover(board) {
 }
 
 const Board& Game::getBoard() const {

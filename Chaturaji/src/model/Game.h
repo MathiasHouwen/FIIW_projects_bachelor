@@ -3,10 +3,12 @@
 
 
 #include "Board.h"
+#include "PatternMover.h"
 
 class Game {
 private:
     Board board;
+    PatternMover mover;
 public:
     Game();
     const Board& getBoard() const;

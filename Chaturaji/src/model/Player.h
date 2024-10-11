@@ -6,6 +6,7 @@
 #define CHATURAJI_PLAYER_H
 
 #include <iostream>
+#include <qstring.h>
 
 class Player {
 public:

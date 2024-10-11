@@ -34,6 +34,7 @@ add_executable(Chaturaji
         src/controller/FileIO.cpp
         src/controller/FileIO.h
         src/controller/FileIO.h
+        src/model/Pattern.h
 )
 target_link_libraries(Chaturaji Qt${QT_VERSION_MAJOR}::Core)
 

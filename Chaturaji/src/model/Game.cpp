@@ -13,7 +13,7 @@ const Board& Game::getBoard() const {
     return board;
 }
 void Game::setCell(QPoint cell, Piece* value) {
-    board.setCell(cell, value);
+    board.setCell(cell, *value);
 }
 
 QPair<int, int> Game::doubleDobbel() {

@@ -34,10 +34,10 @@ Piece::Piece(Piece::Type type, QPoint direction, Player player) : type(type), pl
     }
 }
 
-const PatternMover::Pattern &Piece::getWalkPattern() const {
+const Pattern &Piece::getWalkPattern() const {
     return walkPattern;
 }
 
-const PatternMover::Pattern &Piece::getAttackPattern() const {
+const Pattern &Piece::getAttackPattern() const {
     return attackPattern;
 }

@@ -2,7 +2,6 @@
 // Created by houwe on 10/10/2024.
 //
 
-#include <qstring.h>
 #include "Player.h"
 
 Player::Player(const QString &mName, Player::colour mColour) : m_name(mName), m_colour(mColour) {

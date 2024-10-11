@@ -8,6 +8,7 @@
 #include <QSet>
 #include <QPoint>
 #include "Board.h"
+#include "Pattern.h"
 
 //
 // Boat         2F2S
@@ -22,13 +23,6 @@
 
 class PatternMover {
 public:
-    struct Pattern{
-        int forward;
-        QList<int> sideways;
-        bool forwardOnly;
-        bool infinite;
-        QPoint forwardDirection;
-    };
     PatternMover(Board& board);
     QSet<QPoint> getPossibleMoves(Pattern pattern, QPoint cell);
 private:

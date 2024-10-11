@@ -4,6 +4,7 @@
 #include "model/Game.h"
 #include "controller/Controller.h"
 #include "model/PatternMover.h"
+#include "controller/FileIO.h"
 
 int main(int argc, char *argv[])
 {

@@ -45,7 +45,7 @@ void Controller::startGameLoop() {
 void Controller::gameSetup() {
     QString players[4];
     for(int i = 0; i < 4; i++){
-        players[i] = io.getPlayerName(i);
+        players[i] = io.getPlayerName(i + 1);
     }
     gameModel.initPlayers(players);
 

@@ -4,7 +4,7 @@
 
 #include "Player.h"
 
-Player::Player(const std::string &mNaam) : m_name(mNaam) {
+Player::Player(const std::string &mName, Player::colour mColour) : m_name(mName), m_colour(mColour) {
     m_alive = true;
     m_score = 0;
 }

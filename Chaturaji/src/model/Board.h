@@ -12,7 +12,8 @@ class Board {
         static void errorIfOutOfRane(QPoint cell);
 
     public:
-        void setCell(QPoint cell, Piece *value);
+        void setCell(QPoint cell, Piece value);
+        void removecell(QPoint cell);
         [[nodiscard]] bool isCellEmpty(QPoint cell) const;
         [[nodiscard]] Piece* getCell(QPoint cell) const;
         void move(QPoint fromCell, QPoint toCell);

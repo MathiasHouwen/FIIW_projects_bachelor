@@ -16,9 +16,9 @@ public:
     const PatternMover::Pattern &getWalkPattern() const;
     const PatternMover::Pattern &getAttackPattern() const;
     Type getType() const;
-    explicit Piece(Type type, QPoint direction, Player player);
-private:
+    Piece(Type type, QPoint direction, Player player);
     Player player;
+private:
     PatternMover::Pattern walkPattern;
     PatternMover::Pattern attackPattern;
     Type type;

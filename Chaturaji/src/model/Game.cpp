@@ -1,6 +1,7 @@
 
 
 #include <iostream>
+#include <ctime>
 #include "Game.h"
 #include "Piece.h"
 
@@ -25,4 +26,11 @@ const Board& Game::getBoard() const {
 }
 void Game::setCell(QPoint cell, bool value) {
     board.setCell(cell, value);
+}
+
+QPair<int, int> Game::doubleDobbel() {
+    std::srand(static_cast<unsigned int>(std::time(nullptr)));
+    int die1 = std::rand() % 6 + 1;
+    int die2 = std::rand() % 6 + 1;
+    return QPair<int, int>(die1, die2);  ;
 }

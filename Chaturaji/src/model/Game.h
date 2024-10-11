@@ -11,6 +11,7 @@ public:
     Game();
     const Board& getBoard() const;
     void setCell(QPoint cell, bool value);
+    QPair<int, int> doubleDobbel();
 };
 
 

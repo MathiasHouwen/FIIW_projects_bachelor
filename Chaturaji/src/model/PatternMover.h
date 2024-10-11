@@ -27,6 +27,7 @@ public:
         QList<int> sideways;
         bool forwardOnly;
         bool infinite;
+        QPoint forwardDirection;
     };
     PatternMover(Board& board);
     QSet<QPoint> getPossibleMoves(Pattern pattern, QPoint cell);
@@ -34,7 +35,6 @@ private:
     Pattern pattern;
     QSet<QPoint> createPatternLayer(int d, Pattern pattern, QPoint cell, QVarLengthArray<bool>& validQuadrants);
     Board& board;
-
 };
 
 

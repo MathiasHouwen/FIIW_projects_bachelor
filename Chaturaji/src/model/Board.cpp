@@ -1,7 +1,6 @@
 #include "Board.h"
 #include <iostream>
-
-using namespace std;
+#include <utility>
 
 Piece* Board::getCell(const QPoint cell) const {
     errorIfOutOfRane(cell);
@@ -9,27 +8,23 @@ Piece* Board::getCell(const QPoint cell) const {
 }
 
 void Board::setCell(const QPoint cell, Piece piece) {
-    errorIfOutOfRane(cell);
-    Piece* p = new Piece(piece.getType(), piece.direction, piece.player);
-    board[cell.y()][cell.x()] = p;
-}
-
-void Board::removecell(QPoint cell) {
-    errorIfOutOfRane(cell);
-    delete board[cell.y()][cell.x()];
-    board[cell.y()][cell.x()] = nullptr; //TODO mag deze weg?
+    Piece* oldPiece = getCell(cell);
+    delete oldPiece;
+    auto newPiece = new Piece(std::move(piece));
+    board[cell.y()][cell.x()] = newPiece;
 }
 
 void Board::move(QPoint fromCell, QPoint toCell) {
     Piece* from = getCell(fromCell);
-    removecell(fromCell);
+    board[fromCell.y()][fromCell.x()] = nullptr;
     setCell(toCell, *from);
 }
 
-void Board::setAllNull() {
+void Board::clear() {
     for (auto & i : board) {
         for (Piece* & j : i) {
-            j = nullptr;
+            delete j;
+            j = nullptr; //kan omdat j een reference is
         }
     }
 }

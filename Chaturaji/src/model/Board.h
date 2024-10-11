@@ -11,13 +11,13 @@ class Board {
         Piece* board[size][size];
         static void errorIfOutOfRane(QPoint cell);
 
+
     public:
         void setCell(QPoint cell, Piece value);
-        void removecell(QPoint cell);
-        [[nodiscard]] bool isCellEmpty(QPoint cell) const;
-        [[nodiscard]] Piece* getCell(QPoint cell) const;
+        bool isCellEmpty(QPoint cell) const;
+        Piece* getCell(QPoint cell) const;
         void move(QPoint fromCell, QPoint toCell);
-        void setAllNull();
+        void clear();
         static bool isInRange(QPoint cell);
         static int getSize();
 };

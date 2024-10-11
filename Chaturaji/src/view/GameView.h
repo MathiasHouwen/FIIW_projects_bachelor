@@ -9,7 +9,7 @@ private:
     Game& model;
 public:
     explicit GameView(Game &game);
-    void printBoard();
+    void printBoard() const;
 
 };
 

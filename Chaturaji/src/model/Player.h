@@ -11,6 +11,8 @@ class Player {
 public:
     enum class colour {RED, BLUE, YELLOW, GREEN};
     explicit Player(const QString &mName, colour mColour);
+    Player();
+
     void setScore(int score);
     void killPlayer();
     int getScore() const;

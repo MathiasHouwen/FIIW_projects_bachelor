@@ -14,7 +14,6 @@ Controller::Controller(Game &gameModel, GameView &gameView)
 bool Controller::update() {
     Player player("Test", Player::colour::RED);
     ConsoleIO console{};
-    QPoint point = console.getCords(); //TODO: FIX WITH IO
     if(console.exit()) return !console.exit();
 
     bool validSelection;
@@ -23,11 +22,10 @@ bool Controller::update() {
         if(io.exit()) return false;
         validSelection = true; // game.select
     } while(validSelection);
-    QPoint toCell;
     do{
-        toCell = io.getCords();
+        QPoint toCell = io.getCords();
         if(io.exit()) return false;
-        validSelection = true; // game.is...
+        validSelection = true; // game.moveto
     } while(validSelection);
 
     gameView.printBoard();
@@ -46,8 +44,8 @@ void Controller::startGameLoop() {
 
 void Controller::gameSetup() {
     QString players[4];
-    for(int i = 0; i < 4; i++){
-        players[i] = io.getPlayerName();
+    for(auto & player : players){
+        player = io.getPlayerName();
     }
     gameModel.initPlayers(players);
 

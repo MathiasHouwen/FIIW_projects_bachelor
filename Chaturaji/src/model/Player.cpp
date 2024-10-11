@@ -29,3 +29,5 @@ bool Player::isAlive() const {
 const QString &Player::getName() const {
     return m_name;
 }
+
+Player::Player() {}

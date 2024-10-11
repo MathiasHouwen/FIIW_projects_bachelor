@@ -3,25 +3,26 @@
 
 using namespace std;
 
-bool Board::getCell(QPoint cell) {
+Piece Board::getCell(const QPoint cell) {
     errorIfOutOfRane(cell);
     return board[cell.y()][cell.x()];
 }
 
-void Board::setCell(QPoint cell, bool value) {
+void Board::setCell(const QPoint cell, const Piece &value) {
     errorIfOutOfRane(cell);
     board[cell.y()][cell.x()] = value;
 }
 
 void Board::move(QPoint fromCell, QPoint toCell) {
-         setCell(fromCell, false);
-         setCell(toCell, true);
+    Piece from = getCell(fromCell);
+         setCell(fromCell, from); //TODO nullpointer maken
+         setCell(toCell, from);
 }
 
-void Board::setAllTrue() {
+void Board::setAllNull() {
     for (auto & i : board) {
-        for (bool & j : i) {
-            j = true;
+        for (Piece & j : i) {
+            j = j; //TODO nullptr maken
         }
     }
 }
@@ -37,7 +38,7 @@ bool Board::isInRange(QPoint cell) {
 }
 
 bool Board::isCellEmpty(QPoint cell) {
-    return getCell(cell) == 0;
+    return getCell(cell) == 0; //TODO NULLPTR MAKEN
 }
 
 void Board::errorIfOutOfRane(QPoint cell) {

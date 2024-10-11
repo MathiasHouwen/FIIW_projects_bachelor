@@ -4,20 +4,22 @@
 #define CHATURAJI_BOARD_H
 
 #include <QPoint>
+#include "Piece.h"
 
 class Board {
     private:
         static const int size = 8;
-        bool board[size][size];
-        void errorIfOutOfRane(QPoint cell);
+        Piece board[size][size];
+        static void errorIfOutOfRane(QPoint cell);
 
     public:
-        void setCell(QPoint cell, bool value);
+        void setCell(QPoint cell, const Piece &value);
         bool isCellEmpty(QPoint cell);
-        bool getCell(QPoint cell);
+        Piece getCell(QPoint cell);
         void move(QPoint fromCell, QPoint toCell);
         void setAllTrue();
-        bool isInRange(QPoint cell);
+
+        static bool isInRange(QPoint cell);
 
     static const int getSize();
 };

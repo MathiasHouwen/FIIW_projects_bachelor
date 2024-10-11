@@ -31,10 +31,10 @@ bool ConsoleIO::exit() {
     return m_exit;
 }
 
-QString ConsoleIO::getPlayerName() {
+QString ConsoleIO::getPlayerName(int playerID) {
     QString name;
     QTextStream input(stdin);
-    cout << "Please enter the player's name: ";
+    cout << "Please enter the player " << playerID << " name: "<< std::endl;
     input >> name;
     return name;
 }

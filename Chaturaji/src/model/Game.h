@@ -15,7 +15,7 @@ private:
 public:
     Game();
     const Board& getBoard() const;
-    void setCell(QPoint cell, bool value);
+    void setCell(QPoint cell, Piece* value);
     QPair<int, int> doubleDobbel();
     void initPlayers(QString players[4]);
     bool selectCell(QPoint cell);

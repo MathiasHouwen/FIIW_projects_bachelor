@@ -8,7 +8,7 @@
 class Board {
     private:
         static const int size = 8;
-        Piece*board[size][size] = {};
+        Piece* board[size][size];
         static void errorIfOutOfRane(QPoint cell);
 
     public:

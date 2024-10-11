@@ -12,7 +12,7 @@ Game::Game() : board(), mover(board) {
 const Board& Game::getBoard() const {
     return board;
 }
-void Game::setCell(QPoint cell, bool value) {
+void Game::setCell(QPoint cell, Piece* value) {
     board.setCell(cell, value);
 }
 

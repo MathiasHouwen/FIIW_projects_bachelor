@@ -17,12 +17,15 @@ public:
     const Pattern &getWalkPattern() const;
     const Pattern &getAttackPattern() const;
     Type getType() const;
-    Piece(Type type, QPoint direction, Player player);
-    Player player;
+    Piece(Type type, QPoint direction, Player& player);
+    int getScoreValue() const;
+    Player& player;
 private:
+    void init(Pattern pattern, int ScoreValue);
     Pattern walkPattern;
     Pattern attackPattern;
     Type type;
+    int scoreValue;
 };
 
 

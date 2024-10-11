@@ -4,31 +4,32 @@
 
 #include "Piece.h"
 
+#include <utility>
+
 
 Piece::Type Piece::getType() const {
     return type;
 }
+int Piece::getScoreValue() const {
+    return scoreValue;
+}
 
-Piece::Piece(Piece::Type type, QPoint direction, Player player) : type(type), player(player){
+Piece::Piece(Piece::Type type, QPoint direction, Player& player) : type(type), player(player){
     switch (type) {
         case Type::BOAT:
-            walkPattern = {2, {2}, false, false, direction};
-            attackPattern = walkPattern;
+            init({2, {2}, false, false, direction}, 2);
             break;
         case Type::ELEPH:
-            walkPattern = {1, {0}, false, true, direction};
-            attackPattern = walkPattern;
+            init({1, {0}, false, true, direction}, 4);
             break;
         case Type::KNIGHT:
-            walkPattern = {2, {-1,1}, false, false, direction};
-            attackPattern = walkPattern;
+            init({2, {-1,1}, false, false, direction}, 3);
             break;
         case Type::KING:
-            walkPattern = {1, {0,1}, false, false, direction};
-            attackPattern = walkPattern;
+            init({1, {0,1}, false, false, direction}, 5);
             break;
         case Type::PAWN:
-            walkPattern = {1, {0}, true, false, direction};
+            init({1, {0}, true, false, direction}, 1);
             attackPattern = {1, {-1,1}, true, false, direction};
             break;
     }
@@ -40,4 +41,10 @@ const Pattern &Piece::getWalkPattern() const {
 
 const Pattern &Piece::getAttackPattern() const {
     return attackPattern;
+}
+
+void Piece::init(Pattern pattern, int scoreValue) {
+    walkPattern = std::move(pattern);
+    attackPattern = walkPattern;
+    this->scoreValue = scoreValue;
 }

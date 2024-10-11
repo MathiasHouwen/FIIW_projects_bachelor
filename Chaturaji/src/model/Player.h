@@ -15,10 +15,17 @@ public:
     Player();
 
     void setScore(int score);
+    void addScore(int score);
     void killPlayer();
     int getScore() const;
     bool isAlive() const;
     const QString &getName() const;
+
+    colour getMColour() const;
+
+    bool operator==(const Player &rhs) const;
+
+    bool operator!=(const Player &rhs) const;
 
 private:
     int m_score;

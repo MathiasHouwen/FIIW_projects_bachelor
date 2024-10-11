@@ -12,6 +12,9 @@ Player::Player(const QString &mName, Player::colour mColour) : m_name(mName), m_
 void Player::setScore(int score) {
     m_score = score;
 }
+void Player::addScore(int score) {
+    m_score += score;
+}
 
 void Player::killPlayer() {
     m_alive = false;
@@ -30,3 +33,15 @@ const QString &Player::getName() const {
 }
 
 Player::Player() {}
+
+Player::colour Player::getMColour() const {
+    return m_colour;
+}
+
+bool Player::operator==(const Player &rhs) const {
+    return m_colour == rhs.m_colour;
+}
+
+bool Player::operator!=(const Player &rhs) const {
+    return m_colour != rhs.m_colour;;
+}

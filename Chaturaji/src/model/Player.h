@@ -10,17 +10,17 @@
 class Player {
 public:
     enum class colour {RED, BLUE, YELLOW, GREEN};
-    explicit Player(const std::string &mName, colour mColour);
+    explicit Player(const QString &mName, colour mColour);
     void setScore(int score);
     void killPlayer();
     int getScore() const;
     bool isAlive() const;
-    const std::string &getName() const;
+    const QString &getName() const;
 
 private:
     int m_score;
     bool m_alive;
-    std::string m_name;
+    QString m_name;
     colour m_colour;
 };
 

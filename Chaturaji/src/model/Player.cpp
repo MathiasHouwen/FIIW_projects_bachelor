@@ -2,9 +2,10 @@
 // Created by houwe on 10/10/2024.
 //
 
+#include <qstring.h>
 #include "Player.h"
 
-Player::Player(const std::string &mName, Player::colour mColour) : m_name(mName), m_colour(mColour) {
+Player::Player(const QString &mName, Player::colour mColour) : m_name(mName), m_colour(mColour) {
     m_alive = true;
     m_score = 0;
 }
@@ -25,6 +26,6 @@ bool Player::isAlive() const {
     return m_alive;
 }
 
-const std::string &Player::getName() const {
+const QString &Player::getName() const {
     return m_name;
 }

@@ -10,6 +10,7 @@ public:
     ConsoleIO();
     QPoint getCords();
     bool exit();
+    QString getPlayerName();
 private:
     bool m_exit;
 };

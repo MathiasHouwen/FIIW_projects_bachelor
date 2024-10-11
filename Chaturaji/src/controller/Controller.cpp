@@ -13,6 +13,9 @@ Controller::Controller(Game &gameModel, GameView &gameView)
 
 bool Controller::update() {
     Player player("Test", Player::colour::RED);
+    ConsoleIO console{};
+    QPoint point = console.getCords(); //TODO: FIX WITH IO
+    if(console.exit()) return !console.exit();
 
     bool validSelection;
     do{
@@ -32,11 +35,21 @@ bool Controller::update() {
 }
 
 void Controller::startGameLoop() {
-    //std::cout << "enter any character to start" << std::endl;
+    gameSetup();
     gameView.printBoard();
     while(true){
         bool continueLoop = update();
 
         if(!continueLoop) break;
     }
+}
+
+void Controller::gameSetup() {
+    QString players[4];
+    for(int i = 0; i < 4; i++){
+        players[i] = io.getPlayerName();
+    }
+    gameModel.initPlayers(players);
+
+    // LOAD BOARD
 }

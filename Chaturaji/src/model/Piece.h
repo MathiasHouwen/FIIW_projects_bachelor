@@ -11,18 +11,15 @@
 class Piece {
 public:
     enum class Type {PAWN, BOAT, ELEPH, KNIGHT, KING};
-    explicit Piece(Type type);
-
+    QPoint direction;
     const PatternMover::Pattern &getWalkPattern() const;
-
     const PatternMover::Pattern &getAttackPattern() const;
-
+    Type getType() const;
+    explicit Piece(Type type, QPoint direction);
 private:
     PatternMover::Pattern walkPattern;
     PatternMover::Pattern attackPattern;
     Type type;
-public:
-    Type getType() const;
 };
 
 

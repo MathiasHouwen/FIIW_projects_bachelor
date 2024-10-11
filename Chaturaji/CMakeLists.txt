@@ -31,6 +31,9 @@ add_executable(Chaturaji
         src/model/Player.cpp
         src/model/Player.h
         src/model/Player.h
+        src/model/FileIO.cpp
+        src/model/FileIO.h
+        src/model/FileIO.h
 )
 target_link_libraries(Chaturaji Qt${QT_VERSION_MAJOR}::Core)
 

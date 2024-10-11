@@ -3,15 +3,18 @@
 
 
 #include "Board.h"
+#include "Player.h"
 
 class Game {
 private:
     Board board;
+    Player players[4];
 public:
     Game();
     const Board& getBoard() const;
     void setCell(QPoint cell, bool value);
     QPair<int, int> doubleDobbel();
+    void initPlayers(QString players[4]);
 };
 
 

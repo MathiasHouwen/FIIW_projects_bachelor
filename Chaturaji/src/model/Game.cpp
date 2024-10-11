@@ -6,7 +6,6 @@
 #include "Piece.h"
 
 Game::Game() : board() {
-
     QPoint testCell = {4,3};
     Piece testPiece(Piece::Type::PAWN, {0,1});
     PatternMover mover(board);
@@ -33,4 +32,19 @@ QPair<int, int> Game::doubleDobbel() {
     int die1 = std::rand() % 6 + 1;
     int die2 = std::rand() % 6 + 1;
     return QPair<int, int>(die1, die2);  ;
+}
+
+void Game::initPlayers(QString *players) {
+
+    Player::colour colours[4] = {
+            Player::colour::RED,
+            Player::colour::BLUE,
+            Player::colour::GREEN,
+            Player::colour::YELLOW
+    };
+
+    for (int i = 0; i < 4; ++i) {
+        QString playerName = players[i];
+        Player player{playerName, colours[i]};
+    }
 }

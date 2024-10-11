@@ -15,6 +15,7 @@ private:
     GameView& gameView;
     bool update();
     ConsoleIO io;
+    void gameSetup();
 public:
     Controller(Game &gameModel, GameView &gameView);
     void startGameLoop();

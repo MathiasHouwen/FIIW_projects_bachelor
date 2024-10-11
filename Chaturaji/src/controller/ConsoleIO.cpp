@@ -2,6 +2,7 @@
 
 #include <QTextStream>
 #include <QPoint>
+#include <qstring.h>
 #include "ConsoleIO.h"
 
 using namespace std;
@@ -28,4 +29,12 @@ QPoint ConsoleIO::getCords() {
 
 bool ConsoleIO::exit() {
     return m_exit;
+}
+
+QString ConsoleIO::getPlayerName() {
+    QString name;
+    QTextStream input(stdin);
+    cout << "Please enter the player's name: ";
+    input >> name;
+    return name;
 }

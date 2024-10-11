@@ -37,6 +37,7 @@ void Controller::gameSetup() {
     for(int i = 0; i < 4; i++){
         players[i] = io.getPlayerName();
     }
+    gameModel.initPlayers(players);
 
     // LOAD BOARD
 }

@@ -48,3 +48,20 @@ void Piece::init(Pattern pattern, int scoreValue) {
     attackPattern = walkPattern;
     this->scoreValue = scoreValue;
 }
+
+Piece::Type Piece::getTypeFromDobbel(int number) {
+    switch(number) {
+        case 1:
+            return Type::KING;
+        case 2:
+            return Type::BOAT;
+        case 3:
+            return Type::KNIGHT;
+        case 4:
+            return Type::ELEPH;
+        case 5:
+            return Type::PAWN;
+        case 6:
+            return Type::ELEPH;
+    }
+}

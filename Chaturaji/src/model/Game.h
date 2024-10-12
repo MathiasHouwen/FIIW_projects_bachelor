@@ -10,12 +10,15 @@ class Game {
 private:
     Board board;
     PatternMover mover;
+    Piece piece = {std::move(piece)};
     Player players[4] = {{Player::colour::RED}, {Player::colour::GREEN}, {Player::colour::BLUE}, {Player::colour::YELLOW}};
     QPoint* currentlySelectedCell;
     QPair<int, int> dice;
     int move{0};    // 1ste of 2de piece van de 2 dobbelstenen
     int turn{0};    // player beurt
     bool gameOver{false};
+    Piece::Type availableType1;
+    Piece::Type availableType2;
 
 public:
     QPoint getCurrentlySelectedCell() const;
@@ -31,6 +34,14 @@ public:
     void advance();
     Player &getCurrentPlayer();
     bool isGameOver() const;
+
+    [[nodiscard]] Piece::Type available_type1() const {
+        return availableType1;
+    }
+
+    [[nodiscard]] Piece::Type available_type2() const {
+        return availableType2;
+    }
 };
 
 

@@ -10,7 +10,7 @@ private:
 public:
     explicit GameView(Game &game);
     void printBoard() const;
-
+    void printTypes(Piece::Type type) const;
 };
 
 #endif //CHATURAJI_GAMEVIEW_H

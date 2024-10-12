@@ -13,12 +13,13 @@ class Controller {
 private:
     Game& gameModel;
     GameView& gameView;
-    bool update();
+    void loop();
     ConsoleIO io;
-    void gameSetup();
+    void setup();
+    void askCellProcedure(const std::function<void(QPoint)>& gameFunc);
 public:
     Controller(Game &gameModel, GameView &gameView);
-    void startGameLoop();
+    void start();
 };
 
 

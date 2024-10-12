@@ -11,10 +11,12 @@
 class Player {
 public:
     enum class colour {RED, BLUE, YELLOW, GREEN};
-    explicit Player(const QString &mName, colour mColour);
-    Player();
+    Player(colour mColour);
 
     void setScore(int score);
+
+    void setMName(const QString &mName);
+
     void addScore(int score);
     void killPlayer();
     int getScore() const;

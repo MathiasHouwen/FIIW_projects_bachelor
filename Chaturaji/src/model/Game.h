@@ -10,7 +10,7 @@ class Game {
 private:
     Board board;
     PatternMover mover;
-    Player players[4];
+    Player players[4] = {{Player::colour::RED}, {Player::colour::GREEN}, {Player::colour::BLUE}, {Player::colour::YELLOW}};
     QPoint* currentlySelectedCell;
     QPair<int, int> dice;
     int move{0};    // 1ste of 2de piece van de 2 dobbelstenen
@@ -25,7 +25,7 @@ public:
     Game();
     const Board& getBoard() const;
     void doubleDobbel();
-    void initPlayers(QString players[4]);
+    void namePlayer(const QString& name, int playerIndex);
     bool selectPiece(QPoint cell);
     bool movePiece(QPoint destinationCell);
     void advance();

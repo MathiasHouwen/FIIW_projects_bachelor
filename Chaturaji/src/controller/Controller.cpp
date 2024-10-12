@@ -11,43 +11,31 @@ Controller::Controller(Game &gameModel, GameView &gameView)
     io = ConsoleIO();
 }
 
-bool Controller::update() {
-    Player player("Test", Player::colour::RED);
-    ConsoleIO console{};
-    if(console.exit()) return !console.exit();
-
+void Controller::askCellProcedure(const std::function<void(QPoint)>& gameFunc) {
     bool validSelection;
     do{
-        QPoint fromCell = io.getCords();
-        if(io.exit()) return false;
-        validSelection = true; // game.select
+        QPoint cell = io.getCords();
+        if(io.exit()) exit(0);
+        validSelection = gameModel.selectPiece(cell);
     } while(validSelection);
-    do{
-        QPoint toCell = io.getCords();
-        if(io.exit()) return false;
-        validSelection = true; // game.moveto
-    } while(validSelection);
-
-    gameView.printBoard();
-    return true;
 }
 
-void Controller::startGameLoop() {
-    gameSetup();
+void Controller::loop() {
+    askCellProcedure([&](QPoint c){gameModel.selectPiece(c);});
+    askCellProcedure([&](QPoint c){gameModel.movePiece(c);});
     gameView.printBoard();
-    while(true){
-        bool continueLoop = update();
-
-        if(!continueLoop) break;
-    }
 }
 
-void Controller::gameSetup() {
-    QString players[4];
+void Controller::start() {
+    setup();
+    gameView.printBoard();
+    while(true)
+        loop();
+}
+
+void Controller::setup() {
     for(int i = 0; i < 4; i++){
-        players[i] = io.getPlayerName(i + 1);
+        QString name = io.getPlayerName(i + 1);
+        gameModel.namePlayer(name, i);
     }
-    gameModel.initPlayers(players);
-
-    // LOAD BOARD
 }

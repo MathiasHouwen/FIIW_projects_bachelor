@@ -19,19 +19,9 @@ void Game::doubleDobbel() {
     dice.second = std::rand() % 6 + 1;;
 }
 
-void Game::initPlayers(QString *players) {
-
-    Player::colour colours[4] = {
-            Player::colour::RED,
-            Player::colour::BLUE,
-            Player::colour::GREEN,
-            Player::colour::YELLOW
-    };
-
-    for (int i = 0; i < 4; ++i) {
-        QString playerName = players[i];
-        Player player{playerName, colours[i]};
-    }
+void Game::namePlayer(const QString& name, int playerIndex) {
+    Player& player = players[playerIndex];
+    player.setMName(name);
 }
 
 bool Game::selectPiece(QPoint cell) {

@@ -4,10 +4,11 @@
 
 #include "Player.h"
 
-Player::Player(const QString &mName, Player::colour mColour) : m_name(mName), m_colour(mColour) {
-    m_alive = true;
-    m_score = 0;
-}
+Player::Player(colour mColour) :
+    m_colour(mColour),
+    m_name("new player"),
+    m_alive(true),
+    m_score(0) {}
 
 void Player::setScore(int score) {
     m_score = score;
@@ -32,8 +33,6 @@ const QString &Player::getName() const {
     return m_name;
 }
 
-Player::Player() {}
-
 Player::colour Player::getMColour() const {
     return m_colour;
 }
@@ -44,4 +43,8 @@ bool Player::operator==(const Player &rhs) const {
 
 bool Player::operator!=(const Player &rhs) const {
     return m_colour != rhs.m_colour;;
+}
+
+void Player::setMName(const QString &mName) {
+    m_name = mName;
 }

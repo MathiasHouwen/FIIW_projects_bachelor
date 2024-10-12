@@ -5,7 +5,7 @@
 #include "Game.h"
 #include "Piece.h"
 
-Game::Game() : board(), mover(board), dice() {
+Game::Game() : board(), mover(board) {
     currentlySelectedCell = nullptr;
 }
 
@@ -15,8 +15,11 @@ Board& Game::getBoard() {
 
 void Game::doubleDobbel() {
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
-    dice.first = std::rand() % 6 + 1;;
-    dice.second = std::rand() % 6 + 1;;
+    dice.first = std::rand() % 6 + 1;
+    dice.second = std::rand() % 6 + 1;
+
+    availableType1 = piece.getTypeFromDobbel(dice.first);
+    availableType2 = piece.getTypeFromDobbel(dice.second);
 }
 
 void Game::namePlayer(const QString& name, int playerIndex) {
@@ -28,6 +31,8 @@ bool Game::selectPiece(QPoint cell) {
     if(board.isCellEmpty(cell)) return false;
     Piece piece = *board.getCell(cell);
     if(piece.getPlayer() != getCurrentPlayer()) return false;
+
+    if(piece.getType() != availableType1 && piece.getType() != availableType2) return false;
 
     delete currentlySelectedCell;
     currentlySelectedCell = new QPoint(cell);

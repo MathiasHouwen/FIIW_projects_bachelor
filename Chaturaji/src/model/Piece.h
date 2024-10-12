@@ -12,13 +12,14 @@
 
 class Piece {
 public:
-    enum class Type {PAWN, BOAT, ELEPH, KNIGHT, KING};
+    enum class Type {PAWN, BOAT, ELEPH, KNIGHT, KING, USED};
     QPoint direction;
     const Pattern &getWalkPattern() const;
     const Pattern &getAttackPattern() const;
     Type getType() const;
     Piece(Type type, QPoint direction, Player& player);
     int getScoreValue() const;
+    Type getTypeFromDobbel(int number);
     Player &getPlayer() const;
 
 private:

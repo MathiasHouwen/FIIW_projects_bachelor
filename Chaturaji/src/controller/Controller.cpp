@@ -21,6 +21,9 @@ void Controller::askCellProcedure(const std::function<bool(QPoint)>& gameFunc) {
 
 void Controller::loop() {
     gameView.printBoard();
+    gameModel.doubleDobbel();
+    gameView.printTypes(gameModel.available_type1());
+    gameView.printTypes(gameModel.available_type2());
     askCellProcedure([&](QPoint c)->bool{return gameModel.selectPiece(c);});
     gameView.printBoard();
     askCellProcedure([&](QPoint c)->bool{return gameModel.movePiece(c);});

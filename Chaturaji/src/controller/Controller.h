@@ -16,7 +16,7 @@ private:
     void loop();
     ConsoleIO io;
     void setup();
-    void askCellProcedure(const std::function<void(QPoint)>& gameFunc);
+    void askCellProcedure(const std::function<bool(QPoint)>& gameFunc);
 public:
     Controller(Game &gameModel, GameView &gameView);
     void start();

@@ -23,7 +23,7 @@ public:
     int getMove() const;
     int getTurn() const;
     Game();
-    const Board& getBoard() const;
+    Board& getBoard();
     void doubleDobbel();
     void namePlayer(const QString& name, int playerIndex);
     bool selectPiece(QPoint cell);

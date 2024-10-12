@@ -21,14 +21,13 @@ void Controller::askCellProcedure(const std::function<bool(QPoint)>& gameFunc) {
 }
 
 void Controller::loop() {
+    gameView.printBoard();
     askCellProcedure([&](QPoint c)->bool{return gameModel.selectPiece(c);});
     askCellProcedure([&](QPoint c)->bool{return gameModel.movePiece(c);});
-    gameView.printBoard();
 }
 
 void Controller::start() {
     setup();
-    gameView.printBoard();
     while(true)
         loop();
 }

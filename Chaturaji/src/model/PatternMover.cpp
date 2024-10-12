@@ -29,8 +29,7 @@ QSet<QPoint> PatternMover::createPatternLayer(int distance, Pattern pattern, QPo
             // indien de pattern oneindig in een richting kan bewegen:
             // mag niet verder bewegen als die in die richting (quadrant) al
             // gebotst is tegen een piece -> quadrant valid = false
-            bool isPlayerDirection = pattern.forwardOnly && pattern.forwardDirection == dir;
-            std::cout << isPlayerDirection << std::endl;
+            bool isPlayerDirection = !pattern.forwardOnly || pattern.forwardDirection == dir;
             if(validQuadrants[quadrant] && isPlayerDirection){
                 //int x = cell.x() + distance * mirrorer * (toggler ? pattern.forward : sw);
                 //int y = cell.y() + distance * mirrorer * (toggler ? sw : -pattern.forward);

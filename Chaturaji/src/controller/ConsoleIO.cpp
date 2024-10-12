@@ -12,16 +12,14 @@ ConsoleIO::ConsoleIO() {
 }
 
 QPoint ConsoleIO::getCords() {
-    string in;
+    string coord;
     askQuestion("Select a square.", "ex. A1");
-    cin >> in;
+    cin >> coord;
+    m_exit = coord == "Q" || coord == "q";
 
-    if(in == "Q" || in == "q"){
-        m_exit = true;
-    }
 
-    int col = min(abs(in[0] - 'A'), abs(in[0] - 'a'));
-    int row = 8 -(in[1] - '0');
+    int col = min(abs(coord[0] - 'A'), abs(coord[0] - 'a'));
+    int row = 8 -(coord[1] - '0');
 
     return QPoint{col, row};
 }
@@ -32,25 +30,28 @@ bool ConsoleIO::exit() {
 
 QString ConsoleIO::getPlayerName(int playerID) {
     QString name;
-    QTextStream input(stdin);
+    QTextStream in(stdin);
     askQuestion("What is player" + to_string(playerID) + "'s name?", "name");
-    input >> name;
+    in >> name;
+    m_exit = name == "Q" || name == "q";
     return name;
 }
 
 bool ConsoleIO::askMoveConfirmation() {
     askQuestion("Do you want to take this move or skip it?", "'t'/'s'");
-    QTextStream input(stdin);
+    QTextStream in(stdin);
     QChar choice;
-    input >> choice;
+    in >> choice;
+    m_exit = choice == 'Q' || choice == 'q';
     return choice == 't';
 }
 
 bool ConsoleIO::askReplay() {
     askQuestion("Do you want to replay?", "'y'/'n'");
-    QTextStream input(stdin);
+    QTextStream in(stdin);
     QChar choice;
-    input >> choice;
+    in >> choice;
+    m_exit = choice == 'Q' || choice == 'q';
     return choice == 'y';
 }
 

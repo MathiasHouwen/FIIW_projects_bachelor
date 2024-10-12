@@ -113,6 +113,7 @@ void GameView::printTurn() {
     int color = asciiEscColorCode(player.getMColour());
     cout << "Turn of player: ";
     cout << asciiEscString(color, 47, " "+player.getName().toStdString()+" ");
+    cout << "  -  score: " << player.getScore();
     cout << endl;
 }
 

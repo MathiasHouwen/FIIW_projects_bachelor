@@ -29,7 +29,11 @@ bool Game::selectPiece(QPoint cell) {
     Piece piece = *board.getCell(cell);
     if(piece.getPlayer() != getCurrentPlayer()) return false;
 
-    if(piece.getType() != dice.first && piece.getType() != dice.second) return false;
+    if(piece.getType() == dice.first){
+        dice.first = Piece::Type::USED;
+    } else if (piece.getType() == dice.second){
+        dice.second = Piece::Type::USED;
+    } else return false;
 
     delete currentlySelectedCell;
     currentlySelectedCell = new QPoint(cell);

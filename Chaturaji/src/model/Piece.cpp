@@ -13,6 +13,9 @@ Piece::Type Piece::getType() const {
 int Piece::getScoreValue() const {
     return scoreValue;
 }
+Player &Piece::getPlayer() const {
+    return player;
+}
 
 Piece::Piece(Piece::Type type, QPoint direction, Player& player) : type(type), player(player){
     switch (type) {

@@ -4,7 +4,6 @@
 #include <iostream>
 #include <QPoint>
 #include "Controller.h"
-#include "../model/Piece.h"
 
 Controller::Controller(Game &gameModel, GameView &gameView)
     : gameModel(gameModel), gameView(gameView){
@@ -23,6 +22,7 @@ void Controller::askCellProcedure(const std::function<bool(QPoint)>& gameFunc) {
 void Controller::loop() {
     gameView.printBoard();
     askCellProcedure([&](QPoint c)->bool{return gameModel.selectPiece(c);});
+    gameView.printBoard();
     askCellProcedure([&](QPoint c)->bool{return gameModel.movePiece(c);});
 }
 

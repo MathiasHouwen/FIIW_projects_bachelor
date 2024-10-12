@@ -27,7 +27,7 @@ void Game::namePlayer(const QString& name, int playerIndex) {
 bool Game::selectPiece(QPoint cell) {
     if(board.isCellEmpty(cell)) return false;
     Piece piece = *board.getCell(cell);
-    if(piece.player != getCurrentPlayer()) return false;
+    if(piece.getPlayer() != getCurrentPlayer()) return false;
 
     delete currentlySelectedCell;
     currentlySelectedCell = new QPoint(cell);
@@ -36,27 +36,15 @@ bool Game::selectPiece(QPoint cell) {
 }
 
 bool Game::movePiece(QPoint destinationCell) {
-    bool empty = board.isCellEmpty(destinationCell);
-
-    QPoint fromCell = *currentlySelectedCell;
-    Piece sourcePiece = *board.getCell(fromCell);
-
-
-    Pattern pattern;
-    int scoreToAdd = 0;
-    if(empty){
-        pattern = sourcePiece.getWalkPattern();
-    } else {
-        Piece destPiece = *board.getCell(destinationCell);
-        if(destPiece.player == getCurrentPlayer()) return false;
-        pattern = sourcePiece.getAttackPattern();
-        scoreToAdd = destPiece.getScoreValue();
-    }
-
-    QSet<QPoint> moves = mover.getPossibleMoves(pattern, fromCell);
+    QSet<QPoint> moves = getPossibleMoves();
     if(!moves.contains(destinationCell)) return false;
 
-    board.move(fromCell, destinationCell);
+    int scoreToAdd = 0;
+    Piece* destPiece = board.getCell(destinationCell);
+    if(destPiece){
+        scoreToAdd = destPiece->getScoreValue();
+    }
+    board.move(*currentlySelectedCell, destinationCell);
     getCurrentPlayer().addScore(scoreToAdd);
 
     delete currentlySelectedCell;
@@ -78,8 +66,8 @@ void Game::advance() {
     }
 }
 
-QPoint Game::getCurrentlySelectedCell() const {
-    return *currentlySelectedCell;
+QPoint* Game::getCurrentlySelectedCell() const {
+    return currentlySelectedCell;
 }
 
 const QPair<int, int> &Game::getDice() const {
@@ -101,3 +89,30 @@ Player& Game::getCurrentPlayer(){
 bool Game::isGameOver() const {
     return gameOver;
 }
+
+QSet<QPoint> Game::getPossibleMoves() {
+    if(!currentlySelectedCell) return {};
+    QPoint cell = *currentlySelectedCell;
+    Piece* piece = board.getCell(cell);
+    if(!piece) return {};
+
+    QSet<QPoint> walkMoves = mover.getPossibleMoves(piece->getWalkPattern(), cell);
+    QSet<QPoint> attackMoves = mover.getPossibleMoves(piece->getWalkPattern(), cell);
+    QSet<QPoint> possibleMoves = {};
+
+    for(QPoint move : walkMoves) {
+        if(board.isCellEmpty(move))
+            possibleMoves.insert(move);
+    }
+
+    for(QPoint move : attackMoves){
+        if(!board.isCellEmpty(move)){
+            Piece targetPiece = *board.getCell(move);
+            if(targetPiece.getPlayer() != getCurrentPlayer())
+                possibleMoves.insert(move);
+        }
+    }
+    return possibleMoves;
+}
+
+

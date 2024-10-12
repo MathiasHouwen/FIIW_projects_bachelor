@@ -16,12 +16,12 @@ private:
     int move{0};    // 1ste of 2de piece van de 2 dobbelstenen
     int turn{0};    // player beurt
     bool gameOver{false};
-
 public:
-    QPoint getCurrentlySelectedCell() const;
+    QPoint* getCurrentlySelectedCell() const;
     const QPair<int, int> &getDice() const;
     int getMove() const;
     int getTurn() const;
+    QSet<QPoint> getPossibleMoves();
     Game();
     Board& getBoard();
     void doubleDobbel();

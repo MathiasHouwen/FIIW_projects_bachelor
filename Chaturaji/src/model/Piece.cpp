@@ -68,3 +68,14 @@ Piece::Type Piece::getTypeFromDobbel(int number) {
             return Type::ELEPH;
     }
 }
+
+std::string Piece::getTypeName(Type type) {
+    switch(type) {
+        case Piece::Type::PAWN: return "Pawn";
+        case Piece::Type::KNIGHT: return "Horse";
+        case Piece::Type::KING: return "King";
+        case Piece::Type::BOAT: return "Boat";
+        case Piece::Type::ELEPH: return "Elephant";
+        default: return "invalid";
+    }
+}

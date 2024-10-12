@@ -11,8 +11,11 @@ public:
     QPoint getCords();
     bool exit();
     QString getPlayerName(int playerID);
+    bool askMoveConfirmation();
+    bool askReplay();
 private:
     bool m_exit;
+    void askQuestion(std::string question, std::string options);
 };
 
 

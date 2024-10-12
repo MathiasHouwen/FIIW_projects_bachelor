@@ -13,18 +13,15 @@ private:
     Piece piece = {std::move(piece)};
     Player players[4] = {{Player::colour::RED}, {Player::colour::GREEN}, {Player::colour::BLUE}, {Player::colour::YELLOW}};
     QPoint* currentlySelectedCell;
-    QPair<int, int> dice;
+    QPair<Piece::Type, Piece::Type> dice;
     int move{0};    // 1ste of 2de piece van de 2 dobbelstenen
     int turn{0};    // player beurt
     bool gameOver{false};
-    Piece::Type availableType1;
-    Piece::Type availableType2;
 
 public:
     QPoint* getCurrentlySelectedCell() const;
-    const QPair<int, int> &getDice() const;
+    const QPair<Piece::Type, Piece::Type> &getDice() const;
     int getMove() const;
-    int getTurn() const;
     QSet<QPoint> getPossibleMoves();
     Game();
     Board& getBoard();
@@ -35,14 +32,6 @@ public:
     void advance();
     Player &getCurrentPlayer();
     bool isGameOver() const;
-
-    [[nodiscard]] Piece::Type available_type1() const {
-        return availableType1;
-    }
-
-    [[nodiscard]] Piece::Type available_type2() const {
-        return availableType2;
-    }
 };
 
 

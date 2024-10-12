@@ -21,6 +21,7 @@ public:
     int getScoreValue() const;
     Type getTypeFromDobbel(int number);
     Player &getPlayer() const;
+    static std::string getTypeName(Type type);
 
 private:
     void init(Pattern pattern, int ScoreValue);

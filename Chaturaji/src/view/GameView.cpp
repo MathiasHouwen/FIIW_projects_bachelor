@@ -45,6 +45,11 @@ string GameView::getCellString(QPoint cell) const {
 
     Piece* piece = model.getBoard().getCell(cell);
     if(piece){
+        if(!selection && piece->getPlayer() == model.getCurrentPlayer()
+            && (piece->getType() == model.getDice().first
+            || piece->getType() == model.getDice().second)){
+            background = 45;
+        }
         symb = getPieceSymbol(*piece);
         color = asciiEscColorCode(piece->getPlayer().getMColour());
     }
@@ -82,14 +87,40 @@ std::string GameView::getPieceSymbol(Piece piece) {
         case Piece::Type::ELEPH: return "ELE";
     }
 }
-void GameView::printTypes(Piece::Type type) const {
-    cout << "move: ";
-    switch(type) {
-        case Piece::Type::PAWN: cout << "Pawn" << endl; break;
-        case Piece::Type::KNIGHT: cout << "Knight" << endl; break;
-        case Piece::Type::KING: cout << "King" << endl; break;
-        case Piece::Type::BOAT: cout << "Boat" << endl; break;
-        case Piece::Type::ELEPH: cout << "Elephant" << endl; break;
-        default: cout << "Unknown" << endl; break;
+void GameView::printDice() const {
+    QPair<Piece::Type, Piece::Type> dice = model.getDice();
+    cout << "The dice gave you the choises: [ ";
+    cout << Piece::getTypeName(dice.first) << ", ";
+    cout << Piece::getTypeName(dice.second) << " ]" << endl;
+}
+
+void GameView::printMove() {
+    QPair<Piece::Type, Piece::Type> dice = model.getDice();
+    int move = model.getMove();
+    if(move == 0){
+        cout << "Move 1/2. Pick one of the choises" << endl;
+    } else {
+        cout << "Move 2/2. Remaining choise: ";
+        if(dice.first == Piece::Type::USED)
+            cout << Piece::getTypeName(dice.second) << endl;
+        else
+            cout << Piece::getTypeName(dice.first) << endl;
     }
+}
+
+void GameView::printTurn() {
+    Player player = model.getCurrentPlayer();
+    int color = asciiEscColorCode(player.getMColour());
+    cout << "Turn of player: ";
+    cout << asciiEscString(color, 47, " "+player.getName().toStdString()+" ");
+    cout << endl;
+}
+
+void GameView::update() {
+    system("CLS");
+    cout.flush();
+    printBoard();
+    printTurn();
+    printDice();
+    printMove();
 }

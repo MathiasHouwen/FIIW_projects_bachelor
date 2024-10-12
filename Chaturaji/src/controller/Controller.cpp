@@ -20,13 +20,21 @@ void Controller::askCellProcedure(const std::function<bool(QPoint)>& gameFunc) {
 }
 
 void Controller::loop() {
-    gameView.printBoard();
+    if(gameModel.isGameOver()) return;
+
     gameModel.doubleDobbel();
-    gameView.printTypes(gameModel.available_type1());
-    gameView.printTypes(gameModel.available_type2());
-    askCellProcedure([&](QPoint c)->bool{return gameModel.selectPiece(c);});
-    gameView.printBoard();
-    askCellProcedure([&](QPoint c)->bool{return gameModel.movePiece(c);});
+    for(int move = 0; move <= 1; move++){
+        gameView.update();
+        bool takeMove = io.askMoveConfirmation();
+        if(!takeMove){
+            gameModel.advance();
+            continue;
+        }
+        askCellProcedure([&](QPoint c)->bool{return gameModel.selectPiece(c);});
+        gameView.update();
+        askCellProcedure([&](QPoint c)->bool{return gameModel.movePiece(c);});
+        gameModel.advance();
+    }
 }
 
 void Controller::start() {

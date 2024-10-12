@@ -11,10 +11,13 @@ private:
     static std::string getPieceSymbol(Piece piece);
     static std::string asciiEscString(int color, int background, const std::string& str);
     std::string getCellString(QPoint cell) const;
+    void printBoard() const;
+    void printDice() const;
+    void printMove();
+    void printTurn();
 public:
     explicit GameView(Game &game);
-    void printBoard() const;
-    void printTypes(Piece::Type type) const;
+    void update();
 };
 
 #endif //CHATURAJI_GAMEVIEW_H

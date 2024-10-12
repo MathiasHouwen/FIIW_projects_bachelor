@@ -15,11 +15,8 @@ Board& Game::getBoard() {
 
 void Game::doubleDobbel() {
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
-    dice.first = std::rand() % 6 + 1;
-    dice.second = std::rand() % 6 + 1;
-
-    availableType1 = piece.getTypeFromDobbel(dice.first);
-    availableType2 = piece.getTypeFromDobbel(dice.second);
+    dice.first = piece.getTypeFromDobbel(std::rand() % 6 + 1);
+    dice.second = piece.getTypeFromDobbel(std::rand() % 6 + 1);
 }
 
 void Game::namePlayer(const QString& name, int playerIndex) {
@@ -32,7 +29,7 @@ bool Game::selectPiece(QPoint cell) {
     Piece piece = *board.getCell(cell);
     if(piece.getPlayer() != getCurrentPlayer()) return false;
 
-    if(piece.getType() != availableType1 && piece.getType() != availableType2) return false;
+    if(piece.getType() != dice.first && piece.getType() != dice.second) return false;
 
     delete currentlySelectedCell;
     currentlySelectedCell = new QPoint(cell);
@@ -75,16 +72,12 @@ QPoint* Game::getCurrentlySelectedCell() const {
     return currentlySelectedCell;
 }
 
-const QPair<int, int> &Game::getDice() const {
+const QPair<Piece::Type, Piece::Type> &Game::getDice() const {
     return dice;
 }
 
 int Game::getMove() const {
     return move;
-}
-
-int Game::getTurn() const {
-    return turn;
 }
 
 Player& Game::getCurrentPlayer(){

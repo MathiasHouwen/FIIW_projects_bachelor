@@ -47,19 +47,26 @@ bool Game::selectPiece(QPoint cell) {
 
 bool Game::movePiece(QPoint destinationCell) {
     bool empty = board.isCellEmpty(destinationCell);
-    if(empty) return false;
-    Piece destPiece = *board.getCell(destinationCell);
-    if(destPiece.player == getCurrentPlayer()) return false;
 
     QPoint fromCell = *currentlySelectedCell;
     Piece sourcePiece = *board.getCell(fromCell);
 
-    Pattern patt = empty ? sourcePiece.getWalkPattern() : sourcePiece.getAttackPattern();
-    QSet<QPoint> moves = mover.getPossibleMoves(patt, fromCell);
+    Pattern pattern;
+    int scoreToAdd = 0;
+    if(empty){
+        pattern = sourcePiece.getWalkPattern();
+    } else {
+        Piece destPiece = *board.getCell(destinationCell);
+        if(destPiece.player == getCurrentPlayer()) return false;
+        pattern = sourcePiece.getAttackPattern();
+        scoreToAdd = destPiece.getScoreValue();
+    }
 
+    QSet<QPoint> moves = mover.getPossibleMoves(pattern, fromCell);
     if(!moves.contains(destinationCell)) return false;
+
     board.move(fromCell, destinationCell);
-    getCurrentPlayer().addScore(destPiece.getScoreValue());
+    getCurrentPlayer().addScore(scoreToAdd);
 
     delete currentlySelectedCell;
     currentlySelectedCell = nullptr;
@@ -67,11 +74,16 @@ bool Game::movePiece(QPoint destinationCell) {
 }
 
 void Game::advance() {
-    move += 1;
-    if(move == 2) {
+    move++;
+    if(move > 1) {
         move = 0;
-        turn += 1;
-        if(turn == 4) turn = 0;
+        int turnAttempts;
+        for(turnAttempts=1; turnAttempts<=4; turnAttempts++){
+            turn++;
+            if(turn == 4) turn = 0;
+            if(getCurrentPlayer().isAlive()) break;
+        }
+        gameOver = turnAttempts >= 4;
     }
 }
 
@@ -93,4 +105,8 @@ int Game::getTurn() const {
 
 Player& Game::getCurrentPlayer(){
     return players[turn];
+}
+
+bool Game::isGameOver() const {
+    return gameOver;
 }

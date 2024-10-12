@@ -15,6 +15,7 @@ private:
     QPair<int, int> dice;
     int move{0};    // 1ste of 2de piece van de 2 dobbelstenen
     int turn{0};    // player beurt
+    bool gameOver{false};
 
 public:
     QPoint getCurrentlySelectedCell() const;
@@ -29,6 +30,7 @@ public:
     bool movePiece(QPoint destinationCell);
     void advance();
     Player &getCurrentPlayer();
+    bool isGameOver() const;
 };
 
 

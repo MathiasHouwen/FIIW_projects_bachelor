@@ -9,6 +9,14 @@ int main(int argc, char *argv[])
     QCoreApplication app(argc, argv);
     Game model;
 
+    // TEST ========================
+
+    Board& board = model.getBoard();
+    board.setCell({2,4}, {Piece::Type::ELEPH, {0,1}, model.getCurrentPlayer()});
+
+    // TEST ========================
+
+
     GameView view(model);
     Controller controller(model, view);
     controller.start();

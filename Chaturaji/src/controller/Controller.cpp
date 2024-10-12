@@ -11,18 +11,18 @@ Controller::Controller(Game &gameModel, GameView &gameView)
     io = ConsoleIO();
 }
 
-void Controller::askCellProcedure(const std::function<void(QPoint)>& gameFunc) {
+void Controller::askCellProcedure(const std::function<bool(QPoint)>& gameFunc) {
     bool validSelection;
     do{
         QPoint cell = io.getCords();
         if(io.exit()) exit(0);
-        validSelection = gameModel.selectPiece(cell);
-    } while(validSelection);
+        validSelection = gameFunc(cell);
+    } while(!validSelection);
 }
 
 void Controller::loop() {
-    askCellProcedure([&](QPoint c){gameModel.selectPiece(c);});
-    askCellProcedure([&](QPoint c){gameModel.movePiece(c);});
+    askCellProcedure([&](QPoint c)->bool{return gameModel.selectPiece(c);});
+    askCellProcedure([&](QPoint c)->bool{return gameModel.movePiece(c);});
     gameView.printBoard();
 }
 

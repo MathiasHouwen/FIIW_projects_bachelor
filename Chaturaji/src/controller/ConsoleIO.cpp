@@ -12,17 +12,16 @@ ConsoleIO::ConsoleIO() {
 }
 
 QPoint ConsoleIO::getCords() {
-    string cord;
-    cout << "Please enter the coordinate: " << std::endl;
-    cin >> cord;
+    string in;
+    cout << "Please enter the coordinate: ";
+    cin >> in;
 
-    if(cord == "Q" || cord == "q"){
+    if(in == "Q" || in == "q"){
         m_exit = true;
-        return QPoint{-1, -1};
     }
 
-    int col = cord[0] - 'A';
-    int row = 8 -(cord[1] - '0');
+    int col = min(abs(in[0] - 'A'), abs(in[0] - 'a'));
+    int row = 8 -(in[1] - '0');
 
     return QPoint{col, row};
 }
@@ -34,7 +33,7 @@ bool ConsoleIO::exit() {
 QString ConsoleIO::getPlayerName(int playerID) {
     QString name;
     QTextStream input(stdin);
-    cout << "Please enter the player " << playerID << " name: "<< std::endl;
+    cout << "Please enter the player " << playerID << " name: ";
     input >> name;
     return name;
 }

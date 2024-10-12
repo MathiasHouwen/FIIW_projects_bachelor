@@ -9,7 +9,7 @@ Game::Game() : board(), mover(board), dice() {
     currentlySelectedCell = nullptr;
 }
 
-const Board& Game::getBoard() const {
+Board& Game::getBoard() {
     return board;
 }
 
@@ -40,6 +40,7 @@ bool Game::movePiece(QPoint destinationCell) {
 
     QPoint fromCell = *currentlySelectedCell;
     Piece sourcePiece = *board.getCell(fromCell);
+
 
     Pattern pattern;
     int scoreToAdd = 0;

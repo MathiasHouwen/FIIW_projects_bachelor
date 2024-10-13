@@ -11,13 +11,13 @@
 
 class FileIO {
 public:
-    int saveBoard();
+    int saveBoard(const Board* board);
     Board loadBoard();
     explicit FileIO(const QString &mFilePath);
-    static QJsonDocument generateJSONfile(const Board* board);
-
 private:
     static QJsonObject pieceToJson(const Piece* piece);
+    static QJsonDocument generateJSONfile(const Board* board);
+
     QString m_filePath;
     QFile m_file;
 };

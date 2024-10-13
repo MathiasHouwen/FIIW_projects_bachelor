@@ -19,16 +19,8 @@ int main(int argc, char *argv[])
     Player other(Player::colour::GREEN);
     board.setCell({6,4}, {Piece::Type::PAWN, {0,-1}, other});
 
-    // Test code for Piece to JSON
-//    Piece testPiece{Piece::Type::ELEPH, {0,1}, model.getCurrentPlayer()};
-//    QJsonObject JsonObjPeice = FileIO::pieceToJson(&testPiece);
-//    QJsonDocument jsonDoc(JsonObjPeice);
-//    QByteArray jsonString = jsonDoc.toJson();
-//    std::cout << jsonString.toStdString() << std::endl;
-
-//    QJsonDocument doc = FileIO::generateJSONfile(&board);
-//    QByteArray jsonString = doc.toJson();
-//    std::cout << jsonString.toStdString() << std::endl;
+    FileIO io{"../saveFile.txt"};
+    io.saveBoard(&board);
     // TEST ========================
 
     GameView view(model);

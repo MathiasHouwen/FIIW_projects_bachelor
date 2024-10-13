@@ -15,18 +15,14 @@
 
 FileIO::FileIO(const QString &mFilePath) : m_filePath(mFilePath), m_file(mFilePath) {}
 
-int FileIO::saveBoard() {
-    //TODO: TEMPERRARY TEST CODE
+int FileIO::saveBoard(const Board* board) {
     if (!m_file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         qDebug() << "Could not open file for writing:" << m_file.errorString();
         return EXIT_FAILURE;
     }
 
-    //TODO: GENERATE JSON OBJECT
-    QTextStream out(&m_file);
-    out << "Hello, World!" << Qt::endl;
-
-    // Close the file
+    QJsonDocument jsonDocument = generateJSONfile(board);
+    m_file.write(jsonDocument.toJson());
     m_file.close();
 
     qDebug() << "File written successfully.";

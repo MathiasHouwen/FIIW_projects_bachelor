@@ -1,0 +1,158 @@
+@startuml
+class ConsoleIO {
+    +ConsoleIO()
+    +QPoint askCoords()
+    +bool exit()
+    +QString getPlayerName(int playerID)
+    +bool askMoveConfirmation()
+    -bool m_exit
+    -void askQuestion(std::string question, std::string options)
+}
+
+class Controller {
+    -Game& gameModel
+    -GameView& gameView
+    -ConsoleIO io
+    -void loop()
+    -void setup()
+    -void askCellProcedure(const std::function<bool(QPoint)>& gameFunc)
+    +Controller(Game &gameModel, GameView &gameView)
+    +void start()
+}
+
+class FileIO {
+    +int saveBoard(const Board* board)
+    +Board& loadBoard(Game* game)
+    +explicit FileIO(const QString &mFilePath)
+    +static Piece jsonToPiece(const QJsonObject& jsonObject, Game* gamemodel)
+    -QString m_filePath
+    -QFile m_file
+    -static QJsonObject pieceToJson(const Piece* piece)
+    -static QJsonDocument generateJSONfile(const Board* board)
+    -static Board &jsonToBoard(QJsonObject boardObject, Game *gamemodel)
+}
+
+class Board {
+    -static const int size = 8
+    -Piece* board[size][size]
+    +static bool isInRange(QPoint cell)
+    +static int getSize()
+    +void setCell(QPoint cell, Piece value)
+    +void move(QPoint fromCell, QPoint toCell)
+    +void clear()
+    +bool isCellEmpty(QPoint cell) const
+    +Piece* getCell(QPoint cell) const
+    -static void errorIfOutOfRane(QPoint cell)
+}
+
+class Game {
+    -Board board
+    -PatternMover mover
+    -QPoint* currentlySelectedCell
+    -QPair<Piece::Type, Piece::Type> dice
+    -int move {0}
+    -int turn {0}
+    -bool gameOver {false}
+    -Piece piece
+    -Player players[4]
+    +Game()
+    +QPoint* getCurrentlySelectedCell() const
+    +const QPair<Piece::Type, Piece::Type>& getDice() const
+    +int getMove() const
+    +Board& getBoard()
+    +bool isGameOver() const
+    +void doubleDobbel()
+    +void namePlayer(const QString& name, int playerIndex)
+    +void advance()
+    +bool selectPiece(QPoint cell)
+    +bool movePiece(QPoint destinationCell)
+    +QSet<QPoint> getPossibleMoves()
+    +Player &getCurrentPlayer()
+    +Player &getPlayerFromColour(Player::colour colour)
+}
+
+class Pattern {
+    +int forward
+    +QList<int> sideways
+    +bool forwardOnly
+    +bool infinite
+    +QPoint forwardDirection
+}
+
+class PatternMover {
+    +PatternMover(Board& board)
+    +QSet<QPoint> getPossibleMoves(Pattern pattern, QPoint cell)
+    -Board& board
+    -QSet<QPoint> createPatternLayer(int d, Pattern pattern, QPoint cell, QVarLengthArray<bool>& validQuadrants)
+}
+
+class Piece {
+    enum Type {PAWN, BOAT, ELEPH, KNIGHT, KING, USED}
+    +QPoint direction
+    +Piece(Type type, QPoint direction, Player& player)
+    +const Pattern &getWalkPattern() const
+    +const Pattern &getAttackPattern() const
+    +Type getType() const
+    +int getScoreValue() const
+    +Type getTypeFromDobbel(int number)
+    +Player &getPlayer() const
+    +static std::string getTypeName(Type type)
+    +static Piece::Type getTypeFromName(const QString& typestr)
+    -void init(Pattern pattern, int ScoreValue)
+    -Pattern walkPattern
+    -Pattern attackPattern
+    -Type type
+    -int scoreValue
+    -Player& player
+}
+
+class Player {
+    enum colour {RED, BLUE, YELLOW, GREEN}
+    +Player(colour mColour)
+    +void setName(const QString &mName)
+    +void addScore(int score)
+    +void killPlayer()
+    +int getScore() const
+    +bool isAlive() const
+    +const QString &getName() const
+    +colour getColour() const
+    +static QString getColourName(Player::colour colour)
+    +static colour getColourFromName(const QString &colourstr)
+    +bool operator==(const Player &rhs) const
+    +bool operator!=(const Player &rhs) const
+    -int m_score
+    -bool m_alive
+    -QString m_name
+    -colour m_colour
+}
+
+class GameView {
+    -Game& model
+    -static int asciiEscColorCode(Player::colour color)
+    -static std::string getPieceSymbol(Piece piece)
+    -static std::string asciiEscString(int color, int background, const std::string& str)
+    -std::string getCellString(QPoint cell) const
+    -void printBoard() const
+    -void printDice() const
+    -void printMove()
+    -void printTurn()
+    +explicit GameView(Game &game)
+    +void update()
+}
+
+ConsoleIO --> Controller
+Controller --> Game
+Controller --> GameView
+Controller --> ConsoleIO
+FileIO --> Board
+FileIO --> Piece
+Game --> Board
+Game --> Piece
+Game --> Player
+Game --> PatternMover
+PatternMover --> Board
+PatternMover --> Pattern
+Piece --> Player
+Piece --> Pattern
+Player --> GameView
+@enduml

@@ -58,3 +58,10 @@ QString Player::getColourName(Player::colour colour) {
         default: return "Unknow";
     }
 }
+
+Player::colour Player::getColourFromName(const QString& colourstr){
+    if (colourstr == "red") return Player::colour::RED;
+    if (colourstr == "blue") return Player::colour::BLUE;
+    if (colourstr == "green") return Player::colour::GREEN;
+    if (colourstr == "yellow") return Player::colour::YELLOW;
+}

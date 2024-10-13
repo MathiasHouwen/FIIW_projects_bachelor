@@ -26,6 +26,7 @@ public:
     colour getMColour() const;
 
     static QString getColourName(Player::colour colour);
+    static colour getColourFromName(const QString &colourstr);
 
     bool operator==(const Player &rhs) const;
 
@@ -36,6 +37,7 @@ private:
     bool m_alive;
     QString m_name;
     colour m_colour;
+
 };
 
 

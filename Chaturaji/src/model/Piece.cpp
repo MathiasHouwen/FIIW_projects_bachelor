@@ -79,3 +79,12 @@ std::string Piece::getTypeName(Type type) {
         default: return "invalid";
     }
 }
+
+Piece::Type Piece::getTypeFromName(const QString& typestr){
+    if (typestr == "Pawn") return Piece::Type::PAWN;
+    if (typestr == "Horse") return Piece::Type::KNIGHT;
+    if (typestr == "King") return Piece::Type::KING;
+    if (typestr == "Elephant") return Piece::Type::ELEPH;
+    if (typestr == "Boat") return Piece::Type::BOAT;
+    return Piece::Type::USED;
+}

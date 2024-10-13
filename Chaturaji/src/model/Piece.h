@@ -22,6 +22,7 @@ public:
     Type getTypeFromDobbel(int number);
     Player &getPlayer() const;
     static std::string getTypeName(Type type);
+    static Piece::Type getTypeFromName(const QString& typestr);
 
 private:
     void init(Pattern pattern, int ScoreValue);

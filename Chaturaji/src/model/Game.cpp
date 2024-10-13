@@ -88,6 +88,10 @@ Player& Game::getCurrentPlayer(){
     return players[turn];
 }
 
+Player& Game::getPlayerFromColour(Player::colour colour){
+    return players[(int) colour];
+}
+
 bool Game::isGameOver() const {
     return gameOver;
 }

@@ -32,6 +32,8 @@ public:
     void advance();
     Player &getCurrentPlayer();
     bool isGameOver() const;
+
+    Player &getPlayerFromColour(Player::colour colour);
 };
 
 

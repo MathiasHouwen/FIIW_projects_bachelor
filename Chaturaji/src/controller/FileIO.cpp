@@ -3,6 +3,7 @@
 //
 
 #include "FileIO.h"
+#include "../model/Game.h"
 
 #include <QTextStream>
 #include <QDebug>
@@ -14,6 +15,35 @@
 
 
 FileIO::FileIO(const QString &mFilePath) : m_filePath(mFilePath), m_file(mFilePath) {}
+
+//Board FileIO::loadBoard(){
+//    if (!m_file.open(QIODevice::ReadOnly | QIODevice::Text)){
+//        qDebug() << "Could not open file for reading:" << m_file.errorString();
+//    }
+//
+//    QByteArray fileData = m_file.readAll();
+//    m_file.close();
+//
+//    // JSON MAGIC
+//}
+
+Piece* jsonToPiece(const QJsonObject& jsonObject, Game* gamemodel){
+    if (jsonObject.isEmpty()) return nullptr;
+
+    QString typestr = jsonObject["type"].toString();
+    Piece::Type type = Piece::getTypeFromName(typestr);
+
+    QString colourstr = jsonObject["player_colour"].toString();
+    Player::colour colour = Player::getColourFromName(colourstr);
+    Player& player = gamemodel->getPlayerFromColour(colour);
+
+    QJsonObject dirobj = jsonObject["direction"].toObject();
+    int x = dirobj["x"].toInt();
+    int y = dirobj["y"].toInt();
+    QPoint direction(x, y);
+
+    return new Piece(type, direction, player);
+}
 
 int FileIO::saveBoard(const Board* board) {
     if (!m_file.open(QIODevice::WriteOnly | QIODevice::Text)) {

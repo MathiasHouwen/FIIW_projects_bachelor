@@ -2,6 +2,9 @@
 #include <iostream>
 #include <utility>
 
+// gemaakt door mathias als boolean board
+// Pieces en hun memory management gemaakt door robin
+
 Piece* Board::getCell(const QPoint cell) const {
     errorIfOutOfRane(cell); // randgeval
     return board[cell.y()][cell.x()];

@@ -4,6 +4,9 @@
 #include <ctime>
 #include "Game.h"
 #include "Piece.h"
+// select, move, advance en getpossiblemoves door ebbe
+// dobbel generatie door mathias
+// dobbel validatie en implementatie in select door robin
 
 Game::Game() : board(), mover(board) {
     currentlySelectedCell = nullptr;

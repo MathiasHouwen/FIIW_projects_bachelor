@@ -1,4 +1,5 @@
-
+// gemaakt door mathias
+// enkele functies toegevoegd door ebbe
 
 #include <QTextStream>
 #include <QPoint>

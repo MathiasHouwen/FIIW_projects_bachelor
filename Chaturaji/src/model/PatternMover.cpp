@@ -1,6 +1,5 @@
-//
-// Created by ebbew on 7-10-2024.
-//
+// volledig van ebbe
+
 
 #include <qvarlengtharray.h>
 #include <iostream>

@@ -1,6 +1,7 @@
-//
-// Created by ebbew on 7-10-2024.
-//
+// gemaakt door ebbe
+// loop functie is regelmatig veranderd door iedereen. meest recente is door robin, gerefactored door ebbe
+// setup is door mathias
+
 #include <iostream>
 #include <QPoint>
 #include "Controller.h"

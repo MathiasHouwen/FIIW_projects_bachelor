@@ -1,6 +1,4 @@
-//
-// Created by ebbew on 9-10-2024.
-//
+// gemaakt door ebbe en mathias tegenlijk en ge-merged
 
 #include "Piece.h"
 

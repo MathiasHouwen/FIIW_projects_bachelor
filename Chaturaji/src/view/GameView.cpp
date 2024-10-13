@@ -3,6 +3,8 @@
 #include <iostream>
 #include <ostream>
 
+// gemaakt door robin
+// kleuren en markeringen door ebbe
 
 using namespace std;
 

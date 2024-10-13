@@ -26,8 +26,10 @@ int main(int argc, char *argv[])
 //    QByteArray jsonString = jsonDoc.toJson();
 //    std::cout << jsonString.toStdString() << std::endl;
 
+//    QJsonDocument doc = FileIO::generateJSONfile(&board);
+//    QByteArray jsonString = doc.toJson();
+//    std::cout << jsonString.toStdString() << std::endl;
     // TEST ========================
-
 
     GameView view(model);
     Controller controller(model, view);

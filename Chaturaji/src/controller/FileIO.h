@@ -14,9 +14,10 @@ public:
     int saveBoard();
     Board loadBoard();
     explicit FileIO(const QString &mFilePath);
+    static QJsonDocument generateJSONfile(const Board* board);
+
 private:
     static QJsonObject pieceToJson(const Piece* piece);
-    void generateJSONfile(Board board);
     QString m_filePath;
     QFile m_file;
 };

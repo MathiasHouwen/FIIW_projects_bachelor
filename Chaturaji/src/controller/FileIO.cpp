@@ -9,6 +9,8 @@
 #include <QFile>
 #include <QCoreApplication>
 #include <QJsonObject>
+#include <QJsonArray>
+#include <QJsonDocument>
 
 
 FileIO::FileIO(const QString &mFilePath) : m_filePath(mFilePath), m_file(mFilePath) {}
@@ -43,4 +45,27 @@ QJsonObject FileIO::pieceToJson(const Piece* piece){
         jsonObject["direction"] = dirobj;
     }
     return jsonObject;
+}
+
+QJsonDocument FileIO::generateJSONfile(const Board* board) {
+    QJsonArray boardArray;
+
+    for(int x=0; x<8; x++){
+        QJsonArray row;
+        for(int y=0; y<8; y++){
+            Piece* piece = board->getCell(QPoint(x, y));
+
+            if (piece != nullptr){
+                row.append(pieceToJson(piece));
+            } else {
+                row.append(QJsonValue::Null);
+            }
+        }
+        boardArray.append(row);
+    }
+
+    QJsonObject boardObject;
+    boardObject["board"] = boardArray;
+    QJsonDocument doc(boardObject);
+    return doc;
 }

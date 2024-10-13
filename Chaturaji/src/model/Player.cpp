@@ -48,3 +48,13 @@ bool Player::operator!=(const Player &rhs) const {
 void Player::setMName(const QString &mName) {
     m_name = mName;
 }
+
+QString Player::getColourName(Player::colour colour) {
+    switch (colour) {
+        case Player::colour::RED: return "red";
+        case Player::colour::BLUE: return "blue";
+        case Player::colour::GREEN: return "green";
+        case Player::colour::YELLOW: return "yellow";
+        default: return "Unknow";
+    }
+}

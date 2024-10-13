@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QFile>
 #include <QCoreApplication>
+#include <QJsonObject>
 
 
 FileIO::FileIO(const QString &mFilePath) : m_filePath(mFilePath), m_file(mFilePath) {}
@@ -19,6 +20,7 @@ int FileIO::saveBoard() {
         return EXIT_FAILURE;
     }
 
+    //TODO: GENERATE JSON OBJECT
     QTextStream out(&m_file);
     out << "Hello, World!" << Qt::endl;
 
@@ -27,4 +29,18 @@ int FileIO::saveBoard() {
 
     qDebug() << "File written successfully.";
     return 0; // Exit successfully
+}
+
+QJsonObject FileIO::pieceToJson(const Piece* piece){
+    QJsonObject jsonObject;
+    if (piece != nullptr){
+        jsonObject["type"] = QString::fromStdString(Piece::getTypeName(piece->getType()));
+        jsonObject["player_colour"] = Player::getColourName(piece->getPlayer().getMColour());
+
+        QJsonObject dirobj;
+        dirobj["x"] = piece->direction.x();
+        dirobj["y"] = piece->direction.y();
+        jsonObject["direction"] = dirobj;
+    }
+    return jsonObject;
 }

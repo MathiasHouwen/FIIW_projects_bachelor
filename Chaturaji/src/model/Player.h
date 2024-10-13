@@ -25,6 +25,8 @@ public:
 
     colour getMColour() const;
 
+    static QString getColourName(Player::colour colour);
+
     bool operator==(const Player &rhs) const;
 
     bool operator!=(const Player &rhs) const;

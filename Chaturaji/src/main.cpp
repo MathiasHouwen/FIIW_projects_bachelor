@@ -1,4 +1,6 @@
 #include <QCoreApplication>
+#include <QJsonObject>
+#include <QJsonDocument>
 #include "view/GameView.h"
 #include "model/Game.h"
 #include "controller/Controller.h"
@@ -16,6 +18,14 @@ int main(int argc, char *argv[])
     board.setCell({4,2}, {Piece::Type::BOAT, {0,1}, model.getCurrentPlayer()});
     Player other(Player::colour::GREEN);
     board.setCell({6,4}, {Piece::Type::PAWN, {0,-1}, other});
+
+    // Test code for Piece to JSON
+//    Piece testPiece{Piece::Type::ELEPH, {0,1}, model.getCurrentPlayer()};
+//    QJsonObject JsonObjPeice = FileIO::pieceToJson(&testPiece);
+//    QJsonDocument jsonDoc(JsonObjPeice);
+//    QByteArray jsonString = jsonDoc.toJson();
+//    std::cout << jsonString.toStdString() << std::endl;
+
     // TEST ========================
 
 

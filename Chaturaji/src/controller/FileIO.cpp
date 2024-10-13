@@ -16,18 +16,21 @@
 
 FileIO::FileIO(const QString &mFilePath) : m_filePath(mFilePath), m_file(mFilePath) {}
 
-//Board FileIO::loadBoard(){
-//    if (!m_file.open(QIODevice::ReadOnly | QIODevice::Text)){
-//        qDebug() << "Could not open file for reading:" << m_file.errorString();
-//    }
-//
-//    QByteArray fileData = m_file.readAll();
-//    m_file.close();
-//
-//    // JSON MAGIC
-//}
+Board& FileIO::loadBoard(Game* game){
+    if (!m_file.open(QIODevice::ReadOnly | QIODevice::Text)){
+        qDebug() << "Could not open file for reading:" << m_file.errorString();
+    }
 
-Piece* jsonToPiece(const QJsonObject& jsonObject, Game* gamemodel){
+    QByteArray fileData = m_file.readAll();
+    m_file.close();
+
+    // JSON MAGIC
+    QJsonDocument doc = QJsonDocument::fromJson(fileData);
+    QJsonObject object = doc.object();
+    return FileIO::jsonToBoard(object, game);
+}
+
+Piece FileIO::jsonToPiece(const QJsonObject &jsonObject, Game *gamemodel) {
     if (jsonObject.isEmpty()) return nullptr;
 
     QString typestr = jsonObject["type"].toString();
@@ -42,7 +45,24 @@ Piece* jsonToPiece(const QJsonObject& jsonObject, Game* gamemodel){
     int y = dirobj["y"].toInt();
     QPoint direction(x, y);
 
-    return new Piece(type, direction, player);
+    return Piece(type, direction, player);
+}
+
+Board& FileIO::jsonToBoard(QJsonObject boardObject, Game* gamemodel){
+    QJsonArray boardArray = boardObject["Board"].toArray();
+
+    Board& board = gamemodel->getBoard();
+
+    for(int x=0; x<8; x++){
+        QJsonArray rij = boardArray[x].toArray();
+        for(int y=0; y<8; y++){
+            QJsonObject pieceObj = rij[y].toObject();
+            Piece piece = FileIO::jsonToPiece(pieceObj, gamemodel);
+            board.setCell(QPoint{x, y}, piece);
+        }
+    }
+
+    return board;
 }
 
 int FileIO::saveBoard(const Board* board) {
@@ -95,3 +115,4 @@ QJsonDocument FileIO::generateJSONfile(const Board* board) {
     QJsonDocument doc(boardObject);
     return doc;
 }
+

@@ -10,9 +10,7 @@ Player::Player(colour mColour) :
     m_alive(true),
     m_score(0) {}
 
-void Player::setScore(int score) {
-    m_score = score;
-}
+
 void Player::addScore(int score) {
     m_score += score;
 }
@@ -33,19 +31,19 @@ const QString &Player::getName() const {
     return m_name;
 }
 
-Player::colour Player::getMColour() const {
+Player::colour Player::getColour() const {
     return m_colour;
 }
 
 bool Player::operator==(const Player &rhs) const {
-    return m_colour == rhs.m_colour;
+    return m_colour == rhs.m_colour; // enkel kleur is in 1 game al genoeg. Zo kan je ook nog players vergelijken voor en na hun naam geinitialisaeerd is
 }
 
 bool Player::operator!=(const Player &rhs) const {
-    return m_colour != rhs.m_colour;;
+    return m_colour != rhs.m_colour; // zie ==
 }
 
-void Player::setMName(const QString &mName) {
+void Player::setName(const QString &mName) {
     m_name = mName;
 }
 

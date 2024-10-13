@@ -11,7 +11,7 @@ ConsoleIO::ConsoleIO() {
     m_exit = false;
 }
 
-QPoint ConsoleIO::getCords() {
+QPoint ConsoleIO::askCoords() {
     string coord;
     askQuestion("Select a square.", "ex. A1");
     cin >> coord;
@@ -44,15 +44,6 @@ bool ConsoleIO::askMoveConfirmation() {
     in >> choice;
     m_exit = choice == 'Q' || choice == 'q';
     return choice == 't';
-}
-
-bool ConsoleIO::askReplay() {
-    askQuestion("Do you want to replay?", "'y'/'n'");
-    QTextStream in(stdin);
-    QChar choice;
-    in >> choice;
-    m_exit = choice == 'Q' || choice == 'q';
-    return choice == 'y';
 }
 
 void ConsoleIO::askQuestion(std::string question, std::string options) {

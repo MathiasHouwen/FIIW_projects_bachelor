@@ -13,29 +13,28 @@ public:
     enum class colour {RED, BLUE, YELLOW, GREEN};
     Player(colour mColour);
 
-    void setScore(int score);
-
-    void setMName(const QString &mName);
-
+    //setters
+    void setName(const QString &mName);
     void addScore(int score);
     void killPlayer();
+
+    //getters
     int getScore() const;
     bool isAlive() const;
     const QString &getName() const;
+    colour getColour() const;
 
-    colour getMColour() const;
+    static QString getColourName(Player::colour colour);    // vertaalt kleur naar een string woord
+    static colour getColourFromName(const QString &colourstr);  // vertaalt terug naar kleur
 
-    static QString getColourName(Player::colour colour);
-    static colour getColourFromName(const QString &colourstr);
-
+    // vergelijkers
     bool operator==(const Player &rhs) const;
-
     bool operator!=(const Player &rhs) const;
 
 private:
-    int m_score;
-    bool m_alive;
-    QString m_name;
+    int m_score;    // huidige score
+    bool m_alive;   // leeft nog
+    QString m_name; // naam van wie deze player speelt
     colour m_colour;
 
 };

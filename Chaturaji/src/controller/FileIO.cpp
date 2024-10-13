@@ -83,7 +83,7 @@ QJsonObject FileIO::pieceToJson(const Piece* piece){
     QJsonObject jsonObject;
     if (piece != nullptr){
         jsonObject["type"] = QString::fromStdString(Piece::getTypeName(piece->getType()));
-        jsonObject["player_colour"] = Player::getColourName(piece->getPlayer().getMColour());
+        jsonObject["player_colour"] = Player::getColourName(piece->getPlayer().getColour());
 
         QJsonObject dirobj;
         dirobj["x"] = piece->direction.x();

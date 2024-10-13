@@ -51,7 +51,7 @@ string GameView::getCellString(QPoint cell) const {
             background = 45;
         }
         symb = getPieceSymbol(*piece);
-        color = asciiEscColorCode(piece->getPlayer().getMColour());
+        color = asciiEscColorCode(piece->getPlayer().getColour());
     }
     return asciiEscString(color, background, symb);
 }
@@ -110,7 +110,7 @@ void GameView::printMove() {
 
 void GameView::printTurn() {
     Player player = model.getCurrentPlayer();
-    int color = asciiEscColorCode(player.getMColour());
+    int color = asciiEscColorCode(player.getColour());
     cout << "Turn of player: ";
     cout << asciiEscString(color, 47, " "+player.getName().toStdString()+" ");
     cout << "  -  score: " << player.getScore();

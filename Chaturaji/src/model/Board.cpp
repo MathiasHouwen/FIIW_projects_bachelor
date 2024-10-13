@@ -3,21 +3,21 @@
 #include <utility>
 
 Piece* Board::getCell(const QPoint cell) const {
-    errorIfOutOfRane(cell);
+    errorIfOutOfRane(cell); // randgeval
     return board[cell.y()][cell.x()];
 }
 
 void Board::setCell(const QPoint cell, Piece piece) {
     Piece* oldPiece = getCell(cell);
-    delete oldPiece;
-    auto newPiece = new Piece(std::move(piece));
+    delete oldPiece;    // delete oude piece eerst van heap
+    auto newPiece = new Piece(std::move(piece));    // maakt kopie van niewe piece op de heap
     board[cell.y()][cell.x()] = newPiece;
 }
 
 void Board::move(QPoint fromCell, QPoint toCell) {
-    Piece* from = getCell(fromCell);
-    board[fromCell.y()][fromCell.x()] = nullptr;
-    setCell(toCell, *from);
+    Piece* from = getCell(fromCell);    // get oude piece
+    board[fromCell.y()][fromCell.x()] = nullptr; // oude cell op null
+    setCell(toCell, *from);  // nieuwe cell wordt oude piece
 }
 
 void Board::clear() {

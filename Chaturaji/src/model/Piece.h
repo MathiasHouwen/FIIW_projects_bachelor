@@ -12,25 +12,32 @@
 
 class Piece {
 public:
+    // types
+    // dobbelsteen gebruikt ook type, zonder piece. Used is daarbij de dobbelsteen keuze die je al gebruikt hebt
     enum class Type {PAWN, BOAT, ELEPH, KNIGHT, KING, USED};
-    QPoint direction;
+
+    QPoint direction; // enkel voor JSON. direction zit standaard in de pattern van een piece
     const Pattern &getWalkPattern() const;
     const Pattern &getAttackPattern() const;
-    Type getType() const;
+
     Piece(Type type, QPoint direction, Player& player);
+
+    // getters
+    Type getType() const;
     int getScoreValue() const;
     Type getTypeFromDobbel(int number);
     Player &getPlayer() const;
-    static std::string getTypeName(Type type);
-    static Piece::Type getTypeFromName(const QString& typestr);
+
+    static std::string getTypeName(Type type); // vertaalt type naar string naam
+    static Piece::Type getTypeFromName(const QString& typestr); // vertaalt string naam naar type
 
 private:
-    void init(Pattern pattern, int ScoreValue);
-    Pattern walkPattern;
-    Pattern attackPattern;
+    void init(Pattern pattern, int ScoreValue); // initialiseer type specifieke kenmerken
+    Pattern walkPattern;  // loop patroon
+    Pattern attackPattern; // aanval patroon (bvb pawn kan diagonaal aanvallen maar enkel rechtdoor lopen)
     Type type;
-    int scoreValue;
-    Player& player;
+    int scoreValue; // hoeveel score een kill kan opleveren
+    Player& player; // eigenaar
 };
 
 

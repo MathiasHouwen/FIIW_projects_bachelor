@@ -10,25 +10,17 @@
 #include "Board.h"
 #include "Pattern.h"
 
-//
-// Boat         2F2S
-// Horse        2F1S
-// Elephant     -1F0S
-// King         1F1S
-// Pawn
-//
-
-
-
 
 class PatternMover {
 public:
     PatternMover(Board& board);
+    // creeert alle mogelijke moves vanaf een cell (moves zijn bestemmingen, geen delta verplaatsingen)
     QSet<QPoint> getPossibleMoves(Pattern pattern, QPoint cell);
 private:
-    Pattern pattern;
-    QSet<QPoint> createPatternLayer(int d, Pattern pattern, QPoint cell, QVarLengthArray<bool>& validQuadrants);
     Board& board;
+    // creeert de possible moves voor 1 bepaalde diepte* (*zie cpp file -> getPossibleMoves)
+    QSet<QPoint> createPatternLayer(int d, Pattern pattern, QPoint cell, QVarLengthArray<bool>& validQuadrants);
+
 };
 
 

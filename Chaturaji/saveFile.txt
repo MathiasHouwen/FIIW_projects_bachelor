@@ -33,7 +33,14 @@
                 "player_colour": "red",
                 "type": "Elephant"
             },
-            null,
+            {
+                "direction": {
+                    "x": 0,
+                    "y": 0
+                },
+                "player_colour": "red",
+                "type": "Elephant"
+            },
             null,
             null
         ],

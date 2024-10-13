@@ -13,7 +13,7 @@
 class FileIO {
 public:
     int saveBoard(const Board* board);
-    Board& loadBoard(Game* game);
+    void loadBoard(Game* game);
     explicit FileIO(const QString &mFilePath);
 
     static Piece jsonToPiece(const QJsonObject& jsonObject, Game* gamemodel);
@@ -26,7 +26,7 @@ private:
     QString m_filePath;
     QFile m_file;
 
-    static Board &jsonToBoard(QJsonObject boardObject, Game *gamemodel);
+    static void jsonToBoard(QJsonObject boardObject, Game *gamemodel);
 };
 
 #endif //CHATURAJI_FILEIO_H

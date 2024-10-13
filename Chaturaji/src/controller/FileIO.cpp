@@ -14,7 +14,7 @@
 
 FileIO::FileIO(const QString &mFilePath) : m_filePath(mFilePath), m_file(mFilePath) {}
 
-Board& FileIO::loadBoard(Game* game){
+void FileIO::loadBoard(Game* game){
     if (!m_file.open(QIODevice::ReadOnly | QIODevice::Text)){
         qDebug() << "Could not open file for reading:" << m_file.errorString();
     }
@@ -25,11 +25,10 @@ Board& FileIO::loadBoard(Game* game){
     // JSON MAGIC
     QJsonDocument doc = QJsonDocument::fromJson(fileData);
     QJsonObject object = doc.object();
-    return FileIO::jsonToBoard(object, game);
+    FileIO::jsonToBoard(object, game);
 }
 
 Piece FileIO::jsonToPiece(const QJsonObject &jsonObject, Game *gamemodel) {
-    if (jsonObject.isEmpty()) return nullptr;
 
     QString typestr = jsonObject["type"].toString();
     Piece::Type type = Piece::getTypeFromName(typestr);
@@ -46,21 +45,26 @@ Piece FileIO::jsonToPiece(const QJsonObject &jsonObject, Game *gamemodel) {
     return Piece(type, direction, player);
 }
 
-Board& FileIO::jsonToBoard(QJsonObject boardObject, Game* gamemodel){
-    QJsonArray boardArray = boardObject["Board"].toArray();
+void FileIO::jsonToBoard(QJsonObject boardObject, Game* gamemodel){
 
+    if (!boardObject.contains("board") || !boardObject["board"].isArray()) {
+        qDebug() << "'board' key not found or is not an array in JSON.";
+        return;
+    }
+
+    QJsonArray boardArray = boardObject["board"].toArray();
     Board& board = gamemodel->getBoard();
 
     for(int x=0; x<8; x++){
         QJsonArray rij = boardArray[x].toArray();
         for(int y=0; y<8; y++){
             QJsonObject pieceObj = rij[y].toObject();
-            Piece piece = FileIO::jsonToPiece(pieceObj, gamemodel);
-            board.setCell(QPoint{x, y}, piece);
+            if (!pieceObj.isEmpty()) {
+                Piece piece = FileIO::jsonToPiece(pieceObj, gamemodel);
+                board.setCell(QPoint{x, y}, piece);
+            }
         }
     }
-
-    return board;
 }
 
 int FileIO::saveBoard(const Board* board) {
@@ -113,4 +117,3 @@ QJsonDocument FileIO::generateJSONfile(const Board* board) {
     QJsonDocument doc(boardObject);
     return doc;
 }
-

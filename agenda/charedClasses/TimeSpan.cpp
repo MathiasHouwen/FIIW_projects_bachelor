@@ -4,6 +4,11 @@
 
 #include "TimeSpan.h"
 
+TimeSpan::TimeSpan(const DateTime &start_time, int duration)
+            : startTime(start_time),
+              duration(duration) {
+}
+
 DateTime TimeSpan::getStartTime() {
     return startTime;
 }

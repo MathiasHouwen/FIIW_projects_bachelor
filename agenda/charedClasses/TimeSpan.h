@@ -4,11 +4,22 @@
 
 #ifndef TIMESPAN_H
 #define TIMESPAN_H
-
+#include "DateTime.h"
 
 
 class TimeSpan {
-
+    private:
+        DateTime startTime;
+        DateTime duration;
+    public:
+        TimeSpan(const DateTime &start_time, int duration)
+            : startTime(start_time),
+              duration(duration) {
+        }
+        DateTime getStartTime();
+        DateTime getDuration();
+        DateTime getEndTime();
+        DateTime checkEndTime(int min, int hour, int day, int month, int year);
 };
 
 

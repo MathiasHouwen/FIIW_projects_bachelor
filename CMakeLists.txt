@@ -17,4 +17,5 @@ add_executable(alda_team3_ebbe_robin_mathias main.cpp
         agenda/scheduler/Schedular.h
         agenda/scheduler/Schedular.cpp
         agenda/symplistic/SymplisticConsoleIO.h
-        agenda/symplistic/SymplisticConsoleIO.cpp)
+        agenda/symplistic/SymplisticConsoleIO.cpp
+        agenda/advanced/AdvancedAgenda.cpp)

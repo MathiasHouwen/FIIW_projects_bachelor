@@ -16,18 +16,16 @@ public:
     struct eventComparator{
         bool operator()(Event *lhs, Event *rhs) const;
     };
+    using EventSet = std::set<Event*, eventComparator>;
 
-    void insertHash(const std::string& name, Event *event);
-    void insertHash(DateTime dateTime, Event *event);
+    void insertHash(const std::string& name, DateTime dateTime, Event *event);
 
     Event* getEvent(const std::string& name);
     Event* getEvent(DateTime dateTime);
 
-    std::set <Event*, eventComparator> eventSet;
-
 private:
-    std::unordered_map<std::string, Event*> m_nameHash;
-    std::unordered_map<std::string, Event*> m_dateTimeHash;
+    std::unordered_map<std::string, EventSet*> m_nameHash;
+    std::unordered_map<std::string, EventSet> m_dateTimeHash;
 };
 
 

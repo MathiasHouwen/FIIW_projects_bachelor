@@ -9,12 +9,9 @@
 
 // TODO: MAAK LIJST -> op volgorde inserten
 // DOORMIDDEL SET
-void SimpleAgenda::insertHash(const std::string& name, Event *event) {
-    m_nameHash[name] = event;
-}
-
-void SimpleAgenda::insertHash(DateTime dateTime, Event *event) {
-    m_dateTimeHash[dateTime.toString()] = event;
+void SimpleAgenda::insertHash(const std::string& name, DateTime dateTime, Event *event) {
+    EventSet *set = m_nameHash[name];
+    set->insert(event);
 }
 
 Event *SimpleAgenda::getEvent(const string &name) {

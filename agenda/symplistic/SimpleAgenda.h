@@ -20,12 +20,12 @@ public:
 
     void insertHash(const std::string& name, DateTime dateTime, Event *event);
 
-    Event* getEvent(const std::string& name);
-    Event* getEvent(DateTime dateTime);
+    EventSet *getEvents(const std::string& name);
+    EventSet *getEvents(DateTime dateTime);
 
 private:
     std::unordered_map<std::string, EventSet*> m_nameHash;
-    std::unordered_map<std::string, EventSet> m_dateTimeHash;
+    std::unordered_map<std::string, EventSet*> m_dateTimeHash;
 };
 
 

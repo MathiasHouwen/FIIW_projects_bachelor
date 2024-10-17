@@ -3,3 +3,6 @@
 //
 
 #include "SimpleAgenda.h"
+// 2 maps -> map 1 user name > event pointer
+// map 2 datetime -> event *
+// Event = naam & timespan

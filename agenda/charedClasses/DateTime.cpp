@@ -2,6 +2,9 @@
 // Created by robin on 16/10/2024.
 //
 
+#include <string>
+#include <sstream>
+#include <iomanip>
 #include "DateTime.h"
 
 DateTime::DateTime(int mHour, int mDay, int mMonth, int mYear)
@@ -28,4 +31,14 @@ int DateTime::getMonth() const {
 
 int DateTime::getYear() const {
     return m_year;
+}
+
+std::string DateTime::toString() {
+    std::ostringstream string;
+    string << std::setw(2) << std::setfill('0') << m_day << "-"
+        << std::setw(2) << std::setfill('0') << m_month << "-"
+        << m_year << " "
+        << m_hour << ":"
+        << std::setw(2) << std::setfill('0') << m_min;
+    return string.str();
 }

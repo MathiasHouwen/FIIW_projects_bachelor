@@ -5,7 +5,7 @@
 #ifndef DATETIME_H
 #define DATETIME_H
 
-
+#include <string>
 
 class DateTime {
 public:
@@ -18,6 +18,8 @@ public:
     int getMonth() const;
     int getYear() const;
 
+    std::string toString();
+
 private:
     int m_min;
     int m_hour;
@@ -25,7 +27,5 @@ private:
     int m_month;
     int m_year;
 };
-
-
 
 #endif //DATETIME_H

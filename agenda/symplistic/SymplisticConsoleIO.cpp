@@ -3,3 +3,9 @@
 //
 
 #include "SymplisticConsoleIO.h"
+
+#include <iostream>
+
+void SymplisticConsoleIO::printEvent(Event *event) {
+
+}

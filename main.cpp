@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 #include "agenda/charedClasses/DateTime.h"
 #include "agenda/charedClasses/Event.h"
@@ -16,5 +17,8 @@ int main() {
     cout << "dag: " << robinsLeven.getTimeSpan().getEndTime().getDay() << endl;
     cout << "uur: " << robinsLeven.getTimeSpan().getEndTime().getHour() << endl;
     cout << "minuten: " << robinsLeven.getTimeSpan().getEndTime().getMin() << endl;
+
+    cout << "tostring test" << endl;
+    cout <<  start.toString();
     return 0;
 }

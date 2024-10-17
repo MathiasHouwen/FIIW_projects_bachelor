@@ -23,4 +23,6 @@ add_executable(alda_team3_ebbe_robin_mathias main.cpp
         agenda/charedClasses/DateTime.cpp
         agenda/advanced/AdvancedAgenda.cpp
         agenda/advanced/advancedConsoleIO.h
-        agenda/advanced/advancedConsoleIO.cpp)
+        agenda/advanced/advancedConsoleIO.cpp
+        agenda/FileIO.h
+        agenda/FileIO.cpp)

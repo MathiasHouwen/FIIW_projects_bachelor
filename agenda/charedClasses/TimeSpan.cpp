@@ -4,7 +4,7 @@
 
 #include "TimeSpan.h"
 
-TimeSpan::TimeSpan(const DateTime &start_time, const DateTime &duration)
+TimeSpan::TimeSpan(const DateTime &start_time, const int &duration)
             : startTime(start_time),
               duration(duration) {
 }
@@ -13,18 +13,14 @@ DateTime TimeSpan::getStartTime() const {
     return startTime;
 }
 
-DateTime TimeSpan::getDuration() const {
+int TimeSpan::getDuration() const {
     return duration;
 }
 
 DateTime TimeSpan::getEndTime() const {
-    int min = startTime.getMin() + duration.getMin();
-    int hour = startTime.getHour() + duration.getHour();
-    int day = startTime.getDay() + duration.getDay();
-    int month = startTime.getMonth() + duration.getMonth();
-    int year = startTime.getYear() + duration.getYear();
+    int min = startTime.getMin() + duration;
 
-    return checkEndTime(min, hour, day, month, year);
+    return checkEndTime(min, startTime.getHour(), startTime.getDay(), startTime.getMonth(), startTime.getYear());
 }
 
 DateTime TimeSpan::checkEndTime(int min, int hour, int day, int month, int year) {

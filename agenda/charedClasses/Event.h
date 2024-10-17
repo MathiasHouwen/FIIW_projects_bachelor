@@ -23,5 +23,4 @@ class Event {
 };
 
 
-
 #endif //EVENT_H

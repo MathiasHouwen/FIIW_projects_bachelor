@@ -10,12 +10,12 @@
 class TimeSpan {
     private:
         DateTime startTime;
-        DateTime duration;
+        int duration;
         static DateTime checkEndTime(int min, int hour, int day, int month, int year);
     public:
-        TimeSpan(const DateTime &start_time, const DateTime &duration);
+        TimeSpan(const DateTime &start_time, const int &duration);
         DateTime getStartTime() const;
-        DateTime getDuration() const;
+        int getDuration() const;
         DateTime getEndTime() const;
 };
 

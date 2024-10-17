@@ -15,6 +15,9 @@ class Event {
         TimeSpan timeSpan;
         std::string description;
     public:
+        struct eventComparator{
+            bool operator()(Event *lhs, Event *rhs) const;
+        };
         Event(const TimeSpan &time_span, const std::string &description);
         virtual ~Event() = default;
 

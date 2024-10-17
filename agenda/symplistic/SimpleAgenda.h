@@ -13,10 +13,8 @@
 
 class SimpleAgenda {
 public:
-    struct eventComparator{
-        bool operator()(Event *lhs, Event *rhs) const;
-    };
-    using EventSet = std::set<Event*, eventComparator>;
+
+    using EventSet = std::set<Event*, Event::eventComparator>;
 
     void insertHash(const std::string& name, DateTime dateTime, Event *event);
 

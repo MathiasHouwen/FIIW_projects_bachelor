@@ -10,7 +10,7 @@ int main() {
     DateTime start(30, 22, 21, 6, 2004);
     DateTime duration(40, 4, 20, 5, 20);
     TimeSpan timespan(start, duration);
-    Event robinsLeven(timespan, "dit is de berekende DateTime:");
+    Event robinsLeven(timespan, "robinsLeven");
     cout << robinsLeven.getDescription() << endl;
     cout << "jaar: " << robinsLeven.getTimeSpan().getEndTime().getYear() << endl;
     cout << "maand: " << robinsLeven.getTimeSpan().getEndTime().getMonth() << endl;
@@ -19,6 +19,6 @@ int main() {
     cout << "minuten: " << robinsLeven.getTimeSpan().getEndTime().getMin() << endl;
 
     cout << "tostring test" << endl;
-    cout <<  start.toString();
+    cout <<  robinsLeven.toString();
     return 0;
 }

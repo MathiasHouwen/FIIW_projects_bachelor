@@ -3,6 +3,8 @@
 //
 
 #include "Event.h"
+#include <string>
+
 
 Event::Event(const TimeSpan &time_span, const std::string &description)
             : timeSpan(time_span),
@@ -15,4 +17,10 @@ TimeSpan Event::getTimeSpan() {
 
 std::string Event::getDescription() {
     return description;
+}
+
+std::string Event::toString() {
+    return description + " "
+        + timeSpan.getStartTime().toString() + " "
+        + timeSpan.toString();
 }

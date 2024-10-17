@@ -5,6 +5,7 @@
 #ifndef TIMESPAN_H
 #define TIMESPAN_H
 #include "DateTime.h"
+#include <string>
 
 
 class TimeSpan {
@@ -12,11 +13,15 @@ class TimeSpan {
         DateTime startTime;
         int duration;
         static DateTime checkEndTime(int min, int hour, int day, int month, int year);
+
+        int durationInMinutes();
     public:
         TimeSpan(const DateTime &start_time, const int &duration);
         DateTime getStartTime() const;
         int getDuration() const;
         DateTime getEndTime() const;
+
+        std::string toString();
 };
 
 

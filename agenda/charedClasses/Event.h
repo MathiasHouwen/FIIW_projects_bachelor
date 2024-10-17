@@ -20,6 +20,8 @@ class Event {
 
         TimeSpan getTimeSpan();
         std::string getDescription();
+
+        std::string toString();
 };
 
 

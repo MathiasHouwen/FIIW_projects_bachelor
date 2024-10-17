@@ -6,9 +6,12 @@
 #define SYMPLISTICCONSOLEIO_H
 
 
+#include "../charedClasses/Event.h"
 
 class SymplisticConsoleIO {
-
+private:
+public:
+    void printEvent(Event* event);
 };
 
 

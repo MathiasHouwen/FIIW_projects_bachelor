@@ -7,8 +7,8 @@ add_executable(alda_team3_ebbe_robin_mathias main.cpp
         agenda/symplistic/SimpleAgenda.h
         agenda/symplistic/SimpleAgenda.cpp
         agenda/charedClasses/TimeSpan.h
-        agenda/charedClasses/Events.h
-        agenda/charedClasses/Events.cpp
+        agenda/charedClasses/Event.h
+        agenda/charedClasses/Event.cpp
         agenda/charedClasses/DateTime.h
         agenda/charedClasses/DateTime.cpp
         agenda/charedClasses/Agenda.cpp

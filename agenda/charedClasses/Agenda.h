@@ -8,18 +8,18 @@
 #include <string>
 #include <vector>
 
-#include "Events.h"
+#include "Event.h"
 
 class Agenda {
     private:
         std::string name;
-        std::vector<Events> events; // TODO: andere datastructuur gebruiken
+        std::vector<Event> events; // TODO: andere datastructuur gebruiken
     public:
         explicit Agenda(std::string name);
         ~Agenda() = default;
-        std::vector<Events> getEvents(); // TODO: hangt van datastructuur af
-        void addEvent(Events event);
-        void removeEvent(Events event);
+        std::vector<Event> getEvents(); // TODO: hangt van datastructuur af
+        void addEvent(Event event);
+        void removeEvent(Event event);
         std::string getName();
 };
 

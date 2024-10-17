@@ -2,21 +2,21 @@
 // Created by robin on 16/10/2024.
 //
 
-#ifndef EVENTS_H
-#define EVENTS_H
+#ifndef EVENT_H
+#define EVENT_H
 #include "TimeSpan.h"
 #include <string>
 using namespace std;
 
 
 
-class Events {
+class Event {
     private:
         TimeSpan timeSpan;
         std::string description;
     public:
-        Events(const TimeSpan &time_span, const std::string &description);
-        virtual ~Events() = default;
+        Event(const TimeSpan &time_span, const std::string &description);
+        virtual ~Event() = default;
 
         TimeSpan getTimeSpan();
         std::string getDescription();
@@ -24,4 +24,4 @@ class Events {
 
 
 
-#endif //EVENTS_H
+#endif //EVENT_H

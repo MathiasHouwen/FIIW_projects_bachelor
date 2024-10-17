@@ -2,17 +2,17 @@
 // Created by robin on 16/10/2024.
 //
 
-#include "Events.h"
+#include "Event.h"
 
-Events::Events(const TimeSpan &time_span, const std::string &description)
+Event::Event(const TimeSpan &time_span, const std::string &description)
             : timeSpan(time_span),
               description(description) {
 }
 
-TimeSpan Events::getTimeSpan() {
+TimeSpan Event::getTimeSpan() {
     return timeSpan;
 }
 
-std::string Events::getDescription() {
+std::string Event::getDescription() {
     return description;
 }

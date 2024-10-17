@@ -29,3 +29,8 @@ advanced:
 schedular:
     - grotendeels hetzelfde als advanced
         -> vergelijken van TimeSpans enz is uitgewerkt in advanced
+
+    Eventuele overweging:
+        Naast enkel direct timespans, kan een person ook een agenda bitmap (array/matrix) oplsaan
+        optie 1) bitmap per jaar, resolutie=datum -> kan dag indexeren, dan log(n) zoeken naar tijdslot
+        optie 2) bitmap per dag, minuut=resolutie. (nadeel: 180 bytes per dag)

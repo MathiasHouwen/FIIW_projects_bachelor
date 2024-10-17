@@ -52,15 +52,8 @@ DateTime TimeSpan::checkEndTime(int min, int hour, int day, int month, int year)
     return {min, hour, day, month, year};
 }
 
-// Todo: Fix that we can go higher then days
-int TimeSpan::durationInMinutes() {
-    return duration.getMin()
-           + duration.getHour() * 60
-           + duration.getDay() * 24 * 60;
-}
-
 std::string TimeSpan::toString() {
     std::ostringstream string;
-    string << durationInMinutes() << "m";
+    string << duration << "m";
     return string.str();
 }

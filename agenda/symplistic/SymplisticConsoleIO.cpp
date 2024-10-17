@@ -5,7 +5,8 @@
 #include "SymplisticConsoleIO.h"
 
 #include <iostream>
+#include "string"
 
 void SymplisticConsoleIO::printEvent(Event *event) {
-
+    std::cout << event->toString();
 }

@@ -20,4 +20,7 @@ add_executable(alda_team3_ebbe_robin_mathias main.cpp
         agenda/symplistic/SymplisticConsoleIO.cpp
         agenda/charedClasses/DateTime.h
         agenda/charedClasses/DateTime.h
-        agenda/charedClasses/DateTime.cpp)
+        agenda/charedClasses/DateTime.cpp
+        agenda/advanced/AdvancedAgenda.cpp
+        agenda/advanced/advancedConsoleIO.h
+        agenda/advanced/advancedConsoleIO.cpp)

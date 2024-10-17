@@ -1,0 +1,27 @@
+simplistic:
+    - Hashmap
+        -> graph die gelinked zijn door pointers
+        -> hash functies om dingen op te zoeken met O(1)
+    - trie
+        -> strings ingebouwd
+        -> opzoeken is 0(log(n)) omdat het heel de boom moet doorlopen
+
+    => Hashmap is beter omdat het opzoeken efficienter is en het terughalen van een string is instant d.m.v. string pointer
+
+advanced:
+    - Hashmap
+        -> opzoeken is 0(1) in elke richting (tussen events, names, DateTimes,...)
+
+        opstelling heap:
+            -> TimeSpans moeilijk te vergelijken in deze heapstructuur waar alleen events timespans bijhouden
+                -> moeten door elke user iteraten en deze vergelijken
+            -> lijst of tree van TimeSpans bijhouden
+                -> ordenened zorgt voor snelle vergelijking en bepaling van vrije momenten
+            -> matrix van TimeSpans bijhouden
+                -> vergelijken van Timespans vergemakkelijken
+
+    => Hashmap met in de heap een matrix van TimeSpans omdat zoeken en vergelijken hier heel veel voorkomt, toevoegen iets minder
+
+schedular:
+    - grotendeels hetzelfde als advanced
+        -> vergelijken van TimeSpans enz is uitgewerkt in advanced

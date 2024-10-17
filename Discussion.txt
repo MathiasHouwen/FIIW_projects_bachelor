@@ -11,6 +11,10 @@ simplistic:
 advanced:
     - Hashmap
         -> opzoeken is 0(1) in elke richting (tussen events, names, DateTimes,...)
+        Voor de UserName->Event map:
+            Value = een lijst van events
+            Bij eze lijst worden gesorteerd op startTime de event pointer ge-insert
+            -> dat maakt zoek algoritmen log(n)
 
         opstelling heap:
             -> TimeSpans moeilijk te vergelijken in deze heapstructuur waar alleen events timespans bijhouden

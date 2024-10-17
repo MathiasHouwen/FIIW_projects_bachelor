@@ -19,7 +19,7 @@ public:
     Event* getEvent(DateTime dateTime);
 private:
     std::unordered_map<std::string, Event*> m_nameHash;
-    std::unordered_map<DateTime, Event*> m_dateTimeHash;
+    std::unordered_map<std::string, Event*> m_dateTimeHash;
 };
 
 

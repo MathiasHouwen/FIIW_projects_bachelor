@@ -12,7 +12,7 @@ void SimpleAgenda::insertHash(const std::string& name, Event *event) {
 }
 
 void SimpleAgenda::insertHash(DateTime dateTime, Event *event) {
-    m_dateTimeHash[dateTime] = event;
+    m_dateTimeHash[dateTime.toString()] = event;
 }
 
 Event *SimpleAgenda::getEvent(const string &name) {
@@ -20,5 +20,5 @@ Event *SimpleAgenda::getEvent(const string &name) {
 }
 
 Event *SimpleAgenda::getEvent(DateTime dateTime) {
-    return m_dateTimeHash[dateTime];
+    return m_dateTimeHash[dateTime.toString()];
 }

@@ -8,6 +8,12 @@
 
 
 class Schedular {
+private:
+    struct DateStruct{
+        int day:5;
+        int month:4;
+        short year;
+    };
 
 };
 

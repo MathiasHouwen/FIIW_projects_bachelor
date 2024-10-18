@@ -114,19 +114,28 @@
 
 ### datastrcutuur
  - Een van de 2d mapping approaches om user en date te mappen naar een "dagplanning" voor die user
- - Dag planning heeft een gesorteerde vector van events en avialability cache
+    - Geneste map user[date] zodat je meteen alle dates van een user hebt. Bij elke structuur moeten dates gefiltert worden op basis van peroson
+ - Dag planning heeft een gesorteerde linkedlist van events en avialability cache
  - Avialability cache is bitmap op half-uur-resolutie
  - Date map kan de linked list hybride hashmap gebruiken voor de gesorteerde print functie
  - Events per dag
 ### algoritmes
  - Functie 1: is enkel map keys of indices invullen om de bitmaps te verkrijgen. O(1)
  - Dan kunnen alle bitmaps ge-merged worden met elkaar alsook een bitmask van de gekozen timespan
- - Sorteren kan door de datums te iteraten via de hybride ge-integreerde linked list
+ - Functie 2: Sorteren kan door de datums te iteraten via de hybride ge-integreerde linked list
  - Kan daarbij ook sorteren door de events (die ook op volgorde staan)
  - Bij meerdere users, via recursie, of loops die op elkaar wachten de events en data voor elke user zogezegd "gelijktijdig" iteraten
 ### overwegingen
  - De bitmaps nemen minder space dan 1 pointer in beslag, terwijl ze een extreem verschil maken in query tijd. -> zeer voordelige optimalisatie. Mogelijk gebruikt dit niet eens meer space dan een tree/graph appra=oach vanwege extra pointers
  - Bitmaps kunnen als integer ipv array vergelijkingen doen via bitwise operaions. Dat is in principe een instant en volledig parrallele compare voor alle timeslots
+ - Waarom geneste hashmap en niet 2 apart waarbij 1 alle dates heeft, linked gesorteerd in groepen per person, waarbij map 2 een person mapt naar de start node voor zijn groep?
+   - Om nog steeds direct een person-date combinatie te querien moeten de keys van de grote map een concatentatie zijn
+   - In vgl tot nested maps bestaan er evenveel combinaties. Alleen worden nu person name strings gedupliceerd voor elke entry van 1 persoon, terwijl de geneste enkel dates storen en er is maar 1 persoon key
+ - Waarom chache per dag en niet 1 cache voor heel jaar of zelf alle tijd?
+   - Heel jaar is minder storage als de meeste dagen bezet zijn
+   - Maar naast bezet zijn checken moet event ook effectief ingepland.
+     De insert positie voor een event moet met n of log n gezocht worden (omdat event lijsten gesorteerd zijn).
+     Dat is natuurlijk korter als dat voor 1 dag moet ipv voor alle events van die persoon.
 
 ---
 

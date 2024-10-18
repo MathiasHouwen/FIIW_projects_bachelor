@@ -14,8 +14,8 @@ Game::Game() : board(), mover(board) {
 
 void Game::doubleDobbel() {
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
-    dice.first = piece.getTypeFromDobbel(std::rand() % 6 + 1);
-    dice.second = piece.getTypeFromDobbel(std::rand() % 6 + 1);
+    dice.first = Piece::getTypeFromDobbel(std::rand() % 6 + 1);
+    dice.second = Piece::getTypeFromDobbel(std::rand() % 6 + 1);
 }
 
 void Game::namePlayer(const QString& name, int playerIndex) {

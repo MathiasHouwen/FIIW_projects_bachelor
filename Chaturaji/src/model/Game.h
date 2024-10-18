@@ -16,7 +16,6 @@ private:
     int move{0};    // elke beurt heeft 2 moves (move = 0 / 1)
     int turn{0};    // player beurt (0-3)
     bool gameOver{false};
-    Piece piece = {std::move(piece)};
     Player players[4] = {{Player::colour::RED}, {Player::colour::BLUE}, {Player::colour::YELLOW}, {Player::colour::GREEN}};
 
 

@@ -1,0 +1,13 @@
+//
+// Created by ebbew on 17-10-2024.
+//
+
+#ifndef ALDA_TEAM3_EBBE_ROBIN_MATHIAS_ITERVALTREE_H
+#define ALDA_TEAM3_EBBE_ROBIN_MATHIAS_ITERVALTREE_H
+
+
+class ItervalTree {
+
+};
+
+#endif //ALDA_TEAM3_EBBE_ROBIN_MATHIAS_ITERVALTREE_H

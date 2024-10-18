@@ -25,4 +25,6 @@ add_executable(alda_team3_ebbe_robin_mathias main.cpp
         agenda/advanced/advancedConsoleIO.h
         agenda/advanced/advancedConsoleIO.cpp
         agenda/FileIO.h
-        agenda/FileIO.cpp)
+        agenda/FileIO.cpp
+        agenda/ItervalTree.cpp
+        agenda/ItervalTree.h)

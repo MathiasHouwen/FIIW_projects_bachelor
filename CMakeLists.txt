@@ -11,8 +11,6 @@ add_executable(alda_team3_ebbe_robin_mathias main.cpp
         agenda/charedClasses/Event.cpp
         agenda/charedClasses/DateTime.h
         agenda/charedClasses/DateTime.cpp
-        agenda/charedClasses/Agenda.cpp
-        agenda/charedClasses/Agenda.h
         agenda/charedClasses/TimeSpan.cpp
         agenda/scheduler/Schedular.h
         agenda/scheduler/Schedular.cpp

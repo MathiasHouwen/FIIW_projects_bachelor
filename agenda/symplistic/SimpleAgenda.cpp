@@ -7,18 +7,19 @@
 // map 2 datetime -> event *
 // Event = naam & timespan
 
-void SimpleAgenda::insertHash(const std::string& name, Event *event) {
-    m_nameHash[name] = event;
+// TODO: MAAK LIJST -> op volgorde inserten
+// DOORMIDDEL SET
+void SimpleAgenda::insertHash(const std::string& name, DateTime dateTime, Event *event) {
+    EventSet *setName = m_nameHash[name];
+    setName->insert(event);
+    EventSet *setDateTime = m_dateTimeHash[dateTime.toString()];
+    setDateTime->insert(event);
 }
 
-void SimpleAgenda::insertHash(DateTime dateTime, Event *event) {
-    m_dateTimeHash[dateTime] = event;
+SimpleAgenda::EventSet *SimpleAgenda::getEvents(const string &name) {
+    return m_nameHash[name] ;
 }
 
-Event *SimpleAgenda::getEvent(const string &name) {
-    return m_nameHash[name];
-}
-
-Event *SimpleAgenda::getEvent(DateTime dateTime) {
-    return m_dateTimeHash[dateTime];
+SimpleAgenda::EventSet *SimpleAgenda::getEvents(DateTime dateTime) {
+    return m_dateTimeHash[dateTime.toString()];
 }

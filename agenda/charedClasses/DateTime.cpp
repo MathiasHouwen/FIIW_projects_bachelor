@@ -39,6 +39,7 @@ std::string DateTime::toString() {
         << std::setw(2) << std::setfill('0') << m_month << "-"
         << m_year << " "
         << m_hour << ":"
-        << std::setw(2) << std::setfill('0') << m_min;
+        << std::setw(2) << std::setfill('0') << m_min;   
     return string.str();
 }
+

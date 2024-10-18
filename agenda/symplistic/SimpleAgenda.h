@@ -8,18 +8,22 @@
 
 #include <unordered_map>
 #include <string>
+#include <set>
 #include "../charedClasses/Event.h"
 
 class SimpleAgenda {
 public:
-    void insertHash(const std::string& name, Event *event);
-    void insertHash(DateTime dateTime, Event *event);
 
-    Event* getEvent(const std::string& name);
-    Event* getEvent(DateTime dateTime);
+    using EventSet = std::set<Event*, Event::eventComparator>;
+
+    void insertHash(const std::string& name, DateTime dateTime, Event *event);
+
+    EventSet *getEvents(const std::string& name);
+    EventSet *getEvents(DateTime dateTime);
+
 private:
-    std::unordered_map<std::string, Event*> m_nameHash;
-    std::unordered_map<DateTime, Event*> m_dateTimeHash;
+    std::unordered_map<std::string, EventSet*> m_nameHash;
+    std::unordered_map<std::string, EventSet*> m_dateTimeHash;
 };
 
 

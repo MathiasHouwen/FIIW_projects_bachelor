@@ -17,6 +17,12 @@
    - (+): snelle gesorteerde search O(log(n))
    - (-): geen O(1) direct acces meer
 ---
+ - ## (natuurlijk vecots en arrays, maar gesorteerd ge-insert)
+   - Use case: alles waar je kan searchen of sorteren
+   - (+): simpele verzamelingen zijn compatible met log(n) zoekalgoritmes. Gerbuikt ook minder pointers(geheugen) dan trees
+   - (-): atomair: zal waarschijnlijk voor kleine sub verzamelingen gebruikt worden.
+          merging algoritmes zijn dan nodig voor multi-user resultaten
+---
  - ### Trie (radix trie maar op per elke char i.p.v. prefix)
    - Use case: namen opslaan met snelle opzoek
    - (+): log(n) om een naam te zoeken, met minder storage dan hashmap
@@ -77,13 +83,56 @@
 
 ---
 
-# SPECIFIEK ADVANCED
+## SPECIFIEK SIMPLISTIC
+
+### datastrcutuur
+- Events ongestructureerd op de heap
+    - Houdt kopie/pointer naar username of starttime,
+      zodat ondanks de gebruikte map, wel alle event fields direct beschikbaar zijn
+- Username mapt naar een event via hashmap
+- Starttime mapt naar event via hashmap
+### algoritmes
+- zowel naam als time kan direct ingevuld worden O(1)
+### overwegingen
+- Enkel space complexity maar dit is zeker niet extreem
+---
+
+## SPECIFIEK ADVANCED
+
+### datastrcutuur
+- Zelfde hashmap als Simplistic om van username naar event te gaan
+    - Enige vershil is dat key = lijst[event*] ipv event*
+    - Event lijst kan eventueel gesorteerd zijn
+- Hashmap ook voor event name
+- Interval tree voor datetimes?
+### algoritmes
+### overwegingen
+
+---
+
+## SPECIFIEK SCHEADULER
+
+### datastrcutuur
+ - Een van de 2d mapping approaches om user en date te mappen naar een "dagplanning" voor die user
+ - Dag planning heeft een gesorteerde vector van events en avialability cache
+ - Avialability cache is bitmap op half-uur-resolutie
+ - Date map kan de linked list hybride hashmap gebruiken voor de gesorteerde print functie
+ - Events per dag
+### algoritmes
+ - Functie 1: is enkel map keys of indices invullen om de bitmaps te verkrijgen. O(1)
+ - Dan kunnen alle bitmaps ge-merged worden met elkaar alsook een bitmask van de gekozen timespan
+ - Sorteren kan door de datums te iteraten via de hybride ge-integreerde linked list
+ - Kan daarbij ook sorteren door de events (die ook op volgorde staan)
+ - Bij meerdere users, via recursie, of loops die op elkaar wachten de events en data voor elke user zogezegd "gelijktijdig" iteraten
+### overwegingen
+ - De bitmaps nemen minder space dan 1 pointer in beslag, terwijl ze een extreem verschil maken in query tijd. -> zeer voordelige optimalisatie. Mogelijk gebruikt dit niet eens meer space dan een tree/graph appra=oach vanwege extra pointers
+ - Bitmaps kunnen als integer ipv array vergelijkingen doen via bitwise operaions. Dat is in principe een instant en volledig parrallele compare voor alle timeslots
 
 ---
 
 ---
 
-# SPECIFIEK SCHEADULER
+# INITIELE (OUDE) DISCUSSIE
 
 simplistic:
     - Hashmap

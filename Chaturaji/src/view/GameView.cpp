@@ -120,8 +120,8 @@ void GameView::printTurn() {
 }
 
 void GameView::update() {
-    system("CLS");
-    cout.flush();
+    //system("CLS");
+    //cout.flush();
     printBoard();
     printTurn();
     printDice();

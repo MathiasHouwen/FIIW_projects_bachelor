@@ -2,22 +2,22 @@
     "board": [
         [
             {
-            	"direction": {"x": -1,"y": 0},
+            	"direction": {"x": 1,"y": 0},
                     "player_colour": "yellow",
                     "type": "Boat"
             },
             {
-            	"direction": {"x": -1,"y": 0},
+            	"direction": {"x": 1,"y": 0},
                 "player_colour": "yellow",
                 "type": "Horse"
             },
             {
-            	"direction": {"x": -1,"y": 0},
+            	"direction": {"x": 1,"y": 0},
             	"player_colour": "yellow",
             	"type": "Elephant"
             },
             {
-            	"direction": {"x": -1,"y": 0},
+            	"direction": {"x": 1,"y": 0},
             	"player_colour": "yellow",
             	"type": "King"
             },
@@ -36,22 +36,22 @@
         ],
         [
             {
-            	"direction": {"x": -1,"y": 0},
+            	"direction": {"x": 1,"y": 0},
             	"player_colour": "yellow",
             	"type": "Pawn"
             },
             {
-            	"direction": {"x": -1,"y": 0},
+            	"direction": {"x": 1,"y": 0},
             	"player_colour": "yellow",
             	"type": "Pawn"
             },
             {
-            	"direction": {"x": -1,"y": 0},
+            	"direction": {"x": 1,"y": 0},
             	"player_colour": "yellow",
             	"type": "Pawn"
             },
             {
-            	"direction": {"x": -1,"y": 0},
+            	"direction": {"x": 1,"y": 0},
             	"player_colour": "yellow",
             	"type": "Pawn"
             },
@@ -154,22 +154,22 @@
             null,
             null,
             {
-            	"direction": {"x": 1,"y": 0},
+            	"direction": {"x": -1,"y": 0},
             	"player_colour": "red",
             	"type": "Pawn"
             },
             {
-            	"direction": {"x": 1,"y": 0},
+            	"direction": {"x": -1,"y": 0},
             	"player_colour": "red",
             	"type": "Pawn"
             },
             {
-            	"direction": {"x": 1,"y": 0},
+            	"direction": {"x": -1,"y": 0},
             	"player_colour": "red",
             	"type": "Pawn"
             },
             {
-            	"direction": {"x": 1,"y": 0},
+            	"direction": {"x": -1,"y": 0},
             	"player_colour": "red",
             	"type": "Pawn"
             }
@@ -188,22 +188,22 @@
             null,
             null,
             {
-            	"direction": {"x": 1,"y": 0},
+            	"direction": {"x": -1,"y": 0},
             	"player_colour": "red",
             	"type": "King"
             },
             {
-            	"direction": {"x": 1,"y": 0},
+            	"direction": {"x": -1,"y": 0},
             	"player_colour": "red",
             	"type": "Elephant"
             },
             {
-            	"direction": {"x": 1,"y": 0},
+            	"direction": {"x": -1,"y": 0},
             	"player_colour": "red",
             	"type": "Horse"
             },
             {
-            	"direction": {"x": 1,"y": 0},
+            	"direction": {"x": -1,"y": 0},
             	"player_colour": "red",
             	"type": "Boat"
             }

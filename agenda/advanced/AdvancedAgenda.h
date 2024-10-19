@@ -13,16 +13,17 @@
 
 class AdvancedAgenda {
 public:
-    using EventSet = std::set<Event*>;
+    using EventSet = std::set<Event**, Event::eventComparator>;
 
-    void insertHash(const std::string& name, DateTime dateTime, Event *event);
+    void insertHash(const std::string& personName, const std::string&eventName, DateTime dateTime, Event *event[]);
 
     EventSet *getEvents(const std::string& name);
     EventSet *getEvents(DateTime dateTime);
 
 private:
-    std::unordered_map<std::string, EventSet*> m_nameHash;
+    std::unordered_map<std::string, EventSet*> m_eventNameHash;
     std::unordered_map<std::string, EventSet*> m_dateTimeHash;
+    std::unordered_map<std::string, EventSet*> m_personNameHash;
 };
 
 

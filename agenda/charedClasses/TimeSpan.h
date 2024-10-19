@@ -17,6 +17,7 @@ class TimeSpan {
         int durationInMinutes();
     public:
         TimeSpan(const DateTime &start_time, const int &duration);
+        ~TimeSpan() = default;
         DateTime getStartTime() const;
         int getDuration() const;
         DateTime getEndTime() const;

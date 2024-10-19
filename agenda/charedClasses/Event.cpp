@@ -6,7 +6,7 @@
 #include <string>
 
 
-Event::Event(const TimeSpan &time_span, const std::string &description)
+Event::Event(const TimeSpan &time_span, std::string &description)
             : timeSpan(time_span),
               description(description) {
 }
@@ -17,6 +17,16 @@ TimeSpan Event::getTimeSpan() {
 
 std::string Event::getDescription() {
     return description;
+}
+
+std::vector<std::string> Event::getAttendees() const {
+    return attendees;
+}
+
+void Event::setAttendees(const std::vector<std::string>& addAttendees) {
+    for(const std::string& attendee : addAttendees) {
+        attendees.push_back(attendee);
+    }
 }
 
 std::string Event::toString() {

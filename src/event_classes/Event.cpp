@@ -12,7 +12,7 @@ Event::Event(const TimeSpan &time_span, std::string description)
               description(std::move(description)) {
 }
 
-TimeSpan Event::getTimeSpan() {
+TimeSpan Event::getTimeSpan() const {
     return timeSpan;
 }
 

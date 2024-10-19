@@ -17,6 +17,8 @@
 ## PORGRAMMA 2
 ### DataStructuur:
 ### ALgoritmes:
+- beperkte mogelijkheden omdat een set niet met indexering werkt
+    - O(n) voor attendees te filteren
 ### Interface:
 - addEvent(agenda, event, attendees[]) : void
     - ⚠️people die op dat moment niet vrij zijn negeren

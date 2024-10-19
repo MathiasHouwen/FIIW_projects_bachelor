@@ -23,7 +23,7 @@ class Event {
         Event(const TimeSpan &time_span, std::string description);
         virtual ~Event() = default;
 
-        TimeSpan getTimeSpan();
+        TimeSpan getTimeSpan() const;
         std::string getDescription();
 
         std::vector<std::string> getAttendees() const;

@@ -20,6 +20,12 @@ public:
     EventSet getEvents(const std::string& name);
     EventSet getEvents(DateTime dateTime);
 
+    void setAttendees(const Event &event, const std::vector<std::string> &attendees);
+
+    bool checkOverlap(EventSet *events, DateTime dateTime);
+
+    static bool compareTimes(const DateTime &date1, const DateTime &date2);
+
 private:
     std::unordered_map<std::string, EventSet*> m_eventNameHash;
     std::unordered_map<std::string, EventSet*> m_dateTimeHash;

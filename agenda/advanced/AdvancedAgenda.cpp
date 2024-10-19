@@ -11,7 +11,7 @@
 // DOORMIDDEL SET
 
 // add event to hashmap with respective key
-void AdvancedAgenda::insertHash(const std::string& personName, const std::string& eventName, DateTime dateTime, Event* event[]) {
+void AdvancedAgenda::insertHash(const std::string& personName, const std::string& eventName, DateTime dateTime, Event* event) {
     EventSet *setEventName = m_eventNameHash[eventName];
     setEventName->insert(event);
     EventSet *setPersonName = m_eventNameHash[eventName];

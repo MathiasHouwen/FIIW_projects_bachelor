@@ -26,6 +26,9 @@ public:
 
     static bool compareTimes(const DateTime &date1, const DateTime &date2);
 
+    void updateEvent(const std::string& eventName, const std::string& newName, const DateTime &dateTime, int duration, std::vector<std::string> &attendees);
+
+    void printEvents(std::string personName);
 private:
     std::unordered_map<std::string, EventSet*> m_eventNameHash;
     std::unordered_map<std::string, EventSet*> m_dateTimeHash;

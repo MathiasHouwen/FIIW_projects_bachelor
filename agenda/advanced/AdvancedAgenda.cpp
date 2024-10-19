@@ -3,6 +3,9 @@
 //
 
 #include "AdvancedAgenda.h"
+
+#include <iostream>
+#include <ostream>
 // 2 maps -> map 1 user name > list of event pointers
 // map 2 datetime -> list<event*>
 // Event = naam & timespan
@@ -14,7 +17,7 @@
 void AdvancedAgenda::insertHash(const std::string& personName, const std::string& eventName, DateTime dateTime, Event* event) {
     EventSet *setEventName = m_eventNameHash[eventName];
     setEventName->insert(event);
-    EventSet *setPersonName = m_eventNameHash[eventName];
+    EventSet *setPersonName = m_personNameHash[personName];
     setPersonName->insert(event);
     EventSet *setDateTime = m_dateTimeHash[dateTime.toString()];
     setDateTime->insert(event);
@@ -67,4 +70,20 @@ bool AdvancedAgenda::compareTimes(const DateTime &date1, const DateTime &date2) 
         if (times1[i] < times2[i]) {return true;}
     }
     return true;
+}
+
+void AdvancedAgenda::updateEvent(const std::string& eventName, const std::string& newName, const DateTime &dateTime, const int duration, std::vector<std::string> &attendees) {
+    if(getEvents(eventName)->empty()) {
+        cout << "Event " << eventName << " does not exist" << endl;
+        return;
+    }
+    std::string description = getEvents(eventName)->begin().operator*()->getDescription();
+    const TimeSpan timespan = TimeSpan(dateTime, duration);
+    Event newEvent = Event(timespan, description);
+    m_eventNameHash[eventName]->erase(getEvents(eventName)->begin());
+    m_eventNameHash[eventName]->insert(&newEvent);
+}
+
+void AdvancedAgenda::printEvents(std::string personName) {
+
 }

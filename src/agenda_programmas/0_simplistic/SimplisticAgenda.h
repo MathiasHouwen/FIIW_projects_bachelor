@@ -21,7 +21,7 @@ public:
 
     EventSet *getEvents(const std::string& name);
     EventSet *getEvents(DateTime dateTime);
-    void loadFromFile() override;
+    void loadFromFile(string filePath) override;
 
 private:
     std::unordered_map<std::string, EventSet*> m_nameHash;

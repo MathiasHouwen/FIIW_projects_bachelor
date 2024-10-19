@@ -7,7 +7,8 @@
 
 class AgendaInterface{
 public:
-    virtual void loadFromFile() = 0;
+    virtual void loadFromFile(std::string filePath) = 0;
 };
+
 
 #endif //ALDA_TEAM3_EBBE_ROBIN_MATHIAS_AGENDAINTERFACE_H

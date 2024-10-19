@@ -60,7 +60,7 @@ bool AdvancedAgenda::checkOverlap(const EventSet &events, TimeSpan time) {
     return false;
 }
 
-void AdvancedAgenda::loadFromFile() {
+void AdvancedAgenda::loadFromFile(string filePath) {
     // TODO
 }
 

@@ -24,6 +24,6 @@ SimplisticAgenda::EventSet *SimplisticAgenda::getEvents(DateTime dateTime) {
     return m_dateTimeHash[dateTime.toString()];
 }
 
-void SimplisticAgenda::loadFromFile() {
+void SimplisticAgenda::loadFromFile(string filePath) {
     // TODO
 }

@@ -52,7 +52,7 @@ private:
 public:
     bool plan(vector<string> attendees, Event event);
 
-    void loadFromFile() override;
+    void loadFromFile(string filePath) override;
     // bool voor "is gelukt" / "geen avialability"
 };
 

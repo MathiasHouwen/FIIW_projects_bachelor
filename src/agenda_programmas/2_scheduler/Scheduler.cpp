@@ -3,6 +3,7 @@
 //
 
 #include "Scheduler.h"
+#include "../../util/FileInputReader.h"
 
 #include <utility>
 
@@ -83,6 +84,10 @@ bool Scheduler::MinimalEventComparator::operator()(const Scheduler::MinimalEvent
     return a->description < b->description;
 }
 
-void Scheduler::loadFromFile() {
-    // TODO
+void Scheduler::loadFromFile(string filePath) {
+    FileInputReader file(filePath);
+    while(file.hasNext()){
+        FileInputReader::Entry line = file.nextLine();
+        plan({line.username}, line.event);
+    }
 }

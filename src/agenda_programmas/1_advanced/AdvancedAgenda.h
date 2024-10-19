@@ -27,7 +27,7 @@ public:
 
     static bool compareTimes(const DateTime &date1, const DateTime &date2);
 
-    void loadFromFile() override;
+    void loadFromFile(string filePath) override;
     void updateEvent(const std::string& eventName, const std::string& newName, const DateTime &dateTime, int duration, std::vector<std::string> &attendees);
 
     void printEvents(const std::string& personName);

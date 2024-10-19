@@ -22,7 +22,7 @@ public:
 
     void setAttendees(const Event &event, const std::vector<std::string> &attendees);
 
-    static bool checkOverlap(EventSet *events, DateTime dateTime);
+    static bool checkOverlap(const EventSet &events, TimeSpan time);
 
     static bool compareTimes(const DateTime &date1, const DateTime &date2);
 

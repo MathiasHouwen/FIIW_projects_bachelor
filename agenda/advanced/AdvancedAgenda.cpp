@@ -40,15 +40,21 @@ void AdvancedAgenda::setAttendees(const Event& event, const std::vector<std::str
     for(const std::string& attendee : attendees) {
         EventSet* events = getEvents(attendee);
         TimeSpan time = event.getTimeSpan();
-        if(!checkOverlap) {
+        if(!checkOverlap(*events, time)) {
             result.push_back(attendee);
         }
     }
 }
 
-// checks for overlaps of TimeSpans
-bool AdvancedAgenda::checkOverlap(EventSet *events, DateTime dateTime) {
-    return true;
+// checks for overlaps of TimeSpans => O(n) n = number of events :(
+bool AdvancedAgenda::checkOverlap(const EventSet &events, TimeSpan time) {
+    for (const Event* event : events) {
+        TimeSpan eventTime = event->getTimeSpan();
+
+        if(compareTimes(eventTime.getEndTime(), time.getStartTime())){return true;}
+        if(!compareTimes(eventTime.getStartTime(), time.getEndTime())){return true;}
+    }
+    return false;
 }
 
 // returns true if time 1 is before or same as time 2

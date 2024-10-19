@@ -6,6 +6,7 @@
 #include "agenda/charedClasses/Event.h"
 #include "agenda/charedClasses/TimeSpan.h"
 #include "agenda/FileIO.h"
+#include "agenda/scheduler/Schedular.h"
 
 using namespace std;
 
@@ -15,19 +16,18 @@ int main() {
 //        FileIO::Entry line = io.nextLine();
 //        cout << line.username << ", " << line.event.getDescription() << ", " << line.event.getTimeSpan().getDuration() << endl;
 //    }
-//    DateTime start(30, 22, 21, 6, 2004);
-//    int duration = 20;
-//    TimeSpan timespan(start, duration);
-//    Event robinsLeven(timespan, "robinsLeven");
-//    cout << robinsLeven.getDescription() << endl;
-//    cout << "jaar: " << robinsLeven.getTimeSpan().getEndTime().getYear() << endl;
-//    cout << "maand: " << robinsLeven.getTimeSpan().getEndTime().getMonth() << endl;
-//    cout << "dag: " << robinsLeven.getTimeSpan().getEndTime().getDay() << endl;
-//    cout << "uur: " << robinsLeven.getTimeSpan().getEndTime().getHour() << endl;
-//    cout << "minuten: " << robinsLeven.getTimeSpan().getEndTime().getMin() << endl;
-//
-//    cout << "tostring test" << endl;
-//    cout <<  robinsLeven.toString();
+    Event e1({{30,22,19,10,2024}, 150}, "e1");
+    Event e2({{0,13,19,10,2024}, 60}, "e2");
+    Event e3({{30,13,19,10,2024}, 60}, "overlap met e2");
+    Event e4({{30,13,20,10,2024}, 60}, "zelfde uur als overlap met e2, maar andere dag");
 
+    Schedular schedular;
+    const bool schedularTest =
+            schedular.plan({"Ebbe", "Robin", "Mathias"}, e1)
+            and schedular.plan({"Ebbe", "Mathias"},e2)
+            and not schedular.plan({"Ebbe", "Robin"},e3)
+            and schedular.plan({"Ebbe", "Robin"},e4)
+            and schedular.plan({"Robin"},e3);
+    if(!schedularTest) cerr << "schedularTest FAIL" << endl;
     return 0;
 }

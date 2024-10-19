@@ -10,7 +10,7 @@
 bool Schedular::checkAvialability(TimeSpan timeSpan, DateUnion date, vector<string> attendees, long long bitmask) {
     long long bitmap = bitmask;
     for(const string& attendee: attendees){
-        MapNode node = userDateMap[attendee][date];
+        MapNode& node = userDateMap[attendee][date];
         bitmap &= node.bitmap; // logische AND verwijderd meteen de niet-overeenkomende slot bits
     }
     return bitmap == bitmask;
@@ -23,7 +23,7 @@ bool Schedular::plan(vector<string> attendees, Event event) {
     long long bitmask = timespanToDayBitmask(timeSpan);
     long long negBitMask = ~bitmask;
 
-    if(!checkAvialability(timeSpan, date, std::move(attendees), bitmask))
+    if(!checkAvialability(timeSpan, date, attendees, bitmask))
         return false;
 
     auto sharedEventStruct = new MinimalEvent(event);
@@ -35,7 +35,7 @@ bool Schedular::plan(vector<string> attendees, Event event) {
 
 // O(log(e)); e = aantal events van die attendee op die date
 void Schedular::insert(const string& attendee, DateUnion date, MinimalEvent* event, long long negativeBitmask) {
-    MapNode node = userDateMap[attendee][date]; // als niet bestaat word node automatich ge-construct
+    MapNode& node = userDateMap[attendee][date]; // als niet bestaat word node automatich ge-construct
     node.bitmap &= negativeBitmask;
     node.events.insert(event);
 }

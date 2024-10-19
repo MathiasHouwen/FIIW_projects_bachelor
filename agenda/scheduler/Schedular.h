@@ -18,9 +18,9 @@ class Schedular {
 private:
     union DateUnion{
         struct{
-            char day; // geen bit fields nodig want die zouden ook padden tot 4 bytes
-            char month;
-            short year;
+            unsigned char day; // geen bit fields nodig want die zouden ook padden tot 4 bytes
+            unsigned char month;
+            unsigned short year;
         } date;
         explicit DateUnion(DateTime dateTime);
         long asLong;
@@ -30,9 +30,9 @@ private:
         std::size_t operator()(const DateUnion& date) const;
     };
     struct MinimalEvent{
-        int duration:6;
-        int hour:5;
-        int halfHour:1;
+        unsigned int duration:6;
+        unsigned int hour:5;
+        unsigned int halfHour:1;
         string description;
         explicit MinimalEvent(Event event);
     };
@@ -41,7 +41,7 @@ private:
     };
     struct MapNode{
         MapNode* next {nullptr};
-        long long bitmap:48 {~0LL}; // 1=vrij 0=event(s)
+        unsigned long long bitmap {static_cast<unsigned long long>(~0LL)}; // 1=vrij 0=event(s) //unsigned puur voor duidelijkheid in debugger
         set<MinimalEvent*, MinimalEventComparator> events;
     };
     unordered_map<string, unordered_map<DateUnion, MapNode, DateUnionHash>> userDateMap{};

@@ -9,7 +9,7 @@
 
 // TODO: MAAK LIJST -> op volgorde inserten
 // DOORMIDDEL SET
-void AdvancedAgenda::insertHash(const std::string& personName, const std::string& eventName, DateTime dateTime, Event* event[]) {
+void AdvancedAgenda::insertHash(const std::string& personName, const std::string& eventName, DateTime dateTime, Event* event) {
     EventSet *setEventName = m_eventNameHash[eventName];
     setEventName->insert(event);
     EventSet *setPersonName = m_eventNameHash[eventName];
@@ -18,14 +18,14 @@ void AdvancedAgenda::insertHash(const std::string& personName, const std::string
     setDateTime->insert(event);
 }
 
-AdvancedAgenda::EventSet *AdvancedAgenda::getEvents(const string &name) {
+AdvancedAgenda::EventSet AdvancedAgenda::getEvents(const string &name) {
     AdvancedAgenda::EventSet *eventSet = m_eventNameHash[name];
     if (eventSet->empty()) {
-        return m_personNameHash[name];
+        return *m_personNameHash[name];
     }
-    return eventSet;
+    return *eventSet;
 }
 
-AdvancedAgenda::EventSet *AdvancedAgenda::getEvents(DateTime dateTime) {
-    return m_dateTimeHash[dateTime.toString()];
+AdvancedAgenda::EventSet AdvancedAgenda::getEvents(DateTime dateTime) {
+    return *m_dateTimeHash[dateTime.toString()];
 }

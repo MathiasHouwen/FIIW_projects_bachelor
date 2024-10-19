@@ -4,11 +4,12 @@
 
 #include "Event.h"
 #include <string>
+#include <utility>
 
 
-Event::Event(const TimeSpan &time_span, std::string &description)
+Event::Event(const TimeSpan &time_span, std::string description)
             : timeSpan(time_span),
-              description(description) {
+              description(std::move(description)) {
 }
 
 TimeSpan Event::getTimeSpan() {

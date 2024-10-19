@@ -20,7 +20,7 @@ class Event {
         struct eventComparator{
             bool operator()(Event *lhs, Event *rhs) const;
         };
-        Event(const TimeSpan &time_span, const std::string &description);
+        Event(const TimeSpan &time_span, std::string description);
         virtual ~Event() = default;
 
         TimeSpan getTimeSpan();

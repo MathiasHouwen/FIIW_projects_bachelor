@@ -11,6 +11,7 @@ class DateTime {
 public:
     DateTime(int mHour, int mDay, int mMonth, int mYear);
     DateTime(int mMin, int mHour, int mDay, int mMonth, int mYear);
+    ~DateTime() = default;
 
     int getMin() const;
     int getHour() const;

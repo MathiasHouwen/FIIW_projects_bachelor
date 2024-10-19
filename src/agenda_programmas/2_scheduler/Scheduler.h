@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 #include <set>
+#include <list>
 #include "../../AgendaInterface.h"
 #include "../../event_classes/DateTime.h"
 #include "../../event_classes/Event.h"
@@ -26,9 +27,10 @@ private:
         explicit DateUnion(DateTime dateTime);
         long asLong;
         bool operator==(const DateUnion& other) const;
+        bool operator<(const DateUnion& other) const;
     };
     struct DateUnionHash {
-        std::size_t operator()(const DateUnion& date) const;
+        size_t operator()(const DateUnion& date) const;
     };
     struct MinimalEvent{
         unsigned int duration:6;
@@ -37,23 +39,25 @@ private:
         string description;
         explicit MinimalEvent(Event event);
     };
-    struct MinimalEventComparator {
+    struct MinimalEventPointerComparator {
         bool operator()(const MinimalEvent* a, const MinimalEvent* b) const;
     };
-    struct MapNode{
-        MapNode* next {nullptr};
+    struct MapEndpoint{
         unsigned long long bitmap {static_cast<unsigned long long>(~0LL)}; // 1=vrij 0=event(s) //unsigned puur voor duidelijkheid in debugger
-        set<MinimalEvent*, MinimalEventComparator> events;
+        set<MinimalEvent*, MinimalEventPointerComparator> events;
     };
-    unordered_map<string, unordered_map<DateUnion, MapNode, DateUnionHash>> userDateMap{};
+    struct InnerMapContainer{
+        unordered_map<DateUnion, MapEndpoint, DateUnionHash> map{};
+        set<DateUnion> set{};
+    };
+    unordered_map<string, InnerMapContainer> outerMap{};
     bool checkAvialability(TimeSpan timeSpan, DateUnion date, vector<string> attendees, long long bitmask);
     void insert(const string& attendee, DateUnion date, MinimalEvent* event, long long bitmask);
     static long long timespanToDayBitmask(TimeSpan timeSpan);
 public:
-    bool plan(vector<string> attendees, Event event);
-
+    bool plan(vector<string> attendees, Event event);// bool voor "is gelukt" / "geen avialability"
+    list<pair<string, Event>> getSortedAgenda(vector<string> users);
     void loadFromFile(string filePath) override;
-    // bool voor "is gelukt" / "geen avialability"
 };
 
 #endif //SCHEDULAR_H

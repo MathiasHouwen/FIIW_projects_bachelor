@@ -11,7 +11,7 @@
 bool Scheduler::checkAvialability(TimeSpan timeSpan, DateUnion date, vector<string> attendees, long long bitmask) {
     long long bitmap = bitmask;
     for(const string& attendee: attendees){
-        MapNode& node = userDateMap[attendee][date];
+        MapEndpoint& node = outerMap[attendee].map[date];
         bitmap &= node.bitmap; // logische AND verwijderd meteen de niet-overeenkomende slot bits
     }
     return bitmap == bitmask;
@@ -36,7 +36,10 @@ bool Scheduler::plan(vector<string> attendees, Event event) {
 
 // O(log(e)); e = aantal data van die attendee op die date
 void Scheduler::insert(const string& attendee, DateUnion date, MinimalEvent* event, long long negativeBitmask) {
-    MapNode& node = userDateMap[attendee][date]; // als niet bestaat word node automatich ge-construct
+    InnerMapContainer& inner = outerMap[attendee];
+    if(!inner.map.contains(date)) // de map en set zijn gesynchroniseerd -> sneller om in map te kijken om set insert te vermijden
+        inner.set.insert(date); // LOG(N)
+    MapEndpoint& node = inner.map[date]; // als niet bestaat word node automatich ge-construct
     node.bitmap &= negativeBitmask;
     node.events.insert(event);
 }
@@ -63,6 +66,8 @@ bool Scheduler::DateUnion::operator==(const Scheduler::DateUnion &other) const {
     return asLong == other.asLong;
 }
 
+
+
 Scheduler::MinimalEvent::MinimalEvent(Event event) :
     description(event.getDescription()),
     duration(event.getTimeSpan().getDuration()/30),
@@ -74,8 +79,8 @@ std::size_t Scheduler::DateUnionHash::operator()(const Scheduler::DateUnion &dat
     return std::hash<long>()(date.asLong);
 }
 
-bool Scheduler::MinimalEventComparator::operator()(const Scheduler::MinimalEvent* a,
-                                                   const Scheduler::MinimalEvent* b) const {
+bool Scheduler::MinimalEventPointerComparator::operator()(const Scheduler::MinimalEvent* a,
+                                                          const Scheduler::MinimalEvent* b) const {
     int atime = a->hour*2+a->halfHour;
     int btime = b->hour*2+b->halfHour;
     if(atime != btime){
@@ -90,4 +95,16 @@ void Scheduler::loadFromFile(string filePath) {
         FileInputReader::Entry line = file.nextLine();
         plan({line.username}, line.event);
     }
+}
+
+list<pair<string, Event>> Scheduler::getSortedAgenda(vector<string> users) {
+    return list<pair<string, Event>>();
+}
+
+
+bool Scheduler::DateUnion::operator<(const Scheduler::DateUnion &other) const {
+    if(date.year != other.date.year) return date.year < other.date.year;
+    if(date.month != other.date.month) return date.month < other.date.month;
+    if(date.day != other.date.day) return date.day < other.date.day;
+    return false;
 }

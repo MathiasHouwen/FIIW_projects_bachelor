@@ -61,6 +61,7 @@
 ## Eigen_Hybride_augmentaties__________
  - ### Hashmap met values als linked list nodes
    - (+): directe acces, maar ook iteratie op gesorteerde volgorde
+   - (-): hoge insert tijd: hoe zoek je de nodes waartussen je moet inserten (zonder O(N))?
  - ### Geneste hashmaps voor "2d" mapping
    - (+): O(1)
    - (-): space overhead en redundantie

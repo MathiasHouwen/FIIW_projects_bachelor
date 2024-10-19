@@ -84,6 +84,10 @@ void AdvancedAgenda::updateEvent(const std::string& eventName, const std::string
     m_eventNameHash[eventName]->insert(&newEvent);
 }
 
-void AdvancedAgenda::printEvents(std::string personName) {
-
+void AdvancedAgenda::printEvents(const std::string& personName) {
+    EventSet* events = getEvents(personName);
+    cout << "Events: " << endl;
+    for(Event* event : *events) {
+        cout << event->toString() << endl;
+    }
 }

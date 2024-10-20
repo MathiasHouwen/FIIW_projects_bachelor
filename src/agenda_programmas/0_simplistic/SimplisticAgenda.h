@@ -29,9 +29,9 @@ private:
 
     bool checkOverlap(const EventSet &events, TimeSpan time);
 
-    bool compareTimes(const DateTime &date1, const DateTime &date2);
-
     bool insertEvent(const string &name, DateTime dateTime, Event event);
+
+    bool compareTimes(const TimeSpan &time1, const TimeSpan &time2);
 };
 
 

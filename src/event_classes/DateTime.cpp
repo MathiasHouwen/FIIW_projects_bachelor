@@ -43,3 +43,14 @@ std::string DateTime::toString() {
     return string.str();
 }
 
+bool DateTime::operator<(const DateTime &other) const {
+    if (this->getYear() != other.getYear())
+        return this->getYear() < other.getYear();
+    if (this->getMonth() != other.getMonth())
+        return this->getMonth() < other.getMonth();
+    if (this->getDay() != other.getDay())
+        return this->getDay() < other.getDay();
+    if (this->getHour() != other.getHour())
+        return this->getHour() < other.getHour();
+    return this->getMin() < other.getMin();
+}

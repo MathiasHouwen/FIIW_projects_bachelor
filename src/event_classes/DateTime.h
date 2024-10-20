@@ -21,6 +21,9 @@ public:
 
     std::string toString();
 
+    bool operator<(const DateTime& other) const;
+
+
 private:
     int m_min;
     int m_hour;

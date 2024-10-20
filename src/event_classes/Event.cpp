@@ -39,13 +39,14 @@ std::string Event::toString() {
 bool Event::eventComparator::operator()(Event lhs, Event rhs) const {
     DateTime first = lhs.getTimeSpan().getStartTime();
     DateTime second = rhs.getTimeSpan().getStartTime();
-    if (first.getYear() != second.getYear())
-        return first.getYear() < second.getYear();
-    if (first.getMonth() != second.getMonth())
-        return first.getMonth() < second.getMonth();
-    if (first.getDay() != second.getDay())
-        return first.getDay() < second.getDay();
-    if (first.getHour() != second.getHour())
-        return first.getHour() < second.getHour();
-    return first.getMin() < second.getMin();
+    return first < second;
+//    if (first.getYear() != second.getYear())
+//        return first.getYear() < second.getYear();
+//    if (first.getMonth() != second.getMonth())
+//        return first.getMonth() < second.getMonth();
+//    if (first.getDay() != second.getDay())
+//        return first.getDay() < second.getDay();
+//    if (first.getHour() != second.getHour())
+//        return first.getHour() < second.getHour();
+//    return first.getMin() < second.getMin();
 }

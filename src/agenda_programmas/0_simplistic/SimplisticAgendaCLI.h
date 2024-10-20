@@ -11,7 +11,6 @@
 class SimplisticAgendaCLI {
 private:
 public:
-    void printEvent(Event* event);
 };
 
 

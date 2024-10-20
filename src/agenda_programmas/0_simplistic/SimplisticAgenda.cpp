@@ -29,11 +29,9 @@ bool SimplisticAgenda::insertEvent(const std::string& name, DateTime dateTime, E
     if (!setName) {
         setName = new EventSet(); // Create a new set if none exists for this name
         m_nameHash[name] = setName;
+    } else if (checkOverlap(*setName, event.getTimeSpan())) {
+        return false;
     }
-
-//    if (checkOverlap(*setName, event.getTimeSpan())) {
-//        return false;
-//    }
 
     insertHash(name, dateTime, event);
     return true;
@@ -56,25 +54,20 @@ void SimplisticAgenda::loadFromFile(string filePath) {
     }
 }
 
-// checks for overlaps of TimeSpans => O(n) n = number of events :(
 bool SimplisticAgenda::checkOverlap(const EventSet &events, TimeSpan time) {
     for (const Event event : events) {
-        TimeSpan eventTime = event.getTimeSpan();
-
-        if(compareTimes(eventTime.getEndTime(), time.getStartTime())){return true;}
-        if(!compareTimes(eventTime.getStartTime(), time.getEndTime())){return true;}
+        if(compareTimes(event.getTimeSpan(), time)){
+            return true;
+        }
     }
     return false;
 }
 
-// returns true if time 1 is before or same as time 2
-bool SimplisticAgenda::compareTimes(const DateTime &date1, const DateTime &date2) {
-    const int times1[] = {date1.getYear(), date1.getMonth(), date1.getDay(), date1.getHour(), date1.getMin()};
-    const int times2[] = {date2.getYear(), date2.getMonth(), date2.getDay(), date2.getHour(), date2.getMin()};
+bool SimplisticAgenda::compareTimes(const TimeSpan &time1, const TimeSpan &time2) {
+    DateTime thisStart = time1.getStartTime();
+    DateTime thisEnd = time1.getEndTime();
+    DateTime otherStart = time2.getStartTime();
+    DateTime otherEnd = time2.getEndTime();
 
-    for (int i = 0; i < 5; i++) {
-        if (times1[i] > times2[i]) {return false;}
-        if (times1[i] < times2[i]) {return true;}
-    }
-    return true;
+    return (thisStart < otherEnd) && (otherStart < thisEnd);
 }

@@ -6,7 +6,4 @@
 
 #include <iostream>
 #include "string"
-
-void SimplisticAgendaCLI::printEvent(Event *event) {
-    std::cout << event->toString();
-}
+#include "SimplisticAgenda.h"

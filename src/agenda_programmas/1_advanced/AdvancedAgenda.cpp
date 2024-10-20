@@ -14,7 +14,7 @@
 // DOORMIDDEL SET
 
 // add event to hashmap with respective key
-void AdvancedAgenda::insertHash(const std::string& personName, const std::string& eventName, DateTime dateTime, Event* event) {
+void AdvancedAgenda::insertHash(const std::string& personName, const std::string& eventName, DateTime dateTime, Event event) {
     EventSet *setEventName = m_eventNameHash[eventName];
     setEventName->insert(event);
     EventSet *setPersonName = m_personNameHash[personName];
@@ -51,8 +51,8 @@ void AdvancedAgenda::setAttendees(const Event& event, const std::vector<std::str
 
 // checks for overlaps of TimeSpans => O(n) n = number of events :(
 bool AdvancedAgenda::checkOverlap(const EventSet &events, TimeSpan time) {
-    for (const Event* event : events) {
-        TimeSpan eventTime = event->getTimeSpan();
+    for (const Event event : events) {
+        TimeSpan eventTime = event.getTimeSpan();
 
         if(compareTimes(eventTime.getEndTime(), time.getStartTime())){return true;}
         if(!compareTimes(eventTime.getStartTime(), time.getEndTime())){return true;}
@@ -82,17 +82,17 @@ void AdvancedAgenda::updateEvent(const std::string& eventName, const std::string
         cout << "Event " << eventName << " does not exist" << endl;
         return;
     }
-    std::string description = getEvents(eventName)->begin().operator*()->getDescription();
+    std::string description = getEvents(eventName)->begin().operator*().getDescription();
     const TimeSpan timespan = TimeSpan(dateTime, duration);
     Event newEvent = Event(timespan, description);
     m_eventNameHash[eventName]->erase(getEvents(eventName)->begin());
-    m_eventNameHash[eventName]->insert(&newEvent);
+    m_eventNameHash[eventName]->insert(newEvent);
 }
 
 void AdvancedAgenda::printEvents(const std::string& personName) {
     EventSet* events = getEvents(personName);
     cout << "Events: " << endl;
-    for(Event* event : *events) {
-        cout << event->toString() << endl;
+    for(Event event : *events) {
+        cout << event.toString() << endl;
     }
 }

@@ -16,7 +16,7 @@ TimeSpan Event::getTimeSpan() const {
     return timeSpan;
 }
 
-std::string Event::getDescription() {
+std::string Event::getDescription() const {
     return description;
 }
 

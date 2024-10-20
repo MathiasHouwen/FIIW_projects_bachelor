@@ -14,9 +14,9 @@
 
 class AdvancedAgenda : public AgendaInterface{
 public:
-    using EventSet = std::set<Event*, Event::eventComparator>;
+    using EventSet = std::set<Event, Event::eventComparator>;
 
-    void insertHash(const std::string& personName, const std::string&eventName, DateTime dateTime, Event *event);
+    void insertHash(const std::string& personName, const std::string&eventName, DateTime dateTime, Event event);
 
     EventSet* getEvents(const std::string& name);
     EventSet* getEvents(DateTime dateTime);

@@ -26,6 +26,10 @@ DateTime TimeSpan::getEndTime() const {
     return checkEndTime(min, startTime.getHour(), startTime.getDay(), startTime.getMonth(), startTime.getYear());
 }
 
+bool isLeapYear(int year) {
+    return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+}
+
 DateTime TimeSpan::checkEndTime(int min, int hour, int day, int month, int year) {
     if(min > 59) {
         hour += min / 60;
@@ -37,7 +41,7 @@ DateTime TimeSpan::checkEndTime(int min, int hour, int day, int month, int year)
         hour = hour % 24;
     }
 
-    int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    int daysInMonth[] = {31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
     while(day > daysInMonth[month - 1]) {
         day -= daysInMonth[month - 1];

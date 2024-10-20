@@ -15,9 +15,9 @@
 class SimplisticAgenda : public AgendaInterface {
 public:
 
-    using EventSet = std::set<Event*, Event::eventComparator>;
+    using EventSet = std::set<Event, Event::eventComparator>;
 
-    void insertHash(const std::string& name, DateTime dateTime, Event *event);
+    void insertHash(const std::string& name, DateTime dateTime, Event event);
 
     EventSet *getEvents(const std::string& name);
     EventSet *getEvents(DateTime dateTime);
@@ -31,7 +31,7 @@ private:
 
     bool compareTimes(const DateTime &date1, const DateTime &date2);
 
-    bool insertEvent(const string &name, DateTime dateTime, Event *event);
+    bool insertEvent(const string &name, DateTime dateTime, Event event);
 };
 
 

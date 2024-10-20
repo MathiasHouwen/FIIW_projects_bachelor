@@ -36,9 +36,9 @@ std::string Event::toString() {
         + timeSpan.toString();
 }
 
-bool Event::eventComparator::operator()(Event *lhs, Event *rhs) const {
-    DateTime first = lhs->getTimeSpan().getStartTime();
-    DateTime second = rhs->getTimeSpan().getStartTime();
+bool Event::eventComparator::operator()(Event lhs, Event rhs) const {
+    DateTime first = lhs.getTimeSpan().getStartTime();
+    DateTime second = rhs.getTimeSpan().getStartTime();
     if (first.getYear() != second.getYear())
         return first.getYear() < second.getYear();
     if (first.getMonth() != second.getMonth())
@@ -48,8 +48,4 @@ bool Event::eventComparator::operator()(Event *lhs, Event *rhs) const {
     if (first.getHour() != second.getHour())
         return first.getHour() < second.getHour();
     return first.getMin() < second.getMin();
-}
-
-bool Event::eventsOverlap(Event* event1, Event* event2){
-    return true;
 }

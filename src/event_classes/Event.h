@@ -18,7 +18,7 @@ class Event {
         std::vector<std::string> attendees;
     public:
         struct eventComparator{
-            bool operator()(Event *lhs, Event *rhs) const;
+            bool operator()(Event lhs, Event rhs) const;
         };
         Event(const TimeSpan &time_span, std::string description);
         virtual ~Event() = default;

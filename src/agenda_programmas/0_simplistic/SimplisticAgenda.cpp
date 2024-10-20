@@ -8,7 +8,7 @@
 // map 2 datetime -> event *
 // Event = naam & timespan
 
-void SimplisticAgenda::insertHash(const std::string& name, DateTime dateTime, Event *event) {
+void SimplisticAgenda::insertHash(const std::string& name, DateTime dateTime, Event event) {
     EventSet *setName = m_nameHash[name];
     if (!setName) {
         setName = new EventSet();
@@ -24,16 +24,16 @@ void SimplisticAgenda::insertHash(const std::string& name, DateTime dateTime, Ev
     setDateTime->insert(event);
 }
 
-bool SimplisticAgenda::insertEvent(const std::string& name, DateTime dateTime, Event *event){
+bool SimplisticAgenda::insertEvent(const std::string& name, DateTime dateTime, Event event){
     EventSet* setName = m_nameHash[name];
     if (!setName) {
         setName = new EventSet(); // Create a new set if none exists for this name
         m_nameHash[name] = setName;
     }
 
-    if (checkOverlap(*setName, event->getTimeSpan())) {
-        return false;
-    }
+//    if (checkOverlap(*setName, event.getTimeSpan())) {
+//        return false;
+//    }
 
     insertHash(name, dateTime, event);
     return true;
@@ -52,14 +52,14 @@ void SimplisticAgenda::loadFromFile(string filePath) {
     while(file.hasNext()){
         FileInputReader::Entry line = file.nextLine();
         Event event = line.event;
-        insertEvent(line.username, line.event.getTimeSpan().getStartTime(), &line.event);
+        insertEvent(line.username, line.event.getTimeSpan().getStartTime(), line.event);
     }
 }
 
 // checks for overlaps of TimeSpans => O(n) n = number of events :(
 bool SimplisticAgenda::checkOverlap(const EventSet &events, TimeSpan time) {
-    for (const Event* event : events) {
-        TimeSpan eventTime = event->getTimeSpan();
+    for (const Event event : events) {
+        TimeSpan eventTime = event.getTimeSpan();
 
         if(compareTimes(eventTime.getEndTime(), time.getStartTime())){return true;}
         if(!compareTimes(eventTime.getStartTime(), time.getEndTime())){return true;}

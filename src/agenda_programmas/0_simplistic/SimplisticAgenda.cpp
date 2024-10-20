@@ -29,7 +29,8 @@ bool SimplisticAgenda::insertEvent(const std::string& name, DateTime dateTime, E
     if (!setName) {
         setName = new EventSet(); // Create a new set if none exists for this name
         m_nameHash[name] = setName;
-    } else if (checkOverlap(*setName, event.getTimeSpan())) {
+    }
+    else if (checkOverlap(*setName, event)) {
         return false;
     }
 
@@ -54,11 +55,14 @@ void SimplisticAgenda::loadFromFile(string filePath) {
     }
 }
 
-bool SimplisticAgenda::checkOverlap(const EventSet &events, TimeSpan time) {
-    for (const Event event : events) {
-        if(compareTimes(event.getTimeSpan(), time)){
-            return true;
-        }
+bool SimplisticAgenda::checkOverlap(const EventSet &events, Event event) {
+    auto higher = events.lower_bound(event);
+    if (higher != events.end() && compareTimes(higher->getTimeSpan(), event.getTimeSpan())) {
+        return true;
+    }
+    if (higher != events.begin()) {
+        auto lower = std::prev(higher);
+        if(compareTimes(lower->getTimeSpan(), event.getTimeSpan())) return true;
     }
     return false;
 }

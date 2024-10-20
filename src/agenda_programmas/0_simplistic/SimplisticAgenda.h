@@ -26,8 +26,9 @@ public:
 private:
     std::unordered_map<std::string, EventSet*> m_nameHash;
     std::unordered_map<std::string, EventSet*> m_dateTimeHash;
+    std::unordered_map<std::string, std::string> m_eventToName; //TODO: Implument
 
-    bool checkOverlap(const EventSet &events, TimeSpan time);
+    bool checkOverlap(const EventSet &events, Event event);
 
     bool insertEvent(const string &name, DateTime dateTime, Event event);
 

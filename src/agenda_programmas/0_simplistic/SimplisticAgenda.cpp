@@ -3,12 +3,11 @@
 //
 
 #include "SimplisticAgenda.h"
+#include "../../util/FileInputReader.h"
 // 2 maps -> map 1 user name > event pointer
 // map 2 datetime -> event *
 // Event = naam & timespan
 
-// TODO: MAAK LIJST -> op volgorde inserten
-// DOORMIDDEL SET
 void SimplisticAgenda::insertHash(const std::string& name, DateTime dateTime, Event *event) {
     EventSet *setName = m_nameHash[name];
     setName->insert(event);
@@ -40,7 +39,11 @@ SimplisticAgenda::EventSet *SimplisticAgenda::getEvents(DateTime dateTime) {
 }
 
 void SimplisticAgenda::loadFromFile(string filePath) {
-    // TODO
+    FileInputReader file(filePath);
+    while(file.hasNext()){
+        FileInputReader::Entry line = file.nextLine();
+        insertEvent(line.username, line.event.getTimeSpan().getStartTime(), &line.event);
+    }
 }
 
 // checks for overlaps of TimeSpans => O(n) n = number of events :(

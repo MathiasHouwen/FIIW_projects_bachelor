@@ -10,8 +10,17 @@
 
 void SimplisticAgenda::insertHash(const std::string& name, DateTime dateTime, Event *event) {
     EventSet *setName = m_nameHash[name];
+    if (!setName) {
+        setName = new EventSet();
+        m_nameHash[name] = setName;
+    }
     setName->insert(event);
+
     EventSet *setDateTime = m_dateTimeHash[dateTime.toString()];
+    if (!setDateTime) {
+        setDateTime = new EventSet();
+        m_dateTimeHash[dateTime.toString()] = setDateTime;
+    }
     setDateTime->insert(event);
 }
 
@@ -42,6 +51,7 @@ void SimplisticAgenda::loadFromFile(string filePath) {
     FileInputReader file(filePath);
     while(file.hasNext()){
         FileInputReader::Entry line = file.nextLine();
+        Event event = line.event;
         insertEvent(line.username, line.event.getTimeSpan().getStartTime(), &line.event);
     }
 }

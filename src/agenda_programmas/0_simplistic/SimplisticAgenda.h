@@ -26,6 +26,12 @@ public:
 private:
     std::unordered_map<std::string, EventSet*> m_nameHash;
     std::unordered_map<std::string, EventSet*> m_dateTimeHash;
+
+    bool checkOverlap(const EventSet &events, TimeSpan time);
+
+    bool compareTimes(const DateTime &date1, const DateTime &date2);
+
+    bool insertEvent(const string &name, DateTime dateTime, Event *event);
 };
 
 

@@ -49,3 +49,7 @@ bool Event::eventComparator::operator()(Event *lhs, Event *rhs) const {
         return first.getHour() < second.getHour();
     return first.getMin() < second.getMin();
 }
+
+bool Event::eventsOverlap(Event* event1, Event* event2){
+    return true;
+}

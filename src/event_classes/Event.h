@@ -30,6 +30,8 @@ class Event {
 
         void setAttendees(const std::vector<std::string> &attendees);
         std::string toString();
+
+    bool eventsOverlap(Event *event1, Event *event2);
 };
 
 

@@ -4,6 +4,7 @@
 #include "agenda_programmas/2_scheduler/Scheduler.h"
 #include "util/FileInputReader.h"
 #include "agenda_programmas/0_simplistic/SimplisticAgenda.h"
+#include "agenda_programmas/0_simplistic/SimplisticAgendaCLI.h"
 
 using namespace std;
 using d = chrono::duration<float, std::milli>;
@@ -23,8 +24,10 @@ int main() {
 
     // ====== Simplisctic aganda ====== //
     SimplisticAgenda simplisticAgenda;
+    SimplisticAgendaCLI simplisticAgendaCli{simplisticAgenda};
     simplisticAgenda.loadFromFile("../data/ALDA practicum 1 - events.txt");
     printTime(start, "simplisticAgenda load bigfile");
+    simplisticAgendaCli.getInput();
 
 
 //    Event e1({{30,22,19,10,2024}, 150}, "e1");

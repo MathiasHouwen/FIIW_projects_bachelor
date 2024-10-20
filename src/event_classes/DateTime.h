@@ -23,6 +23,8 @@ public:
 
     bool operator<(const DateTime& other) const;
 
+    static DateTime parseDateTime(const std::string &input);
+
 
 private:
     int m_min;
@@ -30,6 +32,7 @@ private:
     int m_day;
     int m_month;
     int m_year;
+
 };
 
 #endif //DATETIME_H

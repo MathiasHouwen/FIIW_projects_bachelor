@@ -43,6 +43,20 @@ std::string DateTime::toString() {
     return string.str();
 }
 
+DateTime DateTime::parseDateTime(const std::string &input) {
+    int day, month, year, hour, min;
+    char sep1, sep2, sep3; // '-', '-' en ':'
+    std::istringstream iss(input);
+    iss >> day >> sep1 >> month >> sep2 >> year >> hour >> sep3 >> min;
+
+    if (sep1 == '-' && sep2 == '-' && sep3 == ':') {
+        return DateTime(min, hour, day, month, year);
+    } else {
+        throw std::invalid_argument("Invalid date format");
+    }
+}
+
+
 bool DateTime::operator<(const DateTime &other) const {
     if (this->getYear() != other.getYear())
         return this->getYear() < other.getYear();

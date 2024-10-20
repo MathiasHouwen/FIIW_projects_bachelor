@@ -30,6 +30,10 @@ void Event::setAttendees(const std::vector<std::string>& addAttendees) {
     }
 }
 
+void Event::addAttendee(const std::string& attendee) {
+    attendees.push_back(attendee);
+}
+
 std::string Event::toString() {
     return description + " "
         + timeSpan.getStartTime().toString() + " "

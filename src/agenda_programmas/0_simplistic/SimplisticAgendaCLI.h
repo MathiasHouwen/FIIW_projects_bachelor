@@ -16,11 +16,14 @@ private:
     SimplisticAgenda agenda;
     void printUserAganda(std::string);
     void printDateTime(DateTime);
+    static bool isDateTimeInput(const string &input);
+
 public:
     explicit SimplisticAgendaCLI(const SimplisticAgenda &agenda);
 
     using EventSet = std::set<Event, Event::eventComparator>;
     void getInput();
+
 };
 
 

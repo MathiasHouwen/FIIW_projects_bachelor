@@ -32,6 +32,8 @@ class Event {
         std::string toString();
 
     bool eventsOverlap(Event *event1, Event *event2);
+
+    void addAttendee(const string &attendee);
 };
 
 

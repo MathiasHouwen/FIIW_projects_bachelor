@@ -34,6 +34,8 @@ bool SimplisticAgenda::insertEvent(const std::string& name, DateTime dateTime, E
         return false;
     }
 
+    event.addAttendee(name);
+
     insertHash(name, dateTime, event);
     return true;
 }

@@ -20,12 +20,28 @@ void SimplisticAgendaCLI::printDateTime(DateTime dateTime) {
     EventSet *events = agenda.getEvents(dateTime);
 
     for(auto itr : *events){
-        cout << itr.toString() << endl;
+        cout << itr.getAttendees()[0] + " "
+            + itr.getDescription() + " "
+            + to_string(itr.getTimeSpan().getDuration()) << endl;
     }
 }
 
-void SimplisticAgendaCLI::getInput() {
+bool SimplisticAgendaCLI::isDateTimeInput(const std::string &input) {
+    // Check if input contains both '-' and ':'
+    return input.find('-') != std::string::npos && input.find(':') != std::string::npos;
+}
 
+void SimplisticAgendaCLI::getInput() {
+    string input;
+    cout << "Enter name or date and time";
+    getline(cin, input);
+
+    if(isDateTimeInput(input)){
+        DateTime dt = DateTime::parseDateTime(input);
+        printDateTime(dt);
+        return;
+    }
+    printUserAganda(input);
 }
 
 SimplisticAgendaCLI::SimplisticAgendaCLI(const SimplisticAgenda &agenda) : agenda(agenda) {}

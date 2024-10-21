@@ -13,13 +13,13 @@ class AdvancedAgendaCLI {
 
     public:
     explicit AdvancedAgendaCLI(AdvancedAgenda *agenda);
-
     using EventSet = std::set<Event, Event::eventComparator>;
     void addEvent() const;
     static bool isDateTimeInput(const std::string &input);
     void updateEvent() const;
     static std::vector<std::string> getAttendees(std::string input);
-    void printEvents(std::string name) const;
+    void askUser();
+    void printEvents(const std::string &name) const;
 };
 
 

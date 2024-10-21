@@ -18,8 +18,7 @@ void AdvancedAgendaCLI::addEvent() const {
     int duration;
 
     cout << "Enter your name: ";
-    cin >> name;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, name);
 
     cout << "Enter description of new Event: ";
     getline(cin, description);
@@ -27,11 +26,12 @@ void AdvancedAgendaCLI::addEvent() const {
     while (!isDateTimeInput(input)) {
         cout << "Enter date and time: ";
         getline(cin, input);
-        dt = DateTime::parseDateTime(input);
     }
+    dt = DateTime::parseDateTime(input);
 
     cout << "Enter duration in minutes: ";
     cin >> duration;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     TimeSpan timeSpan = TimeSpan(dt, duration);
     Event event = Event(timeSpan, description);
@@ -53,14 +53,12 @@ void AdvancedAgendaCLI::updateEvent() const {
     std::vector<std::string> attendees;
 
     cout << "Enter name of event: ";
-    cin >> oldName;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, oldName);
 
-    cout << agenda->getEvents(oldName) << endl;
+    cout << agenda->getEvents(oldName)->begin()->getDescription() << endl;
 
     cout << "Enter new name: ";
-    cin >> newName;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, newName);
 
     while (!isDateTimeInput(input)) {
         cout << "Enter new date and time: ";
@@ -70,11 +68,13 @@ void AdvancedAgendaCLI::updateEvent() const {
 
     cout << "Enter new duration: ";
     cin >> duration;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     cout << "Enter new attendees (comma-separated): ";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getline(cin, input);
     attendees = getAttendees(input);
+    Event event = Event(TimeSpan(dt, duration), newName);
+    agenda->linkAttendees(attendees, event);
     agenda->updateEvent(oldName, newName, dt, duration, attendees);
 }
 
@@ -90,8 +90,24 @@ std::vector<std::string> AdvancedAgendaCLI::getAttendees(std::string input) {
     return attendees;
 }
 
-void AdvancedAgendaCLI::printEvents(std::string name) const {
-    cout << agenda->getEvents(name) << endl;
+void AdvancedAgendaCLI::askUser() {
+    cout << "give name: ";
+    string name;
+    getline(cin, name);
+    printEvents(name);
+}
+
+void AdvancedAgendaCLI::printEvents(const std::string& name) const {
+    const EventSet *events = agenda->getEvents(name);
+
+    if (events == nullptr || events->empty()) {
+        cout << "No events found for user: " << name << endl;
+        return;
+    }
+
+    for(auto itr : *events){
+        cout << itr.toString() << endl;
+    }
 }
 
 AdvancedAgendaCLI::AdvancedAgendaCLI(AdvancedAgenda *agenda)

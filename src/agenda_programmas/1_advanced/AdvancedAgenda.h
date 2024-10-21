@@ -18,6 +18,7 @@ public:
     using EventSet = std::set<Event, Event::eventComparator>;
 
     void insertHash(const std::string& personName, const std::string&eventName, DateTime dateTime, Event event);
+    void eraseHash(Event event, std::string personName);
 
     EventSet* getEvents(const std::string& name);
     EventSet* getEvents(DateTime dateTime);
@@ -32,6 +33,9 @@ public:
     void updateEvent(const std::string& eventName, const std::string& newName, const DateTime &dateTime, int duration, std::vector<std::string> &attendees);
 
     void printEvents(const std::string& personName);
+
+    void linkAttendees(std::vector<std::string> &attendees, Event event);
+
 private:
     std::unordered_map<std::string, EventSet*> m_eventNameHash;
     std::unordered_map<std::string, EventSet*> m_dateTimeHash;

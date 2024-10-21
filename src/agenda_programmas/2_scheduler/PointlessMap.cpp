@@ -100,4 +100,27 @@ void PointlessMap<T>::insert(short index, T item) {
     storage.push_back(item);
 }
 
+template<typename T>
+short PointlessMap<T>::distanceToNext(short index) {
+    Cell after = indexer[index+1];
+    return after.occupied ? index+1 : after.index;
+}
+
+template<typename T>
+T PointlessMap<T>::get(short index) {
+    return storage[indexer[index].index];
+}
+
+template<typename T>
+short PointlessMap<T>::getFirstIndex() {
+    Cell cell0 = indexer[0];
+    return cell0.occupied ? 0 : cell0.index;
+}
+
+template<typename T>
+short PointlessMap<T>::getLastIndex() {
+    Cell& cellEnd = indexer[end];
+    return cellEnd.occupied ? end : cellEnd.index;
+}
+
 template class PointlessMap<char>; // char voor testing/debugging

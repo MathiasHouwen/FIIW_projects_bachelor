@@ -22,6 +22,10 @@ private:
     std::vector<T> storage{};
 public:
     void insert(short index, T item);
+    T get(short index);
+    short distanceToNext(short index);
+    short getFirstIndex();
+    short getLastIndex();
 };
 
 

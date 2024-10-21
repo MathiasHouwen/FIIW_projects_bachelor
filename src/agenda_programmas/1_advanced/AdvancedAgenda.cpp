@@ -16,10 +16,22 @@
 // add event to hashmap with respective key
 void AdvancedAgenda::insertHash(const std::string& personName, const std::string& eventName, DateTime dateTime, Event event) {
     EventSet *setEventName = m_eventNameHash[eventName];
+    if (!setEventName) {
+        setEventName = new EventSet();
+        m_eventNameHash[eventName] = setEventName;
+    }
     setEventName->insert(event);
     EventSet *setPersonName = m_personNameHash[personName];
+    if (!setPersonName) {
+        setPersonName = new EventSet();
+        m_personNameHash[personName] = setPersonName;
+    }
     setPersonName->insert(event);
     EventSet *setDateTime = m_dateTimeHash[dateTime.toString()];
+    if (!setDateTime) {
+        setDateTime = new EventSet();
+        m_dateTimeHash[dateTime.toString()] = setDateTime;
+    }
     setDateTime->insert(event);
 }
 
@@ -62,7 +74,12 @@ bool AdvancedAgenda::checkOverlap(const EventSet &events, const Event& event) {
 }
 
 void AdvancedAgenda::loadFromFile(string filePath) {
-    // TODO
+    FileInputReader file(filePath);
+    while(file.hasNext()){
+        FileInputReader::Entry line = file.nextLine();
+        Event event = line.event;
+        insertHash(line.username, event.getDescription(), line.event.getTimeSpan().getStartTime(), line.event);
+    }
 }
 
 

@@ -10,7 +10,7 @@
 
 using namespace std;
 
-void AdvancedAgendaCLI::addEvent() {
+void AdvancedAgendaCLI::addEvent() const {
     std::string name;
     std::string description;
     string input;
@@ -36,7 +36,7 @@ void AdvancedAgendaCLI::addEvent() {
     TimeSpan timeSpan = TimeSpan(dt, duration);
     Event event = Event(timeSpan, description);
     cout << endl << event.toString() << endl;
-    agenda.insertHash(name, description, dt, event);
+    agenda->insertHash(name, description, dt, event);
 }
 
 bool AdvancedAgendaCLI::isDateTimeInput(const std::string &input) {
@@ -44,7 +44,7 @@ bool AdvancedAgendaCLI::isDateTimeInput(const std::string &input) {
     return input.find('-') != std::string::npos && input.find(':') != std::string::npos;
 }
 
-void AdvancedAgendaCLI::updateEvent() {
+void AdvancedAgendaCLI::updateEvent() const {
     std::string oldName;
     std::string newName;
     int duration;
@@ -56,7 +56,7 @@ void AdvancedAgendaCLI::updateEvent() {
     cin >> oldName;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-    cout << agenda.getEvents(oldName) << endl;
+    cout << agenda->getEvents(oldName) << endl;
 
     cout << "Enter new name: ";
     cin >> newName;
@@ -75,7 +75,7 @@ void AdvancedAgendaCLI::updateEvent() {
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getline(cin, input);
     attendees = getAttendees(input);
-    agenda.updateEvent(oldName, newName, dt, duration, attendees);
+    agenda->updateEvent(oldName, newName, dt, duration, attendees);
 }
 
 std::vector<std::string> AdvancedAgendaCLI::getAttendees(std::string input) {
@@ -90,6 +90,10 @@ std::vector<std::string> AdvancedAgendaCLI::getAttendees(std::string input) {
     return attendees;
 }
 
-void AdvancedAgendaCLI::printEvents(std::string name) {
-    cout << agenda.getEvents(name) << endl;
+void AdvancedAgendaCLI::printEvents(std::string name) const {
+    cout << agenda->getEvents(name) << endl;
+}
+
+AdvancedAgendaCLI::AdvancedAgendaCLI(AdvancedAgenda *agenda)
+        : agenda(agenda) {
 }

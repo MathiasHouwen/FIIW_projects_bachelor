@@ -10,6 +10,7 @@
 #include <set>
 #include "../../event_classes/Event.h"
 #include "../../AgendaInterface.h"
+#include "../../util/FileInputReader.h"
 
 
 class AdvancedAgenda : public AgendaInterface{

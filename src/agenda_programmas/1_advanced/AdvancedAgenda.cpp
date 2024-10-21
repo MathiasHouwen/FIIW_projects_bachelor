@@ -38,8 +38,8 @@ void AdvancedAgenda::insertHash(const std::string& personName, const std::string
 // get event from hashmap with respective name (person name or event name)
 AdvancedAgenda::EventSet *AdvancedAgenda::getEvents(const string &name) {
     AdvancedAgenda::EventSet *eventSet = m_eventNameHash[name];
-    if (eventSet->empty()) {
-        return m_personNameHash[name];
+    if (eventSet == nullptr || eventSet->empty()) {
+        eventSet = m_personNameHash[name];
     }
     return eventSet;
 }

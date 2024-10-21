@@ -38,10 +38,12 @@ int main() {
     AdvancedAgenda advancedAgenda;
     AdvancedAgendaCLI advancedAgendaCLI{&advancedAgenda};
     advancedAgenda.loadFromFile("../data/ALDA practicum 1 - events.txt");
-    cout << "give name: ";
-    string name;
-    cin >> name;
-    advancedAgenda.getEvents(name);
+
+    // add event
+    advancedAgendaCLI.addEvent();
+
+    // print all events from person
+//    advancedAgendaCLI.askUser();
 
 //    Event e1({{30,22,19,10,2024}, 150}, "e1");
 //    Event e2({{0,13,19,10,2024}, 60}, "e2");

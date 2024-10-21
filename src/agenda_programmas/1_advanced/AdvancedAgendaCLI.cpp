@@ -90,8 +90,24 @@ std::vector<std::string> AdvancedAgendaCLI::getAttendees(std::string input) {
     return attendees;
 }
 
-void AdvancedAgendaCLI::printEvents(std::string name) const {
-    cout << agenda->getEvents(name) << endl;
+void AdvancedAgendaCLI::askUser() {
+    cout << "give name: ";
+    string name;
+    getline(cin, name);
+    printEvents(name);
+}
+
+void AdvancedAgendaCLI::printEvents(const std::string& name) const {
+    const EventSet *events = agenda->getEvents(name);
+
+    if (events == nullptr || events->empty()) {
+        cout << "No events found for user: " << name << endl;
+        return;
+    }
+
+    for(auto itr : *events){
+        cout << itr.toString() << endl;
+    }
 }
 
 AdvancedAgendaCLI::AdvancedAgendaCLI(AdvancedAgenda *agenda)

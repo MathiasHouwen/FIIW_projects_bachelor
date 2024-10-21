@@ -16,15 +16,19 @@ using namespace std;
 
 class Scheduler : public AgendaInterface{
 public:
-    bool plan(vector<string> attendees, Event event);// bool voor "is gelukt" / "geen avialability"
+    bool plan(const vector<string>& attendees, const Event& event);// bool voor "is gelukt" / "geen avialability"
     list<pair<string, Event>> getSortedAgenda(vector<string> users);
     void loadFromFile(string filePath) override;
 private:
-    unordered_map<string, PointlessMap<MapEndpoint>> userMap{};
-    bool checkAvialability(TimeSpan timeSpan, DateTime date, vector<string> attendees, long long bitmask);
-    void insert(const string& attendee, DateTime date, MinimalEvent* event, long long bitmask);
+    struct MapMidPoint{
+        int oldestYear{0};
+        vector<PointlessMap<MapEndpoint>> yearPlans{};
+    };
+    unordered_map<string, MapMidPoint> userMap{};
+    bool checkAvialability(short dateIndex, int year, const vector<string>& attendees, unsigned long long bitmask);
+    void insert(const string& attendee, short dateIndex, int year, MinimalEvent* event, unsigned long long bitmask);
     static long long timespanToDayBitmask(TimeSpan timeSpan);
-    static short dateToShort(DateTime date);
+    static short dateToIndex(DateTime date);
 };
 
 #endif //SCHEDULAR_H

@@ -8,40 +8,56 @@
 #include <utility>
 
 // O(a); a = aatnal gekozen attendees
-bool Scheduler::checkAvialability(TimeSpan timeSpan, DateTime date, vector<string> attendees, long long bitmask) {
-    long long bitmap = bitmask;
-    for(const string& attendee: attendees){
-        //MapEndpoint& node = outerMap[attendee].map[date];
-        //bitmap &= node.bitmap; // logische AND verwijderd meteen de niet-overeenkomende slot bits
+bool Scheduler::checkAvialability(short dateIndex, int year, const vector<string>& attendees, unsigned long long bitmask) {
+    unsigned long long bitmap = bitmask;
+    for(const string& attendee: attendees){ // O(a)
+        MapMidPoint& years = userMap[attendee];
+        if(year-years.oldestYear >= years.yearPlans.size()) return true; // niks gepland dat jaar
+        auto& map = years.yearPlans[year-years.oldestYear];
+        if(!map.contains(dateIndex)) return true; // niks gepland die dag O(1)
+        MapEndpoint node = map.get(dateIndex); // O(1)
+        bitmap &= node.bitmap; // logische AND verwijderd meteen de niet-overeenkomende slot bits
     }
     return bitmap == bitmask;
 }
 
-// O(a*(1+log(e))); a = aantal gekozen attendees, e = aantal data per attendee op de gekozen dag
-bool Scheduler::plan(vector<string> attendees, Event event) {
+// TODO (a*(1+log(e))); a = aantal gekozen attendees, e = aantal data per attendee op de gekozen dag
+bool Scheduler::plan(const vector<string>& attendees, const Event& event) {
     TimeSpan timeSpan = event.getTimeSpan();
-    //DateTime date{timeSpan.getStartTime()};
-    long long bitmask = timespanToDayBitmask(timeSpan);
-    long long negBitMask = ~bitmask;
+    DateTime startTime = timeSpan.getStartTime();
+    short dateIndex = dateToIndex(startTime);
+    int year = startTime.getYear();
+    unsigned long long bitmask = timespanToDayBitmask(timeSpan);
+    unsigned long long negBitMask = ~bitmask;
 
-//    if(!checkAvialability(timeSpan, date, attendees, bitmask))
-//        return false;
+    if(!checkAvialability(dateIndex, year, attendees, bitmask)) // O(a)
+        return false;
 
     auto sharedEventStruct = new MinimalEvent(event);
-//    for(const string& attendee : attendees){
-//        insert(attendee, date, sharedEventStruct, negBitMask);
-//    }
+    for(const string& attendee : attendees){
+        insert(attendee, dateIndex, year, sharedEventStruct, negBitMask);
+    }
     return true;
 }
 
-// O(log(e)); e = aantal data van die attendee op die date
-void Scheduler::insert(const string& attendee, DateTime date, MinimalEvent* event, long long negativeBitmask) {
-    //InnerMapContainer& inner = outerMap[attendee];
-//    if(!inner.map.contains(date)) // de map en set zijn gesynchroniseerd -> sneller om in map te kijken om set insert te vermijden
-//        inner.set.insert(date); // LOG(N)
-//    MapEndpoint& node = inner.map[date]; // als niet bestaat word node automatich ge-construct
-//    node.bitmap &= negativeBitmask;
-//    node.events.insert(event);
+// TODO O(log(e)); e = aantal data van die attendee op die date
+void Scheduler::insert(const string& attendee, short dateIndex, int year, MinimalEvent* event, unsigned long long negativeBitmask) {
+    MapMidPoint& years = userMap[attendee];
+    if(years.oldestYear == 0) years.oldestYear = year;
+    if(year-years.oldestYear >= years.yearPlans.size()) {
+        years.yearPlans.resize(year-years.oldestYear+1);
+    }
+    auto& map = years.yearPlans[year-years.oldestYear];
+    if (map.contains(dateIndex)){ // O(1)
+        MapEndpoint& node = map.get(dateIndex); // O(1)
+        node.bitmap &= negativeBitmask;
+        node.events.insert(event); // O(log(e))
+    }else{
+        MapEndpoint node;
+        node.bitmap &= negativeBitmask;
+        node.events.insert(event); // O(log(e))
+        map.insert(dateIndex, node); // TODO O(?)
+    }
 }
 
 // O(d); d = duration in aantal halve uren
@@ -70,7 +86,7 @@ list<pair<string, Event>> Scheduler::getSortedAgenda(vector<string> users) {
     return list<pair<string, Event>>();
 }
 
-short Scheduler::dateToShort(DateTime date) {
-    return date.getMonth()*12 + date.getDay();
+short Scheduler::dateToIndex(DateTime date) {
+    return (date.getMonth()- 1)*12 + date.getDay() - 1;
 }
 

@@ -40,19 +40,23 @@ void PointlessMap<T>::insert(short index, T item) {
 
     // edge cases: cell is nieuwe first of last:
     bool edgeCase = false;
-    if(firstIndex - index > 1) { // edge case: index is nieuwe first of lijst is leeg
+    if(index < firstIndex) { // edge case: index is nieuwe first of lijst is leeg
         Cell& prevPointer = indexer[firstIndex-1]; // prev van oude first wijst naar index
         prevPointer.pointsToNext = false;
         prevPointer.index = index;
         Cell& nextPointer = indexer[index+1]; // next van index wijst naar oude first
-        nextPointer.pointsToNext = true;
-        nextPointer.index = firstIndex;
+        if(!nextPointer.occupied){
+            nextPointer.pointsToNext = true;
+            nextPointer.index = firstIndex;
+        }
         cell0.index = index; // cell wordt first
         edgeCase = true;
-    } else if (index - lastIndex > 1){ // edge case: index is nieuwe last
+    } else if (index > lastIndex){ // edge case: index is nieuwe last
         Cell& prevPointer = indexer[index-1]; // prev van index wijst naar oude last
-        prevPointer.pointsToNext = false;
-        prevPointer.index = lastIndex;
+        if(!prevPointer.occupied){
+            prevPointer.pointsToNext = false;
+            prevPointer.index = lastIndex;
+        }
         Cell& nextPointer = indexer[lastIndex+1]; // next van oude last wijst naar index
         nextPointer.pointsToNext = true;
         nextPointer.index = index;
@@ -105,7 +109,7 @@ short PointlessMap<T>::getNext(short index) {
 }
 
 template<typename T>
-T PointlessMap<T>::get(short index) {
+T& PointlessMap<T>::get(short index) {
     return storage[indexer[index].index];
 }
 
@@ -119,6 +123,11 @@ template<typename T>
 short PointlessMap<T>::getLastIndex() {
     Cell& cellEnd = indexer[end];
     return cellEnd.occupied ? end : cellEnd.index;
+}
+
+template<typename T>
+bool PointlessMap<T>::contains(short index) {
+    return indexer[index].occupied;
 }
 
 template class PointlessMap<char>; // char voor testing/debugging

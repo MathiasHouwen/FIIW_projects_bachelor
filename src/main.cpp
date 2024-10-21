@@ -5,6 +5,8 @@
 #include "util/FileInputReader.h"
 #include "agenda_programmas/0_simplistic/SimplisticAgenda.h"
 #include "agenda_programmas/0_simplistic/SimplisticAgendaCLI.h"
+#include "agenda_programmas/1_advanced/AdvancedAgenda.h"
+#include "agenda_programmas/1_advanced/AdvancedAgendaCLI.h"
 
 using namespace std;
 using d = chrono::duration<float, std::milli>;
@@ -23,12 +25,23 @@ int main() {
     // *****************************
     // Simplistic Agenda "Test"-code
     // *****************************
-    SimplisticAgenda simplisticAgenda;
-    SimplisticAgendaCLI simplisticAgendaCli{&simplisticAgenda};
-    simplisticAgenda.loadFromFile("../data/ALDA practicum 1 - events.txt");
-    printTime(start, "simplisticAgenda load bigfile");
-    simplisticAgendaCli.getInput();
-    simplisticAgendaCli.getInput();
+//    SimplisticAgenda simplisticAgenda;
+//    SimplisticAgendaCLI simplisticAgendaCli{&simplisticAgenda};
+//    simplisticAgenda.loadFromFile("../data/ALDA practicum 1 - events.txt");
+//    printTime(start, "simplisticAgenda load bigfile");
+//    simplisticAgendaCli.getInput();
+//    simplisticAgendaCli.getInput();
+
+    // *****************************
+    // Advanced Agenda "Test"-code
+    // *****************************
+    AdvancedAgenda advancedAgenda;
+    AdvancedAgendaCLI advancedAgendaCLI{&advancedAgenda};
+    advancedAgenda.loadFromFile("../data/ALDA practicum 1 - events.txt");
+    cout << "give name: ";
+    string name;
+    cin >> name;
+    advancedAgenda.getEvents(name);
 
 //    Event e1({{30,22,19,10,2024}, 150}, "e1");
 //    Event e2({{0,13,19,10,2024}, 60}, "e2");

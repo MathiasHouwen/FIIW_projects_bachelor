@@ -24,10 +24,8 @@ std::vector<std::string> Event::getAttendees() const {
     return attendees;
 }
 
-void Event::setAttendees(const std::vector<std::string>& addAttendees) {
-    for(const std::string& attendee : addAttendees) {
-        attendees.push_back(attendee);
-    }
+void Event::set_attendees(const std::vector<std::string> &attendees) {
+    this->attendees = attendees;
 }
 
 void Event::addAttendee(const std::string& attendee) {

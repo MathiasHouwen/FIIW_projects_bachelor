@@ -16,10 +16,22 @@
 // add event to hashmap with respective key
 void AdvancedAgenda::insertHash(const std::string& personName, const std::string& eventName, DateTime dateTime, Event event) {
     EventSet *setEventName = m_eventNameHash[eventName];
+    if (!setEventName) {
+        setEventName = new EventSet();
+        m_eventNameHash[eventName] = setEventName;
+    }
     setEventName->insert(event);
     EventSet *setPersonName = m_personNameHash[personName];
+    if (!setPersonName) {
+        setPersonName = new EventSet();
+        m_personNameHash[personName] = setPersonName;
+    }
     setPersonName->insert(event);
     EventSet *setDateTime = m_dateTimeHash[dateTime.toString()];
+    if (!setDateTime) {
+        setDateTime = new EventSet();
+        m_dateTimeHash[dateTime.toString()] = setDateTime;
+    }
     setDateTime->insert(event);
 }
 
@@ -38,43 +50,47 @@ AdvancedAgenda::EventSet *AdvancedAgenda::getEvents(DateTime dateTime) {
 }
 
 // filters attendees on who is free
-void AdvancedAgenda::setAttendees(const Event& event, const std::vector<std::string>& attendees) {
+void AdvancedAgenda::setFilteredAttendees(Event& event, const std::vector<std::string>& attendees) {
     std::vector<std::string> result;
     for(const std::string& attendee : attendees) {
         EventSet* events = getEvents(attendee);
-        TimeSpan time = event.getTimeSpan();
-        if(!checkOverlap(*events, time)) {
+        if(!checkOverlap(*events, event)) {
             result.push_back(attendee);
         }
     }
+    event.set_attendees(result);
 }
 
-// checks for overlaps of TimeSpans => O(n) n = number of events :(
-bool AdvancedAgenda::checkOverlap(const EventSet &events, TimeSpan time) {
-    for (const Event event : events) {
-        TimeSpan eventTime = event.getTimeSpan();
-
-        if(compareTimes(eventTime.getEndTime(), time.getStartTime())){return true;}
-        if(!compareTimes(eventTime.getStartTime(), time.getEndTime())){return true;}
+bool AdvancedAgenda::checkOverlap(const EventSet &events, const Event& event) {
+    auto higher = events.lower_bound(event);
+    if (higher != events.end() && compareTimes(higher->getTimeSpan(), event.getTimeSpan())) {
+        return true;
+    }
+    if (higher != events.begin()) {
+        auto lower = std::prev(higher);
+        if(compareTimes(lower->getTimeSpan(), event.getTimeSpan())) return true;
     }
     return false;
 }
 
 void AdvancedAgenda::loadFromFile(string filePath) {
-    // TODO
+    FileInputReader file(filePath);
+    while(file.hasNext()){
+        FileInputReader::Entry line = file.nextLine();
+        Event event = line.event;
+        insertHash(line.username, event.getDescription(), line.event.getTimeSpan().getStartTime(), line.event);
+    }
 }
 
 
 // returns true if time 1 is before or same as time 2
-bool AdvancedAgenda::compareTimes(const DateTime &date1, const DateTime &date2) {
-    const int times1[] = {date1.getYear(), date1.getMonth(), date1.getDay(), date1.getHour(), date1.getMin()};
-    const int times2[] = {date2.getYear(), date2.getMonth(), date2.getDay(), date2.getHour(), date2.getMin()};
+bool AdvancedAgenda::compareTimes(const TimeSpan &time1, const TimeSpan &time2) {
+    DateTime thisStart = time1.getStartTime();
+    DateTime thisEnd = time1.getEndTime();
+    DateTime otherStart = time2.getStartTime();
+    DateTime otherEnd = time2.getEndTime();
 
-    for (int i = 0; i < 5; i++) {
-        if (times1[i] > times2[i]) {return false;}
-        if (times1[i] < times2[i]) {return true;}
-    }
-    return true;
+    return (thisStart < otherEnd) && (otherStart < thisEnd);
 }
 
 void AdvancedAgenda::updateEvent(const std::string& eventName, const std::string& newName, const DateTime &dateTime, const int duration, std::vector<std::string> &attendees) {

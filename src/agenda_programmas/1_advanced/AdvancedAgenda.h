@@ -23,9 +23,9 @@ public:
 
     void setAttendees(const Event &event, const std::vector<std::string> &attendees);
 
-    static bool checkOverlap(const EventSet &events, TimeSpan time);
+    static bool checkOverlap(const EventSet &events, const Event& event);
 
-    static bool compareTimes(const DateTime &date1, const DateTime &date2);
+    static bool compareTimes(const TimeSpan &time1, const TimeSpan &time2);
 
     void loadFromFile(string filePath) override;
     void updateEvent(const std::string& eventName, const std::string& newName, const DateTime &dateTime, int duration, std::vector<std::string> &attendees);

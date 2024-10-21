@@ -56,7 +56,7 @@ DateTime DateTime::parseDateTime(const std::string &input) {
     }
 }
 
-
+// O(1)
 bool DateTime::operator<(const DateTime &other) const {
     if (this->getYear() != other.getYear())
         return this->getYear() < other.getYear();

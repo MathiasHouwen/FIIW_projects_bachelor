@@ -23,7 +23,7 @@ private:
 public:
     void insert(short index, T item);
     T get(short index);
-    short distanceToNext(short index);
+    short getNext(short index);
     short getFirstIndex();
     short getLastIndex();
 };

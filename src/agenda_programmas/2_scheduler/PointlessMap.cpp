@@ -4,6 +4,7 @@
 
 #include <stdexcept>
 #include "PointlessMap.h"
+#include "SchedulerStructs.h"
 
 
 template<typename T>
@@ -70,9 +71,10 @@ void PointlessMap<T>::insert(short index, T item) {
     short nextIndex;
     for(int i=index; i>=0; i--){ // zoek vorige next pointer
         Cell cellI = indexer[i];
-        if(cellI.index != -1 && cellI.pointsToNext)
+        if(cellI.index != -1 && cellI.pointsToNext){
             nextIndex = cellI.index;
-        break;
+            break;
+        }
     }
     Cell& before = indexer[index-1]; // wordt nextpointer naar next
     Cell& after = indexer[index+1]; // wordt prevpointer naar prev
@@ -83,16 +85,12 @@ void PointlessMap<T>::insert(short index, T item) {
     // flags voor index
     if(!before.occupied){
         before.index = nextBefore.index;
-        if(&before != &prevAfter){
-            prevAfter.index = index;
-        }
+        prevAfter.index = index;
     }
     // flags na index
     if(!after.occupied){
+        nextBefore.index = index;
         after.index = oldPrevAfter.index;
-        if(&after != &nextBefore){
-            nextBefore.index = index;
-        }
     }
     //insert
     cell.index = storage.size();
@@ -101,7 +99,7 @@ void PointlessMap<T>::insert(short index, T item) {
 }
 
 template<typename T>
-short PointlessMap<T>::distanceToNext(short index) {
+short PointlessMap<T>::getNext(short index) {
     Cell after = indexer[index+1];
     return after.occupied ? index+1 : after.index;
 }
@@ -124,3 +122,4 @@ short PointlessMap<T>::getLastIndex() {
 }
 
 template class PointlessMap<char>; // char voor testing/debugging
+template class PointlessMap<MapEndpoint>;

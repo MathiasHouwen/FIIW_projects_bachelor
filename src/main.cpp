@@ -27,6 +27,14 @@ int main() {
     map.insert(1, 'G');
     map.insert(8, 'H');
 
+    short i = map.getFirstIndex();
+    while(i < map.getLastIndex()){
+        cout << i <<endl;
+        i = map.getNext(i);
+    }
+    cout << i <<endl;
+
+
 
 //    FileInputReader io("../data/ALDA practicum 1 - events_small.txt");
 //    while(io.hasNext()){

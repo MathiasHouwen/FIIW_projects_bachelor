@@ -8,22 +8,25 @@
 // map 2 datetime -> event *
 // Event = naam & timespan
 
+// O(logN + OlogM),
+// => O(logN) because there are relative little elements in the set.
 void SimplisticAgenda::insertHash(const std::string& name, DateTime dateTime, Event event) {
-    EventSet *setName = m_nameHash[name];
-    if (!setName) {
+    EventSet *setName = m_nameHash[name]; //O(1)
+    if (!setName) { //O(1)
         setName = new EventSet();
         m_nameHash[name] = setName;
     }
-    setName->insert(event);
+    setName->insert(event); //O(logN)
 
     EventSet *setDateTime = m_dateTimeHash[dateTime.toString()];
     if (!setDateTime) {
         setDateTime = new EventSet();
         m_dateTimeHash[dateTime.toString()] = setDateTime;
     }
-    setDateTime->insert(event);
+    setDateTime->insert(event); //O(logM)
 }
 
+// O(logN)
 bool SimplisticAgenda::insertEvent(const std::string& name, DateTime dateTime, Event event){
     EventSet* setName = m_nameHash[name];
     if (!setName) {
@@ -39,11 +42,12 @@ bool SimplisticAgenda::insertEvent(const std::string& name, DateTime dateTime, E
     insertHash(name, dateTime, event);
     return true;
 }
-
+// average: O(1), worst: O(n) should not happen only if there are only hash collisions
 SimplisticAgenda::EventSet *SimplisticAgenda::getEvents(const string &name) {
     return m_nameHash[name] ;
 }
 
+// average: O(1), worst: O(n) should not happen only if there are only hash collisions
 SimplisticAgenda::EventSet *SimplisticAgenda::getEvents(DateTime dateTime) {
     return m_dateTimeHash[dateTime.toString()];
 }
@@ -57,8 +61,10 @@ void SimplisticAgenda::loadFromFile(string filePath) {
     }
 }
 
+// Because of the lower_bound overall time complexity is O(logN)
+// The rest of the function has O(1).
 bool SimplisticAgenda::checkOverlap(const EventSet &events, Event event) {
-    auto higher = events.lower_bound(event);
+    auto higher = events.lower_bound(event); // O(logN)
     if (higher != events.end() && compareTimes(higher->getTimeSpan(), event.getTimeSpan())) {
         return true;
     }
@@ -69,6 +75,7 @@ bool SimplisticAgenda::checkOverlap(const EventSet &events, Event event) {
     return false;
 }
 
+// O(1)
 bool SimplisticAgenda::compareTimes(const TimeSpan &time1, const TimeSpan &time2) {
     DateTime thisStart = time1.getStartTime();
     DateTime thisEnd = time1.getEndTime();

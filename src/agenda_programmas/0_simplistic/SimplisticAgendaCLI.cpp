@@ -9,7 +9,12 @@
 #include "SimplisticAgenda.h"
 
 void SimplisticAgendaCLI::printUserAganda(std::string name) {
-    EventSet *events = agenda.getEvents(name);
+    EventSet *events = agenda->getEvents(name);
+
+    if (events == nullptr || events->empty()) {
+        cout << "No events found for user: " << name << endl;
+        return;
+    }
 
     for(auto itr : *events){
         cout << itr.toString() << endl;
@@ -17,7 +22,7 @@ void SimplisticAgendaCLI::printUserAganda(std::string name) {
 }
 
 void SimplisticAgendaCLI::printDateTime(DateTime dateTime) {
-    EventSet *events = agenda.getEvents(dateTime);
+    EventSet *events = agenda->getEvents(dateTime);
 
     for(auto itr : *events){
         cout << itr.getAttendees()[0] + " "
@@ -44,4 +49,4 @@ void SimplisticAgendaCLI::getInput() {
     printUserAganda(input);
 }
 
-SimplisticAgendaCLI::SimplisticAgendaCLI(const SimplisticAgenda &agenda) : agenda(agenda) {}
+SimplisticAgendaCLI::SimplisticAgendaCLI(SimplisticAgenda *agenda) : agenda(agenda) {}

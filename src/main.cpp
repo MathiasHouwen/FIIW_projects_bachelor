@@ -20,15 +20,15 @@ int main() {
 //        cout << line.username << ", " << line.event.getDescription() << ", " << line.event.getTimeSpan().getDuration() << endl;
 //    }
 
-
-
-    // ====== Simplisctic aganda ====== //
+    // *****************************
+    // Simplistic Agenda "Test"-code
+    // *****************************
     SimplisticAgenda simplisticAgenda;
-    SimplisticAgendaCLI simplisticAgendaCli{simplisticAgenda};
+    SimplisticAgendaCLI simplisticAgendaCli{&simplisticAgenda};
     simplisticAgenda.loadFromFile("../data/ALDA practicum 1 - events.txt");
     printTime(start, "simplisticAgenda load bigfile");
     simplisticAgendaCli.getInput();
-
+    simplisticAgendaCli.getInput();
 
 //    Event e1({{30,22,19,10,2024}, 150}, "e1");
 //    Event e2({{0,13,19,10,2024}, 60}, "e2");

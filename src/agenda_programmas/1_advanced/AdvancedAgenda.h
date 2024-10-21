@@ -18,6 +18,7 @@ public:
     using EventSet = std::set<Event, Event::eventComparator>;
 
     void insertHash(const std::string& personName, const std::string&eventName, DateTime dateTime, Event event);
+    void eraseHash(Event event, std::string personName);
 
     EventSet* getEvents(const std::string& name);
     EventSet* getEvents(DateTime dateTime);

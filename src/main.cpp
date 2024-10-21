@@ -43,7 +43,11 @@ int main() {
     advancedAgendaCLI.addEvent();
 
     // print all events from person
-//    advancedAgendaCLI.askUser();
+    advancedAgendaCLI.askUser();
+
+    // update an event
+    advancedAgendaCLI.updateEvent();
+    advancedAgendaCLI.askUser();
 
 //    Event e1({{30,22,19,10,2024}, 150}, "e1");
 //    Event e2({{0,13,19,10,2024}, 60}, "e2");

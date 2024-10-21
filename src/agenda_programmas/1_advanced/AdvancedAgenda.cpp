@@ -35,6 +35,12 @@ void AdvancedAgenda::insertHash(const std::string& personName, const std::string
     setDateTime->insert(event);
 }
 
+void AdvancedAgenda::eraseHash(Event event, std::string personName) {
+    m_dateTimeHash[event.getTimeSpan().getStartTime().toString()]->erase(event);
+    m_eventNameHash[event.getDescription()]->erase(event);
+    m_personNameHash[personName]->erase(event);
+}
+
 // get event from hashmap with respective name (person name or event name)
 AdvancedAgenda::EventSet *AdvancedAgenda::getEvents(const string &name) {
     AdvancedAgenda::EventSet *eventSet = m_eventNameHash[name];
@@ -94,15 +100,18 @@ bool AdvancedAgenda::compareTimes(const TimeSpan &time1, const TimeSpan &time2) 
 }
 
 void AdvancedAgenda::updateEvent(const std::string& eventName, const std::string& newName, const DateTime &dateTime, const int duration, std::vector<std::string> &attendees) {
+    string personName;
+    cout << "Enter your name: " << endl;
+    getline(cin, personName);
     if(getEvents(eventName)->empty()) {
         cout << "Event " << eventName << " does not exist" << endl;
         return;
     }
-    std::string description = getEvents(eventName)->begin().operator*().getDescription();
     const TimeSpan timespan = TimeSpan(dateTime, duration);
-    Event newEvent = Event(timespan, description);
-    m_eventNameHash[eventName]->erase(getEvents(eventName)->begin());
-    m_eventNameHash[eventName]->insert(newEvent);
+    Event newEvent = Event(timespan, newName);
+    Event oldEvent = Event(getEvents(eventName)->begin().operator*().getTimeSpan(), getEvents(eventName)->begin().operator*().getDescription());
+    eraseHash(oldEvent, personName);
+    insertHash(personName, newName, dateTime, newEvent);
 }
 
 void AdvancedAgenda::printEvents(const std::string& personName) {

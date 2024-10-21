@@ -6,7 +6,8 @@
 #include "PointlessMap.h"
 
 
-
+template<typename T>
+PointlessMap<T>::Cell::Cell(bool occupied, short index):occupied(occupied), index(index) {}
 template<typename T>
 void PointlessMap<T>::insert(short index, T item) {
     if (index < 0 || index > end) throw std::runtime_error("Index out of range");
@@ -44,16 +45,16 @@ void PointlessMap<T>::insert(short index, T item) {
         prevPointer.index = index;
         Cell& nextPointer = indexer[index+1]; // next van index wijst naar oude first
         nextPointer.pointsToNext = true;
-        nextPointer.index = index;
+        nextPointer.index = firstIndex;
         cell0.index = index; // cell wordt first
         edgeCase = true;
     } else if (index - lastIndex > 1){ // edge case: index is nieuwe last
+        Cell& prevPointer = indexer[index-1]; // prev van index wijst naar oude last
+        prevPointer.pointsToNext = false;
+        prevPointer.index = lastIndex;
         Cell& nextPointer = indexer[lastIndex+1]; // next van oude last wijst naar index
         nextPointer.pointsToNext = true;
         nextPointer.index = index;
-        Cell& prevPointer = indexer[index-1]; // prev van index wijst naar oude last
-        prevPointer.pointsToNext = false;
-        prevPointer.index = index;
         cellEnd.index = index; // cell wordt first
         edgeCase = true;
     }
@@ -69,14 +70,16 @@ void PointlessMap<T>::insert(short index, T item) {
     short nextIndex;
     for(int i=index; i>=0; i--){ // zoek vorige next pointer
         Cell cellI = indexer[i];
-        if(cellI.pointsToNext)
-            nextIndex = indexer[cellI.index];
+        if(cellI.index != -1 && cellI.pointsToNext)
+            nextIndex = cellI.index;
+        break;
     }
     Cell& before = indexer[index-1]; // wordt nextpointer naar next
     Cell& after = indexer[index+1]; // wordt prevpointer naar prev
     Cell& nextBefore = indexer[nextIndex-1]; // wordt prevpointer naar index
-    short prevIndex = nextBefore.pointsToNext ? index-2 : indexer[nextBefore.index];
+    short prevIndex = nextBefore.pointsToNext ? index-1 : nextBefore.index;
     Cell& prevAfter = indexer[prevIndex+1]; // wordt nextpointer naar index
+    Cell oldPrevAfter = prevAfter;
     // flags voor index
     if(!before.occupied){
         before.index = nextBefore.index;
@@ -86,17 +89,15 @@ void PointlessMap<T>::insert(short index, T item) {
     }
     // flags na index
     if(!after.occupied){
-        after.index = prevAfter.index;
+        after.index = oldPrevAfter.index;
         if(&after != &nextBefore){
             nextBefore.index = index;
         }
     }
+    //insert
+    cell.index = storage.size();
+    cell.occupied = true;
+    storage.push_back(item);
 }
 
-template<typename T>
-PointlessMap<T>::PointlessMap() {
-
-}
-
-template<typename T>
-PointlessMap<T>::Cell::Cell(bool occupied, short index):occupied(occupied), index(index) {}
+template class PointlessMap<char>; // char voor testing/debugging

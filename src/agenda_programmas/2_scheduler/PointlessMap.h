@@ -10,19 +10,20 @@
 template <typename T>
 class PointlessMap {
 private:
-    const static short end = 365; // bespaard size-1 berekeningen
+    const static short end = 15; // bespaard size-1 berekeningen
     struct Cell{
-        bool occupied{false};
-        bool pointsToNext{true}; // next of prev
+        bool occupied:1{false};
+        bool pointsToNext:1{true}; // next of prev
         short index{-1};
         Cell(bool occupied, short index);
+        Cell()= default;
     };
-    Cell indexer[end+1];
+    Cell indexer[end+1]{};
     std::vector<T> storage{};
 public:
-    PointlessMap();
     void insert(short index, T item);
 };
+
 
 
 

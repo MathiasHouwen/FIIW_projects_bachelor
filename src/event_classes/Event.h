@@ -22,18 +22,13 @@ class Event {
         };
         Event(const TimeSpan &time_span, std::string description);
         virtual ~Event() = default;
-
         TimeSpan getTimeSpan() const;
         std::string getDescription() const;
-
         std::vector<std::string> getAttendees() const;
-
-        void setAttendees(const std::vector<std::string> &attendees);
+        void set_attendees(const std::vector<std::string> &attendees);
         std::string toString();
-
-    bool eventsOverlap(Event *event1, Event *event2);
-
-    void addAttendee(const string &attendee);
+        bool eventsOverlap(Event *event1, Event *event2);
+        void addAttendee(const string &attendee);
 };
 
 

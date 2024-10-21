@@ -38,7 +38,7 @@ AdvancedAgenda::EventSet *AdvancedAgenda::getEvents(DateTime dateTime) {
 }
 
 // filters attendees on who is free
-void AdvancedAgenda::setAttendees(const Event& event, const std::vector<std::string>& attendees) {
+void AdvancedAgenda::setFilteredAttendees(Event& event, const std::vector<std::string>& attendees) {
     std::vector<std::string> result;
     for(const std::string& attendee : attendees) {
         EventSet* events = getEvents(attendee);
@@ -46,6 +46,7 @@ void AdvancedAgenda::setAttendees(const Event& event, const std::vector<std::str
             result.push_back(attendee);
         }
     }
+    event.set_attendees(result);
 }
 
 bool AdvancedAgenda::checkOverlap(const EventSet &events, const Event& event) {

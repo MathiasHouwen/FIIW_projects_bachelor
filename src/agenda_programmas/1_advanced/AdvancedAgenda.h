@@ -21,7 +21,7 @@ public:
     EventSet* getEvents(const std::string& name);
     EventSet* getEvents(DateTime dateTime);
 
-    void setAttendees(const Event &event, const std::vector<std::string> &attendees);
+    void setFilteredAttendees(Event &event, const std::vector<std::string> &attendees);
 
     static bool checkOverlap(const EventSet &events, const Event& event);
 

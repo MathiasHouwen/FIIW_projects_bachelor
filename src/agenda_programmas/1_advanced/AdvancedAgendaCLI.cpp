@@ -73,6 +73,8 @@ void AdvancedAgendaCLI::updateEvent() const {
     cout << "Enter new attendees (comma-separated): ";
     getline(cin, input);
     attendees = getAttendees(input);
+    Event event = Event(TimeSpan(dt, duration), newName);
+    agenda->linkAttendees(attendees, event);
     agenda->updateEvent(oldName, newName, dt, duration, attendees);
 }
 

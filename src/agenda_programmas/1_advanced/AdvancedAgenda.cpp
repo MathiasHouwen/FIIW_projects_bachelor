@@ -121,3 +121,14 @@ void AdvancedAgenda::printEvents(const std::string& personName) {
         cout << event.toString() << endl;
     }
 }
+
+void AdvancedAgenda::linkAttendees(std::vector<std::string> &attendees, Event event) {
+    for(const std::string& attendee : attendees) {
+        EventSet *setPersonName = m_personNameHash[attendee];
+        if (!setPersonName) {
+            setPersonName = new EventSet();
+            m_personNameHash[attendee] = setPersonName;
+        }
+        setPersonName->insert(event);
+    }
+}

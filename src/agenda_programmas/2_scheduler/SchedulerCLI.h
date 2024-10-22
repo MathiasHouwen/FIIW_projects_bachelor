@@ -6,8 +6,18 @@
 #define ALDA_TEAM3_EBBE_ROBIN_MATHIAS_SCHEDULERCLI_H
 
 
-class SchedulerCLI {
+#include "../../util/CLIInterface.h"
+#include "Scheduler.h"
 
+class SchedulerCLI: CLIInterface {
+private:
+    Scheduler scheduler;
+    bool isDateTimeInput(const std::string &input);
+public:
+    explicit SchedulerCLI(const Scheduler &scheduler);
+    void getInput() override;
+    void plan();
+    void print();
 };
 
 

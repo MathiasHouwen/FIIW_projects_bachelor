@@ -9,9 +9,10 @@
 #include <set>
 #include "../../event_classes/Event.h"
 #include "SimplisticAgenda.h"
+#include "../../util/CLIInterface.h"
 
 
-class SimplisticAgendaCLI {
+class SimplisticAgendaCLI:CLIInterface {
 private:
     SimplisticAgenda *agenda;
     void printUserAganda(std::string);
@@ -22,7 +23,7 @@ public:
     explicit SimplisticAgendaCLI(SimplisticAgenda *agenda);
 
     using EventSet = std::set<Event, Event::eventComparator>;
-    void getInput();
+    void getInput() override;
 
 };
 

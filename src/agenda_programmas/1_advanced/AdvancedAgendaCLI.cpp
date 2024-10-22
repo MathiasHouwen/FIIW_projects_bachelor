@@ -113,3 +113,17 @@ void AdvancedAgendaCLI::printEvents(const std::string& name) const {
 AdvancedAgendaCLI::AdvancedAgendaCLI(AdvancedAgenda *agenda)
         : agenda(agenda) {
 }
+
+void AdvancedAgendaCLI::getInput() {
+    char action;
+    cout << "Actions: 'A':add event, 'U':update event, 'P':print all events of user"<<endl;
+    cout << "Select an option by its letter ";
+    cin >> action;
+    if(action=='A'){
+        addEvent();
+    } else if(action=='U'){
+        updateEvent();
+    } else if(action=='P'){
+        askUser();
+    }
+}

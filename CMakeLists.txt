@@ -31,4 +31,5 @@ add_executable(alda_team3_ebbe_robin_mathias src/main.cpp
         src/agenda_programmas/2_scheduler/PointlessMap.h
         src/agenda_programmas/2_scheduler/SchedulerStructs.h
         src/agenda_programmas/2_scheduler/SchedulerStructs.h
+        src/util/CLIInterface.h
 )

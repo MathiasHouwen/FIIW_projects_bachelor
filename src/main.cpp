@@ -21,13 +21,14 @@ void testSchedular();
 void measureFileRead();
 
 int main() {
-
-
     //TEST
     measureFileRead();
     testSimplistic();
     testAdvanced();
     testSchedular();
+    cout<<endl<<" == START == "<<endl;
+
+
     return 0;
 }
 void printTime(t start, string message){

@@ -66,9 +66,18 @@ int main() {
     if(!schedularTest) cerr << "schedularTest FAIL" << endl;
     else cout << "schedulartest pass" <<endl;
 
+    for(auto e : scheduler.getSortedAgenda({"Ebbe", "Robin"})){
+        cout<<e.toString()<<endl;
+    }
+
+
     start = c::now();
     scheduler.loadFromFile("../data/ALDA practicum 1 - events.txt");
     printTime(start, "scheaduler load bigfile");
+
+    //start = c::now();
+    //scheduler.getSortedAgenda({"Ebbe"})
+    //printTime(start, "scheaduler load bigfile");
 
     start = c::now();
     FileInputReader file("../data/ALDA practicum 1 - events.txt");
@@ -78,7 +87,7 @@ int main() {
         Event e = line.event;
         //letterlijk niks doen
     }
-    printTime(start, "load bigfile do nothing");
+    printTime(start, "iterate bigfile do nothing");
 
     return 0;
 }

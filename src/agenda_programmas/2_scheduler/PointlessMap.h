@@ -10,24 +10,25 @@
 template <typename T>
 class PointlessMap {
 private:
-    const static short end = 355; // end ipv size bespaard size-1 berekeningen
+    const static short end = 364; // end ipv size bespaard size-1 berekeningen
     struct Cell{
         bool occupied:1{false};
         bool pointsToNext:1{true}; // next of prev
         short index{-1};
-        Cell(bool occupied, short index);
         Cell()= default;
     };
     Cell indexer[end+1]{};
     std::vector<T> storage{};
 public:
-    void insert(short index, T item); // TODO O(?)
+    void insert(short index, const T& item); // TODO O(?)
     T& get(short index); // O(1)
     short getNext(short index); // O(1)
     short getFirstIndex(); // O(1)
     short getLastIndex(); // O(1)
     bool contains(short index); // O(1)
+    bool isEmpty();
 };
+
 
 
 #endif //ALDA_TEAM3_EBBE_ROBIN_MATHIAS_POINTLESSMAP_H

@@ -20,6 +20,12 @@ struct MinimalEvent{
             hour(event.getTimeSpan().getStartTime().getHour()),
             halfHour(event.getTimeSpan().getStartTime().getMin()/30)
     {}
+    Event toEvent(const DateTime& date) const{
+        return Event({{
+            halfHour*30, static_cast<int>(hour),
+            date.getDay(), date.getMonth(), date.getYear()},
+                      duration*30}, description);
+    }
 };
 struct MinimalEventPointerComparator {
     bool operator()(const MinimalEvent* a, const MinimalEvent* b) const{
@@ -28,7 +34,7 @@ struct MinimalEventPointerComparator {
         if(atime != btime){
             return atime < btime;
         }
-        return a->description < b->description;
+        return a->description < b->description; // groter of gelijk aan, dus alas gelijk aan wordt ook a gereturnt(=a is laatst toegevoegd)
     };
 };
 struct MapEndpoint{

@@ -7,10 +7,9 @@
 #include "SchedulerStructs.h"
 
 
+
 template<typename T>
-PointlessMap<T>::Cell::Cell(bool occupied, short index):occupied(occupied), index(index) {}
-template<typename T>
-void PointlessMap<T>::insert(short index, T item) {
+void PointlessMap<T>::insert(short index, const T& item) {
     if (index < 0 || index > end) throw std::runtime_error("Index out of range");
 
     Cell& cell = indexer[index];
@@ -74,7 +73,7 @@ void PointlessMap<T>::insert(short index, T item) {
     // avarage case: cell zit tussen 2 neighbours
     short nextIndex;
     for(int i=index; i>=0; i--){ // zoek vorige next pointer
-        Cell cellI = indexer[i];
+        Cell& cellI = indexer[i];
         if(cellI.index != -1 && cellI.pointsToNext){
             nextIndex = cellI.index;
             break;
@@ -104,7 +103,7 @@ void PointlessMap<T>::insert(short index, T item) {
 
 template<typename T>
 short PointlessMap<T>::getNext(short index) {
-    Cell after = indexer[index+1];
+    Cell& after = indexer[index+1];
     return after.occupied ? index+1 : after.index;
 }
 
@@ -115,7 +114,7 @@ T& PointlessMap<T>::get(short index) {
 
 template<typename T>
 short PointlessMap<T>::getFirstIndex() {
-    Cell cell0 = indexer[0];
+    Cell& cell0 = indexer[0];
     return cell0.occupied ? 0 : cell0.index;
 }
 
@@ -128,6 +127,12 @@ short PointlessMap<T>::getLastIndex() {
 template<typename T>
 bool PointlessMap<T>::contains(short index) {
     return indexer[index].occupied;
+}
+
+template<typename T>
+bool PointlessMap<T>::isEmpty() {
+    Cell& cell0 = indexer[0];
+    return cell0.index==-1 && !cell0.occupied;
 }
 
 template class PointlessMap<char>; // char voor testing/debugging

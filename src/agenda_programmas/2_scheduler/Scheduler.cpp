@@ -43,7 +43,9 @@ bool Scheduler::plan(const vector<string>& attendees, const Event& event) {
 // TODO O(log(e)); e = aantal data van die attendee op die date
 void Scheduler::insert(const string& attendee, short dateIndex, int year, MinimalEvent* event, unsigned long long negativeBitmask) {
     MapMidPoint& years = userMap[attendee];
-    if(years.oldestYear == 0) years.oldestYear = year;
+    if(years.oldestYear == 0 || year < years.oldestYear) years.oldestYear = year;
+    if(year < globalOldestYear) globalOldestYear = year;
+    if(year > globalNewestYear) globalNewestYear = year;
     if(year-years.oldestYear >= years.yearPlans.size()) {
         years.yearPlans.resize(year-years.oldestYear+1);
     }
@@ -61,9 +63,9 @@ void Scheduler::insert(const string& attendee, short dateIndex, int year, Minima
 }
 
 // O(d); d = duration in aantal halve uren
-long long Scheduler::timespanToDayBitmask(TimeSpan timeSpan) {
+long long Scheduler::timespanToDayBitmask(const TimeSpan& timeSpan) {
     // in timespan = 1 bits, er buiten = 0 bits
-    DateTime startTime = timeSpan.getStartTime();
+    const DateTime& startTime = timeSpan.getStartTime();
     int startSlot = startTime.getHour() * 2 + (startTime.getMin() / 30);
     int numOfSlots = timeSpan.getDuration() / 30;
     long long bitmap = 0;
@@ -82,11 +84,63 @@ void Scheduler::loadFromFile(string filePath) {
     }
 }
 
-list<pair<string, Event>> Scheduler::getSortedAgenda(vector<string> users) {
-    return list<pair<string, Event>>();
+list<Event> Scheduler::getSortedAgenda(const vector<string>& users) {
+    list<Event> result{};
+    for(int year=globalOldestYear; year <=globalNewestYear; year++){
+        bool noPlansThisYear = true;
+        short lastDate = -1;
+        short currentDate = 9999;
+        bool firstDate = true;
+        bool reachedEnd = false;
+        while (!reachedEnd){
+            set<MinimalEvent*, MinimalEventPointerComparator> events{};
+            bool firstUser = true;
+            for(string user : users){ // O(users)
+                MapMidPoint& years = userMap[user];
+                // year bestaat niet voor die user:
+                if(year < years.oldestYear || year > years.yearPlans.size() - years.oldestYear) continue;
+                // year heeft geen plannen voor die user:
+                auto& map = years.yearPlans[year-years.oldestYear];
+                if(map.isEmpty()) continue; // O(1)
+                noPlansThisYear = false;
+
+                if(firstDate){
+                    short first = map.getFirstIndex();
+                    short last = map.getLastIndex();
+                    if(first < currentDate) currentDate = first;
+                    if(last > lastDate) lastDate = last;
+                } else {
+                    short nextUserDate = map.getNext(currentDate);
+                    if(firstUser) currentDate = nextUserDate;
+                    else if(currentDate!=lastDate && nextUserDate < currentDate) currentDate = nextUserDate;
+                }
+                firstUser = false;
+                if(!map.contains(currentDate)) continue;
+                auto& dayPlan = map.get(currentDate).events;
+
+                for(MinimalEvent* event : dayPlan){
+                    events.insert(event);
+                }
+            }
+            firstDate = false;
+            reachedEnd = currentDate >= lastDate;
+            if(noPlansThisYear) break;
+            for(MinimalEvent* minimalEvent : events){
+                result.push_back(minimalEvent->toEvent(indexToDate(currentDate, year)));
+            }
+        }
+    }
+    return result;
 }
 
-short Scheduler::dateToIndex(DateTime date) {
+short Scheduler::dateToIndex(const DateTime& date) {
     return (date.getMonth()- 1)*12 + date.getDay() - 1;
+}
+
+DateTime Scheduler::indexToDate(short dateIndex, int year) {
+    int monthIndex = (dateIndex-29) / 12 + 1;
+    if(monthIndex>11) monthIndex = 11;
+    int dayIndex = dateIndex - 12 * monthIndex;
+    return {-1,dayIndex+1,monthIndex+1,year};
 }
 

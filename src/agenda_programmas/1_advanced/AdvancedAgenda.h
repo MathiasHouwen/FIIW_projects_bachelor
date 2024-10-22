@@ -36,6 +36,8 @@ public:
 
     void linkAttendees(std::vector<std::string> &attendees, Event event);
 
+    void removeAttendees(std::vector<std::string> &attendees, Event event);
+
 private:
     std::unordered_map<std::string, EventSet*> m_eventNameHash;
     std::unordered_map<std::string, EventSet*> m_dateTimeHash;

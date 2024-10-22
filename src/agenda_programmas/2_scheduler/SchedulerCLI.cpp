@@ -52,9 +52,9 @@ void SchedulerCLI::plan() {
     std::string attendeeInput;
 
     while (true) {
-        std::cout << "Enter an attendee (enter empty line to stop adding attendees): ";
+        std::cout << "Enter an attendee (enter '-' to stop adding attendees): ";
         std::getline(std::cin, attendeeInput);
-        if (attendeeInput.empty()) {
+        if (attendeeInput == "-") {
             break;
         }
         attendees.push_back(attendeeInput);
@@ -71,9 +71,9 @@ void SchedulerCLI::print() {
     std::string userInput;
 
     while (true) {
-        std::cout << "Enter a user (enter empty line to stop adding users): ";
+        std::cout << "Enter a user (enter '-' to stop adding users): ";
         std::getline(std::cin, userInput);
-        if (userInput.empty()) {
+        if (userInput == "-") {
             break;
         }
         users.push_back(userInput);

@@ -7,6 +7,7 @@
 #include "agenda_programmas/0_simplistic/SimplisticAgendaCLI.h"
 #include "agenda_programmas/1_advanced/AdvancedAgenda.h"
 #include "agenda_programmas/1_advanced/AdvancedAgendaCLI.h"
+#include "agenda_programmas/2_scheduler/PointlessMap.h"
 
 using namespace std;
 using d = chrono::duration<float, std::milli>;
@@ -16,6 +17,7 @@ using c = chrono::high_resolution_clock;
 void printTime(t start, string message);
 int main() {
     t start;
+
 //    FileInputReader io("../data/ALDA practicum 1 - events_small.txt");
 //    while(io.hasNext()){
 //        FileInputReader::Entry line = io.nextLine();
@@ -35,47 +37,48 @@ int main() {
     // *****************************
     // Advanced Agenda "Test"-code
     // *****************************
-    AdvancedAgenda advancedAgenda;
-    AdvancedAgendaCLI advancedAgendaCLI{&advancedAgenda};
-    advancedAgenda.loadFromFile("../data/ALDA practicum 1 - events.txt");
-
-    // add event
-    advancedAgendaCLI.addEvent();
-
-    // print all events from person
-    advancedAgendaCLI.askUser();
-
-    // update an event
-    advancedAgendaCLI.updateEvent();
-    advancedAgendaCLI.askUser();
-
-//    Event e1({{30,22,19,10,2024}, 150}, "e1");
-//    Event e2({{0,13,19,10,2024}, 60}, "e2");
-//    Event e3({{30,13,19,10,2024}, 60}, "overlap met e2");
-//    Event e4({{30,13,20,10,2024}, 60}, "zelfde uur als overlap met e2, maar andere dag");
+//    AdvancedAgenda advancedAgenda;
+//    AdvancedAgendaCLI advancedAgendaCLI{&advancedAgenda};
+//    advancedAgenda.loadFromFile("../data/ALDA practicum 1 - events.txt");
 //
-//    Scheduler scheduler;
-//    const bool schedularTest =
-//            scheduler.plan({"Ebbe", "Robin", "Mathias"}, e1)
-//            and scheduler.plan({"Ebbe", "Mathias"},e2)
-//            and not scheduler.plan({"Ebbe", "Robin"},e3)
-//            and scheduler.plan({"Ebbe", "Robin"},e4)
-//            and scheduler.plan({"Robin"},e3);
-//    if(!schedularTest) cerr << "schedularTest FAIL" << endl;
+//    // add event
+//    advancedAgendaCLI.addEvent();
 //
-//    start = c::now();
-//    scheduler.loadFromFile("../data/ALDA practicum 1 - events.txt");
-//    printTime(start, "scheaduler load bigfile");
+//    // print all events from person
+//    advancedAgendaCLI.askUser();
 //
-//    start = c::now();
-//    FileInputReader file("../data/ALDA practicum 1 - events.txt");
-//    while(file.hasNext()){
-//        FileInputReader::Entry line = file.nextLine();
-//        string name = line.username;
-//        Event e = line.event;
-//        //letterlijk niks doen
-//    }
-//    printTime(start, "load bigfile do nothing");
+//    // update an event
+//    advancedAgendaCLI.updateEvent();
+//    advancedAgendaCLI.askUser();
+
+    Event e1({{30,22,19,10,2024}, 150}, "e1");
+    Event e2({{0,13,19,10,2024}, 60}, "e2");
+    Event e3({{30,13,19,10,2024}, 60}, "overlap met e2");
+    Event e4({{30,13,20,10,2024}, 60}, "zelfde uur als overlap met e2, maar andere dag");
+
+    Scheduler scheduler;
+    const bool schedularTest =
+            scheduler.plan({"Ebbe", "Robin", "Mathias"}, e1)
+            and scheduler.plan({"Ebbe", "Mathias"},e2)
+            and not scheduler.plan({"Ebbe", "Robin"},e3)
+            and scheduler.plan({"Ebbe", "Robin"},e4)
+            and scheduler.plan({"Robin"},e3);
+    if(!schedularTest) cerr << "schedularTest FAIL" << endl;
+    else cout << "schedulartest pass" <<endl;
+
+    start = c::now();
+    scheduler.loadFromFile("../data/ALDA practicum 1 - events.txt");
+    printTime(start, "scheaduler load bigfile");
+
+    start = c::now();
+    FileInputReader file("../data/ALDA practicum 1 - events.txt");
+    while(file.hasNext()){
+        FileInputReader::Entry line = file.nextLine();
+        string name = line.username;
+        Event e = line.event;
+        //letterlijk niks doen
+    }
+    printTime(start, "load bigfile do nothing");
 
     return 0;
 }

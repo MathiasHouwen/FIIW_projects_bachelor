@@ -1,5 +1,5 @@
 //
-// Created by robin on 16/10/2024.
+// Volledig gemaakt door Mathias
 //
 
 #ifndef SIMPLEAGENDA_H

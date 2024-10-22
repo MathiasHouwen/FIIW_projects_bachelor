@@ -1,6 +1,7 @@
 //
-// Created by robin on 16/10/2024.
+// Volledig gemaakt door Ebbe
 //
+
 
 #include "Scheduler.h"
 #include "../../util/FileInputReader.h"
@@ -21,7 +22,7 @@ bool Scheduler::checkAvialability(short dateIndex, int year, const vector<string
     return bitmap == bitmask;
 }
 
-// TODO (a*(1+log(e))); a = aantal gekozen attendees, e = aantal data per attendee op de gekozen dag
+// (a*(1+log(e))); a = aantal gekozen attendees, e = aantal data per attendee op de gekozen dag
 bool Scheduler::plan(const vector<string>& attendees, const Event& event) {
     TimeSpan timeSpan = event.getTimeSpan();
     DateTime startTime = timeSpan.getStartTime();
@@ -35,12 +36,13 @@ bool Scheduler::plan(const vector<string>& attendees, const Event& event) {
 
     auto sharedEventStruct = new MinimalEvent(event);
     for(const string& attendee : attendees){
-        insert(attendee, dateIndex, year, sharedEventStruct, negBitMask);
+        insert(attendee, dateIndex, year, sharedEventStruct, negBitMask); //log(e)
     }
     return true;
 }
 
-// TODO O(log(e)); e = aantal data van die attendee op die date
+// O(log(e)); e = aantal data van die attendee op die date
+// pointlessmap insert is verwaarloosbaar
 void Scheduler::insert(const string& attendee, short dateIndex, int year, MinimalEvent* event, unsigned long long negativeBitmask) {
     MapMidPoint& years = userMap[attendee];
     if(years.oldestYear == 0 || year < years.oldestYear) years.oldestYear = year;
@@ -58,7 +60,7 @@ void Scheduler::insert(const string& attendee, short dateIndex, int year, Minima
         MapEndpoint node;
         node.bitmap &= negativeBitmask;
         node.events.insert(event); // O(log(e))
-        map.insert(dateIndex, node); // TODO O(?)
+        map.insert(dateIndex, node); // bijna O(1)
     }
 }
 
@@ -84,6 +86,7 @@ void Scheduler::loadFromFile(string filePath) {
     }
 }
 
+// O(out*log(e)) out = aantal outputs (=O(1) navigatie), e = gemiddeld aantal events per user per dag
 list<Event> Scheduler::getSortedAgenda(const vector<string>& users) {
     list<Event> result{};
     for(int year=globalOldestYear; year <=globalNewestYear; year++){

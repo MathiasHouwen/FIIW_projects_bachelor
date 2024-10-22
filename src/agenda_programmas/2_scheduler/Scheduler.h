@@ -1,5 +1,5 @@
 //
-// Created by robin on 16/10/2024.
+// Volledig gemaakt door Ebbe
 //
 
 #ifndef SCHEDULAR_H

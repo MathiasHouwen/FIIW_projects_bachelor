@@ -1,5 +1,5 @@
 //
-// Created by ebbew on 21-10-2024.
+// Volledig gemaakt door Ebbe
 //
 
 #include <stdexcept>

@@ -1,7 +1,6 @@
 //
-// Created by robin on 17/10/2024.
+// Volledig gemaakt door Robin
 //
-
 #include "AdvancedAgendaCLI.h"
 
 #include <iostream>

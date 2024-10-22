@@ -1,5 +1,10 @@
 # ALDA practicum 1
 
+## Werkverdeling:
+ - Mathias : simplistic
+ - Robin : advanced
+ - Ebbe : scheduler
+
 ## gedeelde classes
 - DateTime: d, m, y, hr, min
 - TimeSpan: DateTime, duration

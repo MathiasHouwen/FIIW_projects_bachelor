@@ -1,6 +1,7 @@
 //
-// Created by ebbew on 21-10-2024.
+// Volledig gemaakt door Ebbe
 //
+
 
 #ifndef ALDA_TEAM3_EBBE_ROBIN_MATHIAS_SCHEDULERSTRUCTS_H
 #define ALDA_TEAM3_EBBE_ROBIN_MATHIAS_SCHEDULERSTRUCTS_H

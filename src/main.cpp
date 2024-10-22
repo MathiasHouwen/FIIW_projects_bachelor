@@ -7,6 +7,7 @@
 #include "agenda_programmas/0_simplistic/SimplisticAgendaCLI.h"
 #include "agenda_programmas/1_advanced/AdvancedAgenda.h"
 #include "agenda_programmas/1_advanced/AdvancedAgendaCLI.h"
+#include "agenda_programmas/2_scheduler/SchedulerCLI.h"
 
 using namespace std;
 // voor timing testing (niet zo handig als O notatie maar toch wel interessant)
@@ -27,8 +28,32 @@ int main() {
     testAdvanced();
     testSchedular();
     cout<<endl<<" == START == "<<endl;
+    SimplisticAgenda simplisticAgenda{};
+    AdvancedAgenda advancedAgenda{};
+    Scheduler scheduler{};
+    simplisticAgenda.loadFromFile("../data/ALDA practicum 1 - events_small.txt");
+    advancedAgenda.loadFromFile("../data/ALDA practicum 1 - events_small.txt");
+    scheduler.loadFromFile("../data/ALDA practicum 1 - events_small.txt");
 
-
+    char program;
+    cout<<"Enter program: 'S'=simple agenda, 'A'=advanced agenda, 'C'=scheduler";
+    cin >> program;
+    if(program=='S'){
+        SimplisticAgendaCLI cli{&simplisticAgenda};
+        while (true){
+            cli.getInput();
+        }
+    } else if(program=='A'){
+        AdvancedAgendaCLI cli{&advancedAgenda};
+        while (true){
+            cli.getInput();
+        }
+    } else if(program=='C'){
+        SchedulerCLI cli{&scheduler};
+        while (true){
+            cli.getInput();
+        }
+    }
     return 0;
 }
 void printTime(t start, string message){

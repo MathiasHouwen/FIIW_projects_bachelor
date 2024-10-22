@@ -11,10 +11,10 @@
 
 class SchedulerCLI: CLIInterface {
 private:
-    Scheduler scheduler;
+    Scheduler* scheduler;
     bool isDateTimeInput(const std::string &input);
 public:
-    explicit SchedulerCLI(const Scheduler &scheduler);
+    explicit SchedulerCLI(Scheduler* scheduler);
     void getInput() override;
     void plan();
     void print();

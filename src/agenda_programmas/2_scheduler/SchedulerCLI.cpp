@@ -22,7 +22,7 @@ void SchedulerCLI::getInput() {
     }
 }
 
-SchedulerCLI::SchedulerCLI(const Scheduler &scheduler) : scheduler(scheduler) {}
+SchedulerCLI::SchedulerCLI(Scheduler* scheduler) : scheduler(scheduler) {}
 
 void SchedulerCLI::plan() {
     std::string description;
@@ -62,7 +62,7 @@ void SchedulerCLI::plan() {
     for(const string& att : attendees){
         cout<<" - "<<att<<endl;
     }
-    scheduler.plan(attendees,event);
+    scheduler->plan(attendees,event);
 }
 
 void SchedulerCLI::print() {
@@ -81,7 +81,7 @@ void SchedulerCLI::print() {
     for(const string& att : users){
         cout<<" - "<<att<<endl;
     }
-    list<Event> events = scheduler.getSortedAgenda(users);
+    list<Event> events = scheduler->getSortedAgenda(users);
     for(Event e : events){
         cout<<" - "<<e.toString()<<endl;
     }

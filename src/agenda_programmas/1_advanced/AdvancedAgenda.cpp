@@ -110,6 +110,8 @@ void AdvancedAgenda::updateEvent(const std::string& eventName, const std::string
     const TimeSpan timespan = TimeSpan(dateTime, duration);
     Event newEvent = Event(timespan, newName);
     Event oldEvent = Event(getEvents(eventName)->begin().operator*().getTimeSpan(), getEvents(eventName)->begin().operator*().getDescription());
+    std::vector<std::string> oldattendees = oldEvent.getAttendees();
+    removeAttendees(oldattendees, oldEvent);
     eraseHash(oldEvent, personName);
     insertHash(personName, newName, dateTime, newEvent);
 }
@@ -130,5 +132,11 @@ void AdvancedAgenda::linkAttendees(std::vector<std::string> &attendees, Event ev
             m_personNameHash[attendee] = setPersonName;
         }
         setPersonName->insert(event);
+    }
+}
+
+void AdvancedAgenda::removeAttendees(std::vector<std::string> &attendees, Event event) {
+    for(const std::string& attendee : attendees) {
+        m_personNameHash[attendee]->erase(event);
     }
 }

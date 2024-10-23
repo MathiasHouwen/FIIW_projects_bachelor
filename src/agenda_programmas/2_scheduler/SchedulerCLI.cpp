@@ -16,6 +16,7 @@ void SchedulerCLI::getInput() {
     cout << "Actions: 'P':plan event, 'S':print all sorted events"<<endl;
     cout << "Select an option by its letter ";
     cin >> action;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
     if(action=='P'){
         plan();
     } else if(action=='S'){

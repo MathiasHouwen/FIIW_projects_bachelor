@@ -62,8 +62,8 @@ void AdvancedAgendaCLI::updateEvent() const {
     while (!isDateTimeInput(input)) {
         cout << "Enter new date and time: ";
         getline(cin, input);
-        dt = DateTime::parseDateTime(input);
     }
+    dt = DateTime::parseDateTime(input);
 
     cout << "Enter new duration: ";
     cin >> duration;
@@ -118,6 +118,7 @@ void AdvancedAgendaCLI::getInput() {
     cout << "Actions: 'A':add event, 'U':update event, 'P':print all events of user"<<endl;
     cout << "Select an option by its letter ";
     cin >> action;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
     if(action=='A'){
         addEvent();
     } else if(action=='U'){

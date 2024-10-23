@@ -38,6 +38,7 @@ int main() {
     char program;
     cout<<"Enter program: 'S'=simple agenda, 'A'=advanced agenda, 'C'=scheduler";
     cin >> program;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
     if(program=='S'){
         SimplisticAgendaCLI cli{&simplisticAgenda};
         while (true){

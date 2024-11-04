@@ -8,6 +8,10 @@
 
 #include <utility>
 
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // FOR FULL DISCUSSION OF ALGORITHMS AND DATASTRUCTURES -> CHECK docs -> Discussion.md
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 // O(a); a = aatnal gekozen attendees
 bool Scheduler::checkAvialability(short dateIndex, int year, const vector<string>& attendees, unsigned long long bitmask) {
     unsigned long long bitmap = bitmask;

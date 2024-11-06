@@ -33,23 +33,30 @@ SchedulerCLI::SchedulerCLI(Scheduler* scheduler) : scheduler(scheduler) {}
 void SchedulerCLI::plan() {
     std::string description;
     string input;
-    DateTime dt = DateTime(0, 0, 0, 0, 0);
+    DateTime dtStart = DateTime(0, 0, 0, 0, 0);
+    DateTime dtEnd = DateTime(0, 0, 0, 0, 0);
     int duration;
 
     cout << "Enter description of new Event: ";
     getline(cin, description);
 
     while (!isDateTimeInput(input)) {
-        cout << "Enter date and time: ";
+        cout << "Enter start date and time to plan: ";
         getline(cin, input);
     }
-    dt = DateTime::parseDateTime(input);
+    dtStart = DateTime::parseDateTime(input);
 
-    cout << "Enter duration in minutes: ";
+    while (!isDateTimeInput(input)) {
+        cout << "Enter end time to plan (use same date): ";
+        getline(cin, input);
+    }
+    dtEnd = DateTime::parseDateTime(input);
+
+    cout << "Enter event duration in minutes: ";
     cin >> duration;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-    TimeSpan timeSpan = TimeSpan(dt, duration);
+    TimeSpan timeSpan = TimeSpan(dtStart, duration);
     Event event = Event(timeSpan, description);
     cout << endl << event.toString() << endl;
 
@@ -68,7 +75,7 @@ void SchedulerCLI::plan() {
     for(const string& att : attendees){
         cout<<" - "<<att<<endl;
     }
-    scheduler->plan(attendees,event);
+    scheduler->plan(attendees,event, dtEnd, {dtStart});
 }
 
 void SchedulerCLI::print() {

@@ -17,7 +17,7 @@ unsigned long long Scheduler::combineBitMaps(short dateIndex, int year, const ve
     unsigned long long bitmap = bitmask;
     for(const string& attendee: attendees){ // O(a)
         MapMidPoint& years = userMap[attendee];
-        if(year-years.oldestYear >= years.yearPlans.size()) return true; // niks gepland dat jaar
+        if(year-years.oldestYear >= years.yearPlans.size()) return -1; // niks gepland dat jaar. -1 = volledig free
         auto& map = years.yearPlans[year-years.oldestYear];
         if(!map.contains(dateIndex)) return -1; // niks gepland die dag O(1). -1 = volledig free
         MapEndpoint node = map.get(dateIndex); // O(1)

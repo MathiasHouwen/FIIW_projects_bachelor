@@ -104,19 +104,24 @@ void testSchedular(){
     Event e2({{0,13,19,10,2024}, 60}, "e2");
     Event e3({{30,13,19,10,2024}, 60}, "overlap met e2");
     Event e4({{30,13,20,10,2024}, 60}, "zelfde uur als overlap met e2, maar andere dag");
+    Event e5({{30,20,19,10,2024}, 150}, "overlap met e1 zonder plaats om later te plannen");
+
     Scheduler scheduler;
     const bool ba = scheduler.planSingleDayNoEndTime({"Ebbe", "Robin", "Mathias"}, e1);
     const bool bb = scheduler.planSingleDayNoEndTime({"Ebbe", "Mathias"},e2);
+    // bc heeft overlap, maar moet wel gepland kunnen worden omdat er tot 24:00 nog plaats over is
     const bool bc = scheduler.planSingleDayNoEndTime({"Ebbe", "Robin"},e3);
     const bool bd = scheduler.planSingleDayNoEndTime({"Ebbe", "Robin"},e4);
     const bool be = scheduler.planSingleDayNoEndTime({"Robin"},e3);
+    // bf moet false zijn. Er zou geen plaats mogen zijn om te plannen
+    const bool bf = scheduler.planSingleDayNoEndTime({"Ebbe", "Robin"},e5);
 
-    const bool schedularTest = ba && bb && !bc && bd && be;
+    const bool schedularTest = ba && bb && bc && bd && be && !bf;
 
 
 
     if(!schedularTest) cerr << "schedular simple test FAIL" << endl;
-    else cout << "schedulartest simple test pass" <<endl;
+    else cout << "schedulartest simple test PASS" <<endl;
     start = c::now();
     scheduler.loadFromFile("../data/ALDA practicum 1 - events.txt");
     printTime(start, "scheaduler load bigfile");

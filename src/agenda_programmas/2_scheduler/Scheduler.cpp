@@ -13,7 +13,7 @@
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 // O(a); a = aatnal gekozen attendees
-bool Scheduler::checkAvialability(short dateIndex, int year, const vector<string>& attendees, unsigned long long bitmask) {
+bool Scheduler::combineBitMaps(short dateIndex, int year, const vector<string>& attendees, unsigned long long bitmask) {
     unsigned long long bitmap = bitmask;
     for(const string& attendee: attendees){ // O(a)
         MapMidPoint& years = userMap[attendee];
@@ -23,26 +23,43 @@ bool Scheduler::checkAvialability(short dateIndex, int year, const vector<string
         MapEndpoint node = map.get(dateIndex); // O(1)
         bitmap &= node.bitmap; // logische AND verwijderd meteen de niet-overeenkomende slot bits
     }
-    return bitmap == bitmask;
+    return bitmap;
+}
+
+// accepteerd een bitmap die al op voorhand ge-and is met time period bitmask.
+// bitmap = dus al een everyone-is-free period. Moet gewoon kijken of duration daarin past
+char Scheduler::searchFreeSlot(unsigned long long int bitmap, char duration, char startSlot, char endSlot) {
+    unsigned long long int mask = (1ULL << duration) - 1; // (macht van 2)-(1) = alle bits onder die macht van 2 op true
+    mask <<= startSlot;
+    for(char i = startSlot; i <= endSlot - duration; i++){
+        if((bitmap & mask) == mask) return i;
+        mask <<= 1;
+    }
+    return -1;
 }
 
 // (a*(1+log(e))); a = aantal gekozen attendees, e = aantal data per attendee op de gekozen dag
-bool Scheduler::plan(const vector<string>& attendees, const Event& event) {
+bool Scheduler::plan(const vector<string>& attendees, const Event& event, const DateTime& endTime, const vector<DateTime>& dates) {
     TimeSpan timeSpan = event.getTimeSpan();
     DateTime startTime = timeSpan.getStartTime();
-    short dateIndex = dateToIndex(startTime);
-    int year = startTime.getYear();
-    unsigned long long bitmask = timespanToDayBitmask(timeSpan);
-    unsigned long long negBitMask = ~bitmask;
+    unsigned long long planPeriodBitmask = timeAreaToDayBitmask(startTime, endTime);
+    unsigned long long negEventBitMask = ~timeAreaToDayBitmask(startTime, timeSpan.getEndTime());
+    char startSlot = startTime.getHour() * 2 + (startTime.getMin() / 30);
+    char endSlot = endTime.getHour() * 2 + (endTime.getMin() / 30) - 1;
 
-    if(!checkAvialability(dateIndex, year, attendees, bitmask)) // O(a)
-        return false;
-
-    auto sharedEventStruct = new MinimalEvent(event);
-    for(const string& attendee : attendees){
-        insert(attendee, dateIndex, year, sharedEventStruct, negBitMask); //log(e)
+    for(DateTime date : dates){
+        short dateIndex = dateToIndex(date);
+        int year = date.getYear();
+        unsigned long long bitmap = combineBitMaps(dateIndex, year, attendees, planPeriodBitmask); // O(A)
+        char slot = searchFreeSlot(bitmap, timeSpan.getDuration(), startSlot, endSlot);
+        if(slot == 0) continue;
+        auto sharedEventStruct = new MinimalEvent(event);
+        for(const string& attendee : attendees){
+            insert(attendee, dateIndex, year, sharedEventStruct, negEventBitMask); //log(e)
+        }
+        return true;
     }
-    return true;
+    return false;
 }
 
 // O(log(e)); e = aantal data van die attendee op die date
@@ -69,15 +86,14 @@ void Scheduler::insert(const string& attendee, short dateIndex, int year, Minima
 }
 
 // O(d); d = duration in aantal halve uren
-long long Scheduler::timespanToDayBitmask(const TimeSpan& timeSpan) {
+long long Scheduler::timeAreaToDayBitmask(const DateTime& startTime, const DateTime& endTime) {
     // in timespan = 1 bits, er buiten = 0 bits
-    const DateTime& startTime = timeSpan.getStartTime();
     int startSlot = startTime.getHour() * 2 + (startTime.getMin() / 30);
-    int numOfSlots = timeSpan.getDuration() / 30;
+    int endSlot = endTime.getHour() * 2 + (endTime.getMin() / 30) - 1;
     long long bitmap = 0;
-    for (int i = 0; i < numOfSlots; ++i) {
+    for (int i = startSlot; i <= endSlot; ++i) {
         // logische OR voegt de bits toe
-        bitmap |= (1LL << (startSlot + i)); //1LL = 1 als long integer (dan werkt de shift altijd op 64bit niveau)
+        bitmap |= (1LL << i); //1LL = 1 als long integer (dan werkt de shift altijd op 64bit niveau)
     }
     return bitmap;
 }
@@ -150,4 +166,6 @@ DateTime Scheduler::indexToDate(short dateIndex, int year) {
     int dayIndex = dateIndex - 12 * monthIndex;
     return {-1,dayIndex+1,monthIndex+1,year};
 }
+
+
 

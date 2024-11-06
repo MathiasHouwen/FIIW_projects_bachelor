@@ -123,7 +123,8 @@
     - Geneste map user[date] zodat je meteen alle dates van een user hebt. Bij elke structuur moeten dates gefiltert worden op basis van peroson
  - Dag planning heeft een gesorteerde linkedlist van events en avialability cache
  - Avialability cache is bitmap op half-uur-resolutie
- - Date map kan de linked list hybride hashmap gebruiken voor de gesorteerde print functie
+ - Date maps gebruiken mijn custom PointlessMap datastructuur met "DayOfYear"-getallen als index ( = linkedlist met random acces, ofwel array met linked navigatie)
+   - (X niet meer. Vervangen door hierboven): Date map kan de linked list hybride hashmap gebruiken voor de gesorteerde print functie
  - Events per dag
 ### algoritmes
  - Functie 1: is enkel map keys of indices invullen om de bitmaps te verkrijgen. O(1)

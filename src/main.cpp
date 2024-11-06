@@ -26,9 +26,9 @@ int main() {
     // FOR FULL DISCUSSION OF ALGORITHMS AND DATASTRUCTURES -> CHECK docs -> Discussion.md
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     //TEST
-    measureFileRead();
-    //testSimplistic();
-    //testAdvanced();
+//    measureFileRead();
+//    testSimplistic();
+//    testAdvanced();
     testSchedular();
     cout<<endl<<" == START == "<<endl;
     SimplisticAgenda simplisticAgenda{};
@@ -118,7 +118,7 @@ void testSchedular(){
 
     const bool schedularTest = ba && bb && bc && bd && be && !bf;
 
-
+    list<Event> events = scheduler.getSortedAgenda({"Ebbe"});
 
     if(!schedularTest) cerr << "schedular simple test FAIL" << endl;
     else cout << "schedulartest simple test PASS" <<endl;
@@ -126,7 +126,8 @@ void testSchedular(){
     scheduler.loadFromFile("../data/ALDA practicum 1 - events.txt");
     printTime(start, "scheaduler load bigfile");
     start = c::now();
-    scheduler.getSortedAgenda({"John Doe", "Jane Smith"});
+    //scheduler.getSortedAgenda({"John Doe", "Jane Smith"});
+    scheduler.getSortedAgenda({"John Doe"});
     printTime(start, "scheaduler getsort 2 mensen");
 }
 void measureFileRead(){

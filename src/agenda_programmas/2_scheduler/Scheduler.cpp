@@ -7,6 +7,7 @@
 #include "../../util/FileInputReader.h"
 
 #include <utility>
+#include <iostream>
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     // FOR FULL DISCUSSION OF ALGORITHMS AND DATASTRUCTURES -> CHECK docs -> Discussion.md
@@ -117,16 +118,18 @@ void Scheduler::loadFromFile(string filePath) {
 // O(out*log(e)) out = aantal outputs (=O(1) navigatie), e = gemiddeld aantal events per user per dag
 list<Event> Scheduler::getSortedAgenda(const vector<string>& users) {
     list<Event> result{};
+    short nextDatesPerUser[users.size()];
+    std::fill(nextDatesPerUser, nextDatesPerUser+users.size(), -1);
     for(int year=globalOldestYear; year <=globalNewestYear; year++){
         bool noPlansThisYear = true;
         short lastDate = -1;
         short currentDate = 9999;
-        bool firstDate = true;
         bool reachedEnd = false;
         while (!reachedEnd){
-            set<MinimalEvent*, MinimalEventPointerComparator> events{};
             bool firstUser = true;
-            for(string user : users){ // O(users)
+            set<MinimalEvent*, MinimalEventPointerComparator> events{};
+            int userInt = 0;
+            for(const string& user : users){ // O(users)
                 MapMidPoint& years = userMap[user];
                 // year bestaat niet voor die user:
                 if(year < years.oldestYear || year > years.yearPlans.size() - years.oldestYear) continue;
@@ -135,13 +138,28 @@ list<Event> Scheduler::getSortedAgenda(const vector<string>& users) {
                 if(map.isEmpty()) continue; // O(1)
                 noPlansThisYear = false;
 
-                if(firstDate){
+                short chachedNextUserDate = nextDatesPerUser[userInt];
+                // if uninitialised
+                if(chachedNextUserDate == -1){
                     short first = map.getFirstIndex();
                     short last = map.getLastIndex();
-                    if(first < currentDate) currentDate = first;
+
+                    nextDatesPerUser[userInt] = first;
+
+                    if(first < currentDate) currentDate = first; // vanaf hier is current date niet meer 9999
                     if(last > lastDate) lastDate = last;
-                } else {
-                    short nextUserDate = map.getNext(currentDate);
+
+                } else{
+                    // current date is hier initieel altijd de date van vorige iteratie
+                    short nextUserDate;
+                    // if now, refresh it
+                    // currentDate is nu nog de vorige date (dat was dus de oude, gebruikte waarde in de chache)
+                    if(chachedNextUserDate == currentDate){
+                        nextUserDate = map.getNext(chachedNextUserDate);
+                        nextDatesPerUser[userInt] = nextUserDate;
+                    } else {    // if later, use it and keep it chahced
+                        nextUserDate = chachedNextUserDate;
+                    }
                     if(firstUser) currentDate = nextUserDate;
                     else if(currentDate!=lastDate && nextUserDate < currentDate) currentDate = nextUserDate;
                 }
@@ -152,8 +170,8 @@ list<Event> Scheduler::getSortedAgenda(const vector<string>& users) {
                 for(MinimalEvent* event : dayPlan){
                     events.insert(event);
                 }
+                userInt++;
             }
-            firstDate = false;
             reachedEnd = currentDate >= lastDate;
             if(noPlansThisYear) break;
             for(MinimalEvent* minimalEvent : events){

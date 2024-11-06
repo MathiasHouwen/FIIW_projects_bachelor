@@ -13,13 +13,13 @@
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 // O(a); a = aatnal gekozen attendees
-bool Scheduler::combineBitMaps(short dateIndex, int year, const vector<string>& attendees, unsigned long long bitmask) {
+unsigned long long Scheduler::combineBitMaps(short dateIndex, int year, const vector<string>& attendees, unsigned long long bitmask) {
     unsigned long long bitmap = bitmask;
     for(const string& attendee: attendees){ // O(a)
         MapMidPoint& years = userMap[attendee];
         if(year-years.oldestYear >= years.yearPlans.size()) return true; // niks gepland dat jaar
         auto& map = years.yearPlans[year-years.oldestYear];
-        if(!map.contains(dateIndex)) return true; // niks gepland die dag O(1)
+        if(!map.contains(dateIndex)) return -1; // niks gepland die dag O(1). -1 = volledig free
         MapEndpoint node = map.get(dateIndex); // O(1)
         bitmap &= node.bitmap; // logische AND verwijderd meteen de niet-overeenkomende slot bits
     }
@@ -43,7 +43,8 @@ bool Scheduler::plan(const vector<string>& attendees, const Event& event, const 
     TimeSpan timeSpan = event.getTimeSpan();
     DateTime startTime = timeSpan.getStartTime();
     unsigned long long planPeriodBitmask = timeAreaToDayBitmask(startTime, endTime);
-    unsigned long long negEventBitMask = ~timeAreaToDayBitmask(startTime, timeSpan.getEndTime());
+
+
     char startSlot = startTime.getHour() * 2 + (startTime.getMin() / 30);
     char endSlot = endTime.getHour() * 2 + (endTime.getMin() / 30) - 1;
 
@@ -51,9 +52,15 @@ bool Scheduler::plan(const vector<string>& attendees, const Event& event, const 
         short dateIndex = dateToIndex(date);
         int year = date.getYear();
         unsigned long long bitmap = combineBitMaps(dateIndex, year, attendees, planPeriodBitmask); // O(A)
-        char slot = searchFreeSlot(bitmap, timeSpan.getDuration(), startSlot, endSlot);
-        if(slot == 0) continue;
+
+        char slot = searchFreeSlot(bitmap, timeSpan.getDuration() / 30, startSlot, endSlot);
+        if(slot == -1) continue;
+        char hour = slot / 24;
+        char minute = (slot - hour) * 30;
+        Event adjustedEvent = event;
+        adjustedEvent.changeStartTime(hour, minute);
         auto sharedEventStruct = new MinimalEvent(event);
+        unsigned long long negEventBitMask = ~timeAreaToDayBitmask(event.getTimeSpan().getStartTime(), timeSpan.getEndTime());
         for(const string& attendee : attendees){
             insert(attendee, dateIndex, year, sharedEventStruct, negEventBitMask); //log(e)
         }
@@ -98,11 +105,12 @@ long long Scheduler::timeAreaToDayBitmask(const DateTime& startTime, const DateT
     return bitmap;
 }
 
+
 void Scheduler::loadFromFile(string filePath) {
     FileInputReader file(filePath);
     while(file.hasNext()){
         FileInputReader::Entry line = file.nextLine();
-        plan({line.username}, line.event);
+        planSingleDayNoEndTime({line.username}, line.event);
     }
 }
 
@@ -165,6 +173,12 @@ DateTime Scheduler::indexToDate(short dateIndex, int year) {
     if(monthIndex>11) monthIndex = 11;
     int dayIndex = dateIndex - 12 * monthIndex;
     return {-1,dayIndex+1,monthIndex+1,year};
+}
+
+bool Scheduler::planSingleDayNoEndTime(const vector<string> &attendees, const Event &event) {
+    DateTime start = event.getTimeSpan().getStartTime();
+    DateTime end = {0, 24, start.getDay(), start.getMonth(), start.getYear()};
+    return plan(attendees, event, end, {start});
 }
 
 

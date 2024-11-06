@@ -23,6 +23,7 @@ class Event {
             bool operator()(Event lhs, Event rhs) const;
         };
         Event(const TimeSpan &time_span, std::string description);
+        void changeStartTime(const int hour, const int minute);
         virtual ~Event() = default;
         TimeSpan getTimeSpan() const;
         std::string getDescription() const;

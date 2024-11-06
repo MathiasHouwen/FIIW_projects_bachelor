@@ -41,6 +41,12 @@ std::string Event::toString() {
         + timeSpan.toString();
 }
 
+void Event::changeStartTime(const int hour, const int minute) {
+    DateTime start = timeSpan.getStartTime();
+    DateTime newStart = {minute, hour, start.getDay(), start.getMonth(), start.getYear()};
+    timeSpan = {newStart, timeSpan.getDuration()};
+}
+
 bool Event::eventComparator::operator()(Event lhs, Event rhs) const {
     DateTime first = lhs.getTimeSpan().getStartTime();
     DateTime second = rhs.getTimeSpan().getStartTime();

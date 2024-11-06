@@ -21,6 +21,7 @@ using namespace std;
 class Scheduler : public AgendaInterface{
 public:
     bool plan(const vector<string>& attendees, const Event& event, const DateTime& endTime, const vector<DateTime>& dates);// bool voor "is gelukt" / "geen avialability"
+    bool planSingleDayNoEndTime(const vector<string>& attendees, const Event& event);
     list<Event> getSortedAgenda(const vector<string>& users);
     void loadFromFile(string filePath) override;
 private:
@@ -31,7 +32,7 @@ private:
     int globalOldestYear{9999};
     int globalNewestYear{0};
     unordered_map<string, MapMidPoint> userMap{};
-    bool combineBitMaps(short dateIndex, int year, const vector<string>& attendees, unsigned long long bitmask);
+    unsigned long long combineBitMaps(short dateIndex, int year, const vector<string>& attendees, unsigned long long bitmask);
     void insert(const string& attendee, short dateIndex, int year, MinimalEvent* event, unsigned long long bitmask);
     char searchFreeSlot(unsigned long long bitmap, char duration, char startSlot, char endSlot);
     static long long timeAreaToDayBitmask(const DateTime& startTime, const DateTime& endTime);

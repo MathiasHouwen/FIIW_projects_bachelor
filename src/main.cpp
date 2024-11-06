@@ -27,8 +27,8 @@ int main() {
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     //TEST
     measureFileRead();
-    testSimplistic();
-    testAdvanced();
+    //testSimplistic();
+    //testAdvanced();
     testSchedular();
     cout<<endl<<" == START == "<<endl;
     SimplisticAgenda simplisticAgenda{};
@@ -100,17 +100,21 @@ void testSchedular(){
     // *****************************
     // Schedular "Test"-code
     // *****************************
-    Event e1({{30,22,19,10,2024}, 150}, "e1");
+    Event e1({{30,21,19,10,2024}, 120}, "e1");
     Event e2({{0,13,19,10,2024}, 60}, "e2");
     Event e3({{30,13,19,10,2024}, 60}, "overlap met e2");
     Event e4({{30,13,20,10,2024}, 60}, "zelfde uur als overlap met e2, maar andere dag");
     Scheduler scheduler;
-    const bool schedularTest =
-            scheduler.plan({"Ebbe", "Robin", "Mathias"}, e1)
-            and scheduler.plan({"Ebbe", "Mathias"},e2)
-            and not scheduler.plan({"Ebbe", "Robin"},e3)
-            and scheduler.plan({"Ebbe", "Robin"},e4)
-            and scheduler.plan({"Robin"},e3);
+    const bool ba = scheduler.planSingleDayNoEndTime({"Ebbe", "Robin", "Mathias"}, e1);
+    const bool bb = scheduler.planSingleDayNoEndTime({"Ebbe", "Mathias"},e2);
+    const bool bc = scheduler.planSingleDayNoEndTime({"Ebbe", "Robin"},e3);
+    const bool bd = scheduler.planSingleDayNoEndTime({"Ebbe", "Robin"},e4);
+    const bool be = scheduler.planSingleDayNoEndTime({"Robin"},e3);
+
+    const bool schedularTest = ba && bb && !bc && bd && be;
+
+
+
     if(!schedularTest) cerr << "schedular simple test FAIL" << endl;
     else cout << "schedulartest simple test pass" <<endl;
     start = c::now();

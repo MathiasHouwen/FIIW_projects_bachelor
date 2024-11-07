@@ -55,9 +55,9 @@ void FileIO::jsonToBoard(QJsonObject boardObject, Game* gamemodel){
     QJsonArray boardArray = boardObject["board"].toArray();
     Board& board = gamemodel->getBoard();
 
-    for(int x=0; x<8; x++){
+    for(int x=0; x<Board::getSize(); x++){
         QJsonArray rij = boardArray[x].toArray();
-        for(int y=0; y<8; y++){
+        for(int y=0; y<Board::getSize(); y++){
             QJsonObject pieceObj = rij[y].toObject();
             if (!pieceObj.isEmpty()) {
                 Piece piece = FileIO::jsonToPiece(pieceObj, gamemodel);
@@ -98,9 +98,9 @@ QJsonObject FileIO::pieceToJson(const Piece* piece){
 QJsonDocument FileIO::generateJSONfile(const Board* board) {
     QJsonArray boardArray;
 
-    for(int x=0; x<8; x++){
+    for(int x=0; x<Board::getSize(); x++){
         QJsonArray row;
-        for(int y=0; y<8; y++){
+        for(int y=0; y<Board::getSize(); y++){
             Piece* piece = board->getCell(QPoint(x, y));
 
             if (piece != nullptr){

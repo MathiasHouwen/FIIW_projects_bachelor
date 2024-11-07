@@ -25,7 +25,7 @@ public:
     // getters
     Type getType() const;
     int getScoreValue() const;
-    Type getTypeFromDobbel(int number);
+    static Type getTypeFromDobbel(int number);
     Player &getPlayer() const;
 
     static std::string getTypeName(Type type); // vertaalt type naar string naam

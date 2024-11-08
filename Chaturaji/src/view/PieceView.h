@@ -9,7 +9,8 @@
 
 
 class PieceView : public QWidget {
-
+public:
+    explicit PieceView(QWidget *parent = nullptr);
 };
 
 

@@ -1,7 +1,5 @@
-#include <QCoreApplication>
-#include <QJsonObject>
-#include <QJsonDocument>
 #include <QApplication>
+#include <QPushButton>
 #include "view/GameView.h"
 #include "model/Game.h"
 #include "controller/Controller.h"
@@ -12,6 +10,8 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
     MainWindow w;
+
+
     w.show();
 //    Game model{};
 //    GameView view(model);

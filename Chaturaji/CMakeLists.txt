@@ -40,6 +40,8 @@ add_executable(Chaturaji
         src/view/MainWindow.cpp
         src/view/MainWindow.h
         src/view/mainwindow.ui
+        src/view/BoardView.cpp
+        src/view/BoardView.h
 )
 target_link_libraries(Chaturaji Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Gui)
 

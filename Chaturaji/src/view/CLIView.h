@@ -4,7 +4,7 @@
 #include "../model/Board.h"
 #include "../model/Game.h"
 
-class GameView {
+class CLIView {
 private:
     Game& model;
     static int asciiEscColorCode(Player::colour color); // vertaald color naar ascii escape color code
@@ -16,7 +16,7 @@ private:
     void printMove();
     void printTurn();
 public:
-    explicit GameView(Game &game);
+    explicit CLIView(Game &game);
     void update(); // roept alle 4 print functies aan
 };
 

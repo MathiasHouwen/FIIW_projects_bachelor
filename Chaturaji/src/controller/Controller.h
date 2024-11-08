@@ -6,13 +6,13 @@
 #define CHATURAJI_CONTROLLER_H
 
 
-#include "../view/GameView.h"
+#include "../view/CLIView.h"
 #include "ConsoleIO.h"
 
 class Controller {
 private:
     Game& gameModel;
-    GameView& gameView;
+    CLIView& gameView;
     ConsoleIO io;
 
     void loop();    // game loop
@@ -23,7 +23,7 @@ private:
     // indien het antwoord een exit request was, stopt de app ook
     void askCellProcedure(const std::function<bool(QPoint)>& gameFunc);
 public:
-    Controller(Game &gameModel, GameView &gameView);
+    Controller(Game &gameModel, CLIView &gameView);
     void start(); // roept setup en loop aan
 };
 

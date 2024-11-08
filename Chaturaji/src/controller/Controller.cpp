@@ -6,7 +6,7 @@
 #include <QPoint>
 #include "Controller.h"
 
-Controller::Controller(Game &gameModel, GameView &gameView)
+Controller::Controller(Game &gameModel, CLIView &gameView)
     : gameModel(gameModel), gameView(gameView){
     io = ConsoleIO();
 }

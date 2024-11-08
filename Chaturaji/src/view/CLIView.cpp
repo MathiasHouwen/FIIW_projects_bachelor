@@ -1,4 +1,4 @@
-#include "GameView.h"
+#include "CLIView.h"
 
 #include <iostream>
 #include <ostream>
@@ -8,7 +8,7 @@
 
 using namespace std;
 
-void GameView::printBoard() const {
+void CLIView::printBoard() const {
     Board gameBoard = model.getBoard();
     const int boardSize = gameBoard.getSize();
     const int cellWidth = 3;
@@ -35,7 +35,7 @@ void GameView::printBoard() const {
         cout << "     " << string(1+boardSize*(cellWidth+2*cellPad+1), '-') << endl;
     }
 }
-string GameView::getCellString(QPoint cell) const {
+string CLIView::getCellString(QPoint cell) const {
     int color = 0; // default
     string symb = " . ";
     int background = -1;
@@ -58,11 +58,11 @@ string GameView::getCellString(QPoint cell) const {
     return asciiEscString(color, background, symb);
 }
 
-GameView::GameView(Game &game) : model{game} {
+CLIView::CLIView(Game &game) : model{game} {
     system("cls");
 }
 
-int GameView::asciiEscColorCode(Player::colour color) {
+int CLIView::asciiEscColorCode(Player::colour color) {
     switch (color) {
         case Player::colour::RED: return 31;
         case Player::colour::GREEN: return 32;
@@ -71,7 +71,7 @@ int GameView::asciiEscColorCode(Player::colour color) {
     }
 }
 
-std::string GameView::asciiEscString(int color, int background, const std::string& str) {
+std::string CLIView::asciiEscString(int color, int background, const std::string& str) {
     string asciiEscString = "\033[" + std::to_string(color);
     if(background != -1)
         asciiEscString += ";" + std::to_string(background);
@@ -80,7 +80,7 @@ std::string GameView::asciiEscString(int color, int background, const std::strin
     return asciiEscString;
 }
 
-std::string GameView::getPieceSymbol(Piece piece) {
+std::string CLIView::getPieceSymbol(Piece piece) {
     switch (piece.getType()) {
         case Piece::Type::PAWN: return "PWN";
         case Piece::Type::BOAT: return "BT_";
@@ -89,14 +89,14 @@ std::string GameView::getPieceSymbol(Piece piece) {
         case Piece::Type::ELEPH: return "ELE";
     }
 }
-void GameView::printDice() const {
+void CLIView::printDice() const {
     QPair<Piece::Type, Piece::Type> dice = model.getDice();
     cout << "The dice gave you the choises: [ ";
     cout << Piece::getTypeName(dice.first) << ", ";
     cout << Piece::getTypeName(dice.second) << " ]" << endl;
 }
 
-void GameView::printMove() {
+void CLIView::printMove() {
     QPair<Piece::Type, Piece::Type> dice = model.getDice();
     int move = model.getMove();
     if(move == 0){
@@ -110,7 +110,7 @@ void GameView::printMove() {
     }
 }
 
-void GameView::printTurn() {
+void CLIView::printTurn() {
     Player player = model.getCurrentPlayer();
     int color = asciiEscColorCode(player.getColour());
     cout << "Turn of player: ";
@@ -119,7 +119,7 @@ void GameView::printTurn() {
     cout << endl;
 }
 
-void GameView::update() {
+void CLIView::update() {
     //system("CLS");
     //cout.flush();
     printBoard();

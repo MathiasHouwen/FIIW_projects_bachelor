@@ -18,10 +18,10 @@ add_executable(Chaturaji
         src/main.cpp
         src/model/Game.h
         src/model/Game.cpp
-        src/view/GameView.h
+        src/view/CLIView.h
         src/controller/ConsoleIO.h
         src/controller/ConsoleIO.cpp
-        src/view/GameView.cpp
+        src/view/CLIView.cpp
         src/model/Board.h
         src/model/Board.cpp
         src/controller/Controller.h
@@ -40,6 +40,8 @@ add_executable(Chaturaji
         src/view/MainWindow.cpp
         src/view/MainWindow.h
         src/view/mainwindow.ui
+        src/model/Square.cpp
+        src/model/Square.h
 )
 target_link_libraries(Chaturaji Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Gui)
 

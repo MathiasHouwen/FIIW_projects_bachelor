@@ -2,6 +2,7 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QApplication>
+#include <QDir>
 #include "view/CLIView.h"
 #include "model/Game.h"
 #include "controller/Controller.h"

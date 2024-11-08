@@ -12,8 +12,7 @@ class BoardView : public QWidget{
 Q_OBJECT
 
 public:
-    explicit BoardView(QWidget *parent);
-
+    explicit BoardView(QWidget *parent = nullptr);
     ~BoardView() override;
 };
 

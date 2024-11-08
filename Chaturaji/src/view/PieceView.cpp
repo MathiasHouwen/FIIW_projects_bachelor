@@ -4,6 +4,9 @@
 
 #include <QLabel>
 #include <QVBoxLayout>
+#include <QDir>
+#include <QCoreApplication>
+#include <iostream>
 #include "PieceView.h"
 
 PieceView::PieceView(QWidget *parent)
@@ -12,8 +15,9 @@ PieceView::PieceView(QWidget *parent)
 
     QLabel *imageLabel = new QLabel(this);
 
+    std::cout << ASSET_PATH << std::endl;
     // Load the image into a QPixmap
-    QPixmap pixmap("Chaturaji/assets/Chess_prg45.svg"); // Replace with your image file path
+    QPixmap pixmap(QString(ASSET_PATH) + "/Chess_prg45.svg"); // Replace with your image file path
 
     // Set the pixmap to the QLabel
     imageLabel->setPixmap(pixmap);

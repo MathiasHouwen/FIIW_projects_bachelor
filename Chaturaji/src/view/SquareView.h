@@ -17,9 +17,9 @@ class SquareView : public QWidget{
 Q_OBJECT
 private:
     const Square &square;
-    void drawSquare();
+    void drawSquare(int index);
 public:
-    explicit SquareView(const Square &square, QWidget *parent);
+    explicit SquareView(const Square &square, QWidget *parent, int index);
     ~SquareView() override;
 };
 

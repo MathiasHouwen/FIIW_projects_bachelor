@@ -23,6 +23,23 @@ MainWindow::MainWindow(QWidget *parent) :
     // QVBox layout maakt positie relatief
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
+    // TODO: QUICK DIRTY CODE IEUW, so many magic numbers jezus
+    // TODO: MAAK DIT APARTE WIDGIT CLASS
+    int index = 0;
+    for(int col=0; col<8; col++) {
+        for (int rij = 0; rij < 8; rij++) {
+            Square square{100 * rij, 100*col, nullptr};
+            auto s = new SquareView(square, this, index);
+            s->move(92 * rij, 92 * col);
+            index++;
+        }
+        index++;
+    }
+
+//    Square square{30, 40, nullptr};
+//    auto s = new SquareView(square, this);
+//    mainLayout->addWidget(s);
+
     auto boardView = new BoardView(this);
     mainLayout->addWidget(boardView);
 

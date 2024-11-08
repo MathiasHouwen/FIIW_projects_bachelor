@@ -10,7 +10,7 @@
 #include "model/Square.h"
 #include "view/MainWindow.h"
 #include "view/SquareView.h"
-#include "view/PieceView.h"
+#include "view/PieceWidgit.h"
 
 int main(int argc, char *argv[])
 {

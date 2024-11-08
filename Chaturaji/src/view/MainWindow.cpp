@@ -12,6 +12,7 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "BoardView.h"
+#include "SquareView.h"
 #include "PieceView.h"
 
 
@@ -20,6 +21,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
 //    auto b = new BoardView(this);
+    //auto b = new BoardView(this);
+    Square square{30, 40, nullptr};
+    auto s = new SquareView(square, this);
 
 //    auto m_scene = new QGraphicsScene(this);
 //    auto m_view = new QGraphicsView(m_scene, this);

@@ -6,7 +6,9 @@
 #include "model/Game.h"
 #include "controller/Controller.h"
 #include "controller/FileIO.h"
+#include "model/Square.h"
 #include "view/MainWindow.h"
+#include "view/SquareView.h"
 #include "view/PieceView.h"
 
 int main(int argc, char *argv[])

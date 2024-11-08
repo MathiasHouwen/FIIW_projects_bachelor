@@ -42,10 +42,11 @@ add_executable(Chaturaji
         src/view/mainwindow.ui
         src/model/Square.cpp
         src/model/Square.h
+        src/view/SquareView.cpp
+        src/view/SquareView.h
         src/view/BoardView.cpp
         src/view/BoardView.h
         src/view/PieceView.cpp
-        src/view/PieceView.h
         src/view/PieceView.h
 )
 target_link_libraries(Chaturaji Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Gui)

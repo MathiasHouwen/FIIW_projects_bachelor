@@ -10,6 +10,9 @@ Square::Square(int x, int y, Piece *piece)
           piece(piece) {
 }
 
+Square::~Square() {}
+
+
 Piece *Square::getPiece() const {
     return piece;
 }

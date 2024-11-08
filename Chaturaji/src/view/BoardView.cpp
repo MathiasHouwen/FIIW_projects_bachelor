@@ -7,7 +7,7 @@
 
 BoardView::BoardView(QWidget *parent)
     : QWidget(parent) {
-    auto *button = new QPushButton("klik mij pls", this);
+    //auto *button = new QPushButton("klik mij pls", this);
 }
 
 BoardView::~BoardView() {

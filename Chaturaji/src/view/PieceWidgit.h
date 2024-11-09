@@ -21,7 +21,9 @@ private:
     QDomDocument svgDOM;
     bool hovered{false};
     void loadSvg();
-void setSvgAttribute(QString name, QString value);
+    void setSvgAttribute(QString name, QString value);
+    void setFill(QColor color);
+    void setStroke(QColor color);
 public:
     void setHovered(bool hovered);
     explicit PieceWidgit(QWidget *parent = nullptr);

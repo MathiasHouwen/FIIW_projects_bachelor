@@ -18,7 +18,8 @@ PieceWidgit::PieceWidgit(QWidget *parent)
     loadSvg();
     svg = new QSvgWidget(this);
     svg->load(svgDOM.toByteArray());
-    // color change voorbeeld: setSvgAttribute("fill", "green"); setSvgAttribute("stroke", "blue");
+    setFill(QColorConstants::Svg::lightseagreen);
+    setStroke(QColorConstants::Svg::black);
 }
 
 void PieceWidgit::resizeEvent(QResizeEvent *event) {
@@ -30,17 +31,15 @@ void PieceWidgit::setHovered(bool hovered) {
     this->hovered = hovered;
     if(hovered) {
         svg->move(svg->x(), svg->y() - 4);
-        setSvgAttribute("fill", "green");
-        setSvgAttribute("stroke", "blue");
+        setStroke(QColorConstants::Svg::gray);
     }else{
         svg->move(svg->x(), svg->y() + 4);
-        setSvgAttribute("fill", "red");
-        setSvgAttribute("stroke", "black");
+        setStroke(QColorConstants::Svg::black);
     }
 }
 
 void PieceWidgit::loadSvg() {
-    QFile svgFile(QString(ASSET_PATH) + "/Chess_prg45.svg");
+    QFile svgFile(QString(ASSET_PATH) + "/boat.svg");
     svgFile.open(QIODevice::ReadOnly);
     QByteArray svgData = svgFile.readAll();
     svgFile.close();
@@ -48,7 +47,15 @@ void PieceWidgit::loadSvg() {
 }
 
 void PieceWidgit::setSvgAttribute(QString name, QString value) {
-    QDomElement pathNode = svgDOM.documentElement().elementsByTagName("path").at(0).toElement();
+    QDomElement pathNode = svgDOM.documentElement().elementsByTagName("g").at(0).toElement();
     pathNode.setAttribute(name, value);
     svg->load(svgDOM.toByteArray());
+}
+
+void PieceWidgit::setStroke(QColor color) {
+    setSvgAttribute("stroke", color.name());
+}
+
+void PieceWidgit::setFill(QColor color) {
+    setSvgAttribute("fill", color.name());
 }

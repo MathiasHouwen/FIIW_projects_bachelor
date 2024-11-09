@@ -8,15 +8,16 @@
 #include <QPushButton>
 
 
-SquareView::SquareView(QWidget *parent, int xIndex, int yIndex, Piece* pieceModel)
-    : QWidget(parent), xIndex(xIndex), yIndex(yIndex){
-    color = xIndex % 2 ^ yIndex % 2 ? QColorConstants::Svg::beige : QColorConstants::Svg::burlywood;
+SquareView::SquareView(QWidget *parent, QPoint cell, Game& model)
+    : QWidget(parent), cell(cell), model(model){
+    color = cell.x() % 2 ^ cell.y() % 2 ? QColorConstants::Svg::beige : QColorConstants::Svg::burlywood;
 
     auto container = new QVBoxLayout(this);
     container->setContentsMargins(2,2,2,2);
-    if(pieceModel){
-        piece = new PieceWidgit(nullptr, pieceModel);
-        container->addWidget(piece);
+    Piece* piece = model.getBoard().getCell(cell);
+    if(piece){
+        pieceView = new PieceWidgit(nullptr, piece);
+        container->addWidget(pieceView);
     }
 }
 
@@ -29,14 +30,13 @@ void SquareView::paintEvent(QPaintEvent *event) {
     QPainter painter(this);
     QRect square((width() - width()) / 2, (height() - height()) / 2, width(), height());
     painter.fillRect(square, color);
-    if(border){
-        QPen pen;
-        pen.setStyle(Qt::SolidLine);
-        pen.setColor(Qt::darkRed);
-        pen.setWidth(5);
-        painter.setPen(pen);
-        painter.drawRect(square);
-    }
+    QPen pen;
+    getHighLight();
+    pen.setStyle(Qt::SolidLine);
+    pen.setColor(border);
+    pen.setWidth(5);
+    painter.setPen(pen);
+    painter.drawRect(square);
 }
 
 void SquareView::resizeEvent(QResizeEvent *event) {
@@ -46,18 +46,36 @@ void SquareView::resizeEvent(QResizeEvent *event) {
 
 void SquareView::enterEvent(QEnterEvent *event) {
     QWidget::enterEvent(event);
-    color = xIndex % 2 ^ yIndex % 2 ? QColorConstants::Svg::white : QColorConstants::Svg::blanchedalmond;
-    border = true;
-    if(piece)
-        piece->setHovered(true);
+    color = cell.x() % 2 ^ cell.y() % 2 ? QColorConstants::Svg::white : QColorConstants::Svg::blanchedalmond;
+    border = Qt::darkRed;
+    if(pieceView)
+        pieceView->setHovered(true);
     update();
 }
 
 void SquareView::leaveEvent(QEvent *event) {
     QWidget::leaveEvent(event);
-    color = xIndex % 2 ^ yIndex % 2 ? QColorConstants::Svg::beige : QColorConstants::Svg::burlywood;
-    border = false;
-    if(piece)
-        piece->setHovered(false);
+    color = cell.x() % 2 ^ cell.y() % 2 ? QColorConstants::Svg::beige : QColorConstants::Svg::burlywood;
+    border = Qt::transparent;
+    if(pieceView)
+        pieceView->setHovered(false);
     update();
+}
+
+void SquareView::getHighLight() {
+    if(border != Qt::transparent) return;
+    QPoint* selection = model.getCurrentlySelectedCell();
+    if(selection && *selection == cell)
+        border = QColorConstants::Svg::aquamarine;
+    else if(selection && model.getPossibleMoves().contains(cell))
+        border = QColorConstants::Svg::lightseagreen;
+
+    Piece* piece = model.getBoard().getCell(cell);
+    if(piece){
+        if(!selection && piece->getPlayer() == model.getCurrentPlayer()
+           && (piece->getType() == model.getDice().first
+               || piece->getType() == model.getDice().second)){
+            border = QColorConstants::Svg::lightseagreen;
+        }
+    }
 }

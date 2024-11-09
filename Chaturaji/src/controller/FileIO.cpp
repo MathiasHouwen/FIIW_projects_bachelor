@@ -84,7 +84,7 @@ int FileIO::saveBoard(const Board* board) {
 QJsonObject FileIO::pieceToJson(const Piece* piece){
     QJsonObject jsonObject;
     if (piece != nullptr){
-        jsonObject["type"] = QString::fromStdString(Piece::getTypeName(piece->getType()));
+        jsonObject["type"] = Piece::getTypeName(piece->getType());
         jsonObject["player_colour"] = Player::getColourName(piece->getPlayer().getColour());
 
         QJsonObject dirobj;

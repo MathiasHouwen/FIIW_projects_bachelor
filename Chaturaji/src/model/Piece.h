@@ -30,7 +30,7 @@ public:
     QString getShortName();
     QString getColorName();
 
-    static std::string getTypeName(Type type); // vertaalt type naar string naam
+    static QString getTypeName(Type type); // vertaalt type naar string naam
     static Piece::Type getTypeFromName(const QString& typestr); // vertaalt string naam naar type
 
 private:

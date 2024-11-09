@@ -102,9 +102,23 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Debug info:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="debugLabel">
+            <property name="text">
+             <string>&lt;&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QPushButton" name="pushButton_3">
             <property name="text">
-             <string>PushButton</string>
+             <string>Dummy</string>
             </property>
            </widget>
           </item>
@@ -131,14 +145,14 @@
         <item>
          <widget class="QPushButton" name="pushButton_2">
           <property name="text">
-           <string>PushButton</string>
+           <string>Dummy</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="pushButton">
           <property name="text">
-           <string>PushButton</string>
+           <string>Dummy</string>
           </property>
          </widget>
         </item>

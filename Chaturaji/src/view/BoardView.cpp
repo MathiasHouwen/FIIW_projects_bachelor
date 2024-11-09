@@ -9,7 +9,7 @@
 #include "../model/Square.h"
 #include "SquareView.h"
 
-BoardView::BoardView(Board& model, QWidget *parent)
+BoardView::BoardView(Game& model, QWidget *parent)
     : QWidget(parent), model(model) {
     rows = new QVBoxLayout(parent);
     rows->setSpacing(0);
@@ -20,7 +20,7 @@ BoardView::BoardView(Board& model, QWidget *parent)
         cols->setSpacing(0);
         rows->addLayout(cols);
         for(int j=0; j<size; j++){
-            auto s = new SquareView(nullptr, i, j, model.getCell({i,j}));
+            auto s = new SquareView(nullptr, {i, j}, model);
             cols->addWidget(s);
         }
     }

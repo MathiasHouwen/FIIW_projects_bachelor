@@ -9,16 +9,17 @@
 #include <QWidget>
 #include <QVBoxLayout>
 #include "../model/Board.h"
+#include "../model/Game.h"
 
 class BoardView : public QWidget{
 Q_OBJECT
 
 private:
     QVBoxLayout* rows;
-    Board& model;
+    Game& model;
 
 public:
-    explicit BoardView(Board& model, QWidget *parent = nullptr);
+    explicit BoardView(Game& model, QWidget *parent = nullptr);
     ~BoardView() override;
 
 };

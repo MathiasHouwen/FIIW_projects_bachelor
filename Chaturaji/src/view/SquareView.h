@@ -14,17 +14,20 @@
 
 #include "../model/Square.h"
 #include "PieceWidgit.h"
+#include "../model/Game.h"
 
 
 class SquareView : public QWidget{
 Q_OBJECT
 private:
-    int xIndex, yIndex;
-    bool border{false};
+    QPoint cell;
+    QColor border{Qt::transparent};
     QColor color;
-    PieceWidgit* piece{nullptr};
+    Game& model;
+    PieceWidgit* pieceView{nullptr};
+    void getHighLight();
 public:
-    explicit SquareView(QWidget *parent, int xIndex, int yIndex, Piece* pieceModel);
+    explicit SquareView(QWidget *parent, QPoint cell, Game& model);
     ~SquareView() override;
 protected:
     void paintEvent(QPaintEvent *event) override;

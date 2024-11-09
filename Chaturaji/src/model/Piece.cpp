@@ -67,7 +67,7 @@ Piece::Type Piece::getTypeFromDobbel(int number) {
     }
 }
 
-std::string Piece::getTypeName(Type type) {
+QString Piece::getTypeName(Type type) {
     switch(type) {
         case Piece::Type::PAWN: return "Pawn";
         case Piece::Type::KNIGHT: return "Horse";

@@ -92,8 +92,8 @@ std::string CLIView::getPieceSymbol(Piece piece) {
 void CLIView::printDice() const {
     QPair<Piece::Type, Piece::Type> dice = model.getDice();
     cout << "The dice gave you the choises: [ ";
-    cout << Piece::getTypeName(dice.first) << ", ";
-    cout << Piece::getTypeName(dice.second) << " ]" << endl;
+    cout << Piece::getTypeName(dice.first).toStdString() << ", ";
+    cout << Piece::getTypeName(dice.second).toStdString() << " ]" << endl;
 }
 
 void CLIView::printMove() {
@@ -104,9 +104,9 @@ void CLIView::printMove() {
     } else {
         cout << "Move 2/2. Remaining choise: ";
         if(dice.first == Piece::Type::USED)
-            cout << Piece::getTypeName(dice.second) << endl;
+            cout << Piece::getTypeName(dice.second).toStdString() << endl;
         else
-            cout << Piece::getTypeName(dice.first) << endl;
+            cout << Piece::getTypeName(dice.first).toStdString() << endl;
     }
 }
 

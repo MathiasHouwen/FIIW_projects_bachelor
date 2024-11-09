@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     FileIO io{"../startingFile.txt"};
     io.loadBoard(&model);
 
-    auto boardView = new BoardView(model.getBoard(), ui->boardPanel);
+    auto boardView = new BoardView(model, ui->boardPanel);
 }
 
 MainWindow::~MainWindow() {
@@ -50,4 +50,12 @@ void MainWindow::makeBoardPanelShapeSquare() {
 void MainWindow::paintEvent(QPaintEvent *event) {
     QWidget::paintEvent(event);
     makeBoardPanelShapeSquare();
+    QString s;
+    QTextStream t(&s);
+    t << "player: {col: " << Player::getColourName(model.getCurrentPlayer().getColour());
+    t << ", name: " << model.getCurrentPlayer().getName();
+    t << ", score: " << model.getCurrentPlayer().getScore() << "}";
+    t << "  |   move:" << model.getMove();
+    t << "  |   dice: [" << Piece::getTypeName(model.getDice().first) << ", " << Piece::getTypeName(model.getDice().second) << "]";
+    ui->debugLabel->setText(s);
 }

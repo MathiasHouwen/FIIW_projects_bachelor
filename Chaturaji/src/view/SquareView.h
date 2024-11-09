@@ -22,7 +22,7 @@ private:
     int xIndex, yIndex;
     bool border{false};
     QColor color;
-    PieceWidgit* piece;
+    PieceWidgit* piece{nullptr};
 public:
     explicit SquareView(QWidget *parent, int xIndex, int yIndex, Piece* pieceModel);
     ~SquareView() override;

@@ -48,7 +48,8 @@ void SquareView::enterEvent(QEnterEvent *event) {
     QWidget::enterEvent(event);
     color = xIndex % 2 ^ yIndex % 2 ? QColorConstants::Svg::white : QColorConstants::Svg::blanchedalmond;
     border = true;
-    piece->setHovered(true);
+    if(piece)
+        piece->setHovered(true);
     update();
 }
 
@@ -56,6 +57,7 @@ void SquareView::leaveEvent(QEvent *event) {
     QWidget::leaveEvent(event);
     color = xIndex % 2 ^ yIndex % 2 ? QColorConstants::Svg::beige : QColorConstants::Svg::burlywood;
     border = false;
-    piece->setHovered(false);
+    if(piece)
+        piece->setHovered(false);
     update();
 }

@@ -8,15 +8,17 @@
 
 #include <QWidget>
 #include <QVBoxLayout>
+#include "../model/Board.h"
 
 class BoardView : public QWidget{
 Q_OBJECT
 
 private:
     QVBoxLayout* rows;
+    Board& model;
 
 public:
-    explicit BoardView(QWidget *parent = nullptr);
+    explicit BoardView(Board& model, QWidget *parent = nullptr);
     ~BoardView() override;
 
 };

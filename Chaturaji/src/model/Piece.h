@@ -27,6 +27,8 @@ public:
     int getScoreValue() const;
     static Type getTypeFromDobbel(int number);
     Player &getPlayer() const;
+    QString getShortName();
+    QString getColorName();
 
     static std::string getTypeName(Type type); // vertaalt type naar string naam
     static Piece::Type getTypeFromName(const QString& typestr); // vertaalt string naam naar type

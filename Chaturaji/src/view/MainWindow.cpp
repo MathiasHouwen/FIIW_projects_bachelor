@@ -14,12 +14,17 @@
 #include "BoardView.h"
 #include "SquareView.h"
 #include "PieceWidgit.h"
+#include "../controller/FileIO.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :
         QWidget(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
-    auto boardView = new BoardView(ui->boardPanel);
+
+    FileIO io{"../startingFile.txt"};
+    io.loadBoard(&model);
+
+    auto boardView = new BoardView(model.getBoard(), ui->boardPanel);
 }
 
 MainWindow::~MainWindow() {

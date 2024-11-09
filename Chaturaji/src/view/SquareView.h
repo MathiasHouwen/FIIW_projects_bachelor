@@ -24,7 +24,7 @@ private:
     QColor color;
     PieceWidgit* piece;
 public:
-    explicit SquareView(QWidget *parent, int xIndex, int yIndex);
+    explicit SquareView(QWidget *parent, int xIndex, int yIndex, Piece* pieceModel);
     ~SquareView() override;
 protected:
     void paintEvent(QPaintEvent *event) override;

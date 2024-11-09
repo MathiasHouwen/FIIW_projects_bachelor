@@ -8,6 +8,7 @@
 #include <QWidget>
 #include <QSvgWidget>
 #include <QDomDocument>
+#include "../model/Piece.h"
 
 
 class PieceWidgit : public QWidget {
@@ -19,14 +20,15 @@ protected:
 private:
     QSvgWidget* svg;
     QDomDocument svgDOM;
+    Piece* model;
     bool hovered{false};
-    void loadSvg();
+    void loadSvg(QString name);
     void setSvgAttribute(QString name, QString value);
     void setFill(QColor color);
     void setStroke(QColor color);
 public:
+    PieceWidgit(QWidget *parent, Piece* model);
     void setHovered(bool hovered);
-    explicit PieceWidgit(QWidget *parent = nullptr);
 };
 
 

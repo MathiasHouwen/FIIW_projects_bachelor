@@ -12,13 +12,13 @@
 
 #include "PieceWidgit.h"
 
-PieceWidgit::PieceWidgit(QWidget *parent)
-        : QWidget(parent) {
+PieceWidgit::PieceWidgit(QWidget *parent, Piece* model)
+        : QWidget(parent), model(model) {
 
-    loadSvg();
+    loadSvg(model->getShortName());
     svg = new QSvgWidget(this);
     svg->load(svgDOM.toByteArray());
-    setFill(QColorConstants::Svg::lightseagreen);
+    setFill(model->getColorName());
     setStroke(QColorConstants::Svg::black);
 }
 
@@ -38,8 +38,8 @@ void PieceWidgit::setHovered(bool hovered) {
     }
 }
 
-void PieceWidgit::loadSvg() {
-    QFile svgFile(QString(ASSET_PATH) + "/boat.svg");
+void PieceWidgit::loadSvg(QString name) {
+    QFile svgFile(QString(ASSET_PATH) + "/" + name + ".svg");
     svgFile.open(QIODevice::ReadOnly);
     QByteArray svgData = svgFile.readAll();
     svgFile.close();

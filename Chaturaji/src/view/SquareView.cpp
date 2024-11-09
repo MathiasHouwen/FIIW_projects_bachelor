@@ -8,13 +8,16 @@
 #include <QPushButton>
 
 
-SquareView::SquareView(QWidget *parent, int xIndex, int yIndex)
+SquareView::SquareView(QWidget *parent, int xIndex, int yIndex, Piece* pieceModel)
     : QWidget(parent), xIndex(xIndex), yIndex(yIndex){
     color = xIndex % 2 ^ yIndex % 2 ? QColorConstants::Svg::beige : QColorConstants::Svg::burlywood;
-    piece = new PieceWidgit(nullptr);
+
     auto container = new QVBoxLayout(this);
     container->setContentsMargins(2,2,2,2);
-    container->addWidget(piece);
+    if(pieceModel){
+        piece = new PieceWidgit(nullptr, pieceModel);
+        container->addWidget(piece);
+    }
 }
 
 SquareView::~SquareView() {

@@ -18,12 +18,12 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
 
-//    Game model{};
+
+
 //    GameView view(model);
 //    Controller controller(model, view);
 //
-//    FileIO io{"../startingFile.txt"};
-//    io.loadBoard(&model);
+//
 //
 //    controller.start();
     return app.exec();

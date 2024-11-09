@@ -86,3 +86,18 @@ Piece::Type Piece::getTypeFromName(const QString& typestr){
     if (typestr == "Boat") return Piece::Type::BOAT;
     return Piece::Type::USED;
 }
+
+QString Piece::getShortName() {
+    switch(type) {
+        case Piece::Type::PAWN: return "pawn";
+        case Piece::Type::KNIGHT: return "horse";
+        case Piece::Type::KING: return "king";
+        case Piece::Type::BOAT: return "boat";
+        case Piece::Type::ELEPH: return "eleph";
+        default: return "invalid";
+    }
+}
+
+QString Piece::getColorName() {
+    return Player::getColourName(player.getColour());
+}

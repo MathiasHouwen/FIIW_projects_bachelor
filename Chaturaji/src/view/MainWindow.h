@@ -6,6 +6,7 @@
 #define CHATURAJI_MAINWINDOW_H
 
 #include <QWidget>
+#include "../model/Game.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -20,7 +21,6 @@ public:
 
     ~MainWindow() override;
 
-private:
 protected:
     void resizeEvent(QResizeEvent *event) override;
 
@@ -28,6 +28,7 @@ protected:
 
 private:
     Ui::MainWindow *ui;
+    Game model{};
     void makeBoardPanelShapeSquare();
 };
 

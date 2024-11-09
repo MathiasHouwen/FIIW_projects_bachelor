@@ -9,16 +9,18 @@
 #include "../model/Square.h"
 #include "SquareView.h"
 
-BoardView::BoardView(QWidget *parent)
-    : QWidget(parent) {
+BoardView::BoardView(Board& model, QWidget *parent)
+    : QWidget(parent), model(model) {
     rows = new QVBoxLayout(parent);
     rows->setSpacing(0);
-    for(int i=0; i<8; i++){
+
+    int size = Board::getSize();
+    for(int i=0; i<size; i++){
         auto cols = new QHBoxLayout();
         cols->setSpacing(0);
         rows->addLayout(cols);
-        for(int j=0; j<8; j++){
-            auto s = new SquareView(nullptr, i, j);
+        for(int j=0; j<size; j++){
+            auto s = new SquareView(nullptr, i, j, model.getCell({i,j}));
             cols->addWidget(s);
         }
     }

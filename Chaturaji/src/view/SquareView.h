@@ -10,8 +10,10 @@
 #include <QBoxLayout>
 #include <qgraphicsitem.h>
 #include <QPainter>
+#include <QPushButton>
 
 #include "../model/Square.h"
+#include "PieceWidgit.h"
 
 
 class SquareView : public QWidget{
@@ -20,6 +22,7 @@ private:
     int xIndex, yIndex;
     bool border{false};
     QColor color;
+    PieceWidgit* piece;
 public:
     explicit SquareView(QWidget *parent, int xIndex, int yIndex);
     ~SquareView() override;

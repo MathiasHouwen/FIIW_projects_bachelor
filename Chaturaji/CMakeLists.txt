@@ -11,8 +11,8 @@ set(CMAKE_AUTOUIC_SEARCH_PATHS ${PROJECT_SOURCE_DIR}/src/view)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Widgets Gui)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Widgets Gui)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Widgets Gui SvgWidgets)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Widgets Gui SvgWidgets)
 
 add_definitions(-DASSET_PATH="${CMAKE_SOURCE_DIR}/assets")
 
@@ -51,7 +51,7 @@ add_executable(Chaturaji
         src/view/PieceWidgit.cpp
         src/view/PieceWidgit.h
 )
-target_link_libraries(Chaturaji Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Gui)
+target_link_libraries(Chaturaji Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::SvgWidgets)
 
 include(GNUInstallDirs)
 install(TARGETS Chaturaji

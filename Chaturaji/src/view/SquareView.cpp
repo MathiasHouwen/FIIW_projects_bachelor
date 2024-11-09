@@ -12,13 +12,9 @@ SquareView::SquareView(QWidget *parent, QPoint cell, Game& model)
     : QWidget(parent), cell(cell), model(model){
     color = cell.x() % 2 ^ cell.y() % 2 ? QColorConstants::Svg::beige : QColorConstants::Svg::burlywood;
 
-    auto container = new QVBoxLayout(this);
-    container->setContentsMargins(2,2,2,2);
-    Piece* piece = model.getBoard().getCell(cell);
-    if(piece){
-        pieceView = new PieceWidgit(nullptr, piece);
-        container->addWidget(pieceView);
-    }
+    pieceContainer = new QVBoxLayout(this);
+    pieceContainer->setContentsMargins(2,2,2,2);
+
 }
 
 SquareView::~SquareView() {
@@ -27,16 +23,27 @@ SquareView::~SquareView() {
 
 void SquareView::paintEvent(QPaintEvent *event) {
     QWidget::paintEvent(event);
+    getHighLight();
     QPainter painter(this);
     QRect square((width() - width()) / 2, (height() - height()) / 2, width(), height());
     painter.fillRect(square, color);
     QPen pen;
-    getHighLight();
     pen.setStyle(Qt::SolidLine);
     pen.setColor(border);
     pen.setWidth(5);
     painter.setPen(pen);
     painter.drawRect(square);
+
+    auto newPiece = model.getBoard().getCell(cell);
+    if(newPiece != piece){
+        piece = newPiece;
+        if(pieceView)
+            pieceContainer->removeWidget(pieceView);
+        if(piece){
+            pieceView = new PieceWidgit(nullptr, piece);
+            pieceContainer->addWidget(pieceView);
+        }
+    }
 }
 
 void SquareView::resizeEvent(QResizeEvent *event) {
@@ -65,8 +72,10 @@ void SquareView::leaveEvent(QEvent *event) {
 void SquareView::getHighLight() {
     if(border != Qt::transparent) return;
     QPoint* selection = model.getCurrentlySelectedCell();
-    if(selection && *selection == cell)
+    if(selection && *selection == cell){
         border = QColorConstants::Svg::aquamarine;
+        color = QColorConstants::Svg::darkseagreen;
+    }
     else if(selection && model.getPossibleMoves().contains(cell))
         border = QColorConstants::Svg::lightseagreen;
 
@@ -78,4 +87,13 @@ void SquareView::getHighLight() {
             border = QColorConstants::Svg::lightseagreen;
         }
     }
+}
+
+void SquareView::mouseReleaseEvent(QMouseEvent *event) {
+    QWidget::mouseReleaseEvent(event);
+    model.selectPiece(cell);
+
+    bool move = model.movePiece(cell);
+    if(move) model.advance();
+    update();
 }

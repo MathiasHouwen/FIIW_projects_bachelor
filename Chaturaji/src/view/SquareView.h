@@ -24,7 +24,9 @@ private:
     QColor border{Qt::transparent};
     QColor color;
     Game& model;
+    Piece* piece{nullptr};
     PieceWidgit* pieceView{nullptr};
+    QVBoxLayout* pieceContainer;
     void getHighLight();
 public:
     explicit SquareView(QWidget *parent, QPoint cell, Game& model);
@@ -34,6 +36,8 @@ protected:
     void enterEvent(QEnterEvent *event) override;
     void leaveEvent(QEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
+
+    void mouseReleaseEvent(QMouseEvent *event) override;
 };
 
 

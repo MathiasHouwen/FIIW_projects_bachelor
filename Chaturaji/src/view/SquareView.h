@@ -9,6 +9,7 @@
 #include <QWidget>
 #include <QBoxLayout>
 #include <qgraphicsitem.h>
+#include <QPainter>
 
 #include "../model/Square.h"
 
@@ -16,11 +17,17 @@
 class SquareView : public QWidget{
 Q_OBJECT
 private:
-    const Square &square;
-    void drawSquare(int index);
+    int xIndex, yIndex;
+    bool border{false};
+    QColor color;
 public:
-    explicit SquareView(const Square &square, QWidget *parent, int index);
+    explicit SquareView(QWidget *parent, int xIndex, int yIndex);
     ~SquareView() override;
+protected:
+    void paintEvent(QPaintEvent *event) override;
+    void enterEvent(QEnterEvent *event) override;
+    void leaveEvent(QEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
 };
 
 

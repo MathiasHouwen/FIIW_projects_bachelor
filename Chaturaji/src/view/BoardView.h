@@ -7,14 +7,21 @@
 
 
 #include <QWidget>
+#include <QVBoxLayout>
 
 class BoardView : public QWidget{
 Q_OBJECT
 
+private:
+    QVBoxLayout* rows;
+
 public:
     explicit BoardView(QWidget *parent = nullptr);
     ~BoardView() override;
+
 };
+
+
 
 
 #endif //CHATURAJI_BOARDVIEW_H

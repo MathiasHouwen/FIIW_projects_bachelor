@@ -5,36 +5,47 @@
 #include <QGraphicsView>
 #include <QVBoxLayout>
 
-SquareView::SquareView(const Square& square, QWidget *parent, int index)
-    : QWidget(parent), square(square) {
-    drawSquare(index);
+
+
+SquareView::SquareView(QWidget *parent, int xIndex, int yIndex)
+    : QWidget(parent), xIndex(xIndex), yIndex(yIndex){
+    color = xIndex % 2 ^ yIndex % 2 ? QColorConstants::Svg::beige : QColorConstants::Svg::burlywood;
 }
 
-SquareView::~SquareView() = default;
+SquareView::~SquareView() {
 
-void SquareView::drawSquare(int index) {
-    setFixedSize(100, 100);
+}
 
-    auto *scene = new QGraphicsScene(this);
-
-    scene->setSceneRect(QRect(0, 0, 100, 100));
-    QPalette palette = QPalette();
-
-    QColor beige(245, 245, 220);
-    QColor brown(139, 69, 19);
-
-    bool isDarkSquare = index % 2 == 1;
-    if (isDarkSquare) {
-        palette.setColor(QPalette::Window, brown);
-    } else {
-        palette.setColor(QPalette::Window, beige);
+void SquareView::paintEvent(QPaintEvent *event) {
+    QWidget::paintEvent(event);
+    QPainter painter(this);
+    QRect square((width() - width()) / 2, (height() - height()) / 2, width(), height());
+    painter.fillRect(square, color);
+    if(border){
+        QPen pen;
+        pen.setStyle(Qt::SolidLine);
+        pen.setColor(Qt::darkRed);
+        pen.setWidth(5);
+        painter.setPen(pen);
+        painter.drawRect(square);
     }
+}
 
-    auto *layout = new QVBoxLayout(this);
-    auto w = new QWidget();
-    w->setAutoFillBackground(true);
-    w->setPalette(palette);
-    w->setFixedSize(width(), height());
-    layout->addWidget(w);
-    setLayout(layout);
+void SquareView::resizeEvent(QResizeEvent *event) {
+    QWidget::resizeEvent(event);
+    update(); // repaint
+}
+
+void SquareView::enterEvent(QEnterEvent *event) {
+    QWidget::enterEvent(event);
+    color = xIndex % 2 ^ yIndex % 2 ? QColorConstants::Svg::white : QColorConstants::Svg::blanchedalmond;
+    border = true;
+    update();
+}
+
+void SquareView::leaveEvent(QEvent *event) {
+    QWidget::leaveEvent(event);
+    color = xIndex % 2 ^ yIndex % 2 ? QColorConstants::Svg::beige : QColorConstants::Svg::burlywood;
+    border = false;
+    update();
 }

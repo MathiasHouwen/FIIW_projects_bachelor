@@ -24,9 +24,11 @@ private:
 protected:
     void resizeEvent(QResizeEvent *event) override;
 
+    void paintEvent(QPaintEvent *event) override;
+
 private:
     Ui::MainWindow *ui;
-
+    void makeBoardPanelShapeSquare();
 };
 
 

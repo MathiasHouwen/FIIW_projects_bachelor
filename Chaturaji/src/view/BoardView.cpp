@@ -3,13 +3,28 @@
 //
 
 #include <QPushButton>
+#include <iostream>
+#include <QPainter>
 #include "BoardView.h"
+#include "../model/Square.h"
+#include "SquareView.h"
 
 BoardView::BoardView(QWidget *parent)
     : QWidget(parent) {
-    //auto *button = new QPushButton("klik mij pls", this);
+    rows = new QVBoxLayout(parent);
+    rows->setSpacing(0);
+    for(int i=0; i<8; i++){
+        auto cols = new QHBoxLayout();
+        cols->setSpacing(0);
+        rows->addLayout(cols);
+        for(int j=0; j<8; j++){
+            auto s = new SquareView(nullptr, i, j);
+            cols->addWidget(s);
+        }
+    }
 }
 
 BoardView::~BoardView() {
 
 }
+

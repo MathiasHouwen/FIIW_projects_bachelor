@@ -25,9 +25,9 @@ MainWindow::MainWindow(QWidget *parent) :
     FileIO io{"../startingFile.txt"};
     io.loadBoard(&model);
 
-    auto boardView = new BoardView(model, ui->boardPanel);
-//    auto player = new Player(Player::colour::RED);
-//    auto playerView = new PlayerView(ui->boardPanel, player);
+//    auto boardView = new BoardView(model, ui->boardPanel);
+    auto player = new Player(Player::colour::RED);
+    auto playerView = new PlayerView(ui->boardPanel, player);
 }
 
 MainWindow::~MainWindow() {

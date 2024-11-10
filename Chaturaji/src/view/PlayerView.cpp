@@ -5,12 +5,14 @@
 #include <qpen.h>
 #include <QPainter>
 #include <QLabel>
+#include <qpainterpath.h>
 
 #include "PlayerView.h"
 
 
 PlayerView::PlayerView(QWidget *parent, Player *player)
         : QWidget(parent), player(player){
+    setMinimumSize(250, 80);
 }
 
 void PlayerView::paintEvent(QPaintEvent *event) {
@@ -20,7 +22,9 @@ void PlayerView::paintEvent(QPaintEvent *event) {
 //    QRect boundingBox((width() - width()) / 2, (height() - height()) / 2, width(), height());
     QRect boundingBox(0, 0, width(), height());
     colour = player->getQColour();
-    painter.fillRect(boundingBox, colour);
+    QPainterPath path;
+    path.addRoundedRect(boundingBox, 15, 15);  // Rounded corners with radius 15
+    painter.fillPath(path, colour);
 
     // Tekst setup
     QFont font = painter.font();
@@ -34,5 +38,5 @@ void PlayerView::paintEvent(QPaintEvent *event) {
     painter.drawText(padding, 60, "Score: " + QString::number(player->getScore()));
 
     painter.setPen(Qt::black);
-    painter.drawRect(boundingBox);
+    painter.drawPath(path);
 }

@@ -35,11 +35,14 @@ void SquareView::paintEvent(QPaintEvent *event) {
     painter.drawRect(square);
 
     auto newPiece = model.getBoard().getCell(cell);
-    if(newPiece != piece){
+    if (newPiece != piece) {
         piece = newPiece;
-        if(pieceView)
+        if (pieceView) {
             pieceContainer->removeWidget(pieceView);
-        if(piece){
+            delete pieceView;  // Delete the old piece view
+            pieceView = nullptr;
+        }
+        if (piece) {
             pieceView = new PieceWidgit(nullptr, piece);
             pieceContainer->addWidget(pieceView);
         }

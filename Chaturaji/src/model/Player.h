@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <qstring.h>
+#include <qcolor.h>
 
 class Player {
 public:
@@ -24,7 +25,8 @@ public:
     const QString &getName() const;
     colour getColour() const;
 
-    static QString getColourName(Player::colour colour);    // vertaalt kleur naar een string woord
+    static QString getColourName(Player::colour colour);        // vertaalt kleur naar een string woord
+    QColor getQColour();                                        // geeft colour in QColour format
     static colour getColourFromName(const QString &colourstr);  // vertaalt terug naar kleur
 
     // vergelijkers

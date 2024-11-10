@@ -2,11 +2,17 @@
 #define CHATURAJI_GAME_H
 
 
+#include <qobject.h>
+#include <qobjectdefs.h>
+
 #include "Board.h"
 #include "PatternMover.h"
 #include "Player.h"
 
-class Game {
+class Game: public QObject{
+Q_OBJECT
+signals:
+    void somethingChanged();
 private:
     Board board;    // bord
     PatternMover mover; // logica voor piece patronen

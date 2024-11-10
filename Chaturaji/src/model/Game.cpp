@@ -16,6 +16,7 @@ void Game::doubleDobbel() {
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
     dice.first = Piece::getTypeFromDobbel(std::rand() % 6 + 1);
     dice.second = Piece::getTypeFromDobbel(std::rand() % 6 + 1);
+    emit somethingChanged();
 }
 
 void Game::namePlayer(const QString& name, int playerIndex) {
@@ -30,8 +31,10 @@ bool Game::selectPiece(QPoint cell) {
 
     if(piece.getType() == dice.first){  // mag enkel een piece selecteren met type van de gegooide dobbelsteen
         dice.first = Piece::Type::USED; // used = bobbelsteen is al gekozen in vorige move
+        emit somethingChanged();
     } else if (piece.getType() == dice.second){
         dice.second = Piece::Type::USED;
+        emit somethingChanged();
     } else return false;
 
     // update selectie

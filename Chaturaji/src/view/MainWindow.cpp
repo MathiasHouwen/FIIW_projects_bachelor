@@ -20,6 +20,7 @@
 
 MainWindow::MainWindow(QWidget *parent) :
         QWidget(parent), ui(new Ui::MainWindow) {
+    connect(&model, &Game::somethingChanged, this, &MainWindow::setText);
     ui->setupUi(this);
 
     FileIO io{"../startingFile.txt"};
@@ -29,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
     auto player = new Player(Player::colour::RED);
     auto playerView = new PlayerView(nullptr, player);
     ui->sidePanel->layout()->addWidget(playerView);
+    model.doubleDobbel();
 }
 
 MainWindow::~MainWindow() {
@@ -54,6 +56,10 @@ void MainWindow::makeBoardPanelShapeSquare() {
 void MainWindow::paintEvent(QPaintEvent *event) {
     QWidget::paintEvent(event);
     makeBoardPanelShapeSquare();
+}
+
+void MainWindow::setText() {
+    ui->debugLabel->clear();
     QString s;
     QTextStream t(&s);
     t << "player: {col: " << Player::getColourName(model.getCurrentPlayer().getColour());

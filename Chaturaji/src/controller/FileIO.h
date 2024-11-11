@@ -12,19 +12,16 @@
 
 class FileIO {
 public:
-    int saveBoard(const Board* board);
-    void loadBoard(Game* game);
-    explicit FileIO(const QString &mFilePath);
+    explicit FileIO();
+
+    int saveBoard(const Board* board, QString filePath);
+    void loadBoard(Game *game, QString filePath);
 
     static Piece jsonToPiece(const QJsonObject& jsonObject, Game* gamemodel);
-
 
 private:
     static QJsonObject pieceToJson(const Piece* piece);
     static QJsonDocument generateJSONfile(const Board* board);
-
-    QString m_filePath;
-    QFile m_file;
 
     static void jsonToBoard(QJsonObject boardObject, Game *gamemodel);
 };

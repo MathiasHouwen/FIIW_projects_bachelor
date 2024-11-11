@@ -12,15 +12,19 @@
 #include <QJsonDocument>
 
 
-FileIO::FileIO(const QString &mFilePath) : m_filePath(mFilePath), m_file(mFilePath) {}
+FileIO::FileIO()= default;
 
-void FileIO::loadBoard(Game* game){
-    if (!m_file.open(QIODevice::ReadOnly | QIODevice::Text)){
-        qDebug() << "Could not open file for reading:" << m_file.errorString();
+// QFile(filepath)
+
+void FileIO::loadBoard(Game* game, QString filePath){
+    QFile file = QFile(filePath);
+
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
+        qDebug() << "Could not open file for reading:" << file.errorString();
     }
 
-    QByteArray fileData = m_file.readAll();
-    m_file.close();
+    QByteArray fileData = file.readAll();
+    file.close();
 
     // JSON MAGIC
     QJsonDocument doc = QJsonDocument::fromJson(fileData);
@@ -67,15 +71,17 @@ void FileIO::jsonToBoard(QJsonObject boardObject, Game* gamemodel){
     }
 }
 
-int FileIO::saveBoard(const Board* board) {
-    if (!m_file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        qDebug() << "Could not open file for writing:" << m_file.errorString();
+int FileIO::saveBoard(const Board* board, QString filePath){
+    QFile file = QFile(filePath);
+
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        qDebug() << "Could not open file for writing:" << file.errorString();
         return EXIT_FAILURE;
     }
 
     QJsonDocument jsonDocument = generateJSONfile(board);
-    m_file.write(jsonDocument.toJson());
-    m_file.close();
+    file.write(jsonDocument.toJson());
+    file.close();
 
     qDebug() << "File written successfully.";
     return 0; // Exit successfully

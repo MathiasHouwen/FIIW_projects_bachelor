@@ -14,13 +14,16 @@ class FileIOView : public QWidget {
 Q_OBJECT
 
 public:
-    explicit FileIOView(QWidget *parent = nullptr);
+    explicit FileIOView(Game& game, QWidget *parent = nullptr);
 
 private slots:
     void onLoadButtonClicked();
     void onSaveButtonClicked();
 
 private:
+    Game& game;
+    FileIO io;
+
     QHBoxLayout *toolbar;
     QPushButton *loadButton;
     QPushButton *saveButton;

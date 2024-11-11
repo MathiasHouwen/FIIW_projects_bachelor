@@ -1,0 +1,112 @@
+{
+    "board": [
+        [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        ],
+        [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        ],
+        [
+            null,
+            null,
+            null,
+            null,
+            {
+                "direction": {
+                    "x": 0,
+                    "y": 0
+                },
+                "player_colour": "red",
+                "type": "Elephant"
+            },
+            {
+                "direction": {
+                    "x": 0,
+                    "y": 0
+                },
+                "player_colour": "red",
+                "type": "Elephant"
+            },
+            null,
+            null
+        ],
+        [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        ],
+        [
+            null,
+            null,
+            {
+                "direction": {
+                    "x": 0,
+                    "y": 0
+                },
+                "player_colour": "red",
+                "type": "Boat"
+            },
+            null,
+            null,
+            null,
+            null,
+            null
+        ],
+        [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        ],
+        [
+            null,
+            null,
+            null,
+            null,
+            {
+                "direction": {
+                    "x": 0,
+                    "y": 0
+                },
+                "player_colour": "green",
+                "type": "Pawn"
+            },
+            null,
+            null,
+            null
+        ],
+        [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        ]
+    ]
+}

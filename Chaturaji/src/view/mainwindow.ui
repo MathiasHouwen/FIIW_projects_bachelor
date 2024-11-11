@@ -42,7 +42,7 @@
     <number>4</number>
    </property>
    <item>
-    <widget class="QFrame" name="topBar">
+    <widget class="QWidget" name="topBar" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -54,12 +54,6 @@
        <width>0</width>
        <height>32</height>
       </size>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::Shape::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Shadow::Raised</enum>
      </property>
     </widget>
    </item>

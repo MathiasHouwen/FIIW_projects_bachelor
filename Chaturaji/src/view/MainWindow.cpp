@@ -33,7 +33,9 @@ MainWindow::MainWindow(QWidget *parent) :
     auto playerView = new PlayerView(nullptr, player);
     ui->sidePanel->layout()->addWidget(playerView);
 
-    // auto ioView = new FileIOView(ui->boardPanel);
+    auto ioView = new FileIOView(ui->topBar);
+
+
     model.doubleDobbel();
 }
 

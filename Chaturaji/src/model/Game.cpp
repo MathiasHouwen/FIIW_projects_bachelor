@@ -30,10 +30,10 @@ bool Game::selectPiece(QPoint cell) {
     if(piece.getPlayer() != getCurrentPlayer()) return false;   // mag enkel jouw eigen piece selecteren
 
     if(piece.getType() == dice.first){  // mag enkel een piece selecteren met type van de gegooide dobbelsteen
-        dice.first = Piece::Type::USED; // used = bobbelsteen is al gekozen in vorige move
+        dice.first = Piece::Type::KING; // used = bobbelsteen is al gekozen in vorige move
         emit somethingChanged();
     } else if (piece.getType() == dice.second){
-        dice.second = Piece::Type::USED;
+        dice.second = Piece::Type::KING;
         emit somethingChanged();
     } else return false;
 
@@ -62,12 +62,14 @@ bool Game::movePiece(QPoint destinationCell) {
     // maak selectie leeg
     delete currentlySelectedCell;
     currentlySelectedCell = nullptr;
+    emit somethingChanged();
     return true;
 }
 
 void Game::advance() {
     move++;
     if(move > 1) { // als 2e move voorbij, reset move en advance de turn
+        doubleDobbel();
         move = 0;
         // probeer 4 keer de turn te verzetten
         int turnAttempts;

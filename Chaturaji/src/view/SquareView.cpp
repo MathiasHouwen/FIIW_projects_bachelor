@@ -56,47 +56,69 @@ void SquareView::resizeEvent(QResizeEvent *event) {
 
 void SquareView::enterEvent(QEnterEvent *event) {
     QWidget::enterEvent(event);
-    color = cell.x() % 2 ^ cell.y() % 2 ? QColorConstants::Svg::white : QColorConstants::Svg::blanchedalmond;
-    border = Qt::darkRed;
-    if(pieceView)
+    if (border == Qt::transparent) {
+        color = cell.x() % 2 ^ cell.y() % 2 ? QColorConstants::Svg::white : QColorConstants::Svg::blanchedalmond;
+        border = Qt::darkRed;
+    }
+
+    if (pieceView) {
         pieceView->setHovered(true);
+    }
     update();
 }
 
 void SquareView::leaveEvent(QEvent *event) {
     QWidget::leaveEvent(event);
-    color = cell.x() % 2 ^ cell.y() % 2 ? QColorConstants::Svg::beige : QColorConstants::Svg::burlywood;
-    border = Qt::transparent;
-    if(pieceView)
+
+    if (border == Qt::darkRed) {
+        color = cell.x() % 2 ^ cell.y() % 2 ? QColorConstants::Svg::beige : QColorConstants::Svg::burlywood;
+        border = Qt::transparent;
+    }
+
+    if (pieceView) {
         pieceView->setHovered(false);
+    }
     update();
 }
 
+
 void SquareView::getHighLight() {
-    if(border != Qt::transparent) return;
+    if (border != Qt::darkRed) {
+        border = Qt::transparent;
+        color = cell.x() % 2 ^ cell.y() % 2 ? QColorConstants::Svg::beige : QColorConstants::Svg::burlywood;
+    }
+
     QPoint* selection = model.getCurrentlySelectedCell();
-    if(selection && *selection == cell){
+    if (selection && *selection == cell) {
         border = QColorConstants::Svg::aquamarine;
         color = QColorConstants::Svg::darkseagreen;
     }
-    else if(selection && model.getPossibleMoves().contains(cell))
+    else if (selection && model.getPossibleMoves().contains(cell)) {
         border = QColorConstants::Svg::lightseagreen;
+    }
 
     Piece* piece = model.getBoard().getCell(cell);
-    if(piece){
-        if(!selection && piece->getPlayer() == model.getCurrentPlayer()
-           && (piece->getType() == model.getDice().first
-               || piece->getType() == model.getDice().second)){
+    if (piece) {
+        if (!selection && piece->getPlayer() == model.getCurrentPlayer()
+            && (piece->getType() == model.getDice().first
+                || piece->getType() == model.getDice().second)) {
             border = QColorConstants::Svg::lightseagreen;
-        }
+                }
     }
 }
 
+
 void SquareView::mouseReleaseEvent(QMouseEvent *event) {
     QWidget::mouseReleaseEvent(event);
-    model.selectPiece(cell);
 
+    model.selectPiece(cell);
     bool move = model.movePiece(cell);
-    if(move) model.advance();
+
+    if (move) {
+        model.advance();
+    }
+
+    getHighLight();
     update();
 }
+

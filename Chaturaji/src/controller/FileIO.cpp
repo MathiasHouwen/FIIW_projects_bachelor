@@ -107,9 +107,13 @@ QJsonObject FileIO::playersToJson(){
     return jsonObject;
 }
 
-QJsonObject FileIO::playerToJson(){
+QJsonObject FileIO::playerToJson(Player* player){
     QJsonObject jsonObject;
-
+    if (player != nullptr){
+        jsonObject["naam"] = player->getName();
+        jsonObject["colour"] = Player::getColourName(player->getColour());
+        jsonObject["score"] = player->getScore();
+    }
     return jsonObject;
 }
 

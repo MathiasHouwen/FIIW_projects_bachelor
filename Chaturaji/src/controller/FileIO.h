@@ -24,6 +24,10 @@ private:
     static QJsonDocument generateJSONfile(const Board* board);
 
     static void jsonToBoard(QJsonObject boardObject, Game *gamemodel);
+
+    QJsonObject playersToJson();
+
+    QJsonObject playerToJson();
 };
 
 #endif //CHATURAJI_FILEIO_H

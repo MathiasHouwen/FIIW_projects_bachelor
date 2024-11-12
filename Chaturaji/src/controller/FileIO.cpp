@@ -101,6 +101,19 @@ QJsonObject FileIO::pieceToJson(const Piece* piece){
     return jsonObject;
 }
 
+QJsonObject FileIO::playersToJson(){
+    QJsonObject jsonObject;
+
+    return jsonObject;
+}
+
+QJsonObject FileIO::playerToJson(){
+    QJsonObject jsonObject;
+
+    return jsonObject;
+}
+
+// TODO: ADD PLAYER INFORMATION (Score, name, colour, currentplayer)
 QJsonDocument FileIO::generateJSONfile(const Board* board) {
     QJsonArray boardArray;
 

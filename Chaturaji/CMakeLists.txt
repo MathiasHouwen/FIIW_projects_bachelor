@@ -26,8 +26,8 @@ add_executable(Chaturaji
         src/view/CLIView.cpp
         src/model/Board.h
         src/model/Board.cpp
-        src/controller/Controller.h
-        src/controller/Controller.cpp
+        src/controller/CLI_Controller.h
+        src/controller/CLI_Controller.cpp
         src/model/PatternMover.h
         src/model/PatternMover.cpp
         src/model/Piece.h
@@ -56,6 +56,9 @@ add_executable(Chaturaji
         src/view/FileIOView.cpp
         src/view/FileIOView.h
         src/view/FileIOView.h
+        src/controller/Controller.cpp
+        src/controller/Controller.h
+        src/controller/Controller.h
 )
 target_link_libraries(Chaturaji Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::SvgWidgets Qt${QT_VERSION_MAJOR}::Xml)
 

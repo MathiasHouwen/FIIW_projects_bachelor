@@ -71,21 +71,9 @@ void FileIO::jsonToBoard(QJsonObject boardObject, Game* gamemodel){
     }
 }
 
-int FileIO::saveBoard(const Board* board, QString filePath){
-    QFile file = QFile(filePath);
-
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        qDebug() << "Could not open file for writing:" << file.errorString();
-        return EXIT_FAILURE;
-    }
-
-    QJsonDocument jsonDocument = generateJSONfile(board);
-    file.write(jsonDocument.toJson());
-    file.close();
-
-    qDebug() << "File written successfully.";
-    return 0; // Exit successfully
-}
+// ==========================
+// == Saving functionality ==
+// ==========================
 
 QJsonObject FileIO::pieceToJson(const Piece* piece){
     QJsonObject jsonObject;
@@ -101,20 +89,7 @@ QJsonObject FileIO::pieceToJson(const Piece* piece){
     return jsonObject;
 }
 
-QJsonObject FileIO::playersToJson(Player* players, Player* curr){
-    QJsonObject jsonObject;
-    QJsonArray playersJson;
-
-    // TODO: REMOVE MAGIC NUMBER
-    for (int i = 0; i<=3; i++){
-        playersJson.append(playerToJson(&players[i]));
-    }
-    jsonObject["All"] = playersJson;
-    jsonObject["Current"] = Player::getColourName(curr->getColour());
-    return jsonObject;
-}
-
-QJsonObject FileIO::playerToJson(Player* player){
+QJsonObject FileIO::playerToJson(const Player* player){
     QJsonObject jsonObject;
     if (player != nullptr){
         jsonObject["naam"] = player->getName();
@@ -124,10 +99,23 @@ QJsonObject FileIO::playerToJson(Player* player){
     return jsonObject;
 }
 
-// TODO: ADD PLAYER INFORMATION (Score, name, colour, currentplayer)
-QJsonDocument FileIO::generateJSONfile(const Board* board) {
-    QJsonArray boardArray;
+QJsonObject FileIO::playersToJson(const Player* players, Player curr){
+    QJsonObject jsonObject;
+    QJsonArray playersJson;
 
+    // TODO: REMOVE MAGIC NUMBER
+    for (int i = 0; i<=3; i++){
+        playersJson.append(playerToJson(&players[i]));
+    }
+    jsonObject["allPlayers"] = playersJson;
+    jsonObject["currentPlayer"] = Player::getColourName(curr.getColour());
+
+    return jsonObject;
+}
+
+QJsonObject FileIO::boardToJson(const Board* board){
+    QJsonObject boardObject;
+    QJsonArray boardArray;
     for(int x=0; x<Board::getSize(); x++){
         QJsonArray row;
         for(int y=0; y<Board::getSize(); y++){
@@ -141,9 +129,27 @@ QJsonDocument FileIO::generateJSONfile(const Board* board) {
         }
         boardArray.append(row);
     }
-
-    QJsonObject boardObject;
     boardObject["board"] = boardArray;
-    QJsonDocument doc(boardObject);
-    return doc;
+    return boardObject;
+}
+
+
+int FileIO::saveBoard(Game* game, QString filePath){
+    QFile file = QFile(filePath);
+
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        qDebug() << "Could not open file for writing:" << file.errorString();
+        return EXIT_FAILURE;
+    }
+
+    QJsonObject rootJsonObject;
+    rootJsonObject["board"] = boardToJson(&(game->getBoard()))["board"];
+    rootJsonObject["players"] = playersToJson(game->getPlayers(), game->getCurrentPlayer());
+    QJsonDocument jsonDocument(rootJsonObject);
+
+    file.write(jsonDocument.toJson());
+    file.close();
+
+    qDebug() << "File written successfully.";
+    return 0; // Exit successfully
 }

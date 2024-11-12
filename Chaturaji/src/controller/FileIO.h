@@ -14,20 +14,20 @@ class FileIO {
 public:
     explicit FileIO();
 
-    int saveBoard(const Board* board, QString filePath);
+    int saveBoard(Game *game, QString filePath);
     void loadBoard(Game *game, QString filePath);
 
     static Piece jsonToPiece(const QJsonObject& jsonObject, Game* gamemodel);
 
 private:
-    static QJsonObject pieceToJson(const Piece* piece);
-    static QJsonDocument generateJSONfile(const Board* board);
-
     static void jsonToBoard(QJsonObject boardObject, Game *gamemodel);
 
-    QJsonObject playerToJson(Player *player);
+    static QJsonObject pieceToJson(const Piece* piece);
+    static QJsonObject boardToJson(const Board *board);
+    QJsonObject playerToJson(const Player *player);
+    QJsonObject playersToJson(const Player *players, Player curr);
 
-    QJsonObject playersToJson(Player *players, Player *curr);
+    QJsonDocument generateJson(Game *game);
 };
 
 #endif //CHATURAJI_FILEIO_H

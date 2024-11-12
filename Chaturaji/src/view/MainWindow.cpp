@@ -29,9 +29,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
     auto boardView = new BoardView(model, ui->boardPanel);
 
-    auto player = new Player(Player::colour::RED);
-    auto playerView = new PlayerView(nullptr, player);
-    ui->sidePanel->layout()->addWidget(playerView);
+//    auto player = new Player(Player::colour::RED);
+//    auto playerView = new PlayerView(nullptr, player);
+//    ui->sidePanel->layout()->addWidget(playerView);
+    for (Player::colour color : { Player::colour::RED, Player::colour::BLUE, Player::colour::GREEN, Player::colour::YELLOW }) {
+        auto player = new Player(color);
+        auto playerView = new PlayerView(nullptr, player);
+        ui->sidePanel->layout()->addWidget(playerView);
+    }
 
     auto ioView = new FileIOView(model, ui->topBar);
 

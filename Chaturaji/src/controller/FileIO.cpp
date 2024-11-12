@@ -71,6 +71,7 @@ void FileIO::jsonToBoard(QJsonObject boardObject, Game* gamemodel){
     }
 }
 
+// TODO: DIRECTION BUGS, ALWAYS X=0 Y=0
 // ==========================
 // == Saving functionality ==
 // ==========================

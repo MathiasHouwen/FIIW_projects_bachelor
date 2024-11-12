@@ -136,4 +136,8 @@ bool Game::isGameOver() const {
     return gameOver;
 }
 
+const Player *Game::getPlayers() const {
+    return players;
+}
+
 

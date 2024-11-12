@@ -44,6 +44,7 @@ public:
     QSet<QPoint> getPossibleMoves(); // geeft de mogelijke bestemming-cells van de huidige geselecteerde piece (select=null->lege set)
     Player &getCurrentPlayer(); // player van de huidige turn
     Player &getPlayerFromColour(Player::colour colour); // zoek de player op basis van kleur
+    const Player *getPlayers() const;
 };
 
 

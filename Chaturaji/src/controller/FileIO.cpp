@@ -101,9 +101,16 @@ QJsonObject FileIO::pieceToJson(const Piece* piece){
     return jsonObject;
 }
 
-QJsonObject FileIO::playersToJson(){
+QJsonObject FileIO::playersToJson(Player* players, Player* curr){
     QJsonObject jsonObject;
+    QJsonArray playersJson;
 
+    // TODO: REMOVE MAGIC NUMBER
+    for (int i = 0; i<=3; i++){
+        playersJson.append(playerToJson(&players[i]));
+    }
+    jsonObject["All"] = playersJson;
+    jsonObject["Current"] = Player::getColourName(curr->getColour());
     return jsonObject;
 }
 

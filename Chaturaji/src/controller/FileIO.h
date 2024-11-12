@@ -25,8 +25,9 @@ private:
 
     static void jsonToBoard(QJsonObject boardObject, Game *gamemodel);
 
-    QJsonObject playersToJson();
     QJsonObject playerToJson(Player *player);
+
+    QJsonObject playersToJson(Player *players, Player *curr);
 };
 
 #endif //CHATURAJI_FILEIO_H

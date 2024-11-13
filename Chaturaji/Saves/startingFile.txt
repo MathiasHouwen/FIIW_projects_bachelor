@@ -208,32 +208,5 @@
             	"type": "Boat"
             }
         ]
-    ],
-    "players": {
-            "allPlayers": [
-                {
-                    "colour": "red",
-                    "naam": "new player",
-                    "score": 0
-                },
-                {
-                    "colour": "blue",
-                    "naam": "new player",
-                    "score": 0
-                },
-                {
-                    "colour": "yellow",
-                    "naam": "new player",
-                    "score": 0
-                },
-                {
-                    "colour": "green",
-                    "naam": "new player",
-                    "score": 0
-                }
-            ],
-            "currentPlayer": "red"
-        }
-    }
-
+    ]
 }

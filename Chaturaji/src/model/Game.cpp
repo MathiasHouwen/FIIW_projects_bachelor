@@ -142,6 +142,7 @@ QSet<QPoint> Game::getPossibleSelections() {
             selectables.insert({x,y});
         }
     }}
+    return selectables;
 }
 
 

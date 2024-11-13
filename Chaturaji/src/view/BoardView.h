@@ -21,7 +21,7 @@ private:
 public:
     explicit BoardView(QWidget* widget);
     void updateHighlight(QPoint cell, SquareView::HighLight highlight);
-    void updateHighlights(const QList<QPoint>& cells, SquareView::HighLight highlight);
+    void updateHighlights(const QSet<QPoint>& cells, SquareView::HighLight highlight);
     void updatePiece(QPoint cell, Piece* piece);
     void updateFullBoard(const Board& board);
     ~BoardView() override;

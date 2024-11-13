@@ -19,7 +19,8 @@ private:
     QSet<QPoint> currentHighlights{};
     void start();
     void clearHighLights();
-    void setHighLights();
+    void setSelectionHighlights();
+    void setMoveHightlights();
 public:
     Controller(Game &model, BoardView* boardView);
 

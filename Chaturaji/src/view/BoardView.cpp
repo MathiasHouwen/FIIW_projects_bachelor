@@ -38,7 +38,7 @@ void BoardView::updateHighlight(QPoint cell, SquareView::HighLight highlight) {
     squareViews[cell.x()][cell.y()]->updateHighLight(highlight);
 }
 
-void BoardView::updateHighlights(const QList<QPoint>& cells, SquareView::HighLight highlight) {
+void BoardView::updateHighlights(const QSet<QPoint>& cells, SquareView::HighLight highlight) {
     for(QPoint cell : cells){
         updateHighlight(cell, highlight);
     }

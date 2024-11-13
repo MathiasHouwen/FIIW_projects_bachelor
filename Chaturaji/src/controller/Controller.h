@@ -1,30 +1,32 @@
 //
-// Created by ebbew on 7-10-2024.
+// Created by ebbew on 12-11-2024.
 //
 
 #ifndef CHATURAJI_CONTROLLER_H
 #define CHATURAJI_CONTROLLER_H
 
+#include <qobject.h>
+#include <qobjectdefs.h>
+#include "../model/Game.h"
+#include "../view/BoardView.h"
 
-#include "../view/CLIView.h"
-#include "ConsoleIO.h"
+class Controller: public QObject{
+Q_OBJECT
 
-class Controller {
 private:
-    Game& gameModel;
-    CLIView& gameView;
-    ConsoleIO io;
-
-    void loop();    // game loop
-    void setup();   // initele game setup
-
-    // vraagt een cell en gebruikt deze voor een game functie
-    // indien ongeldig, vraagt opnieuw
-    // indien het antwoord een exit request was, stopt de app ook
-    void askCellProcedure(const std::function<bool(QPoint)>& gameFunc);
+    Game& model;
+    BoardView* boardView;
+    QSet<QPoint> currentHighlights{};
+    void start();
+    void clearHighLights();
+    void setSelectionHighlights();
+    void setMoveHightlights();
 public:
-    Controller(Game &gameModel, CLIView &gameView);
-    void start(); // roept setup en loop aan
+    Controller(Game &model, BoardView* boardView);
+
+private slots:
+    void onCellClicked(QPoint cell);
+    void onCellHoverChanged(QPoint cell, bool hover);
 };
 
 

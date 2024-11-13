@@ -5,7 +5,7 @@
 #include <QDir>
 #include "view/CLIView.h"
 #include "model/Game.h"
-#include "controller/Controller.h"
+#include "controller/CLI_Controller.h"
 #include "controller/FileIO.h"
 #include "model/Square.h"
 #include "view/MainWindow.h"
@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 
 
 //    GameView view(model);
-//    Controller controller(model, view);
+//    CLI_Controller controller(model, view);
 //
 //
 //

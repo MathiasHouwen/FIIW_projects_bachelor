@@ -10,6 +10,8 @@
 
 Game::Game() : board(), mover(board) {
     currentlySelectedCell = nullptr;
+    doubleDobbel();
+    emit somethingChanged();
 }
 
 void Game::doubleDobbel() {
@@ -19,7 +21,7 @@ void Game::doubleDobbel() {
     emit somethingChanged();
 }
 
-void Game::namePlayer(const QString& name, int playerIndex) {
+void Game::setPlayerName(const QString& name, int playerIndex) {
     Player& player = players[playerIndex];
     player.setName(name);
 }
@@ -35,41 +37,35 @@ void Game::setPlayerScore(int score, Player::colour playerColour){
 }
 
 bool Game::selectPiece(QPoint cell) {
-    bool changed = false;
     if(board.isCellEmpty(cell)) return false;   // mag geen leeg vak selecteren
     Piece piece = *board.getCell(cell);
     if(piece.getPlayer() != getCurrentPlayer()) return false;   // mag enkel jouw eigen piece selecteren
 
-    for(Piece::Type type : dice.first) {
-        if(piece.getType() == type){  // mag enkel een piece selecteren met type van de gegooide dobbelsteen
-            std::cout << "first dice changed" << std::endl;
-            changed = true;
-            dice.first = {Piece::Type::USED, Piece::Type::USED}; // used = bobbelsteen is al gekozen in vorige move
-            emit somethingChanged();
-        }
-    }
-
-    for(Piece::Type type : dice.second) {
-        if (piece.getType() == type && !changed) {
-            std::cout << "second dice changed" << std::endl;
-            dice.second = {Piece::Type::USED, Piece::Type::USED};
-            emit somethingChanged();
-        }
-    }
-
-    if(dice.first[0] != Piece::Type::USED && dice.second[0] != Piece::Type::USED) {return false;}
+    if(dice.first.contains(piece.getType()) && dice.second.contains(piece.getType()))
+        return false;
 
     // update selectie
     delete currentlySelectedCell;
     currentlySelectedCell = new QPoint(cell);
+
+    moveState = MoveState::READYTOMOVE;
 
     return true;
 }
 
 bool Game::movePiece(QPoint destinationCell) {
     QSet<QPoint> moves = getPossibleMoves(); // get mogelijke moves voor selectie
-    if(!moves.contains(destinationCell)) return false;  // keuze van eind-cell moet in mogelijke moves zitten
+    if(destinationCell == *currentlySelectedCell){
+        moveState = MoveState::READYTOSELECT;
+        return true;
+    }
 
+    if(!moves.contains(destinationCell)) return false;  // keuze van eind-cell moet in mogelijke moves zitten
+    Piece piece = *board.getCell(*currentlySelectedCell);
+    if(dice.first.contains(piece.getType())) // mag enkel een piece selecteren met type van de gegooide dobbelsteen
+        dice.first[0] = Piece::Type::USED; // used = bobbelsteen is al gekozen in vorige move
+    else if (dice.second.contains(piece.getType())
+        dice.second[0] = Piece::Type::USED;
     int scoreToAdd = 0;
     Piece* destPiece = board.getCell(destinationCell);
     // als er een piece ligt, is dit een aanval, dus worden punten geteld
@@ -85,6 +81,8 @@ bool Game::movePiece(QPoint destinationCell) {
     delete currentlySelectedCell;
     currentlySelectedCell = nullptr;
     emit somethingChanged();
+    moveState = MoveState::READYTOSELECT;
+    advance();
     return true;
 }
 
@@ -135,31 +133,38 @@ QSet<QPoint> Game::getPossibleMoves() {
 /*
  * SIMPELE GETTERS
  */
-
-QPoint* Game::getCurrentlySelectedCell() const {
-    return currentlySelectedCell;
-}
-const QPair<std::vector<Piece::Type>, std::vector<Piece::Type>> &Game::getDice() const {
-    return dice;
-}
-int Game::getMove() const {
-    return move;
-}
-Board& Game::getBoard() {
-    return board;
-}
 Player& Game::getCurrentPlayer(){
     return players[turn];
 }
 Player& Game::getPlayerFromColour(Player::colour colour){
     return players[(int) colour];
 }
-bool Game::isGameOver() const {
-    return gameOver;
+
+QPoint* Game::getCurrentlySelectedCell() const {return currentlySelectedCell;}
+const QPair<Piece::Type, Piece::Type> &Game::getDice() const {return dice;}
+int Game::getMove() const {return move;}
+Board& Game::getBoard() {return board;}
+bool Game::isGameOver() const {return gameOver;}
+const Player *Game::getPlayers() const {return players;}
+Game::MoveState Game::getMoveState() const{return moveState;}
+
+QSet<QPoint> Game::getPossibleSelections() {
+    QSet<QPoint> selectables{};
+
+    for(int x=0; x<Board::getSize(); x++){
+    for(int y=0; y<Board::getSize(); y++){
+        Piece* piece = board.getCell({x,y});
+        if(piece && piece->getPlayer() == getCurrentPlayer()
+            && (piece->getType() == dice.first
+            || piece->getType() == dice.second)){
+            selectables.insert({x,y});
+        }
+    }}
+    return selectables;
 }
 
-const Player *Game::getPlayers() const {
-    return players;
+void Game::skip() {
+    advance();
 }
 
 

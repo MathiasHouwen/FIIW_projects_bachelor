@@ -17,6 +17,7 @@
 #include "../controller/FileIO.h"
 #include "PlayerView.h"
 #include "FileIOView.h"
+#include "../controller/Controller.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -24,10 +25,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&model, &Game::somethingChanged, this, &MainWindow::setText);
     ui->setupUi(this);
 
-    FileIO io;
-    io.loadBoard(&model, "../startingFile.txt");
-
-    auto boardView = new BoardView(model, ui->boardPanel);
+    auto boardView = new BoardView(ui->boardPanel);
+    auto controller = new Controller(model, boardView);
 
 //    auto player = new Player(Player::colour::RED);
 //    auto playerView = new PlayerView(nullptr, player);
@@ -40,8 +39,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     auto ioView = new FileIOView(model, ui->topBar);
 
-
-    model.doubleDobbel();
 }
 
 MainWindow::~MainWindow() {

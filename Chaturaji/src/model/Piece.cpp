@@ -77,11 +77,11 @@ std::vector<Piece::Type> Piece::getTypeFromDobbel(int number) {
     return result;
 }
 
-QString Piece::getTypeName(std::vector<Type> type) {
-    switch(type[0]) {
-        case Type::PAWN: return "Pawn or King";
+QString Piece::getTypeName(Type type) {
+    switch(type) {
+        case Type::PAWN: return "Pawn";
         case Type::KNIGHT: return "Horse";
-        case Type::KING: return "Pawn or King";
+        case Type::KING: return "King";
         case Type::BOAT: return "Boat";
         case Type::ELEPH: return "Elephant";
         default: return "invalid";

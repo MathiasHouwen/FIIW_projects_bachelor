@@ -113,7 +113,7 @@ void SquareView::leaveEvent(QEvent *event) {
 //            border = QColorConstants::Svg::lightseagreen;
 //                }
 //    }
-}
+//}
 
 //void SquareView::paintEvent(QPaintEvent *event) {
 //    QWidget::paintEvent(event);

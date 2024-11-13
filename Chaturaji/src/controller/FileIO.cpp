@@ -53,7 +53,7 @@ void FileIO::jsonToPlayers(Game* game, QJsonObject rootObj){
         Player::colour colour = Player::getColourFromName(colourStr);
 
         QString naam = playerObj["naam"].toString();
-        game->namePlayer(naam, colour);
+        game->setPlayerName(naam, colour);
 
         int score = playerObj["score"].toInt();
         game->setPlayerScore(score, colour);

@@ -8,6 +8,7 @@
 #include "Board.h"
 #include "PatternMover.h"
 #include "Player.h"
+#include "Dice.h"
 
 class Game: public QObject{
 Q_OBJECT
@@ -16,31 +17,33 @@ signals:
 public:
     enum class MoveState{READYTOSELECT, READYTOMOVE};
 private:
+    // model classes
     Board board;    // bord
     PatternMover mover; // logica voor piece patronen
+    Dice dice;
+    Player players[4] = {{Player::colour::RED}, {Player::colour::BLUE}, {Player::colour::YELLOW}, {Player::colour::GREEN}};
+
+    // state
     QPoint* currentlySelectedCell;  // selectie, geen = null (1 move is eerst cell selecteren, dan volgende cell om te moven)
-    QPair<std::vector<Piece::Type>, std::vector<Piece::Type>> dice;   // 2 piece types van de dobbelsteen
     MoveState moveState{MoveState::READYTOSELECT};
     int move{0};    // elke beurt heeft 2 moves (move = 0 / 1)
     int turn{0};    // player beurt (0-3)
     bool gameOver{false};
-    Player players[4] = {{Player::colour::RED}, {Player::colour::BLUE}, {Player::colour::YELLOW}, {Player::colour::GREEN}};
-    void advance(); // zet game verder naar volgende move, of volgende turn als 2 moves geweest zijn
 
+    void advance(); // zet game verder naar volgende move, of volgende turn als 2 moves geweest zijn
 
 public:
     Game();
     //directe getters
     QPoint* getCurrentlySelectedCell() const;
-    const QPair<std::vector<Piece::Type>, std::vector<Piece::Type>> &getDice() const;
     int getMove() const;
     Board& getBoard();
     bool isGameOver() const;
     MoveState getMoveState() const;
 
+    Dice getDice();
+
     void skip();
-    void doubleDobbel();    // geeft de dice nieuwe random waarden
-    void setPlayerName(const QString& name, int playerIndex);  // geeft een naam aan een player
 
     bool selectPiece(QPoint cell);  // selecteert een cell en returnt of die keuze geldig is
     bool movePiece(QPoint destinationCell); // selecteert de cell om de geselecteerde piece naar te verzetten en returnt of dit geldig is
@@ -51,7 +54,7 @@ public:
     Player &getPlayerFromColour(Player::colour colour); // zoek de player op basis van kleur
     const Player *getPlayers() const;
 
-    void namePlayer(const QString &name, Player::colour playerColour);
+    void setPlayerName(const QString &name, Player::colour playerColour);
 
     void setPlayerScore(int score, Player::colour playerColour);
 };

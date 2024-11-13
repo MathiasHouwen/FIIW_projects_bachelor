@@ -20,14 +20,14 @@ add_executable(Chaturaji
         src/main.cpp
         src/model/Game.h
         src/model/Game.cpp
-        src/view/CLIView.h
-        src/controller/ConsoleIO.h
-        src/controller/ConsoleIO.cpp
-        src/view/CLIView.cpp
+#        src/view/CLIView.h
+#        src/controller/ConsoleIO.h
+#        src/controller/ConsoleIO.cpp
+#        src/view/CLIView.cpp
         src/model/Board.h
         src/model/Board.cpp
-        src/controller/CLI_Controller.h
-        src/controller/CLI_Controller.cpp
+#        src/controller/CLI_Controller.h
+#        src/controller/CLI_Controller.cpp
         src/model/PatternMover.h
         src/model/PatternMover.cpp
         src/model/Piece.h

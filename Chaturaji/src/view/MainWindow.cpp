@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
         QWidget(parent), ui(new Ui::MainWindow) {
     connect(&model, &Game::somethingChanged, this, &MainWindow::setText);
     ui->setupUi(this);
+    setText();
 
     auto boardView = new BoardView(ui->boardPanel);
     auto controller = new Controller(model, boardView);
@@ -74,6 +75,11 @@ void MainWindow::setText() {
     t << ", name: " << model.getCurrentPlayer().getName();
     t << ", score: " << model.getCurrentPlayer().getScore() << "}";
     t << "  |   move:" << model.getMove();
-    t << "  |   dice: [" << Piece::getTypeName(model.getDice().first) << ", " << Piece::getTypeName(model.getDice().second) << "]";
+    t << "  |   dice nums: [" << model.getDice().getNumber(0) << ": " << (model.getDice().isUsed(0) ? "used" : "free");
+    t << ", " << model.getDice().getNumber(1) << ": " << (model.getDice().isUsed(1) ? "used" : "free") << "]";
+    t << "  |   dice pieces: [";
+    for(Piece::Type type : model.getDice().getAllowedTypes())
+        t << Piece::getTypeName(type) << ",";
+    t << "]";
     ui->debugLabel->setText(s);
 }

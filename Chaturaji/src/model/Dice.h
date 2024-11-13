@@ -19,6 +19,10 @@ public:
     void doubleDobbel();
     Dice();
     bool allows(Piece::Type type);
+    int getNumber(int die);
+    bool isUsed(int die);
+    void setUsed(Piece::Type type);
+    QSet<Piece::Type> getAllowedTypes();
 private:
     static constexpr Piece::Type typesMap[6][2] = {
             {Piece::Type::PAWN, Piece::Type::KING},

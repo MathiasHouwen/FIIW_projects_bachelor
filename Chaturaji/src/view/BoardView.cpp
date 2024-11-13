@@ -10,15 +10,19 @@
 #include "SquareView.h"
 
 BoardView::BoardView(QWidget* parent) : QWidget(parent) {
-    layout = new QGridLayout(this);
-    layout->setSpacing(0);
+    layoutRows = new QVBoxLayout(this);
+    layoutRows->setSpacing(0);
 
-    for(int x=0; x<Board::getSize(); x++){
     for(int y=0; y<Board::getSize(); y++){
-        auto squareView = new SquareView(nullptr, {x, y});
-        connect(squareView, &SquareView::clicked, this, &BoardView::onSquareViewClicked);
-        layout->addWidget(squareView, x, y);
-    }}
+        auto layoutCols = new QHBoxLayout();
+        layoutCols->setSpacing(0);
+        layoutRows->addLayout(layoutCols);
+        for(int x=0; x<Board::getSize(); x++){
+            auto squareView = new SquareView(nullptr, {x, y});
+            connect(squareView, &SquareView::clicked, this, &BoardView::onSquareViewClicked);
+            layoutCols->addWidget(squareView);
+        }
+    }
 }
 
 //BoardView::BoardView(Game& model, QWidget *parent)

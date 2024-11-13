@@ -16,9 +16,9 @@ Q_OBJECT
 
 private:
     Game& model;
-    BoardView& boardView;
+    BoardView* boardView;
 public:
-    Controller(Game &model, BoardView& boardView);
+    Controller(Game &model, BoardView* boardView);
 
 private slots:
     void onCellClicked(QPoint cell);

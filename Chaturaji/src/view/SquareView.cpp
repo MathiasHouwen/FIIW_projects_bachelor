@@ -29,6 +29,7 @@ SquareView::SquareView(QWidget *parent, const QPoint &cell) : QWidget(parent), c
     pieceViewContainer = new QVBoxLayout(this);
     pieceViewContainer->setContentsMargins(2, 2, 2, 2);
     updateHighLight(HighLight::NONE);
+    //setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
 void SquareView::mousePressEvent(QMouseEvent *event) {
@@ -48,26 +49,7 @@ void SquareView::updatePiece(Piece *piece) {
     }
 }
 
-void SquareView::updateHighLight(SquareView::HighLight highLighter) {
-    auto colors = getFillAndBorder(highLighter);
-    QColor fill = colors.first;
-    QColor border = colors.second;
-    QPainter painter(this);
-    // fill
-    QRect square((width() - width()) / 2, (height() - height()) / 2, width(), height());
-    painter.fillRect(square, fill);
-    //border
-    QPen pen;
-    pen.setStyle(Qt::SolidLine);
-    pen.setColor(border);
-    pen.setWidth(5);
-    painter.setPen(pen);
-    painter.drawRect(square);
-}
-
-QPair<QColor, QColor> SquareView::getFillAndBorder(SquareView::HighLight highLighter) {
-    QColor fill;
-    QColor border;
+void SquareView::setFillAndBorder(SquareView::HighLight highLighter) {
     fill = getColor(defaultColor);
     switch (highLighter) {
         case HighLight::NONE:border = Qt::transparent;break;
@@ -79,14 +61,33 @@ QPair<QColor, QColor> SquareView::getFillAndBorder(SquareView::HighLight highLig
             border = QCol::aquamarine;
             fill = getColor(selectedColor);
             break;
-        case HighLight::SELECTSUGGEST: border = QCol::lightseagreen; break;break;
-        case HighLight::MOVESUGGEST: border = QCol::cornflowerblue; break;break;
+        case HighLight::SELECTSUGGEST: border = QCol::lightseagreen; break;
+        case HighLight::MOVESUGGEST: border = QCol::cornflowerblue; break;
         case HighLight::ATTACKSUGGEST:
             border = QCol::tomato;
             fill = getColor(attackColor);
             break;
     }
-    return {fill, border};
+}
+
+void SquareView::paintEvent(QPaintEvent *event) {
+    QWidget::paintEvent(event);
+    QPainter painter(this);
+    // fill
+    QRect square(0, 0, width(), height());
+    painter.fillRect(square, fill);
+    //border
+    QPen pen;
+    pen.setStyle(Qt::SolidLine);
+    pen.setColor(border);
+    pen.setWidth(5);
+    painter.setPen(pen);
+    painter.drawRect(square);
+}
+
+void SquareView::updateHighLight(SquareView::HighLight highLighter) {
+    setFillAndBorder(highLighter);
+    update();
 }
 
 //void SquareView::paintEvent(QPaintEvent *event) {
@@ -117,10 +118,10 @@ QPair<QColor, QColor> SquareView::getFillAndBorder(SquareView::HighLight highLig
 //    }
 //}
 //
-////void SquareView::resizeEvent(QResizeEvent *event) {
-////    QWidget::resizeEvent(event);
-////    update(); // repaint
-////}
+void SquareView::resizeEvent(QResizeEvent *event) {
+    QWidget::resizeEvent(event);
+    update(); // repaint
+}
 
 //void SquareView::enterEvent(QEnterEvent *event) {
 //    QWidget::enterEvent(event);

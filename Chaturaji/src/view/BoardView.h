@@ -16,7 +16,7 @@ class BoardView : public QWidget{
 Q_OBJECT
 
 private:
-    QGridLayout *layout;
+    QVBoxLayout *layoutRows;
     SquareView* squareViews[Board::getSize()][Board::getSize()];
 public:
     explicit BoardView(QWidget* widget);
@@ -32,7 +32,6 @@ private slots:
     void onSquareViewClicked(QPoint cell);
     //QVBoxLayout* rows;
     //Game& model;
-
     //explicit BoardView(Game& model, QWidget *parent = nullptr);
 
 

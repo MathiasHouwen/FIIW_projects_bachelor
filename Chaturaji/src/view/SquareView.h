@@ -33,9 +33,10 @@ private:
     constexpr static QPair<QColor, QColor> selectedColor{QCol::lightgreen, QCol::darkseagreen};
     constexpr static QPair<QColor, QColor> attackColor{QCol::lightsalmon, QCol::lightcoral};
     QColor getColor(QPair<QColor, QColor> colorPair);
-    QPair<QColor, QColor> getFillAndBorder(SquareView::HighLight highLighter);
+    void setFillAndBorder(SquareView::HighLight highLighter);
 
     const QPoint cell;
+    QColor fill, border;
     QVBoxLayout* pieceViewContainer;
     PieceWidgit* pieceView{nullptr};
 
@@ -51,10 +52,12 @@ signals:
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
 //    void paintEvent(QPaintEvent *event) override;
 //    void enterEvent(QEnterEvent *event) override;
 //    void leaveEvent(QEvent *event) override;
-//    void resizeEvent(QResizeEvent *event) override;
+
 //
 //    void mouseReleaseEvent(QMouseEvent *event) override;
 };

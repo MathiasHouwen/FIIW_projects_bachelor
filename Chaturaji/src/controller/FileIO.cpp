@@ -34,12 +34,17 @@ Piece FileIO::jsonToPiece(const QJsonObject &jsonObject, Game *gamemodel) {
     return Piece(type, direction, player);
 }
 
-void FileIO::jsonToPlayers(Game* game, QJsonObject playersObj){
-    if (!playersObj.contains("allPlayers") || !playersObj["allPlayers"].isArray()) {
-        qDebug() << "'board' key not found or is not an array in JSON.";
+void FileIO::jsonToPlayers(Game* game, QJsonObject rootObj){
+    if (!rootObj.contains("players")) {
+        qDebug() << "'players' key not found in playerObject";
+        return;
+    }
+    if (!rootObj["players"].isObject()){
+        qDebug() << "'players' is not an object in JSON.";
         return;
     }
 
+    QJsonObject playersObj = rootObj["players"].toObject();
     QJsonArray allPlayersArray = playersObj["allPlayers"].toArray();
     for (const QJsonValue& playerVal : allPlayersArray) {
         QJsonObject playerObj = playerVal.toObject();
@@ -90,22 +95,18 @@ void FileIO::loadBoard(Game* game, QString filePath){
 
     QJsonDocument doc = QJsonDocument::fromJson(fileData);
     QJsonObject rootObj = doc.object();
-    qDebug() << "Root JSON Object:" << rootObj;
-    qDebug() << "Root JSON Object keys:" << rootObj.keys();
 
     if (!rootObj.contains("board")) {
         qDebug() << "'board' key not found in JSON.";
         return;
     }
-    QJsonObject boardObj = rootObj["board"].toObject();
     FileIO::jsonToBoard(rootObj, game);
 
-//    if (!rootObj.contains("players")) {
-//        qDebug() << "'players' key not found or is not an array in JSON.";
-//        return;
-//    }
-//    QJsonObject playersObj = rootObj["players"].toObject();
-
+    if (!rootObj.contains("players")) {
+        qDebug() << "'players' key not found in JSON.";
+        return;
+    }
+    FileIO::jsonToPlayers(game, rootObj);
 }
 
 // TODO: DIRECTION BUGS, ALWAYS X=0 Y=0

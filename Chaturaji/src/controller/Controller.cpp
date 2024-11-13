@@ -5,6 +5,22 @@
 #include "Controller.h"
 #include "FileIO.h"
 
+
+Controller::Controller(Game &model, BoardView* boardView)
+        : QObject(nullptr), model(model), boardView(boardView) {
+    connect(boardView, &BoardView::cellClicked, this, &Controller::onCellClicked);
+    connect(boardView, &BoardView::cellHoverChanged, this, &Controller::onCellHoverChanged);
+    start();
+}
+
+void Controller::start() {
+    FileIO io;
+    io.loadBoard(&model, "../startingFile.txt");
+    boardView->updateFullBoard(model.getBoard());
+    clearHighLights();
+    setSelectionHighlights();
+}
+
 void Controller::onCellClicked(QPoint cell) {
     if(model.getMoveState() == Game::MoveState::READYTOSELECT){
         bool succes = model.selectPiece(cell);
@@ -24,33 +40,17 @@ void Controller::onCellClicked(QPoint cell) {
     }
 }
 
-Controller::Controller(Game &model, BoardView* boardView)
-    : QObject(nullptr), model(model), boardView(boardView) {
-    connect(boardView, &BoardView::cellClicked, this, &Controller::onCellClicked);
-    connect(boardView, &BoardView::cellHoverChanged, this, &Controller::onCellHoverChanged);
-    start();
-}
-
-void Controller::start() {
-    FileIO io;
-    io.loadBoard(&model, "../startingFile.txt");
-    boardView->updateFullBoard(model.getBoard());
-    clearHighLights();
-    setSelectionHighlights();
-}
-
 void Controller::onCellHoverChanged(QPoint cell, bool hover) {
-    if(hover && !currentHighlights.contains(cell)){
-        boardView->updateHighlight(cell, SquareView::HighLight::HOVER);
-    } else if(!currentHighlights.contains(cell)) {
-        boardView->updateHighlight(cell, SquareView::HighLight::NONE);
-    }
+    if(currentHighlights.contains(cell)) return; // behoud oude hightligts: hover highlight heeft lage prioriteit
+    auto highlight = hover
+            ? SquareView::HighLight::HOVER
+            : SquareView::HighLight::NONE;
+    boardView->updateHighlight(cell, highlight);
 }
 
 void Controller::clearHighLights() {
-    for(QPoint cell : currentHighlights){
+    for(QPoint cell : currentHighlights)
         boardView->updateHighlight(cell, SquareView::HighLight::NONE);
-    }
     currentHighlights.clear();
 }
 
@@ -63,11 +63,9 @@ void Controller::setSelectionHighlights() {
 void Controller::setMoveHightlights() {
     auto selectables = model.getPossibleMoves();
     for(QPoint cell : selectables){
-        SquareView::HighLight highlight;
-        if(model.getBoard().getCell(cell))
-            highlight = SquareView::HighLight::ATTACKSUGGEST;
-        else
-            highlight = SquareView::HighLight::MOVESUGGEST;
+        auto highlight = model.getBoard().getCell(cell)
+                ? SquareView::HighLight::ATTACKSUGGEST
+                : SquareView::HighLight::MOVESUGGEST;
         boardView->updateHighlight(cell, highlight);
         currentHighlights.insert(cell);
     }

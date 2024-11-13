@@ -30,7 +30,7 @@ void CLI_Controller::loop() {
         gameView.update();  // teken de view
         bool takeMove = io.askMoveConfirmation();   // vraag om move aan te nemen
         if(!takeMove){
-            gameModel.advance();    // skip de move
+            //gameModel.advance();    // skip de move
             continue;
         }
         // vraag de selectie cell
@@ -38,7 +38,7 @@ void CLI_Controller::loop() {
         gameView.update();
         // vraag de bestemming cell
         askCellProcedure([&](QPoint c)->bool{return gameModel.movePiece(c);});
-        gameModel.advance(); // ga verder naar volgende move of turn
+        //gameModel.advance(); // ga verder naar volgende move of turn
     }
 }
 

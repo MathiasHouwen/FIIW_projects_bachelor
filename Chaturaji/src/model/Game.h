@@ -25,6 +25,7 @@ private:
     int turn{0};    // player beurt (0-3)
     bool gameOver{false};
     Player players[4] = {{Player::colour::RED}, {Player::colour::BLUE}, {Player::colour::YELLOW}, {Player::colour::GREEN}};
+    void advance(); // zet game verder naar volgende move, of volgende turn als 2 moves geweest zijn
 
 
 public:
@@ -37,9 +38,9 @@ public:
     bool isGameOver() const;
     MoveState getMoveState() const;
 
+    void skip();
     void doubleDobbel();    // geeft de dice nieuwe random waarden
     void setPlayerName(const QString& name, int playerIndex);  // geeft een naam aan een player
-    void advance(); // zet game verder naar volgende move, of volgende turn als 2 moves geweest zijn
 
     bool selectPiece(QPoint cell);  // selecteert een cell en returnt of die keuze geldig is
     bool movePiece(QPoint destinationCell); // selecteert de cell om de geselecteerde piece naar te verzetten en returnt of dit geldig is

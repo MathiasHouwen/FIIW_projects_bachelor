@@ -39,8 +39,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     auto ioView = new FileIOView(model, ui->topBar);
 
-
-    model.doubleDobbel();
 }
 
 MainWindow::~MainWindow() {

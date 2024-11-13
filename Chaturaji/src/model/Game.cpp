@@ -10,6 +10,8 @@
 
 Game::Game() : board(), mover(board) {
     currentlySelectedCell = nullptr;
+    doubleDobbel();
+    emit somethingChanged();
 }
 
 void Game::doubleDobbel() {
@@ -29,13 +31,8 @@ bool Game::selectPiece(QPoint cell) {
     Piece piece = *board.getCell(cell);
     if(piece.getPlayer() != getCurrentPlayer()) return false;   // mag enkel jouw eigen piece selecteren
 
-    if(piece.getType() == dice.first){  // mag enkel een piece selecteren met type van de gegooide dobbelsteen
-        dice.first = Piece::Type::KING; // used = bobbelsteen is al gekozen in vorige move
-        emit somethingChanged();
-    } else if (piece.getType() == dice.second){
-        dice.second = Piece::Type::KING;
-        emit somethingChanged();
-    } else return false;
+    if(dice.first != piece.getType() && dice.second != piece.getType())
+        return false;
 
     // update selectie
     delete currentlySelectedCell;
@@ -48,8 +45,17 @@ bool Game::selectPiece(QPoint cell) {
 
 bool Game::movePiece(QPoint destinationCell) {
     QSet<QPoint> moves = getPossibleMoves(); // get mogelijke moves voor selectie
-    if(!moves.contains(destinationCell)) return false;  // keuze van eind-cell moet in mogelijke moves zitten
+    if(destinationCell == *currentlySelectedCell){
+        moveState = MoveState::READYTOSELECT;
+        return true;
+    }
 
+    if(!moves.contains(destinationCell)) return false;  // keuze van eind-cell moet in mogelijke moves zitten
+    Piece piece = *board.getCell(*currentlySelectedCell);
+    if(piece.getType() == dice.first){  // mag enkel een piece selecteren met type van de gegooide dobbelsteen
+        dice.first = Piece::Type::USED; // used = bobbelsteen is al gekozen in vorige move
+    } else if (piece.getType() == dice.second)
+        dice.second = Piece::Type::USED;
     int scoreToAdd = 0;
     Piece* destPiece = board.getCell(destinationCell);
     // als er een piece ligt, is dit een aanval, dus worden punten geteld
@@ -66,6 +72,7 @@ bool Game::movePiece(QPoint destinationCell) {
     currentlySelectedCell = nullptr;
     emit somethingChanged();
     moveState = MoveState::READYTOSELECT;
+    advance();
     return true;
 }
 
@@ -133,6 +140,7 @@ Game::MoveState Game::getMoveState() const{return moveState;}
 
 QSet<QPoint> Game::getPossibleSelections() {
     QSet<QPoint> selectables{};
+
     for(int x=0; x<Board::getSize(); x++){
     for(int y=0; y<Board::getSize(); y++){
         Piece* piece = board.getCell({x,y});
@@ -143,6 +151,10 @@ QSet<QPoint> Game::getPossibleSelections() {
         }
     }}
     return selectables;
+}
+
+void Game::skip() {
+    advance();
 }
 
 

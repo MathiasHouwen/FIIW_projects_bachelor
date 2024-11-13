@@ -18,6 +18,7 @@
 #include "PlayerView.h"
 #include "FileIOView.h"
 #include "../controller/Controller.h"
+#include "DieView.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -28,6 +29,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
     auto boardView = new BoardView(ui->boardPanel);
     auto controller = new Controller(model, boardView);
+    auto fistDie = new DieView(nullptr, 1);
+    fistDie->updateDisabled(true);
+    ui->sidePanel->layout()->addWidget(fistDie);
+    ui->sidePanel->layout()->addWidget(new DieView(nullptr, 2));
+    ui->sidePanel->layout()->addWidget(new DieView(nullptr, 3));
+    ui->sidePanel->layout()->addWidget(new DieView(nullptr, 4));
+    ui->sidePanel->layout()->addWidget(new DieView(nullptr, 5));
+    ui->sidePanel->layout()->addWidget(new DieView(nullptr, 6));
 
 //    auto player = new Player(Player::colour::RED);
 //    auto playerView = new PlayerView(nullptr, player);

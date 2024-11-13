@@ -61,6 +61,8 @@ add_executable(Chaturaji
         src/controller/Controller.h
         src/model/Dice.cpp
         src/model/Dice.h
+        src/view/DieView.cpp
+        src/view/DieView.h
 )
 target_link_libraries(Chaturaji Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::SvgWidgets Qt${QT_VERSION_MAJOR}::Xml)
 

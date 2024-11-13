@@ -35,19 +35,23 @@ void Game::setPlayerScore(int score, Player::colour playerColour){
 }
 
 bool Game::selectPiece(QPoint cell) {
+    bool changed = false;
     if(board.isCellEmpty(cell)) return false;   // mag geen leeg vak selecteren
     Piece piece = *board.getCell(cell);
     if(piece.getPlayer() != getCurrentPlayer()) return false;   // mag enkel jouw eigen piece selecteren
 
     for(Piece::Type type : dice.first) {
         if(piece.getType() == type){  // mag enkel een piece selecteren met type van de gegooide dobbelsteen
+            std::cout << "first dice changed" << std::endl;
+            changed = true;
             dice.first = {Piece::Type::USED, Piece::Type::USED}; // used = bobbelsteen is al gekozen in vorige move
             emit somethingChanged();
         }
     }
 
     for(Piece::Type type : dice.second) {
-        if (piece.getType() == type && dice.first[0] != Piece::Type::USED) {
+        if (piece.getType() == type && !changed) {
+            std::cout << "second dice changed" << std::endl;
             dice.second = {Piece::Type::USED, Piece::Type::USED};
             emit somethingChanged();
         }

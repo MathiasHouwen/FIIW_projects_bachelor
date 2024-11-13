@@ -56,17 +56,23 @@ std::vector<Piece::Type> Piece::getTypeFromDobbel(int number) {
         case 1:
             result.push_back(Type::KING);
             result.push_back(Type::PAWN);
+            break;
         case 2:
             result.push_back(Type::BOAT);
+            break;
         case 3:
             result.push_back(Type::KNIGHT);
+            break;
         case 4:
             result.push_back(Type::ELEPH);
+            break;
         case 5:
             result.push_back(Type::KING);
             result.push_back(Type::PAWN);
+            break;
         case 6:
             result.push_back(Type::ELEPH);
+            break;
     }
     return result;
 }

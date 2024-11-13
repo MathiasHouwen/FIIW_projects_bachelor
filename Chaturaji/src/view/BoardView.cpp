@@ -16,6 +16,7 @@ BoardView::BoardView(QWidget* parent) : QWidget(parent) {
     for(int x=0; x<Board::getSize(); x++){
     for(int y=0; y<Board::getSize(); y++){
         auto squareView = new SquareView(nullptr, {x, y});
+        connect(squareView, &SquareView::clicked, this, &BoardView::onSquareViewClicked);
         layout->addWidget(squareView, x, y);
     }}
 }
@@ -53,6 +54,10 @@ void BoardView::updateHighlights(const QList<QPoint>& cells, SquareView::HighLig
 
 void BoardView::updatePiece(QPoint cell, Piece *piece) {
     squareViews[cell.x()][cell.y()]->updatePiece(piece);
+}
+
+void BoardView::onSquareViewClicked(QPoint cell) {
+    emit cellClicked(cell);
 }
 
 

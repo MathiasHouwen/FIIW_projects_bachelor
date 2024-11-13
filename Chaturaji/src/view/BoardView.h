@@ -24,6 +24,12 @@ public:
     void updateHighlights(const QList<QPoint>& cells, SquareView::HighLight highlight);
     void updatePiece(QPoint cell, Piece* piece);
     ~BoardView() override;
+
+signals:
+    void cellClicked(QPoint cell);
+
+private slots:
+    void onSquareViewClicked(QPoint cell);
     //QVBoxLayout* rows;
     //Game& model;
 

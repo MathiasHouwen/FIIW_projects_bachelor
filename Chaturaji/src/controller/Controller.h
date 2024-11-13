@@ -17,7 +17,11 @@ Q_OBJECT
 private:
     Game& model;
     BoardView& boardView;
+public:
+    Controller(Game &model, BoardView& boardView);
 
+private slots:
+    void onCellClicked(QPoint cell);
 };
 
 

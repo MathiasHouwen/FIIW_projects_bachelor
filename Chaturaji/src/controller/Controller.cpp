@@ -6,10 +6,11 @@
 #include "FileIO.h"
 
 
-Controller::Controller(Game &model, BoardView* boardView)
-        : QObject(nullptr), model(model), boardView(boardView) {
+Controller::Controller(Game &model, BoardView* boardView, DiceAndMovesView* diceAndMovesView)
+        : QObject(nullptr), model(model), boardView(boardView), diceAndMovesView(diceAndMovesView) {
     connect(boardView, &BoardView::cellClicked, this, &Controller::onCellClicked);
     connect(boardView, &BoardView::cellHoverChanged, this, &Controller::onCellHoverChanged);
+    connect(diceAndMovesView, &DiceAndMovesView::skipButtonClicked, this, &Controller::onSkipButtonClicked);
     start();
 }
 
@@ -19,6 +20,7 @@ void Controller::start() {
     boardView->updateFullBoard(model.getBoard());
     clearHighLights();
     setSelectionHighlights();
+    setMoveAndDice();
 }
 
 void Controller::onCellClicked(QPoint cell) {
@@ -36,6 +38,7 @@ void Controller::onCellClicked(QPoint cell) {
             boardView->updatePiece(cell, model.getBoard().getCell(cell));
             clearHighLights();
             setSelectionHighlights();
+            setMoveAndDice();
         }
     }
 }
@@ -71,4 +74,19 @@ void Controller::setMoveHightlights() {
     }
     boardView->updateHighlight(*model.getCurrentlySelectedCell(), SquareView::HighLight::SELECTED);
     currentHighlights.insert(*model.getCurrentlySelectedCell());
+}
+
+void Controller::setMoveAndDice() {
+    diceAndMovesView->updateMoveLabel(model.getMove());
+    diceAndMovesView->updateDiceNumbers(model.getDice().getNumber(0), model.getDice().getNumber(1));
+    diceAndMovesView->updatePiecePreviews(model.getDice().getAllowedTypes());
+    diceAndMovesView->updateDisableDie(0, model.getDice().isUsed(0));
+    diceAndMovesView->updateDisableDie(1, model.getDice().isUsed(1));
+}
+
+void Controller::onSkipButtonClicked() {
+    model.skip();
+    setMoveAndDice();
+    clearHighLights();
+    setSelectionHighlights();
 }

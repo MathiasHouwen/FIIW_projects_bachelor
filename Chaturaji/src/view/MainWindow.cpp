@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     auto boardView = new BoardView(ui->boardPanel);
     auto diceAndMovesView = new DiceAndMovesView(ui->turnsPanel);
-    auto controller = new Controller(model, boardView);
+    auto controller = new Controller(model, boardView, diceAndMovesView);
 
     for (Player::colour color : { Player::colour::RED, Player::colour::BLUE, Player::colour::GREEN, Player::colour::YELLOW }) {
         auto player = new Player(color);

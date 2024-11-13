@@ -7,49 +7,67 @@
 #include "DiceAndMovesView.h"
 
 void DiceAndMovesView::updateDiceNumbers(int die1, int die2) {
-
+    diceViews[0]->updateNumber(die1);
+    diceViews[1]->updateNumber(die2);
 }
 
-void DiceAndMovesView::updateDisableDie(int die) {
-
-}
-
-void DiceAndMovesView::updateEnableAllDice() {
-
+void DiceAndMovesView::updateDisableDie(int die, bool disabled) {
+    diceViews[die]->updateDisabled(disabled);
 }
 
 DiceAndMovesView::DiceAndMovesView(QWidget *parent) : QWidget(parent) {
+    // views
     diceViews[0] = new DieView(nullptr, 6);
     diceViews[1] = new DieView(nullptr, 6);
-
-    auto layout = new QHBoxLayout(parent);
-    layout->setAlignment(Qt::AlignLeft);
-    auto movesSection = new QVBoxLayout();
-    layout->addLayout(movesSection);
-
-    auto skipButton = new QPushButton("SKIP");
     moveLabel = new QLabel("MOVE: 1/2");
-
-    movesSection->addWidget(moveLabel);
-    movesSection->addWidget(skipButton);
-
-    layout->addWidget(diceViews[0]);
-    layout->addWidget(diceViews[1]);
-
+    auto skipButton = new QPushButton("SKIP");
     auto arrow = new QSvgWidget();
+
+    //arrow init
     arrow->load(QString(ASSET_PATH) + "/arrow.svg");
     arrow->setFixedSize(50, 50);
+
+    // layout init
+    auto layout = new QHBoxLayout(parent);
+    auto movesSection = new QVBoxLayout();
+    piecePreviewsLayout = new QHBoxLayout();
+    piecePreviewsLayout->setAlignment(Qt::AlignLeft);
+    layout->setAlignment(Qt::AlignLeft);
+
+    // layout add
+    layout->addLayout(movesSection);
+    movesSection->addWidget(moveLabel);
+    movesSection->addWidget(skipButton);
+    layout->addWidget(diceViews[0]);
+    layout->addWidget(diceViews[1]);
     layout->addWidget(arrow);
+    layout->addLayout(piecePreviewsLayout);
 
-    auto piece1 = new PieceWidgit(nullptr, Piece::Type::KING);
-    piece1->setFixedSize(50, 50);
-    auto piece2 = new PieceWidgit(nullptr, Piece::Type::PAWN);
-    piece2->setFixedSize(50, 50);
-    auto piece3 = new PieceWidgit(nullptr, Piece::Type::KNIGHT);
-    piece3->setFixedSize(50, 50);
+    // signals
+    connect(skipButton, &QPushButton::clicked, this, &DiceAndMovesView::onSkipButtonClicked);
+}
 
-    layout->addWidget(piece1);
-    layout->addWidget(piece2);
-    layout->addWidget(piece3);
+void DiceAndMovesView::updateMoveLabel(int move) {
+    QString s;
+    QTextStream ts(&s);
+    ts << "Move " << move + 1 << " / 2";
+    moveLabel->setText(s);
+}
 
+void DiceAndMovesView::updatePiecePreviews(QSet<Piece::Type> types) {
+    for(auto pieceView : pieceViews){
+        piecePreviewsLayout->removeWidget(pieceView);
+        delete pieceView;
+    }
+    pieceViews.clear();
+    for(auto type : types){
+        auto pieceView = new PieceWidgit(nullptr, type);
+        pieceView->setFixedSize(50, 50);
+        pieceViews.insert(pieceView);
+        piecePreviewsLayout->addWidget(pieceView);
+    }
+}
+
+void DiceAndMovesView::onSkipButtonClicked() {
+    emit skipButtonClicked();
 }

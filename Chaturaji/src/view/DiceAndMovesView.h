@@ -14,17 +14,24 @@
 
 class DiceAndMovesView : public QWidget{
     Q_OBJECT
-private:
 public:
     DiceAndMovesView(QWidget *parent);
     void updateDiceNumbers(int die1, int die2);
-    void updateDisableDie(int die);
-    void updateEnableAllDice();
+    void updateDisableDie(int die, bool disabled);
+    void updateMoveLabel(int move);
+    void updatePiecePreviews(QSet<Piece::Type> types);
+
+signals:
+    void skipButtonClicked();
+
+private slots:
+    void onSkipButtonClicked();
 
 private:
     DieView* diceViews[2];
     QLabel* moveLabel;
     QSet<PieceWidgit*> pieceViews{};
+    QHBoxLayout* piecePreviewsLayout;
 };
 
 

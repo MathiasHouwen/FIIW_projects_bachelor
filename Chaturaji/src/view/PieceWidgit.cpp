@@ -12,15 +12,25 @@
 
 #include "PieceWidgit.h"
 
-PieceWidgit::PieceWidgit(QWidget *parent, Piece* model)
-        : QWidget(parent), model(model) {
 
-    loadSvg(model->getShortName());
+PieceWidgit::PieceWidgit(QWidget *parent, Piece *piece)
+    : QWidget(parent) {
+    loadSvg(piece->getShortName());
     svg = new QSvgWidget(this);
     svg->load(svgDOM.toByteArray());
-    setFill(model->getColorName());
+    setFill(piece->getColorName());
     setStroke(QColorConstants::Svg::black);
 }
+
+PieceWidgit::PieceWidgit(QWidget *parent, Piece::Type type)
+    : QWidget(parent) {
+    loadSvg(Piece::getTypeName(type));
+    svg = new QSvgWidget(this);
+    svg->load(svgDOM.toByteArray());
+    setFill(Qt::gray);
+    setStroke(Qt::white);
+}
+
 
 void PieceWidgit::resizeEvent(QResizeEvent *event) {
     QWidget::resizeEvent(event);
@@ -59,3 +69,4 @@ void PieceWidgit::setStroke(QColor color) {
 void PieceWidgit::setFill(QColor color) {
     setSvgAttribute("fill", color.name());
 }
+

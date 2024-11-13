@@ -18,7 +18,6 @@ Q_OBJECT
 
 public:
     explicit MainWindow(QWidget *parent = nullptr);
-    void setText();
     ~MainWindow() override;
 
 protected:

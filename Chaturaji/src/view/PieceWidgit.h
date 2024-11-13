@@ -20,14 +20,14 @@ protected:
 private:
     QSvgWidget* svg;
     QDomDocument svgDOM;
-    Piece* model;
     bool hovered{false};
     void loadSvg(QString name);
     void setSvgAttribute(QString name, QString value);
     void setFill(QColor color);
     void setStroke(QColor color);
 public:
-    PieceWidgit(QWidget *parent, Piece* model);
+    PieceWidgit(QWidget *parent, Piece* piece);
+    PieceWidgit(QWidget *parent, Piece::Type type);
     void setHovered(bool hovered);
 };
 

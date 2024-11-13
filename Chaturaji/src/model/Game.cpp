@@ -19,7 +19,7 @@ void Game::doubleDobbel() {
     emit somethingChanged();
 }
 
-void Game::namePlayer(const QString& name, int playerIndex) {
+void Game::setPlayerName(const QString& name, int playerIndex) {
     Player& player = players[playerIndex];
     player.setName(name);
 }
@@ -40,6 +40,8 @@ bool Game::selectPiece(QPoint cell) {
     // update selectie
     delete currentlySelectedCell;
     currentlySelectedCell = new QPoint(cell);
+
+    moveState = MoveState::READYTOMOVE;
 
     return true;
 }
@@ -63,6 +65,7 @@ bool Game::movePiece(QPoint destinationCell) {
     delete currentlySelectedCell;
     currentlySelectedCell = nullptr;
     emit somethingChanged();
+    moveState = MoveState::READYTOSELECT;
     return true;
 }
 
@@ -113,31 +116,32 @@ QSet<QPoint> Game::getPossibleMoves() {
 /*
  * SIMPELE GETTERS
  */
-
-QPoint* Game::getCurrentlySelectedCell() const {
-    return currentlySelectedCell;
-}
-const QPair<Piece::Type, Piece::Type> &Game::getDice() const {
-    return dice;
-}
-int Game::getMove() const {
-    return move;
-}
-Board& Game::getBoard() {
-    return board;
-}
 Player& Game::getCurrentPlayer(){
     return players[turn];
 }
 Player& Game::getPlayerFromColour(Player::colour colour){
     return players[(int) colour];
 }
-bool Game::isGameOver() const {
-    return gameOver;
-}
 
-const Player *Game::getPlayers() const {
-    return players;
+QPoint* Game::getCurrentlySelectedCell() const {return currentlySelectedCell;}
+const QPair<Piece::Type, Piece::Type> &Game::getDice() const {return dice;}
+int Game::getMove() const {return move;}
+Board& Game::getBoard() {return board;}
+bool Game::isGameOver() const {return gameOver;}
+const Player *Game::getPlayers() const {return players;}
+Game::MoveState Game::getMoveState() const{return moveState;}
+
+QSet<QPoint> Game::getPossibleSelections() {
+    QSet<QPoint> selectables{};
+    for(int x=0; x<Board::getSize(); x++){
+    for(int y=0; y<Board::getSize(); y++){
+        Piece* piece = board.getCell({x,y});
+        if(piece && piece->getPlayer() == getCurrentPlayer()
+            && (piece->getType() == dice.first
+            || piece->getType() == dice.second)){
+            selectables.insert({x,y});
+        }
+    }}
 }
 
 

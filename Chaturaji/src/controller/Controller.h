@@ -10,18 +10,22 @@
 #include "../model/Game.h"
 #include "../view/BoardView.h"
 
-
 class Controller: public QObject{
 Q_OBJECT
 
 private:
     Game& model;
     BoardView* boardView;
+    QSet<QPoint> currentHighlights{};
+    void start();
+    void clearHighLights();
+    void setHighLights();
 public:
     Controller(Game &model, BoardView* boardView);
 
 private slots:
     void onCellClicked(QPoint cell);
+    void onCellHoverChanged(QPoint cell, bool hover);
 };
 
 

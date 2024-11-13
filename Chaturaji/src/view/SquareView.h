@@ -42,6 +42,7 @@ private:
 
 signals:
     void clicked(QPoint cell);
+    void hoverUpdated(QPoint cell, bool hover);
 
 //    Game& model;
 //    Piece* piece{nullptr};
@@ -51,12 +52,15 @@ signals:
 //explicit SquareView(QWidget *parent, QPoint cell, Game& model);
 
 protected:
+    //mouse
     void mousePressEvent(QMouseEvent *event) override;
+    void enterEvent(QEnterEvent *event) override;
+    void leaveEvent(QEvent *event) override;
+    //render
     void paintEvent(QPaintEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
+
 //    void paintEvent(QPaintEvent *event) override;
-//    void enterEvent(QEnterEvent *event) override;
-//    void leaveEvent(QEvent *event) override;
 
 //
 //    void mouseReleaseEvent(QMouseEvent *event) override;

@@ -52,6 +52,6 @@ void CLI_Controller::setup() {
     // vraag alle 4 speler namen
     for(int i = 0; i < 4; i++){
         QString name = io.getPlayerName(i + 1);
-        gameModel.namePlayer(name, i);
+        gameModel.setPlayerName(name, i);
     }
 }

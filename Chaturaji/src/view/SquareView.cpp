@@ -7,18 +7,7 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-
-//SquareView::SquareView(QWidget *parent, QPoint cell, Game& model)
-//    : QWidget(parent), cell(cell), model(model){
-//    color = cell.x() % 2 ^ cell.y() % 2 ? QColorConstants::Svg::beige : QColorConstants::Svg::burlywood;
-//
-//    pieceViewContainer = new QVBoxLayout(this);
-//    pieceViewContainer->setContentsMargins(2,2,2,2);
-//
-//}
-
 SquareView::~SquareView() {
-
 }
 
 QColor SquareView::getColor(QPair<QColor, QColor> colorPair) {
@@ -29,7 +18,6 @@ SquareView::SquareView(QWidget *parent, const QPoint &cell) : QWidget(parent), c
     pieceViewContainer = new QVBoxLayout(this);
     pieceViewContainer->setContentsMargins(2, 2, 2, 2);
     updateHighLight(HighLight::NONE);
-    //setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
 void SquareView::mousePressEvent(QMouseEvent *event) {
@@ -53,6 +41,8 @@ void SquareView::setFillAndBorder(SquareView::HighLight highLighter) {
     fill = getColor(defaultColor);
     switch (highLighter) {
         case HighLight::NONE:border = Qt::transparent;break;
+        case HighLight::SELECTSUGGEST: border = QCol::lightseagreen; break;
+        case HighLight::MOVESUGGEST: border = QCol::cornflowerblue; break;
         case HighLight::HOVER:
             border = Qt::darkRed;
             fill = getColor(hoverColor);
@@ -61,8 +51,6 @@ void SquareView::setFillAndBorder(SquareView::HighLight highLighter) {
             border = QCol::aquamarine;
             fill = getColor(selectedColor);
             break;
-        case HighLight::SELECTSUGGEST: border = QCol::lightseagreen; break;
-        case HighLight::MOVESUGGEST: border = QCol::cornflowerblue; break;
         case HighLight::ATTACKSUGGEST:
             border = QCol::tomato;
             fill = getColor(attackColor);
@@ -89,6 +77,34 @@ void SquareView::updateHighLight(SquareView::HighLight highLighter) {
     setFillAndBorder(highLighter);
     update();
 }
+
+void SquareView::resizeEvent(QResizeEvent *event) {
+    QWidget::resizeEvent(event);
+    update(); // repaint
+}
+
+void SquareView::enterEvent(QEnterEvent *event) {
+    QWidget::enterEvent(event);
+    emit hoverUpdated(cell, true);
+}
+
+void SquareView::leaveEvent(QEvent *event) {
+    QWidget::leaveEvent(event);
+    emit hoverUpdated(cell, false);
+}
+
+
+
+
+
+//SquareView::SquareView(QWidget *parent, QPoint cell, Game& model)
+//    : QWidget(parent), cell(cell), model(model){
+//    color = cell.x() % 2 ^ cell.y() % 2 ? QColorConstants::Svg::beige : QColorConstants::Svg::burlywood;
+//
+//    pieceViewContainer = new QVBoxLayout(this);
+//    pieceViewContainer->setContentsMargins(2,2,2,2);
+//
+//}
 
 //void SquareView::paintEvent(QPaintEvent *event) {
 //    QWidget::paintEvent(event);
@@ -118,11 +134,6 @@ void SquareView::updateHighLight(SquareView::HighLight highLighter) {
 //    }
 //}
 //
-void SquareView::resizeEvent(QResizeEvent *event) {
-    QWidget::resizeEvent(event);
-    update(); // repaint
-}
-
 //void SquareView::enterEvent(QEnterEvent *event) {
 //    QWidget::enterEvent(event);
 //    if (border == Qt::transparent) {

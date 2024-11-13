@@ -17,19 +17,23 @@ Q_OBJECT
 
 private:
     QVBoxLayout *layoutRows;
-    SquareView* squareViews[Board::getSize()][Board::getSize()];
+    SquareView* squareViews[Board::getSize()][Board::getSize()]{};
 public:
     explicit BoardView(QWidget* widget);
     void updateHighlight(QPoint cell, SquareView::HighLight highlight);
     void updateHighlights(const QList<QPoint>& cells, SquareView::HighLight highlight);
     void updatePiece(QPoint cell, Piece* piece);
+    void updateFullBoard(const Board& board);
     ~BoardView() override;
 
 signals:
     void cellClicked(QPoint cell);
+    void cellHoverChanged(QPoint cell, bool hover);
 
 private slots:
     void onSquareViewClicked(QPoint cell);
+    void onSquareHoverUpdated(QPoint cell, bool hover);
+
     //QVBoxLayout* rows;
     //Game& model;
     //explicit BoardView(Game& model, QWidget *parent = nullptr);

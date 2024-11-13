@@ -25,9 +25,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(&model, &Game::somethingChanged, this, &MainWindow::setText);
     ui->setupUi(this);
 
-    FileIO io;
-    io.loadBoard(&model, "../startingFile.txt");
-
     auto boardView = new BoardView(ui->boardPanel);
     auto controller = new Controller(model, boardView);
 

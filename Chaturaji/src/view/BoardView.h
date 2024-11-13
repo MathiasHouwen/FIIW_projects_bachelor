@@ -10,17 +10,25 @@
 #include <QVBoxLayout>
 #include "../model/Board.h"
 #include "../model/Game.h"
+#include "SquareView.h"
 
 class BoardView : public QWidget{
 Q_OBJECT
 
 private:
-    QVBoxLayout* rows;
-    Game& model;
-
+    QGridLayout *layout;
+    SquareView* squareViews[Board::getSize()][Board::getSize()];
 public:
-    explicit BoardView(Game& model, QWidget *parent = nullptr);
+    explicit BoardView(QWidget* widget);
+    void updateHighlight(QPoint cell, SquareView::HighLight highlight);
+    void updateHighlights(const QList<QPoint>& cells, SquareView::HighLight highlight);
+    void updatePiece(QPoint cell, Piece* piece);
     ~BoardView() override;
+    //QVBoxLayout* rows;
+    //Game& model;
+
+    //explicit BoardView(Game& model, QWidget *parent = nullptr);
+
 
 };
 

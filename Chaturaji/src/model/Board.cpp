@@ -31,9 +31,6 @@ void Board::clear() {
     }
 }
 
-int Board::getSize() {
-    return size;
-}
 
 bool Board::isInRange(QPoint cell) {
     bool xInRange = cell.x() >= 0 && cell.x() <size;

@@ -18,6 +18,7 @@ public:
     void setName(const QString &mName);
     void addScore(int score);
     void killPlayer();
+    void setMScore(int mScore);
 
     //getters
     int getScore() const;

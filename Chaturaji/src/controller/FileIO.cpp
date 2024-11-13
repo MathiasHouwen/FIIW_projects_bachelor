@@ -14,26 +14,11 @@
 
 FileIO::FileIO()= default;
 
-// QFile(filepath)
-
-void FileIO::loadBoard(Game* game, QString filePath){
-    QFile file = QFile(filePath);
-
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
-        qDebug() << "Could not open file for reading:" << file.errorString();
-    }
-
-    QByteArray fileData = file.readAll();
-    file.close();
-
-    // JSON MAGIC
-    QJsonDocument doc = QJsonDocument::fromJson(fileData);
-    QJsonObject object = doc.object();
-    FileIO::jsonToBoard(object, game);
-}
+// ===========================
+// == Loading functionality ==
+// ===========================
 
 Piece FileIO::jsonToPiece(const QJsonObject &jsonObject, Game *gamemodel) {
-
     QString typestr = jsonObject["type"].toString();
     Piece::Type type = Piece::getTypeFromName(typestr);
 
@@ -49,8 +34,28 @@ Piece FileIO::jsonToPiece(const QJsonObject &jsonObject, Game *gamemodel) {
     return Piece(type, direction, player);
 }
 
-void FileIO::jsonToBoard(QJsonObject boardObject, Game* gamemodel){
+void FileIO::jsonToPlayers(Game* game, QJsonObject playersObj){
+    if (!playersObj.contains("allPlayers") || !playersObj["allPlayers"].isArray()) {
+        qDebug() << "'board' key not found or is not an array in JSON.";
+        return;
+    }
 
+    QJsonArray allPlayersArray = playersObj["allPlayers"].toArray();
+    for (const QJsonValue& playerVal : allPlayersArray) {
+        QJsonObject playerObj = playerVal.toObject();
+
+        QString colourStr = playerObj["colour"].toString();
+        Player::colour colour = Player::getColourFromName(colourStr);
+
+        QString naam = playerObj["naam"].toString();
+        game->namePlayer(naam, colour);
+
+        int score = playerObj["score"].toInt();
+        game->setPlayerScore(score, colour);
+    }
+}
+
+void FileIO::jsonToBoard(QJsonObject boardObject, Game* gamemodel){
     if (!boardObject.contains("board") || !boardObject["board"].isArray()) {
         qDebug() << "'board' key not found or is not an array in JSON.";
         return;
@@ -69,6 +74,34 @@ void FileIO::jsonToBoard(QJsonObject boardObject, Game* gamemodel){
             }
         }
     }
+}
+
+void FileIO::loadBoard(Game* game, QString filePath){
+    QFile file = QFile(filePath);
+
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
+        qDebug() << "Could not open file for reading:" << file.errorString();
+    }
+
+    QByteArray fileData = file.readAll();
+    file.close();
+
+    QJsonDocument doc = QJsonDocument::fromJson(fileData);
+    QJsonObject rootObj = doc.object();
+
+    if (!rootObj.contains("board")) {
+        qDebug() << "'board' key not found or is not an array in JSON.";
+        return;
+    }
+    QJsonObject boardObj = rootObj["board"].toObject();
+    FileIO::jsonToBoard(boardObj, game);
+
+    if (!rootObj.contains("players")) {
+        qDebug() << "'players' key not found or is not an array in JSON.";
+        return;
+    }
+    QJsonObject playersObj = rootObj["players"].toObject();
+
 }
 
 // TODO: DIRECTION BUGS, ALWAYS X=0 Y=0
@@ -134,8 +167,7 @@ QJsonObject FileIO::boardToJson(const Board* board){
     return boardObject;
 }
 
-
-int FileIO::saveBoard(Game* game, QString filePath){
+int FileIO::save(Game* game, QString filePath){
     QFile file = QFile(filePath);
 
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {

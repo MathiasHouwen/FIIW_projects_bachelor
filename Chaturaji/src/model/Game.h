@@ -45,6 +45,10 @@ public:
     Player &getCurrentPlayer(); // player van de huidige turn
     Player &getPlayerFromColour(Player::colour colour); // zoek de player op basis van kleur
     const Player *getPlayers() const;
+
+    void namePlayer(const QString &name, Player::colour playerColour);
+
+    void setPlayerScore(int score, Player::colour playerColour);
 };
 
 

@@ -54,7 +54,7 @@ void FileIOView::onSaveButtonClicked() {
         }
         qDebug() << "Saving to file:" << filePath;
 
-        io.saveBoard(&game, filePath);
+        io.save(&game, filePath);
     } else {
         qDebug() << ">:( Geen naam";
     }

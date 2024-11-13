@@ -71,3 +71,7 @@ QColor Player::getQColour() {
         default: return QColor("unknown");
     }
 }
+
+void Player::setMScore(int mScore) {
+    m_score = mScore;
+}

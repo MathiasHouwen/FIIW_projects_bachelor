@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="45.2" height="45.2" stroke="#000"
     xmlns:v="https://vecta.io/nano">
-    <g stroke-linecap="round" fill="white" stroke="blue">
+    <g stroke-linecap="round" fill="white" stroke="green">
         <path d="M8.323 32.513l28.179.063.748-.25c5.426-4.262 5.034-8.544 5.034-8.544l-5.096 4.046H13.859l-.861-2.384H2.231v2.384h3.948l2.01 4.624" stroke-width="1.5"/>
         <g fill="none">
             <path d="M7.543 25.209h0L24.985 8.132l14.858 17.672" stroke-width=".8"/>

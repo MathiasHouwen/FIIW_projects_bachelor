@@ -21,7 +21,7 @@ class Controller {
 }
 
 class FileIO {
-    +int saveBoard(const Board* board)
+    +int save(const Board* board)
     +Board& loadBoard(Game* game)
     +explicit FileIO(const QString &mFilePath)
     +static Piece jsonToPiece(const QJsonObject& jsonObject, Game* gamemodel)

@@ -24,6 +24,16 @@ void Game::namePlayer(const QString& name, int playerIndex) {
     player.setName(name);
 }
 
+void Game::namePlayer(const QString& name, Player::colour playerColour) {
+    Player player = getPlayerFromColour(playerColour);
+    player.setName(name);
+}
+
+void Game::setPlayerScore(int score, Player::colour playerColour){
+    Player player = getPlayerFromColour(playerColour);
+    player.setMScore(score);
+}
+
 bool Game::selectPiece(QPoint cell) {
     if(board.isCellEmpty(cell)) return false;   // mag geen leeg vak selecteren
     Piece piece = *board.getCell(cell);

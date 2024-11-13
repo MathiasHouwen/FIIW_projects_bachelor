@@ -27,7 +27,7 @@ void Controller::loop() {
 
     gameModel.doubleDobbel(); // genereer nieuwe random keuzes
     for(int move = 0; move <= 1; move++){
-        gameView.update();  // teken de view
+//        gameView.update();  // teken de view
         bool takeMove = io.askMoveConfirmation();   // vraag om move aan te nemen
         if(!takeMove){
             gameModel.advance();    // skip de move
@@ -35,7 +35,7 @@ void Controller::loop() {
         }
         // vraag de selectie cell
         askCellProcedure([&](QPoint c)->bool{return gameModel.selectPiece(c);});
-        gameView.update();
+//        gameView.update();
         // vraag de bestemming cell
         askCellProcedure([&](QPoint c)->bool{return gameModel.movePiece(c);});
         gameModel.advance(); // ga verder naar volgende move of turn

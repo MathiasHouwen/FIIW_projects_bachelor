@@ -29,13 +29,21 @@ bool Game::selectPiece(QPoint cell) {
     Piece piece = *board.getCell(cell);
     if(piece.getPlayer() != getCurrentPlayer()) return false;   // mag enkel jouw eigen piece selecteren
 
-    if(piece.getType() == dice.first){  // mag enkel een piece selecteren met type van de gegooide dobbelsteen
-        dice.first = Piece::Type::KING; // used = bobbelsteen is al gekozen in vorige move
-        emit somethingChanged();
-    } else if (piece.getType() == dice.second){
-        dice.second = Piece::Type::KING;
-        emit somethingChanged();
-    } else return false;
+    for(Piece::Type type : dice.first) {
+        if(piece.getType() == type){  // mag enkel een piece selecteren met type van de gegooide dobbelsteen
+            dice.first = {Piece::Type::USED, Piece::Type::USED}; // used = bobbelsteen is al gekozen in vorige move
+            emit somethingChanged();
+        }
+    }
+
+    for(Piece::Type type : dice.second) {
+        if (piece.getType() == type && dice.first[0] != Piece::Type::USED) {
+            dice.second = {Piece::Type::USED, Piece::Type::USED};
+            emit somethingChanged();
+        }
+    }
+
+    if(dice.first[0] != Piece::Type::USED && dice.second[0] != Piece::Type::USED) {return false;}
 
     // update selectie
     delete currentlySelectedCell;
@@ -117,7 +125,7 @@ QSet<QPoint> Game::getPossibleMoves() {
 QPoint* Game::getCurrentlySelectedCell() const {
     return currentlySelectedCell;
 }
-const QPair<Piece::Type, Piece::Type> &Game::getDice() const {
+const QPair<std::vector<Piece::Type>, std::vector<Piece::Type>> &Game::getDice() const {
     return dice;
 }
 int Game::getMove() const {

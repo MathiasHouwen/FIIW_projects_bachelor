@@ -50,30 +50,34 @@ void Piece::init(Pattern pattern, int scoreValue) {
     this->scoreValue = scoreValue;
 }
 
-Piece::Type Piece::getTypeFromDobbel(int number) {
+std::vector<Piece::Type> Piece::getTypeFromDobbel(int number) {
+    std::vector<Piece::Type> result;
     switch(number) {
         case 1:
-            return Type::KING;
+            result.push_back(Type::KING);
+            result.push_back(Type::PAWN);
         case 2:
-            return Type::BOAT;
+            result.push_back(Type::BOAT);
         case 3:
-            return Type::KNIGHT;
+            result.push_back(Type::KNIGHT);
         case 4:
-            return Type::ELEPH;
+            result.push_back(Type::ELEPH);
         case 5:
-            return Type::PAWN;
+            result.push_back(Type::KING);
+            result.push_back(Type::PAWN);
         case 6:
-            return Type::ELEPH;
+            result.push_back(Type::ELEPH);
     }
+    return result;
 }
 
-QString Piece::getTypeName(Type type) {
-    switch(type) {
-        case Piece::Type::PAWN: return "Pawn";
-        case Piece::Type::KNIGHT: return "Horse";
-        case Piece::Type::KING: return "King";
-        case Piece::Type::BOAT: return "Boat";
-        case Piece::Type::ELEPH: return "Elephant";
+QString Piece::getTypeName(std::vector<Type> type) {
+    switch(type[0]) {
+        case Type::PAWN: return "Pawn or King";
+        case Type::KNIGHT: return "Horse";
+        case Type::KING: return "Pawn or King";
+        case Type::BOAT: return "Boat";
+        case Type::ELEPH: return "Elephant";
         default: return "invalid";
     }
 }

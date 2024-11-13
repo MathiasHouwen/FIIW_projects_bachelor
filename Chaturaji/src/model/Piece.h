@@ -9,6 +9,7 @@
 #include <QPoint>
 #include "Player.h"
 #include "Pattern.h"
+#include <qobjectdefs.h>
 
 class Piece {
 public:
@@ -25,12 +26,12 @@ public:
     // getters
     Type getType() const;
     int getScoreValue() const;
-    static Type getTypeFromDobbel(int number);
+    static std::vector<Piece::Type> getTypeFromDobbel(int number);
     Player &getPlayer() const;
     QString getShortName();
     QString getColorName();
 
-    static QString getTypeName(Type type); // vertaalt type naar string naam
+    static QString getTypeName(std::vector<Piece::Type> type); // vertaalt type naar string naam
     static Piece::Type getTypeFromName(const QString& typestr); // vertaalt string naam naar type
 
 private:

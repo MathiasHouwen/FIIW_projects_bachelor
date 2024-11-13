@@ -97,14 +97,14 @@ void SquareView::getHighLight() {
         border = QColorConstants::Svg::lightseagreen;
     }
 
-    Piece* piece = model.getBoard().getCell(cell);
-    if (piece) {
-        if (!selection && piece->getPlayer() == model.getCurrentPlayer()
-            && (piece->getType() == model.getDice().first
-                || piece->getType() == model.getDice().second)) {
-            border = QColorConstants::Svg::lightseagreen;
-                }
-    }
+//    Piece* piece = model.getBoard().getCell(cell);
+//    if (piece) {
+//        if (!selection && piece->getPlayer() == model.getCurrentPlayer()
+//            && (piece->getType() == model.getDice().first
+//                || piece->getType() == model.getDice().second)) {
+//            border = QColorConstants::Svg::lightseagreen;
+//                }
+//    }
 }
 
 

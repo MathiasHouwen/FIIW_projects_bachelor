@@ -17,7 +17,7 @@ private:
     Board board;    // bord
     PatternMover mover; // logica voor piece patronen
     QPoint* currentlySelectedCell;  // selectie, geen = null (1 move is eerst cell selecteren, dan volgende cell om te moven)
-    QPair<Piece::Type, Piece::Type> dice;   // 2 piece types van de dobbelsteen
+    QPair<std::vector<Piece::Type>, std::vector<Piece::Type>> dice;   // 2 piece types van de dobbelsteen
 
     int move{0};    // elke beurt heeft 2 moves (move = 0 / 1)
     int turn{0};    // player beurt (0-3)
@@ -29,7 +29,7 @@ public:
     Game();
     //directe getters
     QPoint* getCurrentlySelectedCell() const;
-    const QPair<Piece::Type, Piece::Type> &getDice() const;
+    const QPair<std::vector<Piece::Type>, std::vector<Piece::Type>> &getDice() const;
     int getMove() const;
     Board& getBoard();
     bool isGameOver() const;

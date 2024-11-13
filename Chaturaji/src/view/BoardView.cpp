@@ -10,7 +10,7 @@
 #include "SquareView.h"
 
 BoardView::BoardView(QWidget* parent) : QWidget(parent) {
-    layoutRows = new QVBoxLayout(this);
+    layoutRows = new QVBoxLayout(parent);
     layoutRows->setSpacing(0);
 
     for(int y=0; y<Board::getSize(); y++){

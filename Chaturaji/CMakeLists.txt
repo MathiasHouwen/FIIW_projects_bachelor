@@ -65,6 +65,9 @@ add_executable(Chaturaji
         src/view/DieView.h
         src/view/DiceAndMovesView.cpp
         src/view/DiceAndMovesView.h
+        src/view/startscreen.cpp
+        src/view/startscreen.h
+        src/view/startscreen.ui
 )
 target_link_libraries(Chaturaji Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::SvgWidgets Qt${QT_VERSION_MAJOR}::Xml)
 

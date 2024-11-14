@@ -110,7 +110,6 @@ void FileIO::loadBoard(Game* game, QString filePath){
     FileIO::jsonToPlayers(game, rootObj);
 }
 
-// TODO: DIRECTION BUGS, ALWAYS X=0 Y=0
 // ==========================
 // == Saving functionality ==
 // ==========================
@@ -143,8 +142,7 @@ QJsonObject FileIO::playersToJson(const Player* players, Player curr){
     QJsonObject jsonObject;
     QJsonArray playersJson;
 
-    // TODO: REMOVE MAGIC NUMBER
-    for (int i = 0; i<=3; i++){
+    for (int i = 0; i<=Game::getNumberOfPlayer(); i++){
         playersJson.append(playerToJson(&players[i]));
     }
     jsonObject["allPlayers"] = playersJson;

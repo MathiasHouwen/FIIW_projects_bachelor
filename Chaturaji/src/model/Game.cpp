@@ -142,4 +142,8 @@ Dice Game::getDice() {
     return dice;
 }
 
+const int Game::getNumberOfPlayer() {
+    return numberOfPlayer;
+}
+
 

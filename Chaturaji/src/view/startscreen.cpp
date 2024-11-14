@@ -24,10 +24,10 @@ StartScreen::~StartScreen() {
 }
 
 void StartScreen::on_pushButton_clicked() {
-    this->close();
     auto *w = new MainWindow();
     set_players(w);
     w->show();
+    this->close();
 }
 
 void StartScreen::set_players(MainWindow* window) {
@@ -36,6 +36,7 @@ void StartScreen::set_players(MainWindow* window) {
     players.push_back(ui->player3Input->toPlainText().toStdString());
     players.push_back(ui->player4Input->toPlainText().toStdString());
     for (int i = 0; i < players.size(); i++) {
-        window->getModel().setPlayerName(players[i].data(), static_cast<Player::colour>(i));
+        window->getModel()->setPlayerName(players[i].data(), static_cast<Player::colour>(i));
     }
+    window->makeSidePanel();
 }

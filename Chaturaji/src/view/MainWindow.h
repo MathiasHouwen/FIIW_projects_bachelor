@@ -19,7 +19,8 @@ Q_OBJECT
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;
-    Game& getModel();
+    Game* getModel();
+    void makeSidePanel();
 
 protected:
     void resizeEvent(QResizeEvent *event) override;

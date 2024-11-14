@@ -14,8 +14,7 @@ Game::Game() : board(), mover(board) {
 }
 
 void Game::setPlayerName(const QString& name, Player::colour playerColour) {
-    Player player = getPlayerFromColour(playerColour);
-    player.setName(name);
+    players[static_cast<int>(playerColour)].setName(name);
 }
 void Game::setPlayerScore(int score, Player::colour playerColour){
     Player player = getPlayerFromColour(playerColour);

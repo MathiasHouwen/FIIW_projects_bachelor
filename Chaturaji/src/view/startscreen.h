@@ -22,9 +22,12 @@ private slots:
 public:
     explicit StartScreen(QWidget *parent = nullptr);
     ~StartScreen() override;
+    std::vector<std::string> getPlayers();
+    void set_players(MainWindow* window);
 
 private:
     Ui::StartScreen *ui;
+    std::vector<std::string> players;
 };
 
 

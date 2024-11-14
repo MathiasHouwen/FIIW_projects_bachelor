@@ -65,3 +65,7 @@ void MainWindow::paintEvent(QPaintEvent *event) {
     QWidget::paintEvent(event);
     makeBoardPanelShapeSquare();
 }
+
+Game &MainWindow::getModel() {
+    return model;
+}

@@ -19,6 +19,7 @@ Q_OBJECT
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;
+    Game& getModel();
 
 protected:
     void resizeEvent(QResizeEvent *event) override;

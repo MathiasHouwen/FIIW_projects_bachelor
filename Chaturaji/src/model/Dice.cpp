@@ -41,7 +41,9 @@ bool Dice::isUsed(int die) {
 void Dice::setUsed(Piece::Type type) {
     for(auto& die : dice){
         if(die.used) continue;
-        if(typesMap[die.number].contains(type))
+        if(typesMap[die.number].contains(type)){
             die.used = true;
+            break;
+        }
     }
 }

@@ -1,7 +1,6 @@
 #ifndef CHATURAJI_GAME_H
 #define CHATURAJI_GAME_H
 
-
 #include <qobject.h>
 #include <qobjectdefs.h>
 

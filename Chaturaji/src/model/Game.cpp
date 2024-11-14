@@ -51,6 +51,10 @@ bool Game::movePiece(QPoint destinationCell) {
     board.move(*currentlySelectedCell, destinationCell);
     getCurrentPlayer().addScore(scoreToAdd);
 
+    if (destPiece->getType() == Piece::Type::KING) {
+        destPiece->getPlayer().killPlayer();
+    }
+
     // maak selectie leeg
     delete currentlySelectedCell;
     currentlySelectedCell = nullptr;

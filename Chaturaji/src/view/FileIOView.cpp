@@ -8,14 +8,17 @@
 #include "FileIOView.h"
 
 FileIOView::FileIOView(Game& game, QWidget *parent)
-    : QWidget(parent), game(game){
+    : game(game){
 
-    toolbar = new QHBoxLayout(parent);
+    parent->layout()->addWidget(this);
+    toolbar = new QHBoxLayout(this);
+    toolbar->setContentsMargins(0,0,0,0);
+    toolbar->setAlignment(Qt::AlignRight);
     loadButton = new QPushButton("Load", nullptr);
     saveButton = new QPushButton("Save", nullptr);
     toolbar->addWidget(loadButton);
     toolbar->addWidget(saveButton);
-    toolbar->setSpacing(0);
+    toolbar->setSpacing(8);
 
     // Signals
     connect(loadButton, &QPushButton::clicked, this, &FileIOView::onLoadButtonClicked);

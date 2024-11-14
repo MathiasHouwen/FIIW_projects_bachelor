@@ -10,20 +10,17 @@
 #include "SquareView.h"
 
 BoardView::BoardView(QWidget* parent) : QWidget(parent) {
-    layoutRows = new QVBoxLayout(parent);
-    layoutRows->setSpacing(0);
+    layout = new QGridLayout(parent);
+    layout->setSpacing(0);
 
     // maak square views
     // piece views staan hier apart van, odmat squareview permanent is en pieceview niet):
     for(int y=0; y<Board::getSize(); y++){
-        auto layoutCols = new QHBoxLayout();
-        layoutCols->setSpacing(0);
-        layoutRows->addLayout(layoutCols);
         for(int x=0; x<Board::getSize(); x++){
             auto squareView = new SquareView(nullptr, {x, y});
             connect(squareView, &SquareView::clicked, this, &BoardView::onSquareViewClicked);
             connect(squareView, &SquareView::hoverUpdated, this, &BoardView::onSquareHoverUpdated);
-            layoutCols->addWidget(squareView);
+            layout->addWidget(squareView, x, y);
             squareViews[x][y] = squareView;
         }
     }

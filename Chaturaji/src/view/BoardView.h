@@ -16,7 +16,7 @@ class BoardView : public QWidget{
 Q_OBJECT
 
 private:
-    QVBoxLayout *layoutRows;
+    QGridLayout *layout;
     SquareView* squareViews[Board::getSize()][Board::getSize()]{};
 public:
     explicit BoardView(QWidget* widget);

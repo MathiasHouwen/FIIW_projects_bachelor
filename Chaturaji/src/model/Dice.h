@@ -24,13 +24,13 @@ public:
     void setUsed(Piece::Type type);
     QSet<Piece::Type> getAllowedTypes();
 private:
-    static constexpr Piece::Type typesMap[6][2] = {
+    static inline QSet<Piece::Type> typesMap[6] = {
             {Piece::Type::PAWN, Piece::Type::KING},
-            {Piece::Type::BOAT, Piece::Type::BOAT},
-            {Piece::Type::KNIGHT, Piece::Type::KNIGHT},
-            {Piece::Type::ELEPH, Piece::Type::ELEPH},
+            {Piece::Type::BOAT},
+            {Piece::Type::KNIGHT},
+            {Piece::Type::ELEPH},
             {Piece::Type::PAWN, Piece::Type::KING},
-            {Piece::Type::ELEPH, Piece::Type::ELEPH}
+            {Piece::Type::ELEPH}
     };
     Die dice[2];
 };

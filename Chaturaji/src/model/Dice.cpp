@@ -28,10 +28,8 @@ int Dice::getNumber(int die) {
 QSet<Piece::Type> Dice::getAllowedTypes() {
     QSet<Piece::Type> set{};
     for(auto die : dice){
-        for(int t = 0; t < 2; t++){
-            if(die.used) continue;
-            set.insert(typesMap[die.number][t]);
-        }
+        if(die.used) continue;
+        set.unite(typesMap[die.number]);
     }
     return set;
 }
@@ -42,12 +40,8 @@ bool Dice::isUsed(int die) {
 
 void Dice::setUsed(Piece::Type type) {
     for(auto& die : dice){
-        bool used = false;
-        for(int t = 0; t < 2; t++){
-            if(typesMap[die.number][t] != type) continue;
+        if(die.used) continue;
+        if(typesMap[die.number].contains(type))
             die.used = true;
-            used = true;
-        }
-        if(used) break;
     }
 }

@@ -26,6 +26,8 @@ MainWindow::MainWindow(QWidget *parent) :
         QWidget(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
+    setWindowIcon(QIcon(QString(ASSET_PATH) + "/boat.svg"));
+
     auto boardView = new BoardView(ui->boardPanel);
     auto diceAndMovesView = new DiceAndMovesView(ui->turnsPanel);
     auto controller = new Controller(model, boardView, diceAndMovesView);

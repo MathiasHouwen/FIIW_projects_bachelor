@@ -6,7 +6,7 @@
 #include "view/CLIView.h"
 #include "model/Game.h"
 #include "controller/CLI_Controller.h"
-#include "controller/FileIO.h"
+#include "model/FileIO.h"
 #include "model/Square.h"
 #include "view/MainWindow.h"
 #include "view/SquareView.h"

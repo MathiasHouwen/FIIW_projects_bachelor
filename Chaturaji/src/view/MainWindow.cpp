@@ -14,7 +14,7 @@
 #include "BoardView.h"
 #include "SquareView.h"
 #include "PieceWidgit.h"
-#include "../controller/FileIO.h"
+#include "../model/FileIO.h"
 #include "PlayerView.h"
 #include "FileIOView.h"
 #include "../controller/Controller.h"

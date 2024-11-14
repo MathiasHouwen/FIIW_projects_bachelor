@@ -1,7 +1,7 @@
 // volledig van mathias
 
 #include "FileIO.h"
-#include "../model/Game.h"
+#include "Game.h"
 
 #include <QTextStream>
 #include <QDebug>
@@ -122,8 +122,8 @@ QJsonObject FileIO::pieceToJson(const Piece* piece){
         jsonObject["player_colour"] = Player::getColourName(piece->getPlayer().getColour());
 
         QJsonObject dirobj;
-        dirobj["x"] = piece->direction.x();
-        dirobj["y"] = piece->direction.y();
+        dirobj["x"] = piece->getWalkPattern().forwardDirection.x();
+        dirobj["y"] = piece->getWalkPattern().forwardDirection.y();
         jsonObject["direction"] = dirobj;
     }
     return jsonObject;

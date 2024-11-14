@@ -8,7 +8,7 @@
 
 #include <QWidget>
 #include <QPushButton>
-#include "../controller/FileIO.h"
+#include "../model/FileIO.h"
 
 class FileIOView : public QWidget {
 Q_OBJECT

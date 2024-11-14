@@ -4,7 +4,7 @@
 
 #include <QFileDialog>
 #include "Controller.h"
-#include "FileIO.h"
+#include "../model/FileIO.h"
 
 
 Controller::Controller(Game &model, BoardView* boardView, DiceAndMovesView* diceAndMovesView, FileIOView* fileIoView)

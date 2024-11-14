@@ -7,8 +7,8 @@
 
 #include <qstring.h>
 #include <QFile>
-#include "../model/Board.h"
-#include "../model/Game.h"
+#include "Board.h"
+#include "Game.h"
 
 class FileIO {
 public:

@@ -17,7 +17,6 @@ public:
     // dobbelsteen gebruikt ook type, zonder piece. Used is daarbij de dobbelsteen keuze die je al gebruikt hebt
     enum class Type {PAWN, BOAT, ELEPH, KNIGHT, KING, USED};
 
-    QPoint direction; // enkel voor JSON. direction zit standaard in de pattern van een piece
     const Pattern &getWalkPattern() const;
     const Pattern &getAttackPattern() const;
 

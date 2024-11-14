@@ -16,6 +16,10 @@ Q_OBJECT
 public:
     explicit FileIOView(Game& game, QWidget *parent = nullptr);
 
+signals:
+    void onLoad();
+    void onSave();
+
 private slots:
     void onLoadButtonClicked();
     void onSaveButtonClicked();

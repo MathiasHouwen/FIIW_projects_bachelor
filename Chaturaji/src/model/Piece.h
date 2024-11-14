@@ -28,10 +28,10 @@ public:
     int getScoreValue() const;
     static std::vector<Piece::Type> getTypeFromDobbel(int number);
     Player &getPlayer() const;
-    QString getShortName();
     QString getColorName();
 
     static QString getTypeName(Type type); // vertaalt type naar string naam
+    QString getTypeName();
     static Piece::Type getTypeFromName(const QString& typestr); // vertaalt string naam naar type
 
 private:

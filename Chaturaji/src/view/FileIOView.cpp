@@ -26,39 +26,9 @@ FileIOView::FileIOView(Game& game, QWidget *parent)
 }
 
 void FileIOView::onLoadButtonClicked() {
-    qDebug("Load button clicked!");
-    QString filePath = QFileDialog::getOpenFileName(
-            this,
-            "Select a file to load",
-            "../Saves",
-            "Text Files (*.txt)"
-    );
-
-    if (!filePath.isEmpty()) {
-        qDebug() << "FilePath:" << filePath;
-        io.loadBoard(&game, filePath); //TODO: ALS GE LAAD LAAT HAALT HET NIKS WEG
-    } else {
-        qDebug() << ">:( Geen geldig filepath";
-    }
+    emit onLoad();
 }
 
 void FileIOView::onSaveButtonClicked() {
-    qDebug("Save button clicked!");
-    QString filePath = QFileDialog::getSaveFileName(
-            this,
-            "Save File",
-            "../Saves",
-            "Text Files (*.txt)"
-    );
-
-    if (!filePath.isEmpty()) {
-        if (!filePath.endsWith(".txt", Qt::CaseInsensitive)) {
-            filePath += ".txt";
-        }
-        qDebug() << "Saving to file:" << filePath;
-
-        io.save(&game, filePath);
-    } else {
-        qDebug() << ">:( Geen naam";
-    }
+    emit onSave();
 }

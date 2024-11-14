@@ -10,6 +10,7 @@
 #include "../model/Game.h"
 #include "../view/BoardView.h"
 #include "../view/DiceAndMovesView.h"
+#include "../view/FileIOView.h"
 
 class Controller: public QObject{
 Q_OBJECT
@@ -18,6 +19,8 @@ private:
     Game& model;
     BoardView* boardView;
     DiceAndMovesView* diceAndMovesView;
+    FileIOView* fileIoView;
+    FileIO io;
     QSet<QPoint> currentHighlights{};
     void start();
     void clearHighLights();
@@ -25,12 +28,15 @@ private:
     void setMoveHightlights();
     void setMoveAndDice();
 public:
-    Controller(Game &model, BoardView* boardView, DiceAndMovesView* diceAndMovesView);
+    Controller(Game &model, BoardView* boardView, DiceAndMovesView* diceAndMovesView, FileIOView* fileIoView);
 
 private slots:
     void onCellClicked(QPoint cell);
     void onCellHoverChanged(QPoint cell, bool hover);
     void onSkipButtonClicked();
+
+    void onLoad();
+    void onSave();
 };
 
 

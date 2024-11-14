@@ -15,7 +15,7 @@
 
 PieceWidgit::PieceWidgit(QWidget *parent, Piece *piece)
     : QWidget(parent) {
-    loadSvg(piece->getShortName());
+    loadSvg(piece->getTypeName());
     svg = new QSvgWidget(this);
     svg->load(svgDOM.toByteArray());
     setFill(piece->getColorName());

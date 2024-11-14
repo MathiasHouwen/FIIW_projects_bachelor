@@ -2,20 +2,23 @@
 // Created by ebbew on 12-11-2024.
 //
 
+#include <QFileDialog>
 #include "Controller.h"
 #include "FileIO.h"
 
 
-Controller::Controller(Game &model, BoardView* boardView, DiceAndMovesView* diceAndMovesView)
-        : QObject(nullptr), model(model), boardView(boardView), diceAndMovesView(diceAndMovesView) {
+Controller::Controller(Game &model, BoardView* boardView, DiceAndMovesView* diceAndMovesView, FileIOView* fileIoView)
+        : QObject(nullptr), model(model), boardView(boardView),
+        diceAndMovesView(diceAndMovesView), fileIoView(fileIoView){
     connect(boardView, &BoardView::cellClicked, this, &Controller::onCellClicked);
     connect(boardView, &BoardView::cellHoverChanged, this, &Controller::onCellHoverChanged);
     connect(diceAndMovesView, &DiceAndMovesView::skipButtonClicked, this, &Controller::onSkipButtonClicked);
+    connect(fileIoView, &FileIOView::onLoad, this, &Controller::onLoad);
+    connect(fileIoView, &FileIOView::onSave, this, &Controller::onSave);
     start();
 }
 
 void Controller::start() {
-    FileIO io;
     io.loadBoard(&model, "../startingFile.txt");
     boardView->updateFullBoard(model.getBoard());
     clearHighLights();
@@ -89,4 +92,45 @@ void Controller::onSkipButtonClicked() {
     setMoveAndDice();
     clearHighLights();
     setSelectionHighlights();
+}
+
+void Controller::onSave(){
+    qDebug("Save button clicked!");
+    QString filePath = QFileDialog::getSaveFileName(
+            fileIoView,
+            "Save File",
+            "../Saves",
+            "Text Files (*.txt)"
+    );
+
+    if (!filePath.isEmpty()) {
+        if (!filePath.endsWith(".txt", Qt::CaseInsensitive)) {
+            filePath += ".txt";
+        }
+        qDebug() << "Saving to file:" << filePath;
+
+        io.save(&model, filePath);
+    } else {
+        qDebug() << ">:( Geen naam";
+    }
+}
+
+void Controller::onLoad(){
+    qDebug("Load button clicked!");
+    QString filePath = QFileDialog::getOpenFileName(
+            fileIoView,
+            "Select a file to load",
+            "../Saves",
+            "Text Files (*.txt)"
+    );
+
+    if (!filePath.isEmpty()) {
+        qDebug() << "FilePath:" << filePath;
+        io.loadBoard(&model, filePath);
+        boardView->updateFullBoard(model.getBoard());
+        clearHighLights();
+        setSelectionHighlights();
+    } else {
+        qDebug() << ">:( Geen geldig filepath";
+    }
 }

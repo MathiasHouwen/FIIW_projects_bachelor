@@ -26,18 +26,18 @@ MainWindow::MainWindow(QWidget *parent) :
         QWidget(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
-    setWindowIcon(QIcon(QString(ASSET_PATH) + "/boat.svg"));
+    setWindowIcon(QIcon(QString(ASSET_PATH) + "/Boat.svg"));
 
     auto boardView = new BoardView(ui->boardPanel);
     auto diceAndMovesView = new DiceAndMovesView(ui->turnsPanel);
-    auto controller = new Controller(model, boardView, diceAndMovesView);
+    auto ioView = new FileIOView(model, ui->topBar);
+    auto controller = new Controller(model, boardView, diceAndMovesView, ioView);
 
     for (Player::colour color : { Player::colour::RED, Player::colour::BLUE, Player::colour::GREEN, Player::colour::YELLOW }) {
         auto player = new Player(color);
         auto playerView = new PlayerView(nullptr, player);
         ui->sidePanel->layout()->addWidget(playerView);
     }
-    auto ioView = new FileIOView(model, ui->topBar);
 
 }
 

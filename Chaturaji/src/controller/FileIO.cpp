@@ -71,6 +71,7 @@ void FileIO::jsonToBoard(QJsonObject boardObject, Game* gamemodel){
     QJsonArray boardArray = boardObject["board"].toArray();
     Board& board = gamemodel->getBoard();
 
+    board.clear();
     for(int x=0; x<Board::getSize(); x++){
         QJsonArray rij = boardArray[x].toArray();
         for(int y=0; y<Board::getSize(); y++){
@@ -117,7 +118,7 @@ void FileIO::loadBoard(Game* game, QString filePath){
 QJsonObject FileIO::pieceToJson(const Piece* piece){
     QJsonObject jsonObject;
     if (piece != nullptr){
-//        jsonObject["type"] = Piece::getTypeName(piece->getType());
+        jsonObject["type"] = Piece::getTypeName(piece->getType());
         jsonObject["player_colour"] = Player::getColourName(piece->getPlayer().getColour());
 
         QJsonObject dirobj;

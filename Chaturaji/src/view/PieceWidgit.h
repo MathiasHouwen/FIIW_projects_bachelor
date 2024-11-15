@@ -29,6 +29,7 @@ public:
     PieceWidgit(QWidget *parent, Piece* piece);
     PieceWidgit(QWidget *parent, Piece::Type type);
     void setHovered(bool hovered);
+    void setGray();
 };
 
 

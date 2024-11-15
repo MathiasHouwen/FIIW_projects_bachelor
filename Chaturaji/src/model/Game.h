@@ -16,11 +16,13 @@ signals:
 public:
     enum class MoveState{READYTOSELECT, READYTOMOVE};
 private:
+    const static int numberOfPlayer = 4;
+
     // model classes
     Board board;    // bord
     PatternMover mover; // logica voor piece patronen
     Dice dice;
-    Player players[4] = {{Player::colour::RED}, {Player::colour::BLUE}, {Player::colour::YELLOW}, {Player::colour::GREEN}};
+    Player players[numberOfPlayer] = {{Player::colour::RED}, {Player::colour::BLUE}, {Player::colour::YELLOW}, {Player::colour::GREEN}};
 
     // state
     QPoint* currentlySelectedCell;  // selectie, geen = null (1 move is eerst cell selecteren, dan volgende cell om te moven)
@@ -30,7 +32,6 @@ private:
     bool gameOver{false};
 
     void advance(); // zet game verder naar volgende move, of volgende turn als 2 moves geweest zijn
-
 public:
     Game();
     //directe getters
@@ -56,6 +57,8 @@ public:
     void setPlayerName(const QString &name, Player::colour playerColour);
 
     void setPlayerScore(int score, Player::colour playerColour);
+
+    static const int getNumberOfPlayer();
 };
 
 

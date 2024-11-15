@@ -70,3 +70,7 @@ void PieceWidgit::setFill(QColor color) {
     setSvgAttribute("fill", color.name());
 }
 
+void PieceWidgit::setGray() {
+    setFill(QColorConstants::Svg::lightslategray);
+    setStroke(QColorConstants::Svg::darkslategray);
+}

@@ -14,8 +14,7 @@ Game::Game() : board(), mover(board) {
 }
 
 void Game::setPlayerName(const QString& name, Player::colour playerColour) {
-    Player player = getPlayerFromColour(playerColour);
-    player.setName(name);
+    players[static_cast<int>(playerColour)].setName(name);
 }
 void Game::setPlayerScore(int score, Player::colour playerColour){
     Player player = getPlayerFromColour(playerColour);
@@ -47,6 +46,11 @@ bool Game::movePiece(QPoint destinationCell) {
 
     Piece* destPiece = board.getCell(destinationCell);
     int scoreToAdd = destPiece ? destPiece->getScoreValue() : 0;
+
+    if (destPiece && destPiece->getType() == Piece::Type::KING) {
+        destPiece->getPlayer().killPlayer();
+    }
+
     // doe de move in bord en update score
     board.move(*currentlySelectedCell, destinationCell);
     getCurrentPlayer().addScore(scoreToAdd);
@@ -140,6 +144,10 @@ void Game::skip() {
 
 Dice Game::getDice() {
     return dice;
+}
+
+const int Game::getNumberOfPlayer() {
+    return numberOfPlayer;
 }
 
 

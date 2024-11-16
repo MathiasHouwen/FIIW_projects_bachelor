@@ -9,7 +9,7 @@
 
 Controller::Controller(Game &model, BoardView* boardView, DiceAndMovesView* diceAndMovesView, FileIOView* fileIoView, PlayersView* playersView)
         : QObject(nullptr), model(model), boardView(boardView),
-        diceAndMovesView(diceAndMovesView), fileIoView(fileIoView){
+        diceAndMovesView(diceAndMovesView), fileIoView(fileIoView), playersView(playersView){
     connect(boardView, &BoardView::cellClicked, this, &Controller::onCellClicked);
     connect(boardView, &BoardView::cellHoverChanged, this, &Controller::onCellHoverChanged);
     connect(diceAndMovesView, &DiceAndMovesView::skipButtonClicked, this, &Controller::onSkipButtonClicked);

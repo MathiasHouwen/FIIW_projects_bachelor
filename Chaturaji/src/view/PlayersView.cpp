@@ -10,10 +10,14 @@ PlayersView::PlayersView(QWidget *parent)
 
 PlayersView::~PlayersView() = default;
 
-void PlayersView::setPlayers(const std::vector<Player>& players) {
+void PlayersView::setPlayers(const QMap<QColor, PlayerView*>& players) {
     this->players = players;
 }
 
-std::vector<Player> PlayersView::getPlayers() {
+QMap<QColor, PlayerView*> PlayersView::getPlayers() {
     return players;
+}
+
+void PlayersView::makeLayout() {
+
 }

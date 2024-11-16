@@ -5,7 +5,7 @@
 #ifndef PLAYERSVIEW_H
 #define PLAYERSVIEW_H
 #include <QWidget>
-#include "../model/Player.h"
+#include "PlayerView.h"
 
 
 class PlayersView: public QWidget{
@@ -13,10 +13,13 @@ Q_OBJECT
 public:
     explicit PlayersView(QWidget *parent = 0);
     ~PlayersView() override;
-    void setPlayers(const std::vector<Player>& players);
-    std::vector<Player> getPlayers();
+    void setPlayers(const QMap<QColor, PlayerView*>& players);
+    QMap<QColor, PlayerView*> getPlayers();
+    PlayerView getPlayerFromColor(QColor);
+    void addPlayerFromColor(PlayerView, QColor);
+    void makeLayout();
 private:
-    std::vector<Player> players;
+    QMap<QColor, PlayerView*> players;
 };
 
 

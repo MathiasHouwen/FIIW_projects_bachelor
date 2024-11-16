@@ -4,6 +4,7 @@
 
 #ifndef PLAYERSVIEW_H
 #define PLAYERSVIEW_H
+#include <QVBoxLayout>
 #include <QWidget>
 #include "PlayerView.h"
 
@@ -13,15 +14,14 @@ Q_OBJECT
 public:
     explicit PlayersView(QWidget *parent = 0);
     ~PlayersView() override;
-    void setPlayers(const QMap<QString, PlayerView*>& players);
-    QMap<QString, PlayerView*> getPlayers();
+    void setPlayers(const QMap<Player::colour, PlayerView*>& players);
+    QMap<Player::colour, PlayerView*> getPlayers();
 
-PlayerView *getPlayerFromColor(QColor color);
-    void addPlayerFromColor(PlayerView *playerview, QColor color);
+    PlayerView *getPlayerFromColor(Player::colour color);
+    void addPlayerFromColor(PlayerView *playerview, Player::colour color);
 private:
-    QMap<QString, PlayerView*> players;
-protected:
-    void paintEvent(QPaintEvent *event) override;
+    QMap<Player::colour, PlayerView*> players;
+    QVBoxLayout *layout;
 };
 
 

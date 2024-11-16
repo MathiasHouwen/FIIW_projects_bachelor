@@ -36,13 +36,13 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 void MainWindow::makeSidePanel() {
-    //for (Player::colour color : { Player::colour::RED, Player::colour::BLUE, Player::colour::GREEN, Player::colour::YELLOW }) {
-    //    auto player = new Player(color);
-    //    player->setName(model.getPlayers()[static_cast<int>(color)].getName());
-    //    auto playerView = new PlayerView(nullptr, player);
-    //    ui->sidePanel->layout()->addWidget(playerView);
-    //}
     auto playersView = new PlayersView(nullptr);
+    for (Player::colour color : { Player::colour::RED, Player::colour::BLUE, Player::colour::GREEN, Player::colour::YELLOW }) {
+        auto player = new Player(color);
+        player->setName(model.getPlayers()[static_cast<int>(color)].getName());
+        auto playerView = new PlayerView(nullptr, player);
+        playersView->addPlayerFromColor(playerView, color);
+    }
     ui->sidePanel->layout()->addWidget(playersView);
 }
 

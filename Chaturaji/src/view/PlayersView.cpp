@@ -1,61 +1,38 @@
-//
-// Created by robin on 16/11/2024.
-//
-
 #include "PlayersView.h"
-
-#include <QPainter>
-#include <qpainterpath.h>
+#include <QVBoxLayout>
 
 PlayersView::PlayersView(QWidget *parent)
-    : QWidget(parent){
-    update();
+    : QWidget(parent), layout(new QVBoxLayout(this)) {
+    setLayout(layout); // Set layout for this widget
 }
 
 PlayersView::~PlayersView() = default;
 
-void PlayersView::setPlayers(const QMap<QString, PlayerView*>& players) {
+void PlayersView::setPlayers(const QMap<Player::colour, PlayerView*>& players) {
     this->players = players;
+
+    // Clear existing widgets from the layout
+    QLayoutItem* child;
+    while ((child = layout->takeAt(0)) != nullptr) {
+        delete child->widget();
+        delete child;
+    }
+
+    // Add new PlayerView widgets to the layout
+    for (auto it = players.begin(); it != players.end(); ++it) {
+        layout->addWidget(it.value());
+    }
 }
 
-QMap<QString, PlayerView*> PlayersView::getPlayers() {
+QMap<Player::colour, PlayerView*> PlayersView::getPlayers() {
     return players;
 }
 
-PlayerView *PlayersView::getPlayerFromColor(QColor color) {
-    QString colorString = color.name();
-    return players[colorString];
+PlayerView* PlayersView::getPlayerFromColor(Player::colour color) {
+    return players.value(color, nullptr);
 }
 
-void PlayersView::addPlayerFromColor(PlayerView *playerview, QColor color) {
-    QString colorString = color.name();
-    players[colorString] = playerview;
-}
-
-void PlayersView::paintEvent(QPaintEvent *event) {
-    QWidget::paintEvent(event);
-    QPainter painter(this);
-    QRect *rect = new QRect(0, 0, 100, 100);
-    painter.fillRect(*rect, Qt::white);
-//
-//    //    QRect boundingBox((width() - width()) / 2, (height() - height()) / 2, width(), height());
-//    QRect boundingBox(0, 0, width(), height());
-//    colour = player->getQColour();
-//    QPainterPath path;
-//    path.addRoundedRect(boundingBox, 15, 15);  // Rounded corners with radius 15
-//    painter.fillPath(path, colour);
-//
-//    // Tekst setup
-//    QFont font = painter.font();
-//    font.setPointSize(14);
-//    painter.setFont(font);
-//    painter.setPen(Qt::white);
-//
-//    // Teken tekst
-//    int padding = 10;
-//    painter.drawText(padding, 30, "Name: " + player->getName());
-//    painter.drawText(padding, 60, "Score: " + QString::number(player->getScore()));
-//
-//    painter.setPen(Qt::black);
-//    painter.drawPath(path);
+void PlayersView::addPlayerFromColor(PlayerView* playerView, Player::colour color) {
+    players[color] = playerView;
+    layout->addWidget(playerView); // Add to layout
 }

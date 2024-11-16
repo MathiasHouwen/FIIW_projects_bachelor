@@ -6,6 +6,8 @@
 #define CHATURAJI_MAINWINDOW_H
 
 #include <QWidget>
+
+#include "PlayersView.h"
 #include "../model/Game.h"
 
 
@@ -27,6 +29,7 @@ protected:
     void paintEvent(QPaintEvent *event) override;
 
 private:
+    PlayersView* playersView = new PlayersView(nullptr);
     Ui::MainWindow *ui;
     Game model{};
     void makeBoardPanelShapeSquare();

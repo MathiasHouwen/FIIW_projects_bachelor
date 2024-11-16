@@ -10,14 +10,20 @@
 #include "PlayerView.h"
 
 
-PlayerView::PlayerView(QWidget *parent, Player *player)
-        : QWidget(parent), player(player){
+PlayerView::PlayerView(QWidget *parent, Player *player, Game* game)
+        : QWidget(parent), player(player), game(game){
     setMinimumSize(250, 80);
 }
 
 void PlayerView::paintEvent(QPaintEvent *event) {
     QWidget::paintEvent(event);
     QPainter painter(this);
+
+    if (*player == game->getCurrentPlayer()) { // Use the Player method to check turn
+        setMinimumSize(250, 250); // Larger size for the current player
+    } else {
+        setMinimumSize(250, 70); // Default size for others
+    }
 
 //    QRect boundingBox((width() - width()) / 2, (height() - height()) / 2, width(), height());
     QRect boundingBox(0, 0, width(), height());

@@ -8,14 +8,16 @@
 
 #include <QWidget>
 #include "../model/Player.h"
+#include "../model/Game.h"
 
 class PlayerView : public QWidget {
 Q_OBJECT
 
 public:
-    PlayerView(QWidget *parent, Player* player);
+    PlayerView(QWidget *parent, Player* player, Game* game);
 
 private:
+    Game *game;
     Player* player;
     QColor colour;
 

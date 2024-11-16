@@ -36,3 +36,7 @@ void PlayersView::addPlayerFromColor(PlayerView* playerView, Player::colour colo
     players[color] = playerView;
     layout->addWidget(playerView); // Add to layout
 }
+
+void PlayersView::updatePlayers() {
+    std::cout << "PlayersView::updatePlayers" << std::endl;
+}

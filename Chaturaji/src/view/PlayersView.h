@@ -16,7 +16,7 @@ public:
     ~PlayersView() override;
     void setPlayers(const QMap<Player::colour, PlayerView*>& players);
     QMap<Player::colour, PlayerView*> getPlayers();
-
+    void updatePlayers();
     PlayerView *getPlayerFromColor(Player::colour color);
     void addPlayerFromColor(PlayerView *playerview, Player::colour color);
 private:

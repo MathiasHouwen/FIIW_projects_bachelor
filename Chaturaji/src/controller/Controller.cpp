@@ -7,7 +7,7 @@
 #include "../model/FileIO.h"
 
 
-Controller::Controller(Game &model, BoardView* boardView, DiceAndMovesView* diceAndMovesView, FileIOView* fileIoView)
+Controller::Controller(Game &model, BoardView* boardView, DiceAndMovesView* diceAndMovesView, FileIOView* fileIoView, PlayersView* playersView)
         : QObject(nullptr), model(model), boardView(boardView),
         diceAndMovesView(diceAndMovesView), fileIoView(fileIoView){
     connect(boardView, &BoardView::cellClicked, this, &Controller::onCellClicked);
@@ -15,6 +15,7 @@ Controller::Controller(Game &model, BoardView* boardView, DiceAndMovesView* dice
     connect(diceAndMovesView, &DiceAndMovesView::skipButtonClicked, this, &Controller::onSkipButtonClicked);
     connect(fileIoView, &FileIOView::onLoad, this, &Controller::onLoad);
     connect(fileIoView, &FileIOView::onSave, this, &Controller::onSave);
+    connect(&model, &Game::nextTurn, this, &Controller::updatePlayerViews);
     start();
 }
 
@@ -133,4 +134,8 @@ void Controller::onLoad(){
     } else {
         qDebug() << ">:( Geen geldig filepath";
     }
+}
+
+void Controller::updatePlayerViews() const {
+    playersView->updatePlayers();
 }

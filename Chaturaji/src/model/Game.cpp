@@ -71,6 +71,7 @@ void Game::advance() {
         // probeer 4 keer de turn te verzetten
         int turnAttempts;
         for(turnAttempts=1; turnAttempts<=4; turnAttempts++){
+            emit nextTurn();
             turn++;
             if(turn == 4) turn = 0;
             if(getCurrentPlayer().isAlive()) break; // probeer opnieuw als de speler dood is

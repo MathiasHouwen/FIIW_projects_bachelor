@@ -13,6 +13,7 @@ class Game: public QObject{
 Q_OBJECT
 signals:
     void somethingChanged();
+    void nextTurn();
 public:
     enum class MoveState{READYTOSELECT, READYTOMOVE};
 private:

@@ -20,6 +20,7 @@
 #include "../controller/Controller.h"
 #include "DieView.h"
 #include "DiceAndMovesView.h"
+#include "PlayersView.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -35,12 +36,14 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 void MainWindow::makeSidePanel() {
-    for (Player::colour color : { Player::colour::RED, Player::colour::BLUE, Player::colour::GREEN, Player::colour::YELLOW }) {
-        auto player = new Player(color);
-        player->setName(model.getPlayers()[static_cast<int>(color)].getName());
-        auto playerView = new PlayerView(nullptr, player);
-        ui->sidePanel->layout()->addWidget(playerView);
-    }
+    //for (Player::colour color : { Player::colour::RED, Player::colour::BLUE, Player::colour::GREEN, Player::colour::YELLOW }) {
+    //    auto player = new Player(color);
+    //    player->setName(model.getPlayers()[static_cast<int>(color)].getName());
+    //    auto playerView = new PlayerView(nullptr, player);
+    //    ui->sidePanel->layout()->addWidget(playerView);
+    //}
+    auto playersView = new PlayersView(nullptr);
+    ui->sidePanel->layout()->addWidget(playersView);
 }
 
 

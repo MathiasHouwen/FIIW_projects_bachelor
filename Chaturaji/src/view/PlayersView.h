@@ -13,13 +13,15 @@ Q_OBJECT
 public:
     explicit PlayersView(QWidget *parent = 0);
     ~PlayersView() override;
-    void setPlayers(const QMap<QColor, PlayerView*>& players);
-    QMap<QColor, PlayerView*> getPlayers();
-    PlayerView getPlayerFromColor(QColor);
-    void addPlayerFromColor(PlayerView, QColor);
-    void makeLayout();
+    void setPlayers(const QMap<QString, PlayerView*>& players);
+    QMap<QString, PlayerView*> getPlayers();
+
+PlayerView *getPlayerFromColor(QColor color);
+    void addPlayerFromColor(PlayerView *playerview, QColor color);
 private:
-    QMap<QColor, PlayerView*> players;
+    QMap<QString, PlayerView*> players;
+protected:
+    void paintEvent(QPaintEvent *event) override;
 };
 
 

@@ -36,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 void MainWindow::makeSidePanel() {
-    for (Player::colour color : { Player::colour::RED, Player::colour::BLUE, Player::colour::GREEN, Player::colour::YELLOW }) {
+    for (Player::colour color : { Player::colour::RED, Player::colour::BLUE, Player::colour::YELLOW, Player::colour::GREEN }) {
         auto player = new Player(color);
         player->setName(model.getPlayers()[static_cast<int>(color)].getName());
         auto playerView = new PlayerView(nullptr, player, &model);

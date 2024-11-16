@@ -38,5 +38,7 @@ void PlayersView::addPlayerFromColor(PlayerView* playerView, Player::colour colo
 }
 
 void PlayersView::updatePlayers() {
-    std::cout << "PlayersView::updatePlayers" << std::endl;
+    for (auto it = players.begin(); it != players.end(); ++it) {
+        it.value()->update();
+    }
 }

@@ -2,53 +2,55 @@
 // Created by houwe on 10/11/2024.
 //
 
-#include <qpen.h>
-#include <QPainter>
-#include <QLabel>
-#include <qpainterpath.h>
-
 #include "PlayerView.h"
 
 
-PlayerView::PlayerView(QWidget *parent, Player *player, Game* game)
-        : QWidget(parent), player(player), game(game){
-    setMinimumSize(250, 80);
+PlayerView::PlayerView(const Player& player, QWidget *parent) : QWidget(parent) {
+    color = QColor(Player::getColourName(player.getColour()));
+    auto layout = new QVBoxLayout(this);
+
+    nameLabel = new QLabel(player.getName());
+    scoreLabel = new QLabel("Score: _");
+    nameLabel->setContentsMargins(16, 0, 16, 0);
+    scoreLabel->setContentsMargins(16, 0, 16, 0);
+
+    layout->addWidget(nameLabel);
+    layout->addWidget(scoreLabel);
+
+    updateSetBigOrSmall(false);
 }
 
 void PlayerView::paintEvent(QPaintEvent *event) {
     QWidget::paintEvent(event);
     QPainter painter(this);
+
     QPainterPath path;
-    QPen strokePen;
-
-    if (*player == game->getCurrentPlayer()) { // Use the Player method to check turn
-        setMinimumSize(250, 250); // Larger size for the current player
-    } else {
-        setMinimumSize(250, 70); // Default size for others
-    }
-
-    //    QRect boundingBox((width() - width()) / 2, (height() - height()) / 2, width(), height());
     QRect boundingBox(0, 0, width(), height());
-    colour = player->getQColour();
     path.addRoundedRect(boundingBox, 15, 15);  // Rounded corners with radius 15
     painter.fillPath(path, QColorConstants::Svg::grey);
 
-    // Tekst setup
-    QFont font = painter.font();
-    font.setPointSize(14);
-    font.setBold(true);
-    painter.setFont(font);
-    painter.setPen(Qt::white);
-
-    // Teken tekst
-    int padding = 10;
-    painter.drawText(padding, 30, "Name: " + player->getName());
-    painter.drawText(padding, 60, "Score: " + QString::number(player->getScore()));
-
-    strokePen.setColor(colour);
+    QPen strokePen;
+    strokePen.setColor(color);
     strokePen.setWidth(10);
-    strokePen.setJoinStyle(Qt::MiterJoin);
     painter.setPen(strokePen);
-
     painter.drawPath(path);
+}
+
+void PlayerView::updateScore(int score) {
+    QString s;
+    QTextStream ts(&s);
+    ts << "Score: " << score;
+    scoreLabel->setText(s);
+}
+
+void PlayerView::updateSetGrey() {
+    color = QColorConstants::Svg::darkgray;
+    update();
+}
+
+void PlayerView::updateSetBigOrSmall(bool big) {
+    setMinimumHeight(big ? 250 : 0);
+    nameLabel->setFont(QFont( "Arial", big ? 15 : 10, QFont::Bold));
+    scoreLabel->setFont(QFont( "Arial", big ? 15 : 10, QFont::Bold));
+    update();
 }

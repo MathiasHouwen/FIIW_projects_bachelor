@@ -2,43 +2,43 @@
 #include <QVBoxLayout>
 
 PlayersView::PlayersView(QWidget *parent)
-    : QWidget(parent), layout(new QVBoxLayout(this)) {
-    setLayout(layout); // Set layout for this widget
+    : QWidget(parent) {
+    layout = new QVBoxLayout(parent);
+    layout->setDirection(QBoxLayout::BottomToTop);
+}
+
+void PlayersView::addPlayerView(const Player &player) {
+    auto playerView = new PlayerView(player, nullptr);
+    players[player.getColour()] = playerView;
+    layout->addWidget(playerView);
+}
+
+void PlayersView::updateScore(Player::colour color, int score) {
+    players[color]->updateScore(score);
+}
+
+void PlayersView::updateSetBigAndToTop(Player::colour color) {
+    if(bigPlayer){
+        bigPlayer->updateSetBigOrSmall(false);
+    }
+    bigPlayer = players[color];
+    bigPlayer->updateSetBigOrSmall(true);
+    // remove en add om naar top te brengen
+    layout->removeWidget(bigPlayer);
+    layout->addWidget(bigPlayer);
+}
+
+void PlayersView::updateSetGrey(Player::colour color) {
+    players[color]->updateSetGrey();
+}
+
+void PlayersView::clear() {
+    for(auto playerView : players){
+        layout->removeWidget(playerView);
+        delete playerView;
+    }
+    players.clear();
+    bigPlayer = nullptr;
 }
 
 PlayersView::~PlayersView() = default;
-
-void PlayersView::setPlayers(const QMap<Player::colour, PlayerView*>& players) {
-    this->players = players;
-
-    // Clear existing widgets from the layout
-    QLayoutItem* child;
-    while ((child = layout->takeAt(0)) != nullptr) {
-        delete child->widget();
-        delete child;
-    }
-
-    // Add new PlayerView widgets to the layout
-    for (auto it = players.begin(); it != players.end(); ++it) {
-        layout->addWidget(it.value());
-    }
-}
-
-QMap<Player::colour, PlayerView*> PlayersView::getPlayers() {
-    return players;
-}
-
-PlayerView* PlayersView::getPlayerFromColor(Player::colour color) {
-    return players.value(color, nullptr);
-}
-
-void PlayersView::addPlayerFromColor(PlayerView* playerView, Player::colour color) {
-    players[color] = playerView;
-    layout->addWidget(playerView); // Add to layout
-}
-
-void PlayersView::updatePlayers() {
-    for (auto it = players.begin(); it != players.end(); ++it) {
-        it.value()->update();
-    }
-}

@@ -16,7 +16,7 @@
 StartScreen::StartScreen(QWidget *parent) :
     QWidget(parent), ui(new Ui::StartScreen) {
     ui->setupUi(this);
-    connect(ui->startButton, SIGNAL(clicked()), this, SLOT(on_pushButton_clicked()));
+    connect(ui->startButton, &QPushButton::clicked, this,&StartScreen::on_pushButton_clicked);
 }
 
 StartScreen::~StartScreen() {
@@ -26,6 +26,7 @@ StartScreen::~StartScreen() {
 void StartScreen::on_pushButton_clicked() {
     auto *w = new MainWindow();
     set_players(w);
+    w->startController();
     w->show();
     this->close();
 }
@@ -36,7 +37,8 @@ void StartScreen::set_players(MainWindow* window) {
     players.push_back(ui->player3Input->toPlainText().toStdString());
     players.push_back(ui->player4Input->toPlainText().toStdString());
     for (int i = 0; i < players.size(); i++) {
-        window->getModel()->setPlayerName(players[i].data(), static_cast<Player::colour>(i));
+        QString name = players[i].data();
+        if(!name.isEmpty())
+            window->getModel()->setPlayerName(name, static_cast<Player::colour>(i));
     }
-    window->makeSidePanel();
 }

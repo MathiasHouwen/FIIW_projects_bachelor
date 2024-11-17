@@ -24,19 +24,19 @@ private:
     PlayersView* playersView;
     FileIO io;
     QSet<QPoint> currentHighlights{};
-    void start();
     void clearHighLights();
     void setSelectionHighlights();
     void setMoveHightlights();
     void setMoveAndDice();
+    void initPlayersView();
 public:
     Controller(Game &model, BoardView* boardView, DiceAndMovesView* diceAndMovesView, FileIOView* fileIoView, PlayersView* playersView);
+    void start();
 
 private slots:
     void onCellClicked(QPoint cell);
     void onCellHoverChanged(QPoint cell, bool hover);
     void onSkipButtonClicked();
-    void updatePlayerViews() const;
     void onLoad();
     void onSave();
 };

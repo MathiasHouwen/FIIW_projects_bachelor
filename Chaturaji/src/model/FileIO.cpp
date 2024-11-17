@@ -142,7 +142,7 @@ QJsonObject FileIO::playersToJson(const Player* players, Player curr){
     QJsonObject jsonObject;
     QJsonArray playersJson;
 
-    for (int i = 0; i<=Game::getNumberOfPlayer(); i++){
+    for (int i = 0; i<Game::getNumberOfPlayer(); i++){
         playersJson.append(playerToJson(&players[i]));
     }
     jsonObject["allPlayers"] = playersJson;

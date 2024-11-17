@@ -12,16 +12,19 @@
 class PlayersView: public QWidget{
 Q_OBJECT
 public:
-    explicit PlayersView(QWidget *parent = 0);
+    explicit PlayersView(QWidget *parent = nullptr);
     ~PlayersView() override;
-    void setPlayers(const QMap<Player::colour, PlayerView*>& players);
-    QMap<Player::colour, PlayerView*> getPlayers();
-    void updatePlayers();
-    PlayerView *getPlayerFromColor(Player::colour color);
-    void addPlayerFromColor(PlayerView *playerview, Player::colour color);
+    void addPlayerView(const Player& player);
+
+    void updateScore(Player::colour color, int score);
+    void updateSetBigAndToTop(Player::colour color);
+    void updateSetGrey(Player::colour color);
+    void clear();
+
 private:
     QMap<Player::colour, PlayerView*> players;
-    QVBoxLayout *layout;
+    PlayerView* bigPlayer{nullptr};
+    QVBoxLayout* layout;
 };
 
 

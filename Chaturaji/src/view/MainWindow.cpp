@@ -32,19 +32,9 @@ MainWindow::MainWindow(QWidget *parent) :
     auto boardView = new BoardView(ui->boardPanel);
     auto diceAndMovesView = new DiceAndMovesView(ui->turnsPanel);
     auto ioView = new FileIOView(model, ui->topBar);
-    auto controller = new Controller(model, boardView, diceAndMovesView, ioView, playersView);
+    auto playersView = new PlayersView(ui->sidePanel);
+    controller = new Controller(model, boardView, diceAndMovesView, ioView, playersView);
 }
-
-void MainWindow::makeSidePanel() {
-    for (Player::colour color : { Player::colour::RED, Player::colour::BLUE, Player::colour::YELLOW, Player::colour::GREEN }) {
-        auto player = new Player(color);
-        player->setName(model.getPlayers()[static_cast<int>(color)].getName());
-        auto playerView = new PlayerView(nullptr, player, &model);
-        playersView->addPlayerFromColor(playerView, color);
-    }
-    ui->sidePanel->layout()->addWidget(playersView);
-}
-
 
 MainWindow::~MainWindow() {
     delete ui;
@@ -73,4 +63,8 @@ void MainWindow::paintEvent(QPaintEvent *event) {
 
 Game* MainWindow::getModel() {
     return &model;
+}
+
+void MainWindow::startController() {
+    controller->start();
 }

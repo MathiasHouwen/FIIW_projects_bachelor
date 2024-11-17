@@ -7,6 +7,14 @@
 
 
 #include <QWidget>
+#include <qobjectdefs.h>
+#include <qtmetamacros.h>
+#include <QLabel>
+#include <QColor>
+#include <qpen.h>
+#include <QPainter>
+#include <qpainterpath.h>
+#include <QVBoxLayout>
 #include "../model/Player.h"
 #include "../model/Game.h"
 
@@ -14,12 +22,15 @@ class PlayerView : public QWidget {
 Q_OBJECT
 
 public:
-    PlayerView(QWidget *parent, Player* player, Game* game);
+    PlayerView(const Player& player, QWidget *parent);
+    void updateScore(int score);
+    void updateSetGrey();
+    void updateSetBigOrSmall(bool big);
 
 private:
-    Game *game;
-    Player* player;
-    QColor colour;
+    QColor color;
+    QLabel* scoreLabel;
+    QLabel* nameLabel;
 
 protected:
     void paintEvent(QPaintEvent *event) override;

@@ -9,6 +9,7 @@
 
 #include "PlayersView.h"
 #include "../model/Game.h"
+#include "../controller/Controller.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -22,16 +23,16 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;
     Game* getModel();
-    void makeSidePanel();
+    void startController();
 
 protected:
     void resizeEvent(QResizeEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
 
 private:
-    PlayersView* playersView = new PlayersView(nullptr);
     Ui::MainWindow *ui;
     Game model{};
+    Controller* controller;
     void makeBoardPanelShapeSquare();
 };
 

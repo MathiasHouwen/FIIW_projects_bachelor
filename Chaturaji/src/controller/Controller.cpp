@@ -15,8 +15,6 @@ Controller::Controller(Game &model, BoardView* boardView, DiceAndMovesView* dice
     connect(diceAndMovesView, &DiceAndMovesView::skipButtonClicked, this, &Controller::onSkipButtonClicked);
     connect(fileIoView, &FileIOView::onLoad, this, &Controller::onLoad);
     connect(fileIoView, &FileIOView::onSave, this, &Controller::onSave);
-    connect(&model, &Game::nextTurn, this, &Controller::updatePlayerViews);
-    start();
 }
 
 void Controller::start() {
@@ -25,6 +23,7 @@ void Controller::start() {
     clearHighLights();
     setSelectionHighlights();
     setMoveAndDice();
+    initPlayersView();
 }
 
 void Controller::onCellClicked(QPoint cell) {
@@ -36,13 +35,17 @@ void Controller::onCellClicked(QPoint cell) {
         }
     } else {// if(model.getMoveState() == Game::MoveState::READYTOMOVE) {
         QPoint selectedCell = *model.getCurrentlySelectedCell();
+        const Player& currentPlayer = model.getCurrentPlayer();
         bool succes = model.movePiece(cell);
         if(succes){
+            const Player& newPlayer = model.getCurrentPlayer();
             boardView->updatePiece(selectedCell, nullptr);
             boardView->updatePiece(cell, model.getBoard().getCell(cell));
             clearHighLights();
             setSelectionHighlights();
             setMoveAndDice();
+            playersView->updateScore(currentPlayer.getColour(), currentPlayer.getScore());
+            playersView->updateSetBigAndToTop(newPlayer.getColour());
         }
     }
 }
@@ -93,6 +96,7 @@ void Controller::onSkipButtonClicked() {
     setMoveAndDice();
     clearHighLights();
     setSelectionHighlights();
+    playersView->updateSetBigAndToTop(model.getCurrentPlayer().getColour());
 }
 
 void Controller::onSave(){
@@ -131,11 +135,18 @@ void Controller::onLoad(){
         boardView->updateFullBoard(model.getBoard());
         clearHighLights();
         setSelectionHighlights();
+        initPlayersView();
     } else {
         qDebug() << ">:( Geen geldig filepath";
     }
 }
 
-void Controller::updatePlayerViews() const {
-    playersView->updatePlayers();
+void Controller::initPlayersView() {
+    playersView->clear();
+    for(Player::colour color : {Player::colour::RED, Player::colour::GREEN, Player::colour::BLUE, Player::colour::YELLOW}){
+        Player p = model.getPlayerFromColour(color);
+        playersView->addPlayerView(p);
+        playersView->updateScore(p.getColour(), p.getScore());
+    }
+    playersView->updateSetBigAndToTop(model.getCurrentPlayer().getColour());
 }

@@ -32,6 +32,7 @@ private:
     constexpr static QPair<QColor, QColor> hoverColor{QCol::white, QCol::blanchedalmond};
     constexpr static QPair<QColor, QColor> selectedColor{QCol::lightgreen, QCol::darkseagreen};
     constexpr static QPair<QColor, QColor> attackColor{QCol::lightsalmon, QCol::lightcoral};
+
     QColor getColor(QPair<QColor, QColor> colorPair);
     void setFillAndBorder(SquareView::HighLight highLighter);
 

@@ -1,4 +1,5 @@
 // gemaakt door ebbe en mathias tegenlijk en ge-merged
+//practicum 2: enkel cell (+get/set) toegevoegd door ebbe
 
 #include "Piece.h"
 

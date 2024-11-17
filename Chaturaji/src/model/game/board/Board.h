@@ -1,4 +1,5 @@
-
+// weinig veranderd in practicum 2
+// enkel logica toegevoegd om piece in board te syncen met piece in player, en ook piece.cell door ebbe
 
 #ifndef CHATURAJI_BOARD_H
 #define CHATURAJI_BOARD_H

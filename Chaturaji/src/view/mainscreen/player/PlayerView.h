@@ -1,6 +1,8 @@
 //
 // Created by houwe on 10/11/2024.
 //
+//volledig van mathias, kleine refactors door ebbe
+
 
 #ifndef CHATURAJI_PLAYERVIEW_H
 #define CHATURAJI_PLAYERVIEW_H

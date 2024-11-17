@@ -1,6 +1,10 @@
 //
 // Created by houwe on 8/11/2024.
 //
+//volledig door mathias gemaakt natuurlijk. wie anders heeft zo erge dyslexie
+// de svg bewerking logica met het DOM-documentmodel is wel door ebbe
+
+
 
 #include <QVBoxLayout>
 #include <iostream>

@@ -1,6 +1,8 @@
 //
 // Created by ebbew on 8-11-2024.
 //
+//begin vooral door mathias gemaakt. door Ebbe goed werkend gemaakt
+
 
 #include <QPushButton>
 #include <iostream>

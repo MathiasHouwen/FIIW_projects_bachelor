@@ -3,6 +3,8 @@
 #include <utility>
 
 // volledig door robin (kleine refactors door ebbe)
+// practicum 2: enkel logica toegevoegd om piece in board te syncen met piece in player door ebbe
+
 
 Piece* Board::getCell(const QPoint cell) const {
     errorIfOutOfRane(cell); // randgeval

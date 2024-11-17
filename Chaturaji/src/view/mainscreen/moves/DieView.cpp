@@ -1,6 +1,8 @@
 //
 // Created by ebbew on 13-11-2024.
 //
+//volledig van Ebbe
+
 
 #include <QFile>
 #include "DieView.h"

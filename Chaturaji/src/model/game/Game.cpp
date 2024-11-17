@@ -10,7 +10,6 @@
 
 Game::Game() : board(), mover(board) {
     currentlySelectedCell = nullptr;
-    emit somethingChanged();
 }
 
 void Game::setPlayerName(const QString& name, Player::colour playerColour) {
@@ -76,7 +75,6 @@ void Game::advance() {
         // probeer 4 keer de turn te verzetten
         int turnAttempts;
         for(turnAttempts=1; turnAttempts<=4; turnAttempts++){
-            emit nextTurn();
             turn++;
             if(turn == 4) turn = 0;
             if(getCurrentPlayer().isAlive()) break; // probeer opnieuw als de speler dood is
@@ -84,7 +82,6 @@ void Game::advance() {
         // als 4 keer geprobeerd dan was iedereen dood, dus game over
         gameOver = turnAttempts >= 4;
     }
-    emit somethingChanged();
 
 }
 

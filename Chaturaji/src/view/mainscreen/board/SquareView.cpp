@@ -7,6 +7,9 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
+//door allemaal gemaakt en veranderd, alles vanaf piece view er in zit is door ebbe
+
+
 SquareView::~SquareView() {
 }
 

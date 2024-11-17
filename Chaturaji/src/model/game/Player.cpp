@@ -62,16 +62,6 @@ Player::colour Player::getColourFromName(const QString& colourstr){
     if (colourstr == "yellow") return Player::colour::YELLOW;
 }
 
-QColor Player::getQColour() {
-    switch (m_colour) {
-        case Player::colour::RED: return QColor("red");
-        case Player::colour::BLUE: return QColor("blue");
-        case Player::colour::GREEN: return QColor("green");
-        case Player::colour::YELLOW: return QColor("yellow");
-        default: return QColor("unknown");
-    }
-}
-
 void Player::setMScore(int mScore) {
     m_score = mScore;
 }

@@ -1,6 +1,8 @@
 //
 // Created by ebbew on 7-10-2024.
 //
+// NIET AANGEPAST IN PRACTICUM 2
+
 
 #ifndef CHATURAJI_PATTERNMOVER_H
 #define CHATURAJI_PATTERNMOVER_H

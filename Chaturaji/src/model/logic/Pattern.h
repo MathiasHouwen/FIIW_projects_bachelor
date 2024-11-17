@@ -8,6 +8,7 @@
 #include <QList>
 #include <QPoint>
 // volledig van ebbe
+// NIET AANGEPAST IN PRACTICUM 2
 
 /*
  *  Pattern is de move van een piece in 1 richting.

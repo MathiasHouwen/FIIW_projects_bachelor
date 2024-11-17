@@ -1,0 +1,180 @@
+@startuml
+
+
+' ----- Model Classes -----
+class Game {
+    +getCurrentlySelectedCell() : QPoint*
+    +getMove() : int
+    +getBoard() : Board&
+    +isGameOver() : bool
+    +getMoveState() : MoveState
+    +getDice() : Dice
+    +skip() : void
+    +selectPiece(cell : QPoint) : bool
+    +movePiece(destinationCell : QPoint) : MoveResult
+    +getPossibleMoves() : QSet<QPoint>
+    +getPossibleSelections() : QSet<QPoint>
+    +getCurrentPlayer() : Player&
+    +getPlayerFromColour(colour : Player::colour) : Player&
+    +getPlayers() : const Player*
+    +setPlayerName(name : QString, playerColour : Player::colour) : void
+    +setPlayerScore(score : int, playerColour : Player::colour) : void
+}
+
+class Board {
+    +isInRange(cell : QPoint) : bool
+    +getSize() : constexpr int
+    +setCell(cell : QPoint, value : Piece) : void
+    +move(fromCell : QPoint, toCell : QPoint) : void
+    +clear() : void
+    +isCellEmpty(cell : QPoint) : bool
+    +getCell(cell : QPoint) : Piece*
+}
+
+class Piece {
+    +getWalkPattern() : Pattern&
+    +getAttackPattern() : Pattern&
+    +getType() : Type
+    +getScoreValue() : int
+    +getPlayer() : Player&
+    +getColorName() : QString
+    +getCell() : QPoint&
+    +setCell(cell : QPoint) : void
+    +getTypeName(type : Type) : QString
+}
+
+class Dice {
+    +doubleDobbel() : void
+    +allows(type : Piece::Type) : bool
+    +getNumber(die : int) : int
+    +isUsed(die : int) : bool
+    +setUsed(type : Piece::Type) : void
+    +getAllowedTypes() : QSet<Piece::Type>
+}
+
+class Player {
+    +setName(mName : QString) : void
+    +addScore(score : int) : void
+    +killPlayer() : void
+    +setMScore(mScore : int) : void
+    +addPiece(piece : Piece*) : void
+    +removePiece(piece : Piece*) : void
+    +getScore() : int
+    +isAlive() : bool
+    +getName() : const QString&
+    +getColour() : colour
+    +getAlivePieces() : const QSet<Piece*>&
+}
+
+class FileIO {
+    +save(game : Game*, filePath : QString) : int
+    +loadBoard(game : Game*, filePath : QString) : void
+}
+
+class PatternMover {
+    +getPossibleMoves(pattern : Pattern, cell : QPoint) : QSet<QPoint>
+}
+
+' ----- View Classes -----
+class MainWindow {
+    +getModel() : Game*
+    +startController() : void
+}
+
+class StartScreen {
+    +getPlayers() : std::vector<std::string>
+    +set_players(window : MainWindow) : void
+}
+
+class BoardView {
+    +updateHighlight(cell : QPoint, highlight : SquareView::HighLight) : void
+    +updateHighlights(cells : QSet<QPoint>, highlight : SquareView::HighLight) : void
+    +updatePiece(cell : QPoint, piece : Piece*) : void
+    +updateFullBoard(board : Board) : void
+    +updateSetPieceGrey(cell : QPoint) : void
+    +cellClicked(cell : QPoint) : signal
+    +cellHoverChanged(cell : QPoint, hover : bool) : signal
+    -onSquareViewClicked(cell : QPoint) : slot
+    -onSquareHoverUpdated(cell : QPoint, hover : bool) : slot
+}
+
+class SquareView {
+    +updatePiece(piece : Piece*) : void
+    +updateHighLight(highlighter : HighLight) : void
+    +updateSetPieceGrey() : void
+    +clicked(cell : QPoint) : signal
+    +hoverUpdated(cell : QPoint, hover : bool) : signal
+}
+
+class DiceAndMovesView {
+    +updateDiceNumbers(die1 : int, die2 : int) : void
+    +updateDisableDie(die : int, disabled : bool) : void
+    +updateMoveLabel(move : int) : void
+    +updatePiecePreviews(types : QSet<Piece::Type>) : void
+    +skipButtonClicked() : signal
+    -onSkipButtonClicked() : slot
+}
+
+class PlayersView {
+    +addPlayerView(player : Player) : void
+    +updateScore(color : Player::colour, score : int) : void
+    +updateSetBigAndToTop(color : Player::colour) : void
+    +updateSetGrey(color : Player::colour) : void
+    +clear() : void
+}
+
+class PlayerView {
+    +updateScore(score : int) : void
+    +updateSetGrey() : void
+    +updateSetBigOrSmall(big : bool) : void
+    +paintEvent(event : QPaintEvent*) : override
+}
+
+class FileIOView {
+    +onLoad() : signal
+    +onSave() : signal
+    -onLoadButtonClicked() : slot
+    -onSaveButtonClicked() : slot
+}
+
+class PieceWidgit {
+    +setHovered(hovered : bool) : void
+    +setGray() : void
+}
+
+' ----- Controller -----
+class Controller {
+    +start() : void
+    -onCellClicked(cell : QPoint) : slot
+    -onCellHoverChanged(cell : QPoint, hover : bool) : slot
+    -onSkipButtonClicked() : slot
+    -onLoad() : slot
+    -onSave() : slot
+}
+
+' Relationships
+Game --> Board
+Game --> Dice
+Game --> Player
+Game --> FileIO
+Game --> PatternMover
+Controller --> Game
+Controller --> BoardView
+Controller --> DiceAndMovesView
+Controller --> FileIOView
+Controller --> PlayersView
+Board --> Piece
+Player --> Piece
+MainWindow --> Controller
+MainWindow --> Game
+MainWindow --> BoardView
+StartScreen --> MainWindow
+BoardView --> SquareView
+DiceAndMovesView --> PieceWidgit
+PlayersView --> PlayerView
+FileIOView --> Game
+PieceWidgit --> Piece
+SquareView --> PieceWidgit
+FileIO --> Game
+
+@enduml

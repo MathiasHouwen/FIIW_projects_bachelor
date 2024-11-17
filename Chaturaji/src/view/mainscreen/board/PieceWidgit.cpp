@@ -1,6 +1,8 @@
 //
 // Created by houwe on 8/11/2024.
 //
+//volledig door mathias gemaakt natuurlijk. wie anders heeft zo erge dyslexie
+
 
 #include <QVBoxLayout>
 #include <iostream>

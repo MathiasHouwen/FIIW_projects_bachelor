@@ -1,5 +1,7 @@
 #include "PlayersView.h"
 #include <QVBoxLayout>
+//volledig van robin, kleine refactors door ebbe
+
 
 PlayersView::PlayersView(QWidget *parent)
     : QWidget(parent) {

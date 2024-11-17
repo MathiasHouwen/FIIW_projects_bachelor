@@ -1,6 +1,8 @@
 //
 // Created by robin on 8/11/2024.
 //
+//door allemaal gemaakt en veranderd, alles vanaf piece view er in zit is door ebbe
+
 
 #ifndef SQUAREVIEW_H
 #define SQUAREVIEW_H

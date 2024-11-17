@@ -45,6 +45,7 @@ void MainWindow::resizeEvent(QResizeEvent *event) {
     makeBoardPanelShapeSquare();
 }
 
+// gewoon voor responsive design: board zal de maximale mogelijke grootte innemen terwijl een 1:1 aspect ratio behouden wordt
 void MainWindow::makeBoardPanelShapeSquare() {
     auto boardPanel = ui->boardPanel;
     boardPanel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);

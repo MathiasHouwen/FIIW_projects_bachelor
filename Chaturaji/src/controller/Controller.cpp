@@ -1,6 +1,7 @@
 //
 // Created by ebbew on 12-11-2024.
 //
+//nieuw sinds practicum 2 (controller class uit practicum 1 is 100% vervangen [verwijderd])
 
 #include <QFileDialog>
 #include "Controller.h"
@@ -10,6 +11,7 @@
 Controller::Controller(Game &model, BoardView* boardView, DiceAndMovesView* diceAndMovesView, FileIOView* fileIoView, PlayersView* playersView)
         : QObject(nullptr), model(model), boardView(boardView),
         diceAndMovesView(diceAndMovesView), fileIoView(fileIoView), playersView(playersView){
+    // connect alle signals van views met de handlers in controller
     connect(boardView, &BoardView::cellClicked, this, &Controller::onCellClicked);
     connect(boardView, &BoardView::cellHoverChanged, this, &Controller::onCellHoverChanged);
     connect(diceAndMovesView, &DiceAndMovesView::skipButtonClicked, this, &Controller::onSkipButtonClicked);
@@ -17,6 +19,9 @@ Controller::Controller(Game &model, BoardView* boardView, DiceAndMovesView* dice
     connect(fileIoView, &FileIOView::onSave, this, &Controller::onSave);
 }
 
+// gebruikt om de controller apart te initialiseren.
+// kan niet in constructor omdat sommige dingen zo vroeg nog niet geladen kunnen worden, zoals player namen uit het start scherm
+// vandaar gebruikt om controller aan te maken bij het maken van main window, maar pas te initialiseren na window.show
 void Controller::start() {
     io.loadBoard(&model, "../startingFile.txt");
     boardView->updateFullBoard(model.getBoard());
@@ -26,6 +31,12 @@ void Controller::start() {
     initPlayersView();
 }
 
+// handled wat er moet geberuen als er op een cell geklikt wordt:
+// - is de game READY TO SELECT
+//   -> vraag dan om die cell te selecteren (en update de view voor enkel die cell en zijn highlights)
+// - is de game READY TO MOVE
+//   -> vraaf dan om een move te doen naar die cell (en update -idem)
+//      is er een player affected in het resultaat van die move: maak views grijs indien dood
 void Controller::onCellClicked(QPoint cell) {
     if(model.getMoveState() == Game::MoveState::READYTOSELECT){
         bool succes = model.selectPiece(cell);
@@ -56,6 +67,7 @@ void Controller::onCellClicked(QPoint cell) {
     }
 }
 
+// handle een enter of leave op een cell (gewoon een "cursor" highlight toepassen)
 void Controller::onCellHoverChanged(QPoint cell, bool hover) {
     if(currentHighlights.contains(cell)) return; // behoud oude hightligts: hover highlight heeft lage prioriteit
     auto highlight = hover
@@ -64,18 +76,22 @@ void Controller::onCellHoverChanged(QPoint cell, bool hover) {
     boardView->updateHighlight(cell, highlight);
 }
 
+// cleart alle current highlights uit view (onthouden via private: currentHighlights chache)
 void Controller::clearHighLights() {
     for(QPoint cell : currentHighlights)
         boardView->updateHighlight(cell, SquareView::HighLight::NONE);
     currentHighlights.clear();
 }
 
+// highlight cellen om te selecteren (possible selections)
 void Controller::setSelectionHighlights() {
     auto selectables = model.getPossibleSelections();
     boardView->updateHighlights(selectables, SquareView::HighLight::SELECTSUGGEST);
+    // onthoud de highlight in currentHighlights zodat clearhighlights deze cellen selectief kan updaten
     currentHighlights.unite(selectables);
 }
 
+// highlight cellen om naar te moven (possible moves)
 void Controller::setMoveHightlights() {
     auto selectables = model.getPossibleMoves();
     for(QPoint cell : selectables){
@@ -83,12 +99,15 @@ void Controller::setMoveHightlights() {
                 ? SquareView::HighLight::ATTACKSUGGEST
                 : SquareView::HighLight::MOVESUGGEST;
         boardView->updateHighlight(cell, highlight);
+        // onthoud de highlight in currentHighlights zodat clearhighlights deze cellen selectief kan updaten
         currentHighlights.insert(cell);
     }
     boardView->updateHighlight(*model.getCurrentlySelectedCell(), SquareView::HighLight::SELECTED);
+    // onthoud de highlight in currentHighlights zodat clearhighlights deze cellen selectief kan updaten
     currentHighlights.insert(*model.getCurrentlySelectedCell());
 }
 
+// update de move en dobbelstenen view
 void Controller::setMoveAndDice() {
     diceAndMovesView->updateMoveLabel(model.getMove());
     diceAndMovesView->updateDiceNumbers(model.getDice().getNumber(0), model.getDice().getNumber(1));
@@ -97,6 +116,7 @@ void Controller::setMoveAndDice() {
     diceAndMovesView->updateDisableDie(1, model.getDice().isUsed(1));
 }
 
+// handled een move skip (game::skip en update alles move/turn gerelateerd)
 void Controller::onSkipButtonClicked() {
     model.skip();
     setMoveAndDice();
@@ -105,6 +125,7 @@ void Controller::onSkipButtonClicked() {
     playersView->updateSetBigAndToTop(model.getCurrentPlayer().getColour());
 }
 
+//handled de file save knop
 void Controller::onSave(){
     qDebug("Save button clicked!");
     QString filePath = QFileDialog::getSaveFileName(
@@ -126,6 +147,7 @@ void Controller::onSave(){
     }
 }
 
+//handled de file load knop
 void Controller::onLoad(){
     qDebug("Load button clicked!");
     QString filePath = QFileDialog::getOpenFileName(

@@ -1,4 +1,5 @@
 // volledig van ebbe
+// NIET AANGEPAST IN PRACTICUM 2
 
 
 #include <qvarlengtharray.h>

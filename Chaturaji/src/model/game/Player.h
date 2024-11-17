@@ -1,6 +1,8 @@
 //
 // Created by houwe on 10/10/2024.
 //
+// veranderingen in practicum 2:
+// - player houdt set van pieces bij -> nodig om alle pieces te updaten als die grijs moeten worden
 
 #ifndef CHATURAJI_PLAYER_H
 #define CHATURAJI_PLAYER_H
@@ -31,7 +33,6 @@ public:
     colour getColour() const;
 
     static QString getColourName(Player::colour colour);        // vertaalt kleur naar een string woord
-    QColor getQColour();                                        // geeft colour in QColour format
     static colour getColourFromName(const QString &colourstr);  // vertaalt terug naar kleur
 
     // vergelijkers

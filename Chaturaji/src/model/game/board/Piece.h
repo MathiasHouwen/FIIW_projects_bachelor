@@ -2,14 +2,14 @@
 // Created by ebbew on 9-10-2024.
 //
 
+//practicum 2: enkel cell (+get/set) toegevoegd door ebbe
+
 #ifndef CHATURAJI_PIECE_H
 #define CHATURAJI_PIECE_H
-
 
 #include <QPoint>
 #include "../Player.h"
 #include "../../logic/Pattern.h"
-#include <qobjectdefs.h>
 class Player; // forward decl om circular dependency te voorkomen
 class Piece {
 public:

@@ -1,19 +1,18 @@
 #ifndef CHATURAJI_GAME_H
 #define CHATURAJI_GAME_H
 
-#include <qobject.h>
-#include <qobjectdefs.h>
 
 #include "board/Board.h"
 #include "../logic/PatternMover.h"
 #include "Player.h"
 #include "Dice.h"
 
-class Game: public QObject{
-Q_OBJECT
-signals:
-    void somethingChanged();
-    void nextTurn();
+// practicum 2: resultaat van move vervangen van bool tot MoveResult
+// + state machine karakter van game duidelijker gemaakt in de public interface, door MoveState enum
+// voor de rest minimale veranderingen
+// door iedereen van de groep
+
+class Game{
 public:
     enum class MoveState{READYTOSELECT, READYTOMOVE};
     struct MoveResult{
@@ -51,6 +50,7 @@ public:
 
     void skip();
 
+    // game is een state machine, en wisselt telkens tussen select en move
     bool selectPiece(QPoint cell);  // selecteert een cell en returnt of die keuze geldig is
     MoveResult movePiece(QPoint destinationCell); // selecteert de cell om de geselecteerde piece naar te verzetten en returnt of dit geldig is
 

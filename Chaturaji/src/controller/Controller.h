@@ -2,6 +2,10 @@
 // Created by ebbew on 12-11-2024.
 //
 
+//nieuw sinds practicum 2 (controller class uit practicum 1 is 100% vervangen [verwijderd])
+//gemaakt door ebbe. onload en onsave slots gemaakt door mathias
+// doel van controller: logica specifiek aan selectieve view updates los koppelen van model
+
 #ifndef CHATURAJI_CONTROLLER_H
 #define CHATURAJI_CONTROLLER_H
 

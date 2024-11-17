@@ -26,6 +26,7 @@ public:
     SquareView(QWidget *widget, const QPoint &cell);
     void updatePiece(Piece* piece);
     void updateHighLight(HighLight highLighter);
+    void updateSetPieceGrey();
 
 private:
     constexpr static QPair<QColor, QColor> defaultColor{QCol::beige, QCol::burlywood};

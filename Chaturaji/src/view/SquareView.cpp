@@ -93,6 +93,12 @@ void SquareView::leaveEvent(QEvent *event) {
     emit hoverUpdated(cell, false);
 }
 
+void SquareView::updateSetPieceGrey() {
+    if(pieceView){
+        pieceView->setGray();
+    }
+}
+
 
 
 

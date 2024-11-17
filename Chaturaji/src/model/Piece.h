@@ -10,7 +10,7 @@
 #include "Player.h"
 #include "Pattern.h"
 #include <qobjectdefs.h>
-
+class Player; // forward decl om circular dependency te voorkomen
 class Piece {
 public:
     // types
@@ -20,14 +20,16 @@ public:
     const Pattern &getWalkPattern() const;
     const Pattern &getAttackPattern() const;
 
-    Piece(Type type, QPoint direction, Player& player);
+    Piece(Type type, QPoint direction, Player& player, QPoint cell = {-1,-1});
 
     // getters
     Type getType() const;
     int getScoreValue() const;
-    static std::vector<Piece::Type> getTypeFromDobbel(int number);
     Player &getPlayer() const;
     QString getColorName();
+
+    const QPoint &getCell() const;
+    void setCell(const QPoint &cell);
 
     static QString getTypeName(Type type); // vertaalt type naar string naam
     QString getTypeName();
@@ -40,7 +42,10 @@ private:
     Type type;
     int scoreValue; // hoeveel score een kill kan opleveren
     Player& player; // eigenaar
+    QPoint cell;
 };
+
+
 
 
 #endif //CHATURAJI_PIECE_H

@@ -36,8 +36,8 @@ void Controller::onCellClicked(QPoint cell) {
     } else {// if(model.getMoveState() == Game::MoveState::READYTOMOVE) {
         QPoint selectedCell = *model.getCurrentlySelectedCell();
         const Player& currentPlayer = model.getCurrentPlayer();
-        bool succes = model.movePiece(cell);
-        if(succes){
+        Game::MoveResult result = model.movePiece(cell);
+        if(result.succes){
             const Player& newPlayer = model.getCurrentPlayer();
             boardView->updatePiece(selectedCell, nullptr);
             boardView->updatePiece(cell, model.getBoard().getCell(cell));
@@ -46,6 +46,12 @@ void Controller::onCellClicked(QPoint cell) {
             setMoveAndDice();
             playersView->updateScore(currentPlayer.getColour(), currentPlayer.getScore());
             playersView->updateSetBigAndToTop(newPlayer.getColour());
+            if(result.affectedPlayer && !result.affectedPlayer->isAlive()) {
+                playersView->updateSetGrey(result.affectedPlayer->getColour());
+                for (auto piece: result.affectedPlayer->getAlivePieces()) {
+                    boardView->updateSetPieceGrey(piece->getCell());
+                }
+            }
         }
     }
 }

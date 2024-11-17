@@ -16,6 +16,11 @@ signals:
     void nextTurn();
 public:
     enum class MoveState{READYTOSELECT, READYTOMOVE};
+    struct MoveResult{
+        bool succes{false};
+        Player* affectedPlayer{nullptr};
+        Piece* affectedPiece{nullptr};
+    };
 private:
     const static int numberOfPlayer = 4;
 
@@ -47,7 +52,7 @@ public:
     void skip();
 
     bool selectPiece(QPoint cell);  // selecteert een cell en returnt of die keuze geldig is
-    bool movePiece(QPoint destinationCell); // selecteert de cell om de geselecteerde piece naar te verzetten en returnt of dit geldig is
+    MoveResult movePiece(QPoint destinationCell); // selecteert de cell om de geselecteerde piece naar te verzetten en returnt of dit geldig is
 
     QSet<QPoint> getPossibleMoves(); // geeft de mogelijke bestemming-cells van de huidige geselecteerde piece (select=null->lege set)
     QSet<QPoint> getPossibleSelections();

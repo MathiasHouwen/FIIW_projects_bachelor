@@ -33,22 +33,26 @@ bool Game::selectPiece(QPoint cell) {
     return true;
 }
 
-bool Game::movePiece(QPoint destinationCell) {
+Game::MoveResult Game::movePiece(QPoint destinationCell) {
+    MoveResult result;
     QSet<QPoint> moves = getPossibleMoves(); // get mogelijke moves voor selectie
     if(destinationCell == *currentlySelectedCell){
         moveState = MoveState::READYTOSELECT;
-        return true;
+        result.succes = true;
+        return result;
     }
-    if(!moves.contains(destinationCell)) return false;  // keuze van eind-cell moet in mogelijke moves zitten
+    if(!moves.contains(destinationCell)) return result;  // keuze van eind-cell moet in mogelijke moves zitten
 
     Piece piece = *board.getCell(*currentlySelectedCell);
     dice.setUsed(piece.getType());
 
     Piece* destPiece = board.getCell(destinationCell);
     int scoreToAdd = destPiece ? destPiece->getScoreValue() : 0;
+    result.affectedPiece = destPiece;
 
     if (destPiece && destPiece->getType() == Piece::Type::KING) {
         destPiece->getPlayer().killPlayer();
+        result.affectedPlayer = &destPiece->getPlayer();
     }
 
     // doe de move in bord en update score
@@ -60,7 +64,8 @@ bool Game::movePiece(QPoint destinationCell) {
     currentlySelectedCell = nullptr;
     moveState = MoveState::READYTOSELECT;
     advance();
-    return true;
+    result.succes = true;
+    return result;
 }
 
 void Game::advance() {

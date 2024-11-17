@@ -8,7 +8,9 @@
 #include <iostream>
 #include <qstring.h>
 #include <qcolor.h>
-
+#include <QSet>
+#include "Piece.h"
+class Piece; // forward decl om circular dependency te voorkomen
 class Player {
 public:
     enum class colour {RED, BLUE, YELLOW, GREEN};
@@ -19,6 +21,8 @@ public:
     void addScore(int score);
     void killPlayer();
     void setMScore(int mScore);
+    void addPiece(Piece* piece);
+    void removePiece(Piece* piece);
 
     //getters
     int getScore() const;
@@ -34,12 +38,14 @@ public:
     bool operator==(const Player &rhs) const;
     bool operator!=(const Player &rhs) const;
 
+    const QSet<Piece *> &getAlivePieces() const;
+
 private:
     int m_score;    // huidige score
     bool m_alive;   // leeft nog
     QString m_name; // naam van wie deze player speelt
     colour m_colour;
-
+    QSet<Piece*> pieces{};
 };
 
 

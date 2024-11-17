@@ -15,7 +15,7 @@ Player &Piece::getPlayer() const {
     return player;
 }
 
-Piece::Piece(Piece::Type type, QPoint direction, Player& player) : type(type), player(player){
+Piece::Piece(Piece::Type type, QPoint direction, Player& player, QPoint cell) : type(type), player(player), cell(cell){
     switch (type) {
         case Type::BOAT:
             init({2, {2}, false, false, direction}, 2);
@@ -50,33 +50,6 @@ void Piece::init(Pattern pattern, int scoreValue) {
     this->scoreValue = scoreValue;
 }
 
-std::vector<Piece::Type> Piece::getTypeFromDobbel(int number) {
-    std::vector<Piece::Type> result;
-    switch(number) {
-        case 1:
-            result.push_back(Type::KING);
-            result.push_back(Type::PAWN);
-            break;
-        case 2:
-            result.push_back(Type::BOAT);
-            break;
-        case 3:
-            result.push_back(Type::KNIGHT);
-            break;
-        case 4:
-            result.push_back(Type::ELEPH);
-            break;
-        case 5:
-            result.push_back(Type::KING);
-            result.push_back(Type::PAWN);
-            break;
-        case 6:
-            result.push_back(Type::ELEPH);
-            break;
-    }
-    return result;
-}
-
 QString Piece::getTypeName(Type type) {
     switch(type) {
         case Type::PAWN: return "Pawn";
@@ -103,4 +76,11 @@ QString Piece::getColorName() {
 
 QString Piece::getTypeName() {
     return getTypeName(type);
+}
+
+const QPoint &Piece::getCell() const {
+    return cell;
+}
+void Piece::setCell(const QPoint &cell) {
+    Piece::cell = cell;
 }

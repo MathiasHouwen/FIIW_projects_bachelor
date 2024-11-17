@@ -75,3 +75,15 @@ QColor Player::getQColour() {
 void Player::setMScore(int mScore) {
     m_score = mScore;
 }
+
+void Player::addPiece(Piece *piece) {
+    pieces.insert(piece);
+}
+
+void Player::removePiece(Piece *piece) {
+    pieces.remove(piece);
+}
+
+const QSet<Piece *> &Player::getAlivePieces() const {
+    return pieces;
+}

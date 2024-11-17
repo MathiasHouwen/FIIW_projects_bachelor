@@ -58,6 +58,10 @@ void BoardView::updateFullBoard(const Board &board) {
 void BoardView::onSquareViewClicked(QPoint cell) {emit cellClicked(cell);}
 void BoardView::onSquareHoverUpdated(QPoint cell, bool hover) {emit cellHoverChanged(cell, hover);}
 
+void BoardView::updateSetPieceGrey(QPoint cell) {
+    squareViews[cell.x()][cell.y()]->updateSetPieceGrey();
+}
+
 
 
 

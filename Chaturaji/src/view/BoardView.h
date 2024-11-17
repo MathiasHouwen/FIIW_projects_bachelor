@@ -24,6 +24,7 @@ public:
     void updateHighlights(const QSet<QPoint>& cells, SquareView::HighLight highlight);
     void updatePiece(QPoint cell, Piece* piece);
     void updateFullBoard(const Board& board);
+    void updateSetPieceGrey(QPoint cell);
     ~BoardView() override;
 
 signals:

@@ -7,9 +7,9 @@
 
 #include <QWidget>
 
-#include "PlayersView.h"
-#include "../model/Game.h"
-#include "../controller/Controller.h"
+#include "player/PlayersView.h"
+#include "../../model/game/Game.h"
+#include "../../controller/Controller.h"
 
 
 QT_BEGIN_NAMESPACE

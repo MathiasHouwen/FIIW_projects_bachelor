@@ -18,58 +18,56 @@ add_definitions(-DASSET_PATH="${CMAKE_SOURCE_DIR}/assets")
 
 add_executable(Chaturaji
         src/main.cpp
-        src/model/Game.h
-        src/model/Game.cpp
+        src/model/game/Game.h
+        src/model/game/Game.cpp
 #        src/view/CLIView.h
 #        src/controller/ConsoleIO.h
 #        src/controller/ConsoleIO.cpp
 #        src/view/CLIView.cpp
-        src/model/Board.h
-        src/model/Board.cpp
+        src/model/game/board/Board.h
+        src/model/game/board/Board.cpp
 #        src/controller/CLI_Controller.h
 #        src/controller/CLI_Controller.cpp
-        src/model/PatternMover.h
-        src/model/PatternMover.cpp
-        src/model/Piece.h
-        src/model/Piece.cpp
-        src/model/Player.cpp
-        src/model/Player.h
-        src/model/Player.h
-        src/model/FileIO.cpp
-        src/model/FileIO.h
-        src/model/FileIO.h
-        src/model/Pattern.h
-        src/view/MainWindow.cpp
-        src/view/MainWindow.h
-        src/view/mainwindow.ui
-        src/model/Square.cpp
-        src/model/Square.h
-        src/view/SquareView.cpp
-        src/view/SquareView.h
-        src/view/BoardView.cpp
-        src/view/BoardView.h
-        src/view/PieceWidgit.cpp
-        src/view/PieceWidgit.h
-        src/view/PlayerView.cpp
-        src/view/PlayerView.h
-        src/view/PlayerView.h
-        src/view/FileIOView.cpp
-        src/view/FileIOView.h
-        src/view/FileIOView.h
+        src/model/logic/PatternMover.h
+        src/model/logic/PatternMover.cpp
+        src/model/game/board/Piece.h
+        src/model/game/board/Piece.cpp
+        src/model/game/Player.cpp
+        src/model/game/Player.h
+        src/model/game/Player.h
+        src/model/io/FileIO.cpp
+        src/model/io/FileIO.h
+        src/model/io/FileIO.h
+        src/model/logic/Pattern.h
+        src/view/mainscreen/MainWindow.cpp
+        src/view/mainscreen/MainWindow.h
+        src/view/mainscreen/mainwindow.ui
+        src/view/mainscreen/board/SquareView.cpp
+        src/view/mainscreen/board/SquareView.h
+        src/view/mainscreen/board/BoardView.cpp
+        src/view/mainscreen/board/BoardView.h
+        src/view/mainscreen/board/PieceWidgit.cpp
+        src/view/mainscreen/board/PieceWidgit.h
+        src/view/mainscreen/player/PlayerView.cpp
+        src/view/mainscreen/player/PlayerView.h
+        src/view/mainscreen/player/PlayerView.h
+        src/view/mainscreen/toolbar/FileIOView.cpp
+        src/view/mainscreen/toolbar/FileIOView.h
+        src/view/mainscreen/toolbar/FileIOView.h
         src/controller/Controller.cpp
         src/controller/Controller.h
         src/controller/Controller.h
-        src/model/Dice.cpp
-        src/model/Dice.h
-        src/view/DieView.cpp
-        src/view/DieView.h
-        src/view/DiceAndMovesView.cpp
-        src/view/DiceAndMovesView.h
-        src/view/startscreen.cpp
-        src/view/startscreen.h
-        src/view/startscreen.ui
-        src/view/PlayersView.cpp
-        src/view/PlayersView.h
+        src/model/game/Dice.cpp
+        src/model/game/Dice.h
+        src/view/mainscreen/moves/DieView.cpp
+        src/view/mainscreen/moves/DieView.h
+        src/view/mainscreen/moves/DiceAndMovesView.cpp
+        src/view/mainscreen/moves/DiceAndMovesView.h
+        src/view/startscreen/startscreen.cpp
+        src/view/startscreen/startscreen.h
+        src/view/startscreen/startscreen.ui
+        src/view/mainscreen/player/PlayersView.cpp
+        src/view/mainscreen/player/PlayersView.h
 )
 target_link_libraries(Chaturaji Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::SvgWidgets Qt${QT_VERSION_MAJOR}::Xml)
 

@@ -8,7 +8,6 @@
 
 #include <iostream>
 #include <ostream>
-#include <ui_MainWindow.h>
 
 #include "ui_StartScreen.h"
 

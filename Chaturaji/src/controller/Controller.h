@@ -7,11 +7,11 @@
 
 #include <qobject.h>
 #include <qobjectdefs.h>
-#include "../model/Game.h"
-#include "../view/BoardView.h"
-#include "../view/DiceAndMovesView.h"
-#include "../view/FileIOView.h"
-#include "../view/PlayersView.h"
+#include "../model/game/Game.h"
+#include "../view/mainscreen/board/BoardView.h"
+#include "../view/mainscreen/moves/DiceAndMovesView.h"
+#include "../view/mainscreen/toolbar/FileIOView.h"
+#include "../view/mainscreen/player/PlayersView.h"
 
 class Controller: public QObject{
 Q_OBJECT

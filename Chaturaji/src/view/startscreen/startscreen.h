@@ -6,7 +6,7 @@
 #define STARTSCREEN_H
 
 #include <QWidget>
-#include "../view/MainWindow.h"
+#include "../mainscreen/MainWindow.h"
 
 
 QT_BEGIN_NAMESPACE

@@ -11,16 +11,16 @@
 #include <QVBoxLayout>
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
-#include "BoardView.h"
-#include "SquareView.h"
-#include "PieceWidgit.h"
-#include "../model/FileIO.h"
-#include "PlayerView.h"
-#include "FileIOView.h"
-#include "../controller/Controller.h"
-#include "DieView.h"
-#include "DiceAndMovesView.h"
-#include "PlayersView.h"
+#include "board/BoardView.h"
+#include "board/SquareView.h"
+#include "board/PieceWidgit.h"
+#include "../../model/io/FileIO.h"
+#include "player/PlayerView.h"
+#include "toolbar/FileIOView.h"
+#include "../../controller/Controller.h"
+#include "moves/DieView.h"
+#include "moves/DiceAndMovesView.h"
+#include "player/PlayersView.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :

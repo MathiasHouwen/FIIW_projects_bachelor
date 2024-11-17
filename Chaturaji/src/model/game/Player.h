@@ -9,7 +9,7 @@
 #include <qstring.h>
 #include <qcolor.h>
 #include <QSet>
-#include "Piece.h"
+#include "board/Piece.h"
 class Piece; // forward decl om circular dependency te voorkomen
 class Player {
 public:

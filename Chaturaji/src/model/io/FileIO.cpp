@@ -1,7 +1,7 @@
 // volledig van mathias
 
 #include "FileIO.h"
-#include "Game.h"
+#include "../game/Game.h"
 
 #include <QTextStream>
 #include <QDebug>

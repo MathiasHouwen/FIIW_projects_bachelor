@@ -3,7 +3,7 @@
 #include <iostream>
 #include <ctime>
 #include "Game.h"
-#include "Piece.h"
+#include "board/Piece.h"
 // select, move, advance en getpossiblemoves door ebbe
 // dobbel generatie door mathias
 // dobbel validatie en implementatie in select door robin

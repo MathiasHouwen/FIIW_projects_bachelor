@@ -12,9 +12,8 @@
 #include <QPainter>
 #include <QPushButton>
 
-#include "../model/Square.h"
 #include "PieceWidgit.h"
-#include "../model/Game.h"
+#include "../../../model/game/Game.h"
 
 namespace QCol = QColorConstants::Svg;
 
@@ -46,13 +45,6 @@ signals:
     void clicked(QPoint cell);
     void hoverUpdated(QPoint cell, bool hover);
 
-//    Game& model;
-//    Piece* piece{nullptr};
-//    PieceWidgit* pieceView{nullptr};
-//    QVBoxLayout* pieceViewContainer;
-//    void getHighLight();
-//explicit SquareView(QWidget *parent, QPoint cell, Game& model);
-
 protected:
     //mouse
     void mousePressEvent(QMouseEvent *event) override;
@@ -61,11 +53,6 @@ protected:
     //render
     void paintEvent(QPaintEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
-
-//    void paintEvent(QPaintEvent *event) override;
-
-//
-//    void mouseReleaseEvent(QMouseEvent *event) override;
 };
 
 

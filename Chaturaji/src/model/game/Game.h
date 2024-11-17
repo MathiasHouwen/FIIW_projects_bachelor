@@ -4,8 +4,8 @@
 #include <qobject.h>
 #include <qobjectdefs.h>
 
-#include "Board.h"
-#include "PatternMover.h"
+#include "board/Board.h"
+#include "../logic/PatternMover.h"
 #include "Player.h"
 #include "Dice.h"
 

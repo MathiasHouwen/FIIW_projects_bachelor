@@ -8,8 +8,8 @@
 
 #include <QWidget>
 #include <QVBoxLayout>
-#include "../model/Board.h"
-#include "../model/Game.h"
+#include "../../../model/game/board/Board.h"
+#include "../../../model/game/Game.h"
 #include "SquareView.h"
 
 class BoardView : public QWidget{

@@ -7,7 +7,7 @@
 
 #include <QSet>
 #include <QPoint>
-#include "Board.h"
+#include "../game/board/Board.h"
 #include "Pattern.h"
 
 

@@ -6,7 +6,6 @@
 #include <iostream>
 #include <QPainter>
 #include "BoardView.h"
-#include "../model/Square.h"
 #include "SquareView.h"
 
 BoardView::BoardView(QWidget* parent) : QWidget(parent) {

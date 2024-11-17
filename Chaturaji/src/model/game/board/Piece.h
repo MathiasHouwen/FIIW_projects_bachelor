@@ -7,8 +7,8 @@
 
 
 #include <QPoint>
-#include "Player.h"
-#include "Pattern.h"
+#include "../Player.h"
+#include "../../logic/Pattern.h"
 #include <qobjectdefs.h>
 class Player; // forward decl om circular dependency te voorkomen
 class Piece {

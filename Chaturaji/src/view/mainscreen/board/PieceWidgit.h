@@ -8,7 +8,7 @@
 #include <QWidget>
 #include <QSvgWidget>
 #include <QDomDocument>
-#include "../model/Piece.h"
+#include "../../../model/game/board/Piece.h"
 
 
 class PieceWidgit : public QWidget {

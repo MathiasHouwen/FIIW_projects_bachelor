@@ -10,7 +10,7 @@
 #include <QLabel>
 
 #include "DieView.h"
-#include "PieceWidgit.h"
+#include "../board/PieceWidgit.h"
 
 class DiceAndMovesView : public QWidget{
     Q_OBJECT

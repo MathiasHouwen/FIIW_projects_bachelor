@@ -6,7 +6,7 @@
 #define CHATURAJI_DICE_H
 
 
-#include "Piece.h"
+#include "board/Piece.h"
 #include <QSet>
 #include <QPair>
 

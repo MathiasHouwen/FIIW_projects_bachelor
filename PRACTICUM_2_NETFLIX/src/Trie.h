@@ -6,7 +6,7 @@
 #define TRIESTRUCTURE_H
 #include <string>
 #include <unordered_map>
-#include <string>
+#include <vector>
 using namespace std;
 
 struct Node {
@@ -19,11 +19,13 @@ class Trie {
         Trie();
         ~Trie() = default;
         void insertString(string word);
-        //bool search(string word);
-        //bool startsWith(string prefix);
+        vector<string> search(string prefix);
+
     private:
         Node* root;
         void insertLetter(int letterIndex, string word, Node *node);
+        string findWords(string temporaryWord, Node* node, string prefix);
+    void collectWords(string currentWord, Node *node, vector<string> &result);
         int tracker = 0;
 };
 

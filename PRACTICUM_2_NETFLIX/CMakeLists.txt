@@ -12,8 +12,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-profile-arcs -fno-test-coverage")
 set(CMAKE_CXX_STANDARD 20)
 
 add_executable(PRACTICUM_2_NETFLIX src/main.cpp
+        src/Trie.cpp
+        src/Trie.h
         src/modules/CLI.cpp
-        src/modules/CLI.h
         src/modules/CLI.h
         src/utils/netflixCLI.cpp
         src/utils/netflixCLI.h

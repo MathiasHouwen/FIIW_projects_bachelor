@@ -15,6 +15,7 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Widgets Gui SvgWidgets Xm
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Widgets Gui SvgWidgets Xml)
 
 add_definitions(-DASSET_PATH="${CMAKE_SOURCE_DIR}/assets")
+add_definitions(-DSAVES_PATH="${CMAKE_SOURCE_DIR}/Saves")
 
 add_executable(Chaturaji
         src/main.cpp

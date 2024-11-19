@@ -23,7 +23,7 @@ Controller::Controller(Game &model, BoardView* boardView, DiceAndMovesView* dice
 // kan niet in constructor omdat sommige dingen zo vroeg nog niet geladen kunnen worden, zoals player namen uit het start scherm
 // vandaar gebruikt om controller aan te maken bij het maken van main window, maar pas te initialiseren na window.show
 void Controller::start() {
-    io.loadBoard(&model, "../startingFile.txt");
+    io.loadBoard(&model, QString(SAVES_PATH) + "/startingFile.txt");
     boardView->updateFullBoard(model.getBoard());
     clearHighLights();
     setSelectionHighlights();

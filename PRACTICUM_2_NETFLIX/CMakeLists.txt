@@ -1,10 +1,24 @@
-cmake_minimum_required(VERSION 3.27.8)
+cmake_minimum_required(VERSION 3.5.0)
 project(PRACTICUM_2_NETFLIX)
+include(FetchContent)
 
+FetchContent_Declare(
+        csv-parser
+        GIT_REPOSITORY git@github.com:vincentlaucsb/csv-parser.git
+        GIT_TAG        105b44d819a37d9329df16ca4417c3b3f6c2ad98 # release 2.3.0
+)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-profile-arcs -fno-test-coverage")
 set(CMAKE_CXX_STANDARD 20)
 
 add_executable(PRACTICUM_2_NETFLIX src/main.cpp
         src/modules/CLI.cpp
         src/modules/CLI.h
+        src/modules/CLI.h
         src/utils/netflixCLI.cpp
         src/utils/netflixCLI.h)
+
+FetchContent_MakeAvailable(csv-parser)
+target_link_libraries(PRACTICUM_2_NETFLIX PRIVATE csv)
+target_link_libraries(PRACTICUM_2_NETFLIX PRIVATE gcov)
+

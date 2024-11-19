@@ -5,21 +5,24 @@
 
 #include <iostream>
 #include <internal/csv_reader.hpp>
+#include <iostream>
 
 #include "Trie.h"
+#include "StringPool.h"
 
 using namespace csv;
 using namespace std;
 
 int main() {
     //CSVReader reader("../data/netflixdata.csv");
+
     auto trie = new Trie();
     trie->insertString("hello");
     trie->insertString("wereldjes");
     trie->insertString("hel");
     trie->insertString("helcat");
 
-    vector<string> found = trie->search("helc");
+    vector<string> found = trie->search("he");
     for (int i = 0; i < found.size(); i++) {
         cout << found[i] << endl;
     }

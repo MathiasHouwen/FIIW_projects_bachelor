@@ -21,7 +21,7 @@ int main() {
     trie->insertString("wereldjes");
     trie->insertString("hel");
     trie->insertString("helcat");
-    trie->deleteString("helcat");
+    trie->deleteString("hel");
 
     vector<string> found = trie->search("hel");
     for (int i = 0; i < found.size(); i++) {

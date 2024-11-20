@@ -23,6 +23,7 @@ struct Node {
     unordered_map<char, Node*> children{};
     ///@brief flag die markeerd of deze node de eindletter van een woord is.
     bool stop{false};
+
 };
 
 class Trie {

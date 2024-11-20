@@ -48,7 +48,7 @@ public:
      * @author robin
      */
     vector<string> search(const string& prefix);
-    void deleteString(const string& word);
+    void deleteMOS(MovieOrShow* mos);
 
 private:
     /// @brief root node van de tree
@@ -72,7 +72,7 @@ private:
      * @author robin
      */
     void collectWords(const string& currentWord, Node *node, vector<string> &result);
-    bool deleteHelper(Node *node, const string &word, int depth);
+    bool deleteHelper(Node *node, MovieOrShow* mos, int depth);
 };
 
 

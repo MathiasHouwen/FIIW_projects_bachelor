@@ -38,9 +38,9 @@ vector<string> Trie::search(const string& prefix) {
     return result;
 }
 
-void Trie::deleteString(const string& word) {
-    deleteHelper(root, word, 0);
-    cout << "Removed: " << word << endl;
+void Trie::deleteMOS(MovieOrShow* mos) {
+    deleteHelper(root, mos, 0);
+    cout << "Removed: " << mos->getTitle() << endl;
 }
 
 
@@ -87,10 +87,12 @@ void Trie::collectWords(const string& currentWord, Node *node, vector<string> &r
     }
 }
 
-bool Trie::deleteHelper(Node* node, const string& word, int depth) {
+bool Trie::deleteHelper(Node* node, MovieOrShow* mos, int depth) {
+    string word = mos->getTitle();
     if (depth == word.length()) {
-        if (!node->stop) return false; // Word not found
-        node->stop = false;           // Unmark as end of word
+        if (!node->stop) return false;
+        node->stop = false;
+        node->movieOrShow = nullptr;
         return node->children.empty();
     }
 
@@ -98,7 +100,7 @@ bool Trie::deleteHelper(Node* node, const string& word, int depth) {
     if (!node->children.contains(letter)) return false;
 
     Node* child = node->children[letter];
-    bool shouldDeleteChild = deleteHelper(child, word, depth + 1);
+    bool shouldDeleteChild = deleteHelper(child, mos, depth + 1);
 
     if (shouldDeleteChild) {
         delete child;

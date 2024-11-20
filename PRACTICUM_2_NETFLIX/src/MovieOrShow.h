@@ -13,7 +13,7 @@ class MovieOrShow {
 public:
     enum class Type{movie, serie};
 
-    MovieOrShow(Type type, const string &title, string *genre, float imDbRating);
+    MovieOrShow(Type type, int releaseYear, const string &title, string *genre, float imDbRating);
 
     const string &getTitle() const;
     string *getGenre() const;
@@ -26,9 +26,11 @@ public:
     bool operator<(const MovieOrShow &rhs) const;
 
     Type getType() const;
+    int getReleaseYear() const;
 
 private:
     Type type;
+    int releaseYear;
     string title;
     string* genre;
     float IMDbRating;

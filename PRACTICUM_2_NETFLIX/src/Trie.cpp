@@ -39,11 +39,8 @@ vector<string> Trie::search(const string& prefix) {
 }
 
 void Trie::deleteString(const string& word) {
-    if (deleteHelper(root, word, 0)) {
-        cout << "Removed: " << word << endl;
-    } else {
-        cout << "Failed to remove: " << word << endl;
-    }
+    deleteHelper(root, word, 0));
+    cout << "Removed: " << word << endl;
 }
 
 
@@ -105,5 +102,6 @@ bool Trie::deleteHelper(Node* node, const string& word, int depth) {
         node->children.erase(letter);
         return node->children.empty() && !node->stop;
     }
-    return false;
+
+    return true;
 }

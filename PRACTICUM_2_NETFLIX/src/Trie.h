@@ -10,6 +10,8 @@
 #include "MovieOrShow.h"
 using namespace std;
 
+#define maxSize 10
+
 /**
  * @brief node in de trie boom\n\n
  * @details
@@ -47,7 +49,7 @@ public:
      * @return vector van alle matches
      * @author robin
      */
-    vector<string> search(const string& prefix);
+    vector<string> search(const string& prefix, string* genre);
     void deleteMOS(MovieOrShow* mos);
 
 private:
@@ -71,7 +73,7 @@ private:
      * @param result: out-parameter waar gevonden volledige woorden in worden gegooid
      * @author robin
      */
-    void collectWords(const string& currentWord, Node *node, vector<string> &result);
+    void collectWords(const string &currentWord, Node *node, vector<string> &result, string *genre);
     bool deleteHelper(Node *node, MovieOrShow* mos, int depth);
 };
 

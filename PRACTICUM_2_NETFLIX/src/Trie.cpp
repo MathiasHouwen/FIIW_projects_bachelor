@@ -18,7 +18,7 @@ void Trie::insertMOS(MovieOrShow* mos) {
     insertLetter(0, mos, root);
 }
 
-vector<string> Trie::search(const string& prefix) {
+vector<string> Trie::search(const string& prefix, string* genre) {
     vector<string> result;
     Node* currentNode = root;
 
@@ -34,7 +34,7 @@ vector<string> Trie::search(const string& prefix) {
     }
 
     // bouw alle woorden vanaf de prefix
-    collectWords(prefix, currentNode, result);
+    collectWords(prefix, currentNode, result, genre);
     return result;
 }
 
@@ -73,17 +73,19 @@ void Trie::insertLetter(int letterIndex, MovieOrShow* mos, Node *node) {
 
 
 // result is een out-parameter -> geen gedoe met return vectors mergen, elegantere code
-void Trie::collectWords(const string& currentWord, Node *node, vector<string> &result) {
+void Trie::collectWords(const string& currentWord, Node *node, vector<string> &result, string* genre) {
     // stop = true markeert het einde van een woord (maar niet perse het einde van de branch)
-    if (node->stop) {
-        result.push_back(currentWord);
+    if (node->stop && result.size() < maxSize) {
+        if(node->movieOrShow->getGenre() == genre || genre == nullptr) {
+            result.push_back(currentWord);
+        }
     }
 
     // visit alle children om uit alle verdere branches woorden te vinden
     for (auto& child : node->children) {
         char letter = child.first;
         Node* childNode = child.second;
-        collectWords(currentWord + letter, childNode, result);
+        collectWords(currentWord + letter, childNode, result, genre);
     }
 }
 

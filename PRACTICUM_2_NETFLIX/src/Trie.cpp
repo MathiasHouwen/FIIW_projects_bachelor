@@ -14,8 +14,8 @@ Trie::Trie() {
     root = new Node();
 }
 
-void Trie::insertString(const string& word) {
-    insertLetter(0, word, root);
+void Trie::insertMOS(MovieOrShow* mos) {
+    insertLetter(0, mos, root);
 }
 
 vector<string> Trie::search(const string& prefix) {
@@ -48,15 +48,17 @@ void Trie::deleteString(const string& word) {
 // Private:
 // ======================================
 
-void Trie::insertLetter(int letterIndex, const string& word, Node *node) {
+void Trie::insertLetter(int letterIndex, MovieOrShow* mos, Node *node) {
+    string title = mos->getTitle();
     // als je de laatste letter van het woord bereikt, word de node als end-of-word gemarkeerd door stop=true
-    if (letterIndex == word.length()) {
+    if (letterIndex == title.length()) {
         node->stop = true;
+        node->movieOrShow = mos;
         return;
     }
     // bepaal de child node voor de huidige letter
     // als die bestaat, pak die, anders maak nieuwe
-    char letter = word[letterIndex];
+    char letter = title[letterIndex];
     Node* childNode;
     if (node->children.contains(letter))
         childNode = node->children[letter];
@@ -65,7 +67,7 @@ void Trie::insertLetter(int letterIndex, const string& word, Node *node) {
         node->children[letter] = childNode;
     }
     // insert verder met de volgende letter, vanaf de child node
-    insertLetter(letterIndex+1, word, childNode);
+    insertLetter(letterIndex+1, mos, childNode);
 }
 
 

@@ -15,18 +15,12 @@ using namespace std;
 
 int main() {
     //CSVReader reader("../data/netflixdata.csv");
-
-    auto trie = new Trie();
-    trie->insertString("hello");
-    trie->insertString("wereldjes");
-    trie->insertString("hel");
-    trie->insertString("helcat");
-    trie->deleteString("hel");
-
-    vector<string> found = trie->search("hel");
-    for (int i = 0; i < found.size(); i++) {
-        cout << found[i] << endl;
-    }
-
+    auto* action = new string("action");
+    auto* romance = new string("romance");
+    MovieOrShow movie1 = {"Armageddon", action, 5.5};
+    MovieOrShow movie2 = {"Cars", romance, 9.5};
+    Trie *trie = new Trie();
+    trie->insertMOS(&movie1);
+    trie->insertMOS(&movie2);
     return 0;
 }

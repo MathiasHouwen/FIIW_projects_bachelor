@@ -39,7 +39,7 @@ vector<string> Trie::search(const string& prefix) {
 }
 
 void Trie::deleteString(const string& word) {
-    deleteHelper(root, word, 0));
+    deleteHelper(root, word, 0);
     cout << "Removed: " << word << endl;
 }
 

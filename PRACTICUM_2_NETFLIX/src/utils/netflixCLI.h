@@ -21,6 +21,10 @@ private:
     string prompt = "Enter parameters (end with '#' for partial matches): ";
     set<string> allowedParams = {"-type", "-t", "-g", "-y"};
     set<std::string> allowedFlags;
+
+    void logic(CLI::Command cmd);
+
+    void search(CLI::Command cmd);
 };
 
 

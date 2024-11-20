@@ -18,11 +18,11 @@ add_executable(PRACTICUM_2_NETFLIX src/main.cpp
         src/modules/CLI.h
         src/utils/netflixCLI.cpp
         src/utils/netflixCLI.h
-        src/StringPool.cpp
-        src/StringPool.h
+        src/Pool.cpp
+        src/Pool.h
         src/YearMap.cpp
         src/YearMap.h
-        src/StringPool.h
+        src/Pool.h
         src/MovieOrShow.cpp
         src/MovieOrShow.h
         src/Netflix.cpp

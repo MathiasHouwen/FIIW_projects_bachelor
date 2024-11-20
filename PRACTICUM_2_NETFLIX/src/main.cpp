@@ -8,7 +8,7 @@
 #include <iostream>
 
 #include "Trie.h"
-#include "StringPool.h"
+#include "Pool.h"
 
 using namespace csv;
 using namespace std;

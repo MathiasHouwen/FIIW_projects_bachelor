@@ -8,7 +8,7 @@
 
 #include "Trie.h"
 #include "YearMap.h"
-#include "StringPool.h"
+#include "Pool.h"
 
 using namespace std;
 
@@ -20,7 +20,7 @@ private:
     Trie showsTrie;
     YearMap moviesYearMap;
     YearMap showsYearMap;
-    StringPool genresPool;
+    Pool genresPool;
 public:
     void insert(Type type, string title, string genre, float IMDbRating, int releaseYear);
     void remove(Type type, string title, string genre);

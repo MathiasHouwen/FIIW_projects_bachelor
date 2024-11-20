@@ -90,7 +90,7 @@ void Trie::collectWords(const string& currentWord, Node *node, vector<string> &r
 }
 
 bool Trie::deleteHelper(Node* node, MovieOrShow* mos, int depth) {
-    string word = mos->getTitle();
+    const string& word = mos->getTitle();
     if (depth == word.length()) {
         if (!node->stop) return false;
         node->stop = false;

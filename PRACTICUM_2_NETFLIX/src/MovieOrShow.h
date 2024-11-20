@@ -10,16 +10,30 @@
 using namespace std;
 
 class MovieOrShow {
-private:
-    string title;
-    string* genre;
-    float IMDbRating;
 public:
-    MovieOrShow(const string &title, string *genre, float imDbRating);
+    enum class Type{movie, serie};
+
+    MovieOrShow(Type type, int releaseYear, const string &title, string *genre, float imDbRating);
+
     const string &getTitle() const;
     string *getGenre() const;
     float getImDbRating() const;
     string toString();
+
+    struct mosComperator{
+        bool operator()(MovieOrShow lhs, MovieOrShow rhs) const;
+    };
+    bool operator<(const MovieOrShow &rhs) const;
+
+    Type getType() const;
+    int getReleaseYear() const;
+
+private:
+    Type type;
+    int releaseYear;
+    string title;
+    string* genre;
+    float IMDbRating;
 };
 
 

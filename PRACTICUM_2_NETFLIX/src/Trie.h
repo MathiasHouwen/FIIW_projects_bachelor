@@ -6,6 +6,8 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+
+#include "MovieOrShow.h"
 using namespace std;
 
 /**
@@ -23,7 +25,7 @@ struct Node {
     unordered_map<char, Node*> children{};
     ///@brief flag die markeerd of deze node de eindletter van een woord is.
     bool stop{false};
-
+    MovieOrShow* movieOrShow{nullptr};
 };
 
 class Trie {
@@ -37,7 +39,7 @@ public:
     * @param word: Woord om toe te voegen.
      * @author robin
     */
-    void insertString(const string& word);
+    void insertMOS(MovieOrShow* mos);
     /**
      * @brief alle strings in de trie die beginnen met de prefix
      * @complexiteit O(???)
@@ -46,7 +48,7 @@ public:
      * @author robin
      */
     vector<string> search(const string& prefix);
-    void deleteString(const string& word);
+    void deleteMOS(MovieOrShow* mos);
 
 private:
     /// @brief root node van de tree
@@ -59,7 +61,7 @@ private:
      * @param node: huidige node, waarvan de huidige letter een child node is/wordt
      * @author robin
      */
-    void insertLetter(int letterIndex, const string& word, Node *node);
+    void insertLetter(int letterIndex, MovieOrShow* mos, Node *node);
 
     /**
      * @brief helper functie. Verzamelt alle matchende woorden vanaf de prefix.
@@ -70,7 +72,7 @@ private:
      * @author robin
      */
     void collectWords(const string& currentWord, Node *node, vector<string> &result);
-    bool deleteHelper(Node *node, const string &word, int depth);
+    bool deleteHelper(Node *node, MovieOrShow* mos, int depth);
 };
 
 

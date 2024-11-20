@@ -24,8 +24,12 @@ vector<string> Trie::search(const string& prefix) {
 
     // check of prefix volledig bestaat vanaf de root node
     for (char letter : prefix) {
-        if (!currentNode->children.contains(letter))
+        if (!currentNode->children.contains(letter)) {
+            if(result.empty()) {
+                cout << "No Titles found" << endl;
+            }
             return result;
+        }
         currentNode = currentNode->children[letter];
     }
 
@@ -33,6 +37,15 @@ vector<string> Trie::search(const string& prefix) {
     collectWords(prefix, currentNode, result);
     return result;
 }
+
+void Trie::deleteString(const string& word) {
+    if (deleteHelper(root, word, 0)) {
+        cout << "Removed: " << word << endl;
+    } else {
+        cout << "Failed to remove: " << word << endl;
+    }
+}
+
 
 // ======================================
 // Private:
@@ -75,16 +88,22 @@ void Trie::collectWords(const string& currentWord, Node *node, vector<string> &r
     }
 }
 
-string Trie::findWords(string& temporaryWord, Node* node, const string& prefix) {
-    Node* currentNode = node;
-    for (size_t i = temporaryWord.length(); i < prefix.length(); ++i) {
-        char letter = prefix[i];
-        if (!currentNode->children.contains(letter)) {
-            cout << "No such Title" << endl;
-            return "";
-        }
-        currentNode = currentNode->children[letter];
-        temporaryWord += letter;
+bool Trie::deleteHelper(Node* node, const string& word, int depth) {
+    if (depth == word.length()) {
+        if (!node->stop) return false; // Word not found
+        return true;
     }
-    return temporaryWord;
+
+    char letter = word[depth];
+    if (!node->children.contains(letter)) return false;
+
+    Node* child = node->children[letter];
+    bool shouldDeleteChild = deleteHelper(child, word, depth + 1);
+
+    if (shouldDeleteChild) {
+        delete child;
+        node->children.erase(letter);
+        return node->children.empty() && !node->stop;
+    }
+    return false;
 }

@@ -45,6 +45,7 @@ public:
      * @author robin
      */
     vector<string> search(const string& prefix);
+    void deleteString(const string& word);
 
 private:
     /// @brief root node van de tree
@@ -58,11 +59,7 @@ private:
      * @author robin
      */
     void insertLetter(int letterIndex, const string& word, Node *node);
-    /**
-     * @warning Robin wat is deze functie zelfs?
-     * @author robin
-     */
-    string findWords(string& temporaryWord, Node* node, const string& prefix);
+
     /**
      * @brief helper functie. Verzamelt alle matchende woorden vanaf de prefix.
      * @complexiteit O(???)
@@ -72,6 +69,7 @@ private:
      * @author robin
      */
     void collectWords(const string& currentWord, Node *node, vector<string> &result);
+    bool deleteHelper(Node *node, const string &word, int depth);
 };
 
 

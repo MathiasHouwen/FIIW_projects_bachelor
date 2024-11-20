@@ -21,8 +21,9 @@ int main() {
     trie->insertString("wereldjes");
     trie->insertString("hel");
     trie->insertString("helcat");
+    trie->deleteString("helcat");
 
-    vector<string> found = trie->search("he");
+    vector<string> found = trie->search("hel");
     for (int i = 0; i < found.size(); i++) {
         cout << found[i] << endl;
     }

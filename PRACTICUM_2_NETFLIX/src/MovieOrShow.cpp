@@ -7,10 +7,9 @@
 #include "MovieOrShow.h"
 
 string MovieOrShow::toString() {
-    string s;
-    stringstream ss(s);
-    ss << title << "[ genre: " << genre << " IDMb: " << IMDbRating << " ]";
-    return s;
+    stringstream ss;
+    ss << title << "[ genre: " << *genre << " IDMb: " << IMDbRating << " ]";
+    return ss.str();
 }
 
 bool MovieOrShow::operator<(const MovieOrShow &rhs) const {

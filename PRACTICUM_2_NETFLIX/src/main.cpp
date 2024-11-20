@@ -26,8 +26,8 @@ int main() {
     trie->insertMOS(&movie2);
     trie->insertMOS(&movie3);
     trie->insertMOS(&movie4);
-    for(string s:trie->search("Arm", action)) {
-        cout << s << endl;
+    for(auto mos:trie->search("Arm", action)) {
+        cout << " - " << mos.toString() << endl;
     }
     return 0;
 }

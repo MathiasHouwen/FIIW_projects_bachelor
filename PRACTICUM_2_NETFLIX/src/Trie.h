@@ -49,7 +49,7 @@ public:
      * @return vector van alle matches
      * @author robin
      */
-    vector<string> search(const string& prefix, string* genre);
+    vector<MovieOrShow> search(const string& prefix, string* genre);
     void deleteMOS(MovieOrShow* mos);
 
 private:
@@ -73,7 +73,7 @@ private:
      * @param result: out-parameter waar gevonden volledige woorden in worden gegooid
      * @author robin
      */
-    void collectWords(const string &currentWord, Node *node, vector<string> &result, string *genre);
+    void collectWords(const string &currentWord, Node *node, vector<MovieOrShow> &result, string *genre);
     bool deleteHelper(Node *node, MovieOrShow* mos, int depth);
 };
 

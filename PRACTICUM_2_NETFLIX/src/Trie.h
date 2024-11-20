@@ -27,7 +27,7 @@ struct Node {
     unordered_map<char, Node*> children{};
     ///@brief flag die markeerd of deze node de eindletter van een woord is.
     bool stop{false};
-    unordered_map<string*, MovieOrShow*> mos{};
+    unordered_map<string*, MovieOrShow*> mosSet{};
 };
 
 class Trie {

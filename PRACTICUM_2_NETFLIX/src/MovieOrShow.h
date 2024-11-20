@@ -11,29 +11,17 @@ using namespace std;
 
 class MovieOrShow {
 public:
-    enum class Type{movie, serie};
-
-    MovieOrShow(Type type, int releaseYear, const string &title, string *genre, float imDbRating);
+    MovieOrShow(string title, string *genre, float imDbRating);
+    string toString();
+    bool operator<(const MovieOrShow &rhs) const;
 
     const string &getTitle() const;
     string *getGenre() const;
-    float getImDbRating() const;
-    string toString();
-
-    struct mosComperator{
-        bool operator()(MovieOrShow lhs, MovieOrShow rhs) const;
-    };
-    bool operator<(const MovieOrShow &rhs) const;
-
-    Type getType() const;
-    int getReleaseYear() const;
-
+    const float getImDbRating() const;
 private:
-    Type type;
-    int releaseYear;
-    string title;
-    string* genre;
-    float IMDbRating;
+    const string title;
+    string* genre; // dit is een pointer omdat genres gedeeld worden (via string pool)
+    const float IMDbRating;
 };
 
 

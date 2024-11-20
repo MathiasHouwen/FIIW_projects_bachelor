@@ -11,24 +11,17 @@
 #include "MovieOrShow.h"
 
 using namespace std;
+using mosSet = set<MovieOrShow>;
 
 class YearMap {
 public:
-    using mosSet = set<MovieOrShow, MovieOrShow::mosComperator>;
 
-    void insert(MovieOrShow mos);
+    void insert(MovieOrShow mos, int releaseYear);
     void remove(MovieOrShow mos);
-
-    vector<MovieOrShow> search(int releaseYear, bool isMovie);
+    vector<MovieOrShow> search(int releaseYear, int numberOfElements);
 
 private:
-    void insert(MovieOrShow mos, unordered_map<int, mosSet*> hashMap);
-    void remove(MovieOrShow mos, unordered_map<int, mosSet*> hashMap);
-
-    unordered_map<int, mosSet*> movieHash;
-    unordered_map<int, mosSet*> serieHash;
-
-    void search(mosSet::iterator it, mosSet::iterator end, vector<MovieOrShow> &result, int remaining);
+    unordered_map<int, mosSet*> map;
 };
 
 

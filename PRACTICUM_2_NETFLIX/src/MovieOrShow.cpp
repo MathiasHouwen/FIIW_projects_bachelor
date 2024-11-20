@@ -3,22 +3,8 @@
 //
 
 #include <sstream>
+#include <utility>
 #include "MovieOrShow.h"
-
-MovieOrShow::MovieOrShow(MovieOrShow::Type type, int releaseYear, const string &title, string *genre, float imDbRating)
-        : type(type), releaseYear(releaseYear), title(title), genre(genre), IMDbRating(imDbRating) {}
-
-const string &MovieOrShow::getTitle() const {
-    return title;
-}
-
-string *MovieOrShow::getGenre() const {
-    return genre;
-}
-
-float MovieOrShow::getImDbRating() const {
-    return IMDbRating;
-}
 
 string MovieOrShow::toString() {
     string s;
@@ -34,14 +20,18 @@ bool MovieOrShow::operator<(const MovieOrShow &rhs) const {
     return title < rhs.title;
 }
 
-MovieOrShow::Type MovieOrShow::getType() const {
-    return type;
+MovieOrShow::MovieOrShow(string title, string *genre, float imDbRating) : title(std::move(title)), genre(genre),
+                                                                                       IMDbRating(imDbRating) {}
+
+const string &MovieOrShow::getTitle() const {
+    return title;
 }
 
-int MovieOrShow::getReleaseYear() const {
-    return releaseYear;
+string *MovieOrShow::getGenre() const {
+    return genre;
 }
 
-bool MovieOrShow::mosComperator::operator()(MovieOrShow lhs, MovieOrShow rhs) const {
-    return lhs < rhs;
+const float MovieOrShow::getImDbRating() const {
+    return IMDbRating;
 }
+

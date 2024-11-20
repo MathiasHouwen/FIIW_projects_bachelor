@@ -53,7 +53,7 @@ void Trie::insertLetter(int letterIndex, MovieOrShow* mos, Node *node) {
     // als je de laatste letter van het woord bereikt, word de node als end-of-word gemarkeerd door stop=true
     if (letterIndex == title.length()) {
         node->stop = true;
-        node->mos[mos->getGenre()] = mos;
+        node->mosSet[mos->getGenre()] = mos;
         return;
     }
     // bepaal de child node voor de huidige letter
@@ -76,7 +76,7 @@ void Trie::insertLetter(int letterIndex, MovieOrShow* mos, Node *node) {
 void Trie::collectWords(const string& currentWord, Node *node, vector<string> &result, string* genre) {
     // stop = true markeert het einde van een woord (maar niet perse het einde van de branch)
     if (node->stop && result.size() < maxSize) {
-        if(node->mos.contains(genre) || genre == nullptr) {
+        if(node->mosSet.contains(genre) || genre == nullptr) {
             result.push_back(currentWord);
         }
     }
@@ -94,7 +94,7 @@ bool Trie::deleteHelper(Node* node, MovieOrShow* mos, int depth) {
     if (depth == word.length()) {
         if (!node->stop) return false;
         node->stop = false;
-        node->mos.erase(mos->getGenre());
+        node->mosSet.erase(mos->getGenre());
         return node->children.empty();
     }
 

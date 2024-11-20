@@ -17,10 +17,10 @@ int main() {
     //CSVReader reader("../data/netflixdata.csv");
     auto* action = new string("action");
     auto* romance = new string("romance");
-    MovieOrShow movie1 = {MovieOrShow::Type::movie,2000,"Armageddon", action, 5.5};
-    MovieOrShow movie2 = {MovieOrShow::Type::movie, 2010,"Cars", romance, 9.5};
-    MovieOrShow movie3 = {MovieOrShow::Type::serie,1998,"Arme man", romance, 5.5};
-    MovieOrShow movie4 = {MovieOrShow::Type::serie,1998,"Arme man", action, 5.5};
+    MovieOrShow movie1 = {"Armageddon", action, 5.5};
+    MovieOrShow movie2 = {"Cars", romance, 9.5};
+    MovieOrShow movie3 = {"Arme man", romance, 5.5};
+    MovieOrShow movie4 = {"Arme man", action, 5.5};
     Trie *trie = new Trie();
     trie->insertMOS(&movie1);
     trie->insertMOS(&movie2);

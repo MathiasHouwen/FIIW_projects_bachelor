@@ -19,7 +19,9 @@ add_executable(PRACTICUM_2_NETFLIX src/main.cpp
         src/utils/netflixCLI.cpp
         src/utils/netflixCLI.h
         src/StringPool.cpp
-        src/StringPool.h)
+        src/StringPool.h
+        src/MovieOrShow.cpp
+        src/MovieOrShow.h)
 
 FetchContent_MakeAvailable(csv-parser)
 target_link_libraries(PRACTICUM_2_NETFLIX PRIVATE csv)

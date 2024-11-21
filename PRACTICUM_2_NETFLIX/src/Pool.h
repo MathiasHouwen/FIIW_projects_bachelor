@@ -38,6 +38,7 @@ public:
      * @author ebbe
      */
     T* use(const T& object);
+
     /**
      * @brief laat de pool weten dat je het object niet meer gebruikt
      * @complexiteit O(1)
@@ -47,6 +48,14 @@ public:
      * @author ebbe
      */
     void unuse(const T& object);
+
+    /**
+     * @brief returnt de pointer van een bestaand object. Dit is voor als je kort de pointer waarde wil "bekijken" zonder de pool state aan te passen.
+     * @param object: waarde waarvoor je een pointer wil krijgen (null als niet bestaat)
+     * @return pointer naar de gedeelde object op de heap
+     * @author ebbe
+     */
+    T* peek(const T& object);
 };
 
 #endif //PRACTICUM_2_NETFLIX_POOL_H

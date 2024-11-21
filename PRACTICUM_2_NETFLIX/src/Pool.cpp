@@ -20,16 +20,24 @@ T *Pool<T>::use(const T& object) {
 }
 
 template<typename T>
-void Pool<T>::unuse(const T& str) {
+void Pool<T>::unuse(const T& object) {
     // als string niet bestaat is die al unused (edge case, zou eig nooit hoeven gebeuren)
-    if(!pool.contains(str)) return;
+    if(!pool.contains(object)) return;
 
     // een unuse verminderd de ref count
-    SharedObject& sharedString = pool[str];
+    SharedObject& sharedString = pool[object];
     sharedString.referenceCount--;
     // als de string helemaal niet meer gebruikt wordt, delete van heap en uit de pool
     if(sharedString.referenceCount == 0){
         delete sharedString.strPointer;
-        pool.erase(str);
+        pool.erase(object);
     }
+}
+
+template<typename T>
+T* Pool<T>::peek(const T &object) {
+    if(pool.contains(object))
+        return pool[object];
+    else
+        return nullptr;
 }

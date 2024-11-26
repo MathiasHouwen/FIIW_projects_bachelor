@@ -2,52 +2,50 @@
 
 #include "Pool.h"
 
-template<typename Key, typename Value>
-Value *Pool<Key, Value>::use(const Value &object, const Key& separateKey) {
+template<typename K, typename V>
+V *Pool<K, V>::use(const V &object, const K& separateKey) {
     // als object nog nooit eerder gebruikt was:
     // - maak object op heap
     // - insert in pool, met ref count 1
-    if(!pool.contains(separateKey)){
-        auto objPointer = new Value(object);
-        pool[separateKey] = SharedObject{objPointer, 1};
+    if(!objectPool.contains(separateKey)){
+        auto objPointer = new V(object);
+        objectPool[separateKey] = SharedObject{objPointer, 1};
         return objPointer;
     }
     // als string al bestaat:
     // increase ref count en return de bestaande heap pointer
-    SharedObject& sharedString = pool[separateKey];
+    SharedObject& sharedString = objectPool[separateKey];
     sharedString.referenceCount++;
     return sharedString.strPointer;
 }
 
-template<typename Key, typename Value>
-Value *Pool<Key, Value>::use(const Value &object) {
-    use(object, object);
-}
-
-template<typename Key, typename Value>
-Value *Pool<Key, Value>::peek(const Key &object) const {
-    if(pool.contains(object))
-        return pool[object];
+template<typename K, typename V>
+V *Pool<K, V>::peek(const K &object) const {
+    if(objectPool.contains(object)){
+        return objectPool.at(object).strPointer;
+    }
     else
         return nullptr;
 }
 
-template<typename Key, typename Value>
-void Pool<Key, Value>::unuse(const Key &object) {
+template<typename K, typename V>
+void Pool<K, V>::unuse(const K &object) {
     // als object niet bestaat is die al unused (edge case, zou eig nooit hoeven gebeuren)
-    if(!pool.contains(object)) return;
+    if(!objectPool.contains(object)) return;
 
     // een unuse verminderd de ref count
-    SharedObject& sharedString = pool[object];
+    SharedObject& sharedString = objectPool[object];
     sharedString.referenceCount--;
     // als de object helemaal niet meer gebruikt wordt, delete van heap en uit de pool
     if(sharedString.referenceCount == 0){
         delete sharedString.strPointer;
-        pool.erase(object);
+        objectPool.erase(object);
     }
 }
 
-template<typename Key, typename Value>
-Pool<Key, Value>::Pool() {
-    pool = unordered_map<Key, SharedObject>{};
+template<typename K, typename V>
+Pool<K, V>::Pool() : objectPool(){
 }
+
+template class Pool<std::string, std::string>;
+template class Pool<std::string, MovieOrShow>;

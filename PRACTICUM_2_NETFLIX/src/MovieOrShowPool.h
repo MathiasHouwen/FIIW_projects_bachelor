@@ -11,16 +11,11 @@
 #include "Pool.h"
 
 using namespace std;
-
 class MovieOrShowPool{
 
 private:
-    struct minimalUniqueMOSKey{
-        const string genre;
-        const string title;
-    };
-    ///@brief pool voor de movies or shows
-    Pool<minimalUniqueMOSKey, MovieOrShow> pool;
+    ///@brief pool voor de movies or shows, string = "genre"+"mos"
+    Pool<string, MovieOrShow> pool;
     /// @brief pool voor de genre strings (meerdere movies sharen een genre. Vandaar ook pointer in de MovieOrShow class)
     Pool<string> genresPool;
 public:

@@ -14,7 +14,6 @@ using namespace csv;
 using namespace std;
 
 int main() {
-    //CSVReader reader("../data/netflixdata.csv");
     auto* action = new string("action");
     auto* romance = new string("romance");
     MovieOrShow movie1 = {"Armageddon", action, 5.5};

@@ -3,9 +3,10 @@
 //
 
 #include <iostream>
+#include <vector>
 #include "../modules/CLI.h"
 #include "netflixCLI.h"
-
+#include "../MovieOrShow.h"
 
 bool netflixCLI::getInput() {
     try {
@@ -35,24 +36,48 @@ void netflixCLI::logic(CLI::Command cmd){
 }
 
 void netflixCLI::search(CLI::Command cmd){
-    if(!cmd.flags.contains("-type")){
+    if(!cmd.params.contains("-type")){
         cout << "first param 'type' is not found\n";
     }
 
-    if(cmd.flags.contains("-t")){
+    string stringType;
+    Type type;
+    stringType = cmd.params.at("-type");
+
+    if (stringType == "movie") {
+        type = Type::MOVIE;
+    } else if (stringType == "show" || stringType == "serie") {
+        type = Type::SHOW;
+    } else {
+        cout << "Error: Invalid 'type' value. Accepted values are 'movie' or 'show'.\n";
+        return;
+    }
+
+    if(cmd.params.contains("-t")){
         // name trie logic or something funcky
 
-        if(cmd.flags.contains("-g")){
+        if(cmd.params.contains("-g")){
             // Do funkey thins with both
             return;
         }
         return;
     }
 
-    if(cmd.flags.contains("-y")){
+    if(cmd.params.contains("-y")){
         // Search by year
+        vector<MovieOrShow> mos = netflix.searchByReleaseYear(type, cmd.params.at("-y"));
+        printMos(mos, displayNumber);
         return;
     }
 
     cout << "second param not found\n";
+}
+
+void netflixCLI::printMos(vector<MovieOrShow> mosList, int maxNum) {
+    int count = 0;
+    for (const auto& mos : mosList) {
+        if (count >= maxNum) break;
+        std::cout << "(" << count << ") " << mos.getTitle() << std::endl;
+        count++;
+    }
 }

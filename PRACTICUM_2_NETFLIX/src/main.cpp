@@ -2,7 +2,13 @@
 // Created by robin on 18/11/2024.
 //
 
+
+#include <iostream>
 #include <internal/csv_reader.hpp>
+#include <iostream>
+
+#include "Trie.h"
+#include "Pool.h"
 #include "Netflix.h"
 
 using namespace csv;

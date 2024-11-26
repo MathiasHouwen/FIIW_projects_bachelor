@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  # PHP-FPM service for Laravel
+  app:
+    image: php:8.2-fpm
+    container_name: laravel-app
+    working_dir: /var/www
+    volumes:
+      - .:/var/www
+    networks:
+      - laravel_network
+    environment:
+      - PHP_DISPLAY_ERRORS=1
+      - COMPOSER_ALLOW_SUPERUSER=1
+
+  # Nginx web server for serving the Laravel app
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "8080:80"  # Ensure correct mapping
+    volumes:
+      - .:/var/www
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - laravel_network
+    depends_on:
+      - app
+
+  # MySQL database container
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: laravel
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - laravel_network
+
+  # Composer container (to run Composer inside the container)
+  composer:
+    image: composer:latest
+    container_name: composer
+    volumes:
+      - .:/app
+    networks:
+      - laravel_network
+
+networks:
+  laravel_network:
+    driver: bridge
+
+volumes:
+  mysql-data:

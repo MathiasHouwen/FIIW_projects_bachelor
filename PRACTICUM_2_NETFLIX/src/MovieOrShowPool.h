@@ -15,11 +15,16 @@ using namespace std;
 class MovieOrShowPool{
 
 private:
+    struct minimalUniqueMOSKey{
+        const string genre;
+        const string title;
+    };
     ///@brief pool voor de movies or shows
-    Pool<MovieOrShow> pool;
+    Pool<minimalUniqueMOSKey, MovieOrShow> pool;
     /// @brief pool voor de genre strings (meerdere movies sharen een genre. Vandaar ook pointer in de MovieOrShow class)
     Pool<string> genresPool;
 public:
+    MovieOrShowPool();
     /**
      * @brief idem aan Pool::use
      * @details verschil is dat deze ook de genres van het MovieOrShow managed via een aparte pool\n

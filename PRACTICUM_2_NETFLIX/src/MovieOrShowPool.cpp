@@ -2,16 +2,22 @@
 
 #include "MovieOrShowPool.h"
 
-MovieOrShow *MovieOrShowPool::use(const MovieOrShow &mos) {
-    genresPool.use(*mos.getGenre());
-    return pool.use(mos);
+MovieOrShow *MovieOrShowPool::use(const string &title, const string &genre, const float IMDbRating) {
+    string* genrePtr = genresPool.use(genre);
+    return pool.use({title, genrePtr, IMDbRating}, {genre, title});
 }
 
-void MovieOrShowPool::unuse(const MovieOrShow &mos) {
-    genresPool.unuse(*mos.getGenre());
-    pool.unuse(mos);
+void MovieOrShowPool::unuse(const string &title, const string &genre) {
+    genresPool.unuse(genre);
+    pool.unuse({genre, title});
 }
 
-MovieOrShow *MovieOrShowPool::peek(const MovieOrShow &mos) {
-    return pool.peek(mos);
+MovieOrShow *MovieOrShowPool::peek(const string &title, const string &genre) const {
+    return pool.peek({genre, title});
 }
+
+MovieOrShowPool::MovieOrShowPool() {
+    pool = Pool<minimalUniqueMOSKey, MovieOrShow>();
+    genresPool = Pool<string>();
+}
+

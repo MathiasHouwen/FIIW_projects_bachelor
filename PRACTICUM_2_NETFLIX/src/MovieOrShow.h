@@ -14,6 +14,8 @@ public:
     MovieOrShow(string title, string *genre, float imDbRating);
     string toString();
     bool operator<(const MovieOrShow &rhs) const;
+    bool operator==(const MovieOrShow &rhs) const;
+    bool operator!=(const MovieOrShow &rhs) const;
 
     const string &getTitle() const;
     string *getGenre() const;

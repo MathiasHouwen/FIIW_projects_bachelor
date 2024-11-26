@@ -14,19 +14,20 @@
 
 using namespace std;
 
-template<typename T>
+template<typename Key, typename Value=Key>
 class Pool {
 private:
     ///@brief struct om een reference count te associeren met een pointer
     struct SharedObject{
         ///@brief pointer naar het shared object op de heap
-        T* strPointer;
+        Value* strPointer;
         ///@brief counter om te weten op hoeveel dit object in gebruik is (zodat die verwijderd kan als count 0 is)
         int referenceCount;
     };
     ///@brief map om voor elke object waarde de struct met de gedeelde pointer te vinden
-    unordered_map<T, SharedObject> pool{};
+    unordered_map<Key, SharedObject> pool{};
 public:
+    Pool();
     /**
      * @brief registreert een object en geeft de object pointer van de heap allocatie terug.
      * @complexiteit O(1)
@@ -37,7 +38,8 @@ public:
      * @return pointer naar de gedeelde object op de heap
      * @author ebbe
      */
-    T* use(const T& object);
+    Value* use(const Value& object, const Key& separateKey);
+    Value* use(const Value& object);
 
     /**
      * @brief laat de pool weten dat je het object niet meer gebruikt
@@ -47,7 +49,7 @@ public:
      * @param str: waarde van het object die je niet meer wil gebruiken
      * @author ebbe
      */
-    void unuse(const T& object);
+    void unuse(const Key& object);
 
     /**
      * @brief returnt de pointer van een bestaand object. Dit is voor als je kort de pointer waarde wil "bekijken" zonder de pool state aan te passen.
@@ -55,7 +57,8 @@ public:
      * @return pointer naar de gedeelde object op de heap
      * @author ebbe
      */
-    T* peek(const T& object);
+    Value* peek(const Key& object) const;
 };
+
 
 #endif //PRACTICUM_2_NETFLIX_POOL_H

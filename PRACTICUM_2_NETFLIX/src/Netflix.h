@@ -10,8 +10,6 @@
 #include "YearMap.h"
 #include "MovieOrShowPool.h"
 
-using namespace std;
-
 enum class Type{MOVIE, SHOW};
 
 class Netflix {
@@ -22,10 +20,10 @@ private:
     YearMap showsYearMap{};
     MovieOrShowPool movieOrShowPool;
 public:
-    void insert(Type type, string title, string genre, float IMDbRating, int releaseYear);
-    void remove(Type type, string title, string genre);
-    vector<MovieOrShow*> searchByTitle(Type type, const string& title, const string& genre = "");
-    vector<MovieOrShow*> searchByReleaseYear(Type type, int releaseYear);
+    void insert(Type type, std::string title, std::string genre, float IMDbRating, int releaseYear);
+    void remove(Type type, std::string title, std::string genre);
+    std::vector<MovieOrShow*> searchByTitle(Type type, const std::string& title, const std::string& genre = "");
+    std::vector<MovieOrShow*> searchByReleaseYear(Type type, int releaseYear);
 
     Netflix() = default;
 };

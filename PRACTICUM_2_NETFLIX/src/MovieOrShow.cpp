@@ -6,6 +6,8 @@
 #include <utility>
 #include "MovieOrShow.h"
 
+using namespace std;
+
 string MovieOrShow::toString() {
     stringstream ss;
     ss << title << "[ genre: " << *genre << " IDMb: " << IMDbRating << " ]";

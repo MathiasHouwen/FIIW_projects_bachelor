@@ -2,6 +2,8 @@
 
 #include "MovieOrShowPool.h"
 
+using namespace std;
+
 MovieOrShow *MovieOrShowPool::use(const string &title, const string &genre, const float IMDbRating) {
     string* genrePtr = genresPool.use(genre, genre);
     return pool.use({title, genrePtr, IMDbRating}, genre + "___" +title);

@@ -4,6 +4,8 @@
 
 #include "YearMap.h"
 
+using namespace std;
+
 void YearMap::insert(MovieOrShow* mos, int releaseYear) {
     map[releaseYear]->insert(mos);
 }

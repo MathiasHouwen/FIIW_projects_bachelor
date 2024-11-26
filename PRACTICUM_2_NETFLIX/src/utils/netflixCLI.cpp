@@ -8,6 +8,8 @@
 #include "../modules/CLI.h"
 #include "netflixCLI.h"
 
+using namespace std;
+
 bool netflixCLI::getInput() {
     try {
         CLI::Command cmd = cli.getInput(prompt);

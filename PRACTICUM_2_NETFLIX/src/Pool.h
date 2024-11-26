@@ -14,7 +14,6 @@
 #include <string>
 #include "MovieOrShow.h"
 
-using namespace std;
 
 template<typename K, typename V=K>
 class Pool {
@@ -27,7 +26,7 @@ private:
         int referenceCount;
     };
     ///@brief map om voor elke object waarde de struct met de gedeelde pointer te vinden
-    unordered_map<K, SharedObject> objectPool;
+    std::unordered_map<K, SharedObject> objectPool;
 public:
     Pool();
     /**

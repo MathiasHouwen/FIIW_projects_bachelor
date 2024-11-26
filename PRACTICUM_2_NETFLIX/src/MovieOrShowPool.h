@@ -10,14 +10,13 @@
 #include "MovieOrShow.h"
 #include "Pool.h"
 
-using namespace std;
 class MovieOrShowPool{
 
 private:
     ///@brief pool voor de movies or shows, string = "genre"+"mos"
-    Pool<string, MovieOrShow> pool;
+    Pool<std::string, MovieOrShow> pool;
     /// @brief pool voor de genre strings (meerdere movies sharen een genre. Vandaar ook pointer in de MovieOrShow class)
-    Pool<string> genresPool;
+    Pool<std::string> genresPool;
 public:
     MovieOrShowPool();
     /**
@@ -30,7 +29,7 @@ public:
      * @return: pointer naar de movie or show op de heap
      * @author ebbe
      */
-    MovieOrShow* use(const string& title, const string& genre, const float IMDbRating);
+    MovieOrShow* use(const std::string& title, const std::string& genre, const float IMDbRating);
     /**
      * @brief idem aan Pool::use
      * @details
@@ -40,7 +39,7 @@ public:
      * @param genre
      * @author ebbe
      */
-    void unuse(const string& title, const string& genre);
+    void unuse(const std::string& title, const std::string& genre);
     /**
      * @brief idem aan Pool::use
      * @details
@@ -51,7 +50,7 @@ public:
      * @return pointer naar het gedeelde object op de heap
      * @author ebbe
      */
-    MovieOrShow* peek(const string& title, const string& genre) const;
+    MovieOrShow* peek(const std::string& title, const std::string& genre) const;
 };
 
 

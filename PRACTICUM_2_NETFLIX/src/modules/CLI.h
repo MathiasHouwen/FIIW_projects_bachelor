@@ -9,21 +9,21 @@
 #include <unordered_set>
 #include <unordered_map>
 
-using namespace std;
-
 class CLI {
 public:
+    using StringMap = std::unordered_map<std::string, std::string>;
+    using StringSet = std::unordered_set<std::string>;
     struct Command{
-        string commandName;
-        unordered_map<string, string> params;
-        unordered_set<string> flags;
+        std::string commandName;
+        StringMap params;
+        StringSet flags;
     };
 
-    Command getInput(const string &prompt);
-    bool validate(Command cmd, unordered_set<string> allowedParams, unordered_set<string> allowedFlags);
+    Command getInput(const std::string &prompt);
+    bool validate(Command cmd, StringSet allowedParams, StringSet allowedFlags);
 
 private:
-    void parseToken(istringstream& iss, CLI::Command& cmd);
+    void parseToken(std::istringstream& iss, CLI::Command& cmd);
 
 };
 

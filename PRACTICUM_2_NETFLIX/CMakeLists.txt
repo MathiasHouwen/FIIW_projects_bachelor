@@ -11,6 +11,8 @@ FetchContent_Declare(
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-profile-arcs -fno-test-coverage")
 set(CMAKE_CXX_STANDARD 20)
 
+add_definitions(-DDATA_PATH="${CMAKE_SOURCE_DIR}/data")
+
 add_executable(PRACTICUM_2_NETFLIX src/main.cpp
         src/Trie.cpp
         src/Trie.h

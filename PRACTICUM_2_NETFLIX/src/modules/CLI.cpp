@@ -6,6 +6,8 @@
 #include <sstream>
 #include "CLI.h"
 
+using namespace std;
+
 CLI::Command CLI::getInput(const string &prompt) {
     Command cmd;
     string inputLine;
@@ -50,7 +52,7 @@ void CLI::parseToken(istringstream& iss, CLI::Command& cmd){
     parseToken(iss, cmd);
 }
 
-bool CLI::validate(CLI::Command cmd, unordered_set<string> allowedParams, unordered_set<string> allowedFlags) {
+bool CLI::validate(CLI::Command cmd, CLI::StringSet allowedParams, CLI::StringSet allowedFlags) {
     for(auto [param, value] : cmd.params){
         if (allowedParams.find(param) == allowedParams.end()) {
             return false;

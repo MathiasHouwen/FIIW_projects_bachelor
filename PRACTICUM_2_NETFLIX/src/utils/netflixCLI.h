@@ -10,10 +10,6 @@
 #include "../modules/CLI.h"
 #include "../Netflix.h"
 
-
-using namespace std;
-
-
 class netflixCLI {
 public:
     bool getInput();
@@ -23,14 +19,14 @@ private:
     CLI cli;
     Netflix netflix{};
 
-    string prompt = "Enter parameters (end with '#' for partial matches): ";
-    unordered_set<string> allowedParams = {"-type", "-t", "-g", "-y"};
-    unordered_set<string> allowedFlags;
+    std::string prompt = "Enter parameters (end with '#' for partial matches): ";
+    std::unordered_set<std::string> allowedParams = {"-type", "-t", "-g", "-y"};
+    std::unordered_set<std::string> allowedFlags;
 
     void logic(CLI::Command cmd);
     void search(CLI::Command cmd);
 
-    void printMos(const vector<MovieOrShow*>& mosList, int maxNum);
+    void printMos(const std::vector<MovieOrShow*>& mosList, int maxNum);
 };
 
 

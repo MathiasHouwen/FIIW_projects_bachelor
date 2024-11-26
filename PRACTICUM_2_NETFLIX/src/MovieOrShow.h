@@ -7,22 +7,20 @@
 
 #include <string>
 
-using namespace std;
-
 class MovieOrShow {
 public:
-    MovieOrShow(string title, string *genre, float imDbRating);
-    string toString();
+    MovieOrShow(std::string title, std::string *genre, float imDbRating);
+    std::string toString();
     bool operator<(const MovieOrShow &rhs) const;
     bool operator==(const MovieOrShow &rhs) const;
     bool operator!=(const MovieOrShow &rhs) const;
 
-    const string &getTitle() const;
-    string *getGenre() const;
+    const std::string &getTitle() const;
+    std::string *getGenre() const;
     const float getImDbRating() const;
 private:
-    const string title;
-    string* genre; // dit is een pointer omdat genres gedeeld worden (via string pool)
+    const std::string title;
+    std::string* genre; // dit is een pointer omdat genres gedeeld worden (via string pool)
     const float IMDbRating;
 };
 

@@ -5,16 +5,17 @@
 #include "CSVHandler.h"
 
 #include <iostream>
+
 using namespace std;
 
 CSVHandler::CSVHandler(Netflix* netflix) {
     this->netflix = netflix;
 }
 
-void CSVHandler::handleCSV(const string &fileName) {
-    CSVReader reader(fileName);
+void CSVHandler::handleCSV(const std::string &fileName) {
+    csv::CSVReader reader(fileName);
     Type type = {};
-    for (CSVRow& row: reader) {
+    for (csv::CSVRow& row: reader) {
         if(row[1].get<>() == "movie") {
             type = Type::MOVIE;
             cout << "Movie:" << endl;

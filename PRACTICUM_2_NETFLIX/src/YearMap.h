@@ -11,14 +11,14 @@
 #include "MovieOrShow.h"
 
 using namespace std;
-using mosSet = set<MovieOrShow>;
+using mosSet = set<MovieOrShow*>;
 
 class YearMap {
 public:
 
-    void insert(MovieOrShow mos, int releaseYear);
-    void remove(MovieOrShow mos);
-    vector<MovieOrShow> search(int releaseYear, int numberOfElements);
+    void insert(MovieOrShow* mos, int releaseYear);
+    void remove(MovieOrShow* mos);
+    vector<MovieOrShow*> search(int releaseYear, int numberOfElements);
 
 private:
     unordered_map<int, mosSet*> map;

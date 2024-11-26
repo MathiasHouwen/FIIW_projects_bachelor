@@ -8,7 +8,7 @@
 
 #include "Trie.h"
 #include "YearMap.h"
-#include "Pool.h"
+#include "MovieOrShowPool.h"
 
 using namespace std;
 
@@ -20,12 +20,12 @@ private:
     Trie showsTrie;
     YearMap moviesYearMap;
     YearMap showsYearMap;
-    Pool genresPool;
+    MovieOrShowPool movieOrShowPool;
 public:
     void insert(Type type, string title, string genre, float IMDbRating, int releaseYear);
     void remove(Type type, string title, string genre);
-    vector<MovieOrShow> searchByTitle(Type type, string title, string genre = "");
-    vector<MovieOrShow> searchByReleaseYear(Type type, int releaseYear);
+    vector<MovieOrShow*> searchByTitle(Type type, const string& title, const string& genre = "");
+    vector<MovieOrShow*> searchByReleaseYear(Type type, int releaseYear);
 };
 
 

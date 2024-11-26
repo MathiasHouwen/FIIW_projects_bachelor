@@ -22,27 +22,36 @@ private:
 public:
     /**
      * @brief idem aan Pool::use
-     * @details verschil is dat deze ook de genres van het MovieOrShow managed via een aparte pool
-     * @param mos: movie or show waarvoor je een pointer wil krijgen
+     * @details verschil is dat deze ook de genres van het MovieOrShow managed via een aparte pool\n
+     * Construct ook de movie or show vanuit parameters
+     * @param title: title van movie or show
+     * @param genre: genre van movie or show
+     * @param IMDbRating: rating van movie or show
      * @return: pointer naar de movie or show op de heap
      * @author ebbe
      */
-    MovieOrShow* use(const MovieOrShow &mos);
+    MovieOrShow* use(const string& title, const string& genre, const float IMDbRating);
     /**
      * @brief idem aan Pool::use
-     * @details verschil is dat deze ook de genres van het MovieOrShow managed via een aparte pool
-     * @param mos: movie or show dat je niet meer wil gebruiken
+     * @details
+     * verschil is dat deze ook de genres van het MovieOrShow managed via een aparte pool\n
+     * gebruikt enkel de minimale parameters voor een unieke movie or show (dus geen IMDbRating)
+     * @param title: movie or show waarvoor je een pointer wil krijgen (null als niet bestaat)
+     * @param genre
      * @author ebbe
      */
-    void unuse(const MovieOrShow &mos);
+    void unuse(const string& title, const string& genre);
     /**
      * @brief idem aan Pool::use
-     * @details verschil is dat deze ook de genres van het MovieOrShow managed via een aparte pool
-     * @param mos: movie or show waarvoor je een pointer wil krijgen (null als niet bestaat)
+     * @details
+     * verschil is dat deze ook de genres van het MovieOrShow managed via een aparte pool\n
+     * ebruikt enkel de minimale parameters voor een unieke movie or show (dus geen IMDbRating)
+     * @param title: movie or show waarvoor je een pointer wil krijgen (null als niet bestaat)
+     * @param genre
      * @return pointer naar het gedeelde object op de heap
      * @author ebbe
      */
-    MovieOrShow* peek(const MovieOrShow &mos);
+    MovieOrShow* peek(const string& title, const string& genre) const;
 };
 
 

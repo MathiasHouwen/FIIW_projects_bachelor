@@ -18,8 +18,8 @@ void Trie::insertMOS(MovieOrShow* mos) {
     insertLetter(0, mos, root);
 }
 
-vector<MovieOrShow> Trie::search(const string& prefix, string* genre) {
-    vector<MovieOrShow> result;
+vector<MovieOrShow*> Trie::search(const string& prefix, const string& genre) {
+    vector<MovieOrShow*> result;
     Node* currentNode = root;
 
     // check of prefix volledig bestaat vanaf de root node
@@ -53,7 +53,7 @@ void Trie::insertLetter(int letterIndex, MovieOrShow* mos, Node *node) {
     // als je de laatste letter van het woord bereikt, word de node als end-of-word gemarkeerd door stop=true
     if (letterIndex == title.length()) {
         node->stop = true;
-        node->mosSet[mos->getGenre()] = mos;
+        node->mosSet[*mos->getGenre()] = mos;
         return;
     }
     // bepaal de child node voor de huidige letter
@@ -73,11 +73,11 @@ void Trie::insertLetter(int letterIndex, MovieOrShow* mos, Node *node) {
 
 
 // result is een out-parameter -> geen gedoe met return vectors mergen, elegantere code
-void Trie::collectWords(const string& currentWord, Node *node, vector<MovieOrShow> &result, string* genre) {
+void Trie::collectWords(const string& currentWord, Node *node, vector<MovieOrShow*>& result, const string& genre) {
     // stop = true markeert het einde van een woord (maar niet perse het einde van de branch)
     if (node->stop && result.size() < maxSize) {
-        if(node->mosSet.contains(genre) || genre == nullptr) {
-            result.push_back(*node->mosSet[genre]);
+        if(node->mosSet.contains(genre) || genre.empty()) {
+            result.push_back(node->mosSet[genre]);
         }
     }
 
@@ -94,7 +94,7 @@ bool Trie::deleteHelper(Node* node, MovieOrShow* mos, int depth) {
     if (depth == word.length()) {
         if (!node->stop) return false;
         node->stop = false;
-        node->mosSet.erase(mos->getGenre());
+        node->mosSet.erase(*mos->getGenre());
         return node->children.empty();
     }
 

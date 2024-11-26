@@ -27,7 +27,8 @@ struct Node {
     unordered_map<char, Node*> children{};
     ///@brief flag die markeerd of deze node de eindletter van een woord is.
     bool stop{false};
-    unordered_map<string*, MovieOrShow*> mosSet{};
+    ///@brief genre -> movie or show map
+    unordered_map<string, MovieOrShow*> mosSet{};
 };
 
 class Trie {
@@ -49,7 +50,7 @@ public:
      * @return vector van alle matches
      * @author robin
      */
-    vector<MovieOrShow> search(const string& prefix, string* genre);
+    vector<MovieOrShow*> search(const string& prefix, const string& genre);
     void deleteMOS(MovieOrShow* mos);
 
 private:
@@ -73,7 +74,7 @@ private:
      * @param result: out-parameter waar gevonden volledige woorden in worden gegooid
      * @author robin
      */
-    void collectWords(const string &currentWord, Node *node, vector<MovieOrShow> &result, string *genre);
+    void collectWords(const string &currentWord, Node *node, vector<MovieOrShow*> &result, const string& genre);
     bool deleteHelper(Node *node, MovieOrShow* mos, int depth);
 };
 

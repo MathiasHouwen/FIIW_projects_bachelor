@@ -34,3 +34,12 @@ const float MovieOrShow::getImDbRating() const {
     return IMDbRating;
 }
 
+bool MovieOrShow::operator==(const MovieOrShow &rhs) const {
+    return title == rhs.title &&
+           genre == rhs.genre; // rating wordt niet vergeleken. Movie or show is enkel uniek per title en genre
+}
+
+bool MovieOrShow::operator!=(const MovieOrShow &rhs) const {
+    return !(rhs == *this);
+}
+

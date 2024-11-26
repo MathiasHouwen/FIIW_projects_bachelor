@@ -16,16 +16,18 @@ enum class Type{MOVIE, SHOW};
 
 class Netflix {
 private:
-    Trie moviesTrie;
-    Trie showsTrie;
-    YearMap moviesYearMap;
-    YearMap showsYearMap;
+    Trie moviesTrie{};
+    Trie showsTrie{};
+    YearMap moviesYearMap{};
+    YearMap showsYearMap{};
     MovieOrShowPool movieOrShowPool;
 public:
     void insert(Type type, string title, string genre, float IMDbRating, int releaseYear);
     void remove(Type type, string title, string genre);
     vector<MovieOrShow*> searchByTitle(Type type, const string& title, const string& genre = "");
     vector<MovieOrShow*> searchByReleaseYear(Type type, int releaseYear);
+
+    Netflix() = default;
 };
 
 

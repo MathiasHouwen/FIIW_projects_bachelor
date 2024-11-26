@@ -27,6 +27,7 @@ private:
     ///@brief map om voor elke object waarde de struct met de gedeelde pointer te vinden
     unordered_map<Key, SharedObject> pool{};
 public:
+    Pool();
     /**
      * @brief registreert een object en geeft de object pointer van de heap allocatie terug.
      * @complexiteit O(1)
@@ -37,7 +38,8 @@ public:
      * @return pointer naar de gedeelde object op de heap
      * @author ebbe
      */
-    Value* use(const Key& object);
+    Value* use(const Value& object, const Key& separateKey);
+    Value* use(const Value& object);
 
     /**
      * @brief laat de pool weten dat je het object niet meer gebruikt
@@ -55,7 +57,8 @@ public:
      * @return pointer naar de gedeelde object op de heap
      * @author ebbe
      */
-    Value* peek(const Key& object);
+    Value* peek(const Key& object) const;
 };
+
 
 #endif //PRACTICUM_2_NETFLIX_POOL_H

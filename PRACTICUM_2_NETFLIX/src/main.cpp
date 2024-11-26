@@ -4,16 +4,18 @@
 
 
 #include <iostream>
-#include <internal/csv_reader.hpp>
 #include "Netflix.h"
+#include "Trie.h"
+#include "Pool.h"
+#include "utils/CSVHandler.h"
 
 using namespace csv;
 using namespace std;
 
 int main() {
-    //CSVReader reader("../data/netflixdata.csv");
     Netflix netflix;
-
+    CSVHandler csv_handler(&netflix);
+    csv_handler.handleCSV("../netflixdata.csv");
 //    auto* action = new string("action");
 //    auto* romance = new string("romance");
 //    MovieOrShow movie1 = {"Armageddon", action, 5.5};

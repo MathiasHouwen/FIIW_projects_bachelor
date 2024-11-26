@@ -50,7 +50,7 @@ void CLI::parseToken(istringstream& iss, CLI::Command& cmd){
     parseToken(iss, cmd);
 }
 
-bool CLI::validate(CLI::Command cmd, set<string> allowedParams, set<string> allowedFlags) {
+bool CLI::validate(CLI::Command cmd, unordered_set<string> allowedParams, unordered_set<string> allowedFlags) {
     for(auto [param, value] : cmd.params){
         if (allowedParams.find(param) == allowedParams.end()) {
             return false;

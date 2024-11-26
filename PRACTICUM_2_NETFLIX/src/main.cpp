@@ -5,10 +5,6 @@
 
 #include <iostream>
 #include <internal/csv_reader.hpp>
-#include <iostream>
-
-#include "Trie.h"
-#include "Pool.h"
 #include "Netflix.h"
 
 using namespace csv;

@@ -4,9 +4,9 @@
 
 #include <iostream>
 #include <vector>
+#include <sstream>
 #include "../modules/CLI.h"
 #include "netflixCLI.h"
-#include "../MovieOrShow.h"
 
 bool netflixCLI::getInput() {
     try {
@@ -65,7 +65,12 @@ void netflixCLI::search(CLI::Command cmd){
 
     if(cmd.params.contains("-y")){
         // Search by year
-        vector<MovieOrShow> mos = netflix.searchByReleaseYear(type, cmd.params.at("-y"));
+        string yearString = cmd.params["-y"];
+        stringstream ss;
+        ss << yearString;
+        int year;
+        ss >> year;
+        vector<MovieOrShow*> mos = netflix.searchByReleaseYear(type, year);
         printMos(mos, displayNumber);
         return;
     }
@@ -73,11 +78,11 @@ void netflixCLI::search(CLI::Command cmd){
     cout << "second param not found\n";
 }
 
-void netflixCLI::printMos(vector<MovieOrShow> mosList, int maxNum) {
+void netflixCLI::printMos(const vector<MovieOrShow*>& mosList, int maxNum) {
     int count = 0;
     for (const auto& mos : mosList) {
         if (count >= maxNum) break;
-        std::cout << "(" << count << ") " << mos.getTitle() << std::endl;
+        std::cout << "(" << count << ") " << mos->toString() << std::endl;
         count++;
     }
 }

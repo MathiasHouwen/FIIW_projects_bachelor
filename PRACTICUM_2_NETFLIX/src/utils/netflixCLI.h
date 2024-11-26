@@ -6,6 +6,7 @@
 #define PRACTICUM_2_NETFLIX_NETFLIXCLI_H
 
 #include <string>
+#include <unordered_set>
 #include "../modules/CLI.h"
 #include "../Netflix.h"
 
@@ -23,13 +24,13 @@ private:
     Netflix netflix{};
 
     string prompt = "Enter parameters (end with '#' for partial matches): ";
-    set<string> allowedParams = {"-type", "-t", "-g", "-y"};
-    set<std::string> allowedFlags;
+    unordered_set<string> allowedParams = {"-type", "-t", "-g", "-y"};
+    unordered_set<string> allowedFlags;
 
     void logic(CLI::Command cmd);
     void search(CLI::Command cmd);
 
-    void printMos(vector<MovieOrShow> mosList, int maxNum);
+    void printMos(const vector<MovieOrShow*>& mosList, int maxNum);
 };
 
 

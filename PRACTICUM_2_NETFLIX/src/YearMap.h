@@ -18,7 +18,7 @@ public:
     std::vector<MovieOrShow*> search(int releaseYear, int numberOfElements);
 
 private:
-    using mosSet = std::set<MovieOrShow*>;
+    using mosSet = std::unordered_set<MovieOrShow*>;
     std::unordered_map<int, mosSet*> map;
 };
 

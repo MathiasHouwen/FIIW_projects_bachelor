@@ -2,11 +2,16 @@
 // Created by houwe on 20/11/2024.
 //
 
+#include <iostream>
 #include "YearMap.h"
 
 using namespace std;
 
 void YearMap::insert(MovieOrShow* mos, int releaseYear) {
+    if(!map.contains(releaseYear)){
+        auto set = new unordered_set<MovieOrShow*>();
+        map[releaseYear] = set;
+    }
     map[releaseYear]->insert(mos);
 }
 

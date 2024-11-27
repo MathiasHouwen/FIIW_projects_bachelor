@@ -21,7 +21,7 @@ string MovieOrShow::toString() {
 
 bool MovieOrShow::operator<(const MovieOrShow &rhs) const {
     if (IMDbRating != rhs.IMDbRating) {
-        return IMDbRating < rhs.IMDbRating;
+        return IMDbRating > rhs.IMDbRating;
     }
     return title < rhs.title;
 }

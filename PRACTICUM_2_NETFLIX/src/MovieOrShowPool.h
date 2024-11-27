@@ -18,7 +18,7 @@ private:
     /// @brief pool voor de genre strings (meerdere movies sharen een genre. Vandaar ook pointer in de MovieOrShow class)
     Pool<std::string> genresPool;
 public:
-    using StringSet = std::vector<std::string>;
+    using StringSet = std::unordered_set<std::string>;
     MovieOrShowPool();
     /**
      * @brief idem aan Pool::use

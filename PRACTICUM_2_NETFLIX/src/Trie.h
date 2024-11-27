@@ -21,13 +21,16 @@
  *  * size == 0 -> leaf node\n
  *  * size > 1 -> meerdere branches\n
  */
+struct NodeValue{
+    using GenreToMOSMap = std::unordered_map<std::string*, MovieOrShow*>;
+    GenreToMOSMap genreToMOSMap{};
+};
 struct Node {
     ///@brief alle child nodes, gemapt op hun letter. Letter is niet opgeslagen in de node zelf.
     std::unordered_map<char, Node*> children{};
     ///@brief flag die markeerd of deze node de eindletter van een woord is.
     bool stop{false};
-    ///@brief genre -> movie or show map
-    std::unordered_map<std::string, MovieOrShow*> mosSet{};
+    NodeValue value;
 };
 
 class Trie {
@@ -49,7 +52,7 @@ public:
      * @return vector van alle matches
      * @author robin
      */
-    std::vector<MovieOrShow*> search(const std::string& prefix, const std::string& genre);
+    std::vector<MovieOrShow*> search(const std::string& prefix, std::string* genre);
     void deleteMOS(MovieOrShow* mos);
 
 private:
@@ -73,7 +76,7 @@ private:
      * @param result: out-parameter waar gevonden volledige woorden in worden gegooid
      * @author robin
      */
-    void collectWords(const std::string &currentWord, Node *node, std::vector<MovieOrShow*> &result, const std::string& genre);
+    void collectWords(const std::string &currentWord, Node *node, std::vector<MovieOrShow*> &result, std::string* genre);
     bool deleteHelper(Node *node, MovieOrShow* mos, int depth);
 };
 

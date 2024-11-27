@@ -18,21 +18,22 @@ void CSVHandler::handleCSV(const std::string &fileName) {
 
         string title = row["title"].get<string>();
         Type type = row["type"].get<string>() == "movie" ? Type::MOVIE : Type::SHOW;
-        vector<string> genres = splitString(row["genres"].get<string>());
+        unordered_set<string> genres = splitString(row["genres"].get<string>());
         int releaseYear = row["releaseYear"].get<int>();
-        float IMDb = row["imdbAverageRating"].get<float>();
-        //netflix->insert(type, row[0].get<>(), row[2].get<>(), row[4].get<float>(), row[3].get<int>());
+        auto IMDb = row["imdbAverageRating"].get<float>();
+        string id = row["imdbId"].get<string>();
+        netflix->insert(type, title, genres, IMDb, releaseYear, id);
     }
 }
 
-std::vector<std::string> CSVHandler::splitString(std::string str) {
+std::unordered_set<std::string> CSVHandler::splitString(const std::string& str) {
     stringstream ss(str);
-    vector<string> strings;
+    unordered_set<string> strings;
     string singleString;
     while (getline(ss, singleString, ',')) {
         if(singleString.starts_with(' '))
             singleString = singleString.substr(1, singleString.size() - 1);
-        strings.push_back(singleString);
+        strings.insert(singleString);
     }
     return strings;
 }

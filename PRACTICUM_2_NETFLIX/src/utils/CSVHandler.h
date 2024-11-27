@@ -10,7 +10,7 @@
 class CSVHandler {
 private:
     Netflix* netflix;
-    std::vector<std::string> splitString(std::string str);
+    static std::unordered_set<std::string> splitString(const std::string& str);
 public:
     explicit CSVHandler(Netflix* netflix);
     void handleCSV(const std::string& fileName);

@@ -31,7 +31,3 @@ vector<MovieOrShow*> YearMap::search(int releaseYear, int numberOfElements) {
     }
     return result;
 }
-
-bool YearMap::ComparableMovieOrShowPointer::operator<(const YearMap::ComparableMovieOrShowPointer &rhs) const {
-    return *mos < *rhs.mos;
-}

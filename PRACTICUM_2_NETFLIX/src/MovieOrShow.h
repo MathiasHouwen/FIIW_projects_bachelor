@@ -32,5 +32,10 @@ private:
     const float IMDbRating;
 };
 
+struct ComparableMovieOrShowPointer{
+    MovieOrShow* mos;
+    bool operator<(const ComparableMovieOrShowPointer &rhs) const;
+    bool operator>(const ComparableMovieOrShowPointer &rhs) const;
+};
 
 #endif //PRACTICUM_2_NETFLIX_MOVIEORSHOW_H

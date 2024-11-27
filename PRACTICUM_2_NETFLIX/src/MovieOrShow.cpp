@@ -53,3 +53,11 @@ const string &MovieOrShow::getId() const {
     return id;
 }
 
+bool ComparableMovieOrShowPointer::operator<(const ComparableMovieOrShowPointer &rhs) const {
+    return *mos < *rhs.mos;
+}
+
+bool ComparableMovieOrShowPointer::operator>(const ComparableMovieOrShowPointer &rhs) const {
+    return !(*mos < *rhs.mos);
+}
+

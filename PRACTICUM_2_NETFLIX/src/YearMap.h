@@ -18,11 +18,7 @@ public:
     std::vector<MovieOrShow*> search(int releaseYear, int numberOfElements);
 
 private:
-    struct ComparableMovieOrShowPointer{
-        MovieOrShow* mos;
-        bool operator<(const ComparableMovieOrShowPointer &rhs) const;
-    };
-    using mosSet = std::set<ComparableMovieOrShowPointer>;
+    using mosSet = std::set<ComparableMovieOrShowPointer, std::greater<>>;
     std::unordered_map<int, mosSet*> map;
 };
 

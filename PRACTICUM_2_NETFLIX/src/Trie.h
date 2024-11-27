@@ -3,6 +3,7 @@
 
 #ifndef TRIESTRUCTURE_H
 #define TRIESTRUCTURE_H
+#include <queue>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -10,6 +11,8 @@
 #include "MovieOrShow.h"
 
 #define maxSize 10
+
+using mosque = std::priority_queue<ComparableMovieOrShowPointer, std::vector<ComparableMovieOrShowPointer>, std::greater<ComparableMovieOrShowPointer>>;
 
 /**
  * @brief node in de trie boom\n\n
@@ -76,7 +79,7 @@ private:
      * @param result: out-parameter waar gevonden volledige woorden in worden gegooid
      * @author robin
      */
-    void collectWords(const std::string &currentWord, Node *node, std::vector<MovieOrShow*> &result, std::string* genre);
+    void collectWords(const std::string &currentWord, Node *node, mosque &result, std::string* genre);
     bool deleteHelper(Node *node, MovieOrShow* mos, int depth);
 };
 

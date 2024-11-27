@@ -2,6 +2,7 @@
 
 #include "Trie.h"
 
+#include <algorithm>
 #include <iostream>
 #include <ostream>
 
@@ -20,7 +21,8 @@ void Trie::insertMOS(MovieOrShow* mos) {
 }
 
 vector<MovieOrShow*> Trie::search(const string& prefix, string* genre) {
-    vector<MovieOrShow*> result;
+    vector<MovieOrShow*> sortedResult;
+    mosque result;
     Node* currentNode = root;
 
     // check of prefix volledig bestaat vanaf de root node
@@ -29,14 +31,19 @@ vector<MovieOrShow*> Trie::search(const string& prefix, string* genre) {
             if(result.empty()) {
                 cout << "No Titles found" << endl;
             }
-            return result;
+            return sortedResult;
         }
         currentNode = currentNode->children[letter];
     }
 
     // bouw alle woorden vanaf de prefix
     collectWords(prefix, currentNode, result, genre);
-    return result;
+    for(int i = 0; i < 10; i++) {
+        if (result.empty()){break;}
+        sortedResult.push_back(result.top().mos);
+        result.pop();
+    }
+    return sortedResult;
 }
 
 void Trie::deleteMOS(MovieOrShow* mos) {
@@ -76,11 +83,11 @@ void Trie::insertLetter(int letterIndex, MovieOrShow* mos, Node *node) {
 
 
 // result is een out-parameter -> geen gedoe met return vectors mergen, elegantere code
-void Trie::collectWords(const string& currentWord, Node *node, vector<MovieOrShow*>& result, string* genre) {
+void Trie::collectWords(const string& currentWord, Node *node, mosque &result, string* genre) {
     // stop = true markeert het einde van een woord (maar niet perse het einde van de branch)
     if (node->stop && result.size() < maxSize) {
         if(genre == nullptr || node->value.genreToMOSMap.contains(genre)) {
-            result.push_back(node->value.genreToMOSMap[genre]);
+            result.push(static_cast<priority_queue<ComparableMovieOrShowPointer>::value_type>(node->value.genreToMOSMap[genre]));
         }
     }
 

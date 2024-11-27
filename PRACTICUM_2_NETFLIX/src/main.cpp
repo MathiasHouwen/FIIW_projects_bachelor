@@ -12,17 +12,6 @@ int main() {
     CSVHandler csv_handler(&netflix);
     csv_handler.handleCSV(std::string(DATA_PATH)+"/netflixdata_zonder_null.csv");
 
-    auto movies = netflix.searchByReleaseYear(Type::MOVIE, 2010);
-    for(auto movie : movies){
-        std::cout << movie->toString() << std::endl;
-    }
-    std::cout << " -- " << std::endl;
-    auto movies2 = netflix.searchByTitle(Type::MOVIE, "In", "Action");
-
-    for(auto movie : movies2){
-        std::cout << movie->toString() << std::endl;
-    }
-
     /*
      *  Commands moeten van het typen zijn,
      *  Command param value ....

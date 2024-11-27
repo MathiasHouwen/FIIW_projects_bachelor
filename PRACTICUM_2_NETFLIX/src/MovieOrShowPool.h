@@ -7,17 +7,18 @@
 #define PRACTICUM_2_NETFLIX_MOVIEORSHOWPOOL_H
 
 
+#include <vector>
 #include "MovieOrShow.h"
 #include "Pool.h"
 
 class MovieOrShowPool{
-
 private:
-    ///@brief pool voor de movies or shows, string = "genre"+"mos"
+    ///@brief pool voor de movies or shows, string = ID
     Pool<std::string, MovieOrShow> pool;
     /// @brief pool voor de genre strings (meerdere movies sharen een genre. Vandaar ook pointer in de MovieOrShow class)
     Pool<std::string> genresPool;
 public:
+    using StringSet = std::vector<std::string>;
     MovieOrShowPool();
     /**
      * @brief idem aan Pool::use
@@ -29,7 +30,7 @@ public:
      * @return: pointer naar de movie or show op de heap
      * @author ebbe
      */
-    MovieOrShow* use(const std::string& title, const std::string& genre, const float IMDbRating);
+    MovieOrShow* use(const std::string& title, const StringSet& genres, const float IMDbRating, const std::string& id);
     /**
      * @brief idem aan Pool::use
      * @details
@@ -39,7 +40,7 @@ public:
      * @param genre
      * @author ebbe
      */
-    void unuse(const std::string& title, const std::string& genre);
+    void unuse(const std::string& id);
     /**
      * @brief idem aan Pool::use
      * @details
@@ -50,7 +51,7 @@ public:
      * @return pointer naar het gedeelde object op de heap
      * @author ebbe
      */
-    MovieOrShow* peek(const std::string& title, const std::string& genre) const;
+    MovieOrShow* peek(const std::string& id) const;
 };
 
 

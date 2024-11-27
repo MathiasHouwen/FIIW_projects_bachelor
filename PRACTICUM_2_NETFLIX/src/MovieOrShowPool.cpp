@@ -4,18 +4,22 @@
 
 using namespace std;
 
-MovieOrShow *MovieOrShowPool::use(const string &title, const string &genre, const float IMDbRating) {
-    string* genrePtr = genresPool.use(genre, genre);
-    return pool.use({title, genrePtr, IMDbRating}, genre + "___" +title);
+MovieOrShow *MovieOrShowPool::use(const string &title, const StringSet &genres, const float IMDbRating, const string& id) {
+    unordered_set<string*> genrePointers;
+    for(const auto& genre : genres)
+        genrePointers.insert(genresPool.use(genre, genre));
+    return pool.use({title, genrePointers, IMDbRating, id}, id);
 }
 
-void MovieOrShowPool::unuse(const string &title, const string &genre) {
-    genresPool.unuse(genre);
-    pool.unuse(genre + "___" +title);
+void MovieOrShowPool::unuse(const string& id) {
+    MovieOrShow* mos = peek(id);
+    for(auto genre : mos->getGenres())
+        genresPool.unuse(*genre);
+    pool.unuse(id);
 }
 
-MovieOrShow *MovieOrShowPool::peek(const string &title, const string &genre) const {
-    return pool.peek(genre + "___" +title);
+MovieOrShow *MovieOrShowPool::peek(const string& id) const {
+    return pool.peek(id);
 }
 
 MovieOrShowPool::MovieOrShowPool() : pool(), genresPool(){

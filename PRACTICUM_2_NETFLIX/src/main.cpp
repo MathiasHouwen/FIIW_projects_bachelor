@@ -5,6 +5,7 @@
 #include <iostream>
 #include "Netflix.h"
 #include "utils/CSVHandler.h"
+#include "utils/netflixCLI.h"
 
 int main() {
     Netflix netflix;
@@ -15,6 +16,10 @@ int main() {
     for(auto movie : movies){
         std::cout << movie->toString() << std::endl;
     }
+
+    //search -type movie -y 2010
+    netflixCLI cli(netflix);
+    cli.getInput();
 
     return 0;
 }

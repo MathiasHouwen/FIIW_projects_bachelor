@@ -19,9 +19,11 @@ public:
     bool getInput();
     const int displayNumber = 10;
 
+    explicit netflixCLI(const Netflix &netflix);
+
 private:
     CLI cli;
-    Netflix netflix{};
+    Netflix netflix;
 
     string prompt = "Enter parameters (end with '#' for partial matches): ";
     unordered_set<string> allowedParams = {"-type", "-t", "-g", "-y", "-title"};

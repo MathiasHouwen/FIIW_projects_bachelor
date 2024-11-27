@@ -15,6 +15,12 @@ int main() {
     for(auto movie : movies){
         std::cout << movie->toString() << std::endl;
     }
+    std::cout << " -- " << std::endl;
+    auto movies2 = netflix.searchByTitle(Type::MOVIE, "In", "Action");
+
+    for(auto movie : movies2){
+        std::cout << movie->toString() << std::endl;
+    }
 
     return 0;
 }

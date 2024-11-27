@@ -57,13 +57,7 @@ void netflixCLI::search(CLI::Command cmd){
     }
 
     if(cmd.params.contains("-t")){
-
-        if(!cmd.params.contains("-title")){
-            cout << "Error: geen title of partial title\n";
-            return;
-        }
-
-        string title = cmd.params["-title"];
+        string title = cmd.params["-t"];
         if(title.find('#') != std::string::npos && title.back() == '#'){
             // partial title
             title.pop_back();
@@ -89,7 +83,6 @@ void netflixCLI::search(CLI::Command cmd){
         int year = 0;
         ss >> year;
 
-        //        int year = std::stoi(yearString);
         vector<MovieOrShow*> mos = netflix.searchByReleaseYear(type, year);
         printMos(mos, displayNumber);
         return;

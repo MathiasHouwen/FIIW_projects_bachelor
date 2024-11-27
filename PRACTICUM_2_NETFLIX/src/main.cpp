@@ -23,7 +23,13 @@ int main() {
         std::cout << movie->toString() << std::endl;
     }
 
-    //search -type movie -y 2010
+    /*
+     *  Commands moeten van het typen zijn,
+     *  Command param value ....
+     *  Bv,
+     *  search -type movie -y 2010
+     *  search -type movie -g Action -t In#
+     */
     netflixCLI cli(netflix);
     cli.getInput();
 

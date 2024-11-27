@@ -1,6 +1,5 @@
-//
-// Created by houwe on 18/11/2024.
-//
+// taakverdeling + functies documentatie: zie h-file
+
 
 #include <iostream>
 #include <vector>

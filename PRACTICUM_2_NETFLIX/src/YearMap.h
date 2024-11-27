@@ -1,6 +1,5 @@
-//
-// Created by houwe on 20/11/2024.
-//
+// gemaakt door mathias
+// memory leak refactors door ebbe
 
 #ifndef PRACTICUM_2_NETFLIX_YEARMAP_H
 #define PRACTICUM_2_NETFLIX_YEARMAP_H

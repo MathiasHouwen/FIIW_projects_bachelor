@@ -1,6 +1,5 @@
-//
-// Created by ebbew on 20-11-2024.
-//
+// door iedereen aan gewerkt
+// doel: data van een movie of tv show
 
 #ifndef PRACTICUM_2_NETFLIX_MOVIEORSHOW_H
 #define PRACTICUM_2_NETFLIX_MOVIEORSHOW_H
@@ -10,12 +9,16 @@
 
 class MovieOrShow {
 public:
+    ///@brief set voor string pointers, gebruikt voor genres
     using StringSet = std::unordered_set<std::string *>;
     MovieOrShow(std::string title, StringSet genres, float imDbRating, std::string id);
 
+    ///@brief maakt mooie string om te printen
     std::string toString();
 
+    /// @brief relatie op basis van IMDb en title
     bool operator<(const MovieOrShow &rhs) const;
+    ///@brief vergelijking op basis van ID
     bool operator==(const MovieOrShow &rhs) const;
     bool operator!=(const MovieOrShow &rhs) const;
 
@@ -32,6 +35,7 @@ private:
     const float IMDbRating;
 };
 
+///@brief gebruikt voor sets/queus die MovieORShow objecten moeten sorteren
 struct ComparableMovieOrShowPointer{
     MovieOrShow* mos;
     bool operator<(const ComparableMovieOrShowPointer &rhs) const;

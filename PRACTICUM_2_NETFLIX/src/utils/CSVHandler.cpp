@@ -1,6 +1,4 @@
-//
-// Created by robin on 26/11/2024.
-//
+// taakverdeling + functies documentatie: zie h-file
 
 #include "CSVHandler.h"
 

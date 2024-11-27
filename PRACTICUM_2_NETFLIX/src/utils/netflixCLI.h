@@ -1,6 +1,5 @@
-//
-// Created by houwe on 18/11/2024.
-//
+// volledig door mathias
+// doel: netflix-specifieke wrapper rond CLI
 
 #ifndef PRACTICUM_2_NETFLIX_NETFLIXCLI_H
 #define PRACTICUM_2_NETFLIX_NETFLIXCLI_H
@@ -16,7 +15,16 @@ using namespace std;
 
 class netflixCLI {
 public:
+    /**
+     * @brief idem aan CLI::getInput
+     * @return commando
+     * @Author Mathais
+     */
     bool getInput();
+    /**
+     * @brief aantal entries die geprint moeten worden
+     * @author Mathais
+     */
     const int displayNumber = 10;
 
     explicit netflixCLI(const Netflix &netflix);

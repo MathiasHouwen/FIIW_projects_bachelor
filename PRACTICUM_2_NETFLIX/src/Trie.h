@@ -1,5 +1,19 @@
 // gemaakt door robin
 // doel: datastructuur om snel te zoeken op basis van prefix
+/*
+ * Alternatieven:
+ * TST (Ternary search tree) ipv trie?
+ *  - voordeel van TST = kan gesorteerd zijn (is intern een BST)
+ *  - nadeel extra insert time + extra complex, want hier moet sort enkel per volledig word, niet per node (per letter)
+ * Tie met 2 children sets: main set die alle children heeft, en een right set, idem aan een BST right node
+ *   - nadeel: een node heeft geen score, op wat is de right set dan gebaseerd?
+ *      - maximum IMDb score van zijn subtrees -> dan wordt die leef
+ *      - minimum -> dan komt de hele trie daar in
+ *      -> te complex
+ *  Trie children map sorten, en aantal woorden opslaan in IMDb-gebaseerde buckets
+ *   - nadeel: complexe traversal
+ *   - volledig 10 maps, ipv 10 buckets voor enkel metadata -> extreem geheugengebruik
+ */
 
 #ifndef TRIESTRUCTURE_H
 #define TRIESTRUCTURE_H

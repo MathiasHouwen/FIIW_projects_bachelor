@@ -11,6 +11,8 @@ FetchContent_Declare(
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-profile-arcs -fno-test-coverage")
 set(CMAKE_CXX_STANDARD 20)
 
+add_definitions(-DDATA_PATH="${CMAKE_SOURCE_DIR}/data")
+
 add_executable(PRACTICUM_2_NETFLIX src/main.cpp
         src/Trie.cpp
         src/Trie.h
@@ -22,15 +24,14 @@ add_executable(PRACTICUM_2_NETFLIX src/main.cpp
         src/Pool.h
         src/YearMap.cpp
         src/YearMap.h
-        src/Pool.h
         src/MovieOrShow.cpp
         src/MovieOrShow.h
         src/Netflix.cpp
         src/Netflix.h
         src/MovieOrShowPool.cpp
-        src/MovieOrShowPool.h)
-        #src/utils/CSVHandler.cpp
-        #src/utils/CSVHandler.h)
+        src/MovieOrShowPool.h
+        src/utils/CSVHandler.cpp
+        src/utils/CSVHandler.h)
 
 FetchContent_MakeAvailable(csv-parser)
 target_link_libraries(PRACTICUM_2_NETFLIX PRIVATE csv)

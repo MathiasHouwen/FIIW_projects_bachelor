@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "MovieOrShow.h"
-using namespace std;
 
 #define maxSize 10
 
@@ -24,11 +23,11 @@ using namespace std;
  */
 struct Node {
     ///@brief alle child nodes, gemapt op hun letter. Letter is niet opgeslagen in de node zelf.
-    unordered_map<char, Node*> children{};
+    std::unordered_map<char, Node*> children{};
     ///@brief flag die markeerd of deze node de eindletter van een woord is.
     bool stop{false};
     ///@brief genre -> movie or show map
-    unordered_map<string, MovieOrShow*> mosSet{};
+    std::unordered_map<std::string, MovieOrShow*> mosSet{};
 };
 
 class Trie {
@@ -50,7 +49,7 @@ public:
      * @return vector van alle matches
      * @author robin
      */
-    vector<MovieOrShow*> search(const string& prefix, const string& genre);
+    std::vector<MovieOrShow*> search(const std::string& prefix, const std::string& genre);
     void deleteMOS(MovieOrShow* mos);
 
 private:
@@ -74,7 +73,7 @@ private:
      * @param result: out-parameter waar gevonden volledige woorden in worden gegooid
      * @author robin
      */
-    void collectWords(const string &currentWord, Node *node, vector<MovieOrShow*> &result, const string& genre);
+    void collectWords(const std::string &currentWord, Node *node, std::vector<MovieOrShow*> &result, const std::string& genre);
     bool deleteHelper(Node *node, MovieOrShow* mos, int depth);
 };
 

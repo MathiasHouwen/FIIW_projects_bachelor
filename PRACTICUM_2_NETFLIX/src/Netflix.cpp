@@ -4,6 +4,8 @@
 
 #include "Netflix.h"
 
+using namespace std;
+
 void Netflix::insert(Type type, string title, string genre, float IMDbRating, int releaseYear) {
     Trie trie = type == Type::MOVIE ? moviesTrie : showsTrie;
     YearMap yearMap = type == Type::MOVIE ? moviesYearMap : showsYearMap;

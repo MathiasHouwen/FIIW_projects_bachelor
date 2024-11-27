@@ -9,6 +9,8 @@
 #include "netflixCLI.h"
 #include "../MovieOrShow.h"
 
+using namespace std;
+
 bool netflixCLI::getInput() {
     try {
         CLI::Command cmd = cli.getInput(prompt);

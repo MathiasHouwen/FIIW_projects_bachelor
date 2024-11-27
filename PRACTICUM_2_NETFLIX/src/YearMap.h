@@ -10,18 +10,16 @@
 #include <vector>
 #include "MovieOrShow.h"
 
-using namespace std;
-using mosSet = set<MovieOrShow*>;
 
 class YearMap {
 public:
-
     void insert(MovieOrShow* mos, int releaseYear);
     void remove(MovieOrShow* mos);
-    vector<MovieOrShow*> search(int releaseYear, int numberOfElements);
+    std::vector<MovieOrShow*> search(int releaseYear, int numberOfElements);
 
 private:
-    unordered_map<int, mosSet*> map;
+    using mosSet = std::set<MovieOrShow*>;
+    std::unordered_map<int, mosSet*> map;
 };
 
 

@@ -10,7 +10,8 @@ using namespace std;
 
 string MovieOrShow::toString() {
     stringstream ss;
-    ss << title << "[ genre: " << *genre << " IDMb: " << IMDbRating << " ]";
+    ss << title << " [" << id;
+    ss << "]   -   IMDb: " << IMDbRating;
     return ss.str();
 }
 
@@ -21,15 +22,11 @@ bool MovieOrShow::operator<(const MovieOrShow &rhs) const {
     return title < rhs.title;
 }
 
-MovieOrShow::MovieOrShow(string title, string *genre, float imDbRating) : title(std::move(title)), genre(genre),
-                                                                                       IMDbRating(imDbRating) {}
+MovieOrShow::MovieOrShow(string title, StringSet genres, float imDbRating, string id) : title(std::move(title)), genres(genres),
+                                                                                       IMDbRating(imDbRating), id(id) {}
 
 const string &MovieOrShow::getTitle() const {
     return title;
-}
-
-string *MovieOrShow::getGenre() const {
-    return genre;
 }
 
 const float MovieOrShow::getImDbRating() const {
@@ -37,11 +34,18 @@ const float MovieOrShow::getImDbRating() const {
 }
 
 bool MovieOrShow::operator==(const MovieOrShow &rhs) const {
-    return title == rhs.title &&
-           genre == rhs.genre; // rating wordt niet vergeleken. Movie or show is enkel uniek per title en genre
+    return IMDbRating == rhs.IMDbRating;
 }
 
 bool MovieOrShow::operator!=(const MovieOrShow &rhs) const {
     return !(rhs == *this);
+}
+
+const unordered_set<std::string *> &MovieOrShow::getGenres() const {
+    return genres;
+}
+
+const string &MovieOrShow::getId() const {
+    return id;
 }
 

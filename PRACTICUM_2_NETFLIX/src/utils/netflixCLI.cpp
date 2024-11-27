@@ -7,6 +7,7 @@
 #include <sstream>
 #include "../modules/CLI.h"
 #include "netflixCLI.h"
+#include "../MovieOrShow.h"
 
 bool netflixCLI::getInput() {
     try {
@@ -54,12 +55,27 @@ void netflixCLI::search(CLI::Command cmd){
     }
 
     if(cmd.params.contains("-t")){
-        // name trie logic or something funcky
 
-        if(cmd.params.contains("-g")){
-            // Do funkey thins with both
+        if(!cmd.params.contains("-title")){
+            cout << "Error: geen title of partial title\n";
             return;
         }
+
+        string title = cmd.params["-title"];
+        if(title.find('#') != std::string::npos && title.back() == '#'){
+            // partial title
+            title.pop_back();
+        }
+
+        if(cmd.params.contains("-g")){
+            string genre = cmd.params["-g"];
+            vector<MovieOrShow*> mos = netflix.searchByTitle(type, title, genre);
+            printMos(mos, displayNumber);
+            return;
+        }
+
+        vector<MovieOrShow*> mos = netflix.searchByTitle(type, title);
+        printMos(mos, displayNumber);
         return;
     }
 

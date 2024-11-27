@@ -24,7 +24,7 @@ private:
     Netflix netflix{};
 
     string prompt = "Enter parameters (end with '#' for partial matches): ";
-    unordered_set<string> allowedParams = {"-type", "-t", "-g", "-y"};
+    unordered_set<string> allowedParams = {"-type", "-t", "-g", "-y", "-title"};
     unordered_set<string> allowedFlags;
 
     void logic(CLI::Command cmd);

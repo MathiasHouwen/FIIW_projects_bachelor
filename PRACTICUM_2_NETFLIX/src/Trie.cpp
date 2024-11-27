@@ -37,7 +37,8 @@ vector<MovieOrShow*> Trie::search(const string& prefix, string* genre) {
     }
 
     // bouw alle woorden vanaf de prefix
-    collectWords(prefix, currentNode, result, genre);
+    unordered_set<string> chache;
+    collectWords(prefix, currentNode, result, genre, chache);
     for(int i = 0; i < 10; i++) {
         if (result.empty()){break;}
         sortedResult.push_back(result.top().mos);
@@ -83,10 +84,16 @@ void Trie::insertLetter(int letterIndex, MovieOrShow* mos, Node *node) {
 
 
 // result is een out-parameter -> geen gedoe met return vectors mergen, elegantere code
-void Trie::collectWords(const string& currentWord, Node *node, mosque &result, string* genre) {
+void Trie::collectWords(const string& currentWord, Node *node, mosque &result, string* genre, std::unordered_set<std::string>& resultTitlesChache) {
     // stop = true markeert het einde van een woord (maar niet perse het einde van de branch)
     if (node->stop && result.size() < maxSize) {
-        if(genre == nullptr || node->value.genreToMOSMap.contains(genre)) {
+        if(!genre){
+            for(auto mosEntry : node->value.genreToMOSMap){
+                if(!resultTitlesChache.contains(mosEntry.second->getTitle()))
+                    result.push(static_cast<priority_queue<ComparableMovieOrShowPointer>::value_type>(mosEntry.second));
+                resultTitlesChache.insert(mosEntry.second->getTitle());
+            }
+        } else if(node->value.genreToMOSMap.contains(genre)){
             result.push(static_cast<priority_queue<ComparableMovieOrShowPointer>::value_type>(node->value.genreToMOSMap[genre]));
         }
     }
@@ -95,7 +102,7 @@ void Trie::collectWords(const string& currentWord, Node *node, mosque &result, s
     for (auto& child : node->children) {
         char letter = child.first;
         Node* childNode = child.second;
-        collectWords(currentWord + letter, childNode, result, genre);
+        collectWords(currentWord + letter, childNode, result, genre, resultTitlesChache);
     }
 }
 

@@ -79,7 +79,7 @@ private:
      * @param result: out-parameter waar gevonden volledige woorden in worden gegooid
      * @author robin
      */
-    void collectWords(const std::string &currentWord, Node *node, mosque &result, std::string* genre);
+    void collectWords(const std::string &currentWord, Node *node, mosque &result, std::string* genre, std::unordered_set<std::string>& resultTitlesChache);
     bool deleteHelper(Node *node, MovieOrShow* mos, int depth);
 };
 

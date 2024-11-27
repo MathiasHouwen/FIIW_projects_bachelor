@@ -10,8 +10,12 @@ using namespace std;
 
 string MovieOrShow::toString() {
     stringstream ss;
-    ss << title << " [" << id;
-    ss << "]   -   IMDb: " << IMDbRating;
+    ss << title;
+    for(int _ = 0; _ < 50 - title.size(); _++){
+        ss << ".";
+    }
+    ss << "[" << id << "]";
+    ss << "   IMDb: " << IMDbRating;
     return ss.str();
 }
 

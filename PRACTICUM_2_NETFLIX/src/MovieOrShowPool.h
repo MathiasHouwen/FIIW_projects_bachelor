@@ -52,6 +52,7 @@ public:
      * @author ebbe
      */
     MovieOrShow* peek(const std::string& id) const;
+    std::string* peekGenre(const std::string& genre) const;
 };
 
 

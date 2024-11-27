@@ -25,3 +25,7 @@ MovieOrShow *MovieOrShowPool::peek(const string& id) const {
 MovieOrShowPool::MovieOrShowPool() : pool(), genresPool(){
 }
 
+std::string *MovieOrShowPool::peekGenre(const string &genre) const {
+    return genresPool.peek(genre);
+}
+

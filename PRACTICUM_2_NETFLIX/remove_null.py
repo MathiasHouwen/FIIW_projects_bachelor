@@ -10,6 +10,7 @@ def main(file_name: str):
     # remove null
     df = pd.read_csv(inname, encoding="UTF-8")
     df = df.dropna()
+    df["releaseYear"] = df["releaseYear"].apply(lambda x: int(x))
     df.to_csv(outname, index=False)
 
     # titles zoals '71 insluiten in double quotes

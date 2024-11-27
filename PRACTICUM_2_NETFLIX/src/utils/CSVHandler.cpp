@@ -14,24 +14,25 @@ CSVHandler::CSVHandler(Netflix* netflix) {
 
 void CSVHandler::handleCSV(const std::string &fileName) {
     csv::CSVReader reader(fileName);
-    Type type = {};
     for (csv::CSVRow& row: reader) {
-        if(row[1].get<>() == "movie") {
-            type = Type::MOVIE;
-            cout << "Movie:" << endl;
-            for (auto && i : row) {
-                cout << i.get<>();
-            }
-            cout << endl;
-        }
-        else if(row[1].get<>() == "tv") {
-            type = Type::SHOW;
-            cout << "Serie:" << endl;
-            for (auto && i : row) {
-                cout << i.get<>();
-            }
-            cout << endl;
-        }
-        netflix->insert(type, row[0].get<>(), row[2].get<>(), row[4].get<float>(), row[3].get<int>());
+
+        string title = row["title"].get<string>();
+        Type type = row["type"].get<string>() == "movie" ? Type::MOVIE : Type::SHOW;
+        vector<string> genres = splitString(row["genres"].get<string>());
+        int releaseYear = row["releaseYear"].get<int>();
+        float IMDb = row["imdbAverageRating"].get<float>();
+        //netflix->insert(type, row[0].get<>(), row[2].get<>(), row[4].get<float>(), row[3].get<int>());
     }
+}
+
+std::vector<std::string> CSVHandler::splitString(std::string str) {
+    stringstream ss(str);
+    vector<string> strings;
+    string singleString;
+    while (getline(ss, singleString, ',')) {
+        if(singleString.starts_with(' '))
+            singleString = singleString.substr(1, singleString.size() - 1);
+        strings.push_back(singleString);
+    }
+    return strings;
 }

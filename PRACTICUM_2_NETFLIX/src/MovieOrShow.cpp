@@ -11,7 +11,7 @@ using namespace std;
 string MovieOrShow::toString() {
     stringstream ss;
     ss << title;
-    for(int _ = 0; _ < 50 - title.size(); _++){
+    for(int _ = 0; _ < 75 - title.size(); _++){
         ss << ".";
     }
     ss << "[" << id << "]";

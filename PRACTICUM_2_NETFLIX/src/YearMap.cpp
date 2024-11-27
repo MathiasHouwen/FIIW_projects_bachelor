@@ -9,10 +9,10 @@ using namespace std;
 
 void YearMap::insert(MovieOrShow* mos, int releaseYear) {
     if(!map.contains(releaseYear)){
-        auto set = new unordered_set<MovieOrShow*>();
-        map[releaseYear] = set;
+        map[releaseYear] = new unordered_set<MovieOrShow*>();;
     }
-    map[releaseYear]->insert(mos);
+    auto set = map[releaseYear];
+    set->insert(mos);
 }
 
 void YearMap::remove(MovieOrShow* mos) {

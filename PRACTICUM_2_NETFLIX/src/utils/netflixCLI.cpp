@@ -86,8 +86,10 @@ void netflixCLI::search(CLI::Command cmd){
         string yearString = cmd.params["-y"];
         stringstream ss;
         ss << yearString;
-        int year;
+        int year = 0;
         ss >> year;
+
+        //        int year = std::stoi(yearString);
         vector<MovieOrShow*> mos = netflix.searchByReleaseYear(type, year);
         printMos(mos, displayNumber);
         return;
@@ -98,9 +100,12 @@ void netflixCLI::search(CLI::Command cmd){
 
 void netflixCLI::printMos(const vector<MovieOrShow*>& mosList, int maxNum) {
     int count = 0;
+    std::cout << '\n';
     for (const auto& mos : mosList) {
         if (count >= maxNum) break;
-        std::cout << "(" << count << ") " << mos->toString() << std::endl;
+        std::cout << "(" << count + 1 << ") " << mos->toString() << std::endl;
         count++;
     }
 }
+
+netflixCLI::netflixCLI(const Netflix &netflix) : netflix(netflix) {}

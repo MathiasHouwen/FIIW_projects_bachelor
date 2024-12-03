@@ -33,9 +33,7 @@ private:
     CLI cli;
     Netflix netflix;
 
-    string prompt = "Enter parameters (end with '#' for partial matches): \n"
-                    "'-type': 'movie' or 'show'\n"
-                    "'-t': title, '-g':genre, '-y': releaseyear";
+    string prompt = "Enter parameters (end with '#' for partial matches)";
     unordered_set<string> allowedParams = {"-type", "-t", "-g", "-y"};
     unordered_set<string> allowedFlags;
 

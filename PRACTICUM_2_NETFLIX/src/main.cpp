@@ -31,6 +31,9 @@ int main() {
      *  search -type movie -g Action -t In#
      */
     netflixCLI cli(netflix);
+    std::cout << "parameters: \n"
+                 "\t'-type': 'movie' or 'show'\n"
+                 "\t'-t': title, '-g':genre, '-y': releaseyear" << std::endl;
     while(true){
         cli.getInput();
     }

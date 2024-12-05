@@ -73,3 +73,12 @@ void Graph::minimumSpanningTree(CityNode* start) {
 
     cout << "Total Weight of the Minimum Spanning Tree: " << totalWeight << endl;
 }
+
+CityNode* Graph::getNode(const string& city) {
+    if (nodes.find(city) != nodes.end()) {
+        return nodes[city];
+    } else {
+        cout << "City not found" << endl;
+        return nullptr;
+    }
+}

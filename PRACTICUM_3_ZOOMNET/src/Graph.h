@@ -41,6 +41,8 @@ public:
   ~Graph() = default;
   void addNode(CityNode* node);
   void removeNode(CityNode* node);
+  CityNode* getNode(const string& city);
+
   std::unordered_map<CityNode*, int> getConnections(string city);
 
   static void minimumSpanningTree(CityNode *start);

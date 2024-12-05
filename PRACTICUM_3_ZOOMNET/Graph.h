@@ -9,12 +9,30 @@
 #include <unordered_map>
 #include <iostream>
 #include <unordered_set>
+#include "Graph.h"
+#include <queue>
+#include <limits>
+#include <unordered_map>
+#include <unordered_set>
+#include <iostream>
+#include <vector>
 
 using namespace std;
 
 struct CityNode{
   std::string city;
   std::unordered_map<CityNode*, int> connections;
+};
+
+struct Edge {
+  CityNode* source;
+  CityNode* destination;
+  int weight;
+
+  // Custom comparator for priority queue (min-heap)
+  bool operator>(const Edge& other) const {
+    return weight > other.weight;
+  }
 };
 
 class Graph {
@@ -24,13 +42,13 @@ public:
   void addNode(CityNode* node);
   void removeNode(CityNode* node);
   std::unordered_map<CityNode*, int> getConnections(string city);
-  void getShortestPath(CityNode* source, CityNode* destination);
+
+  static void minimumSpanningTree(CityNode *start);
+
   static void setConnection(CityNode* source, CityNode* destination, int connection);
 
 private:
   unordered_map<string, CityNode*> nodes;
-  void visitCity(CityNode* node, int distanceTraveled, CityNode* destination, unordered_set<string>& visitedNodes);
-  void printroute(unordered_set<string>& visitedNodes, int distanceTraveled);
 };
 
 

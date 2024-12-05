@@ -28,5 +28,5 @@ int main() {
     graph->setConnection(b, e, 7);
     graph->setConnection(f, d, 18);
     graph->setConnection(b, c, 15);
-    graph->getShortestPath(e, f);
+    graph->minimumSpanningTree(a);
 }

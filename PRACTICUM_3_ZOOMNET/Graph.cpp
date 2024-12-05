@@ -31,37 +31,45 @@ std::unordered_map<CityNode *, int> Graph::getConnections(string city) {
     return nodes[city]->connections;
 }
 
-void Graph::getShortestPath(CityNode *source, CityNode *destination) {
-    unordered_set<string> visitedCities = {};
-    visitCity(source, 0, destination, visitedCities);
-}
+void Graph::minimumSpanningTree(CityNode* start) {
+    // Priority queue to get the edge with the smallest weight
+    priority_queue<Edge, vector<Edge>, greater<>> edgeQueue;
 
-void Graph::visitCity(CityNode* node, int distanceTraveled, CityNode* destination, unordered_set<string> &visitedCities) {
-    if (node == destination && visitedCities.size() == nodes.size()-1) {
-        printroute(visitedCities, distanceTraveled);
-        return;
+    // Set of visited nodes
+    unordered_set<string> visited;
+
+    // Total weight of the MST
+    int totalWeight = 0;
+
+    // Add all edges of the starting node to the priority queue
+    for (auto& connection : start->connections) {
+        edgeQueue.push({start, connection.first, connection.second});
     }
-    if (node == destination) {return;}
+    visited.insert(start->city);
 
-    visitedCities.insert(node->city);
-    for (auto cityEntry : getConnections(node->city)) {
-        CityNode *cityNode = cityEntry.first;
-        int distance = cityEntry.second;
+    cout << "Edges in the Minimum Spanning Tree:" << endl;
 
-        if (visitedCities.contains(cityNode->city)){continue;}
-        cout << "From: " << node->city;
-        cout << "   To: " << cityNode->city;
-        cout << "   Distance: " << distanceTraveled << endl;
-        visitCity(cityNode, distanceTraveled + distance, destination, visitedCities);
+    while (!edgeQueue.empty()) {
+        // Get the smallest edge
+        Edge currentEdge = edgeQueue.top();
+        edgeQueue.pop();
+
+        if (visited.find(currentEdge.destination->city) != visited.end()) {
+            continue;
+        }
+
+        visited.insert(currentEdge.destination->city);
+
+        totalWeight += currentEdge.weight;
+
+        cout << currentEdge.source->city << " --(" << currentEdge.weight << ")--> " << currentEdge.destination->city << endl;
+
+        for (auto& connection : currentEdge.destination->connections) {
+            if (visited.find(connection.first->city) == visited.end()) {
+                edgeQueue.push({currentEdge.destination, connection.first, connection.second});
+            }
+        }
     }
-    visitedCities.erase(node->city);
-}
 
-void Graph::printroute(unordered_set<string> &visitedNodes, int distanceTraveled) {
-    cout << "Route: " << endl;
-    for(string city : visitedNodes) {
-        cout << city << " ";
-    }
-    cout << endl << "Distance: " << distanceTraveled << endl;
+    cout << "Total Weight of the Minimum Spanning Tree: " << totalWeight << endl;
 }
-

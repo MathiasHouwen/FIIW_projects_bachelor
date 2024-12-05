@@ -39,7 +39,8 @@ vector<MovieOrShow*> Trie::search(const string& prefix, string* genre) {
     // bouw alle woorden vanaf de prefix
     unordered_set<string> chache;
     collectWords(prefix, currentNode, result, genre, chache);
-    for(int i = 0; i < 10; i++) {
+
+    for(int i = 0; i < maxSize; i++) {
         if (result.empty()){break;}
         sortedResult.push_back(result.top().mos);
         result.pop();
@@ -86,7 +87,8 @@ void Trie::insertLetter(int letterIndex, MovieOrShow* mos, Node *node) {
 // result is een out-parameter -> geen gedoe met return vectors mergen, elegantere code
 void Trie::collectWords(const string& currentWord, Node *node, mosque &result, string* genre, std::unordered_set<std::string>& resultTitlesChache) {
     // stop = true markeert het einde van een woord (maar niet perse het einde van de branch)
-    if (node->stop && result.size() < maxSize) {
+    if (node->stop) {
+
         if(!genre){
             for(auto mosEntry : node->value.genreToMOSMap){
                 if(!resultTitlesChache.contains(mosEntry.second->getTitle()))

@@ -37,7 +37,7 @@ void Graph::getShortestPath(CityNode *source, CityNode *destination) {
 }
 
 void Graph::visitCity(CityNode* node, int distanceTraveled, CityNode* destination, unordered_set<string> &visitedCities) {
-    if (node == destination && visitedCities.size() == nodes.size()) {
+    if (node == destination && visitedCities.size() == nodes.size()-1) {
         printroute(visitedCities, distanceTraveled);
         return;
     }
@@ -48,9 +48,13 @@ void Graph::visitCity(CityNode* node, int distanceTraveled, CityNode* destinatio
         CityNode *cityNode = cityEntry.first;
         int distance = cityEntry.second;
 
-        if (visitedCities.contains(cityNode->city)){return;}
-        visitCity(cityNode, distanceTraveled + distance, destination, visitedCities, routes);
+        if (visitedCities.contains(cityNode->city)){continue;}
+        cout << "From: " << node->city;
+        cout << "   To: " << cityNode->city;
+        cout << "   Distance: " << distanceTraveled << endl;
+        visitCity(cityNode, distanceTraveled + distance, destination, visitedCities);
     }
+    visitedCities.erase(node->city);
 }
 
 void Graph::printroute(unordered_set<string> &visitedNodes, int distanceTraveled) {

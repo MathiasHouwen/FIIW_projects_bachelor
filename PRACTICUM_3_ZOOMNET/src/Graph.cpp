@@ -18,67 +18,66 @@ void Graph::removeNode(CityNode *node) {
 }
 
 void Graph::setConnection(CityNode *source, CityNode *destination, int connection) {
-    if (source->connections[destination] && destination->connections[source]) {
+    if (source->connections.contains({source, destination, connection})) {
         cout << "Connection already exists" << endl;
     }
     else {
-        source->connections[destination] = connection;
-        destination->connections[source] = connection;
+        auto* newConnection = new Connection({source, destination, connection});
+        allConnections.insert(newConnection);
+        source->connections.insert(*newConnection);
+        destination->connections.insert(*newConnection);
     }
 }
 
-std::unordered_map<CityNode *, int> Graph::getConnections(string city) {
+std::set<Connection> Graph::getConnections(string city) {
     return nodes[city]->connections;
 }
 
-void Graph::minimumSpanningTree(CityNode* start) {
-    // Priority queue to get the edge with the smallest weight
-    priority_queue<Edge, vector<Edge>, greater<>> edgeQueue;
-
-    // Set of visited nodes
-    unordered_set<string> visited;
-
-    // Total weight of the MST
-    int totalWeight = 0;
-
-    // Add all edges of the starting node to the priority queue
-    for (auto& connection : start->connections) {
-        edgeQueue.push({start, connection.first, connection.second});
-    }
-    visited.insert(start->city);
-
-    cout << "Edges in the Minimum Spanning Tree:" << endl;
-
-    while (!edgeQueue.empty()) {
-        // Get the smallest edge
-        Edge currentEdge = edgeQueue.top();
-        edgeQueue.pop();
-
-        if (visited.find(currentEdge.destination->city) != visited.end()) {
-            continue;
-        }
-
-        visited.insert(currentEdge.destination->city);
-
-        totalWeight += currentEdge.weight;
-
-        cout << currentEdge.source->city << " --(" << currentEdge.weight << ")--> " << currentEdge.destination->city << endl;
-
-        for (auto& connection : currentEdge.destination->connections) {
-            if (visited.find(connection.first->city) == visited.end()) {
-                edgeQueue.push({currentEdge.destination, connection.first, connection.second});
-            }
-        }
-    }
-
-    cout << "Total Weight of the Minimum Spanning Tree: " << totalWeight << endl;
+CityNode* Graph::getNode(string city) {
+    return nodes[city];
 }
 
-CityNode* Graph::getNode(const string& city) {
-    if (nodes.find(city) != nodes.end()) {
-        return nodes[city];
-    } else {
-        cout << "City not found" << endl;
-        return nullptr;
+void Graph::getShortestPath() {
+    unordered_set<string> visitedCities = {};
+    visitCity(0, visitedCities);
+}
+
+void Graph::visitCity(int distanceTraveled, unordered_set<string> &visitedCities) {
+    if (visitedCities.size() == nodes.size()-1) {
+        printroute(visitedCities, distanceTraveled);
+        return;
     }
+
+    for (Connection* connection : allConnections) {
+        unordered_set<string> visitedNodes;
+        visitedNodes.insert(connection->start->city);
+        if (checkCycle(connection->destination, visitedNodes)) {
+            connection->realityCheck = true;
+            cout << "Connection: " << connection->start->city << "->" << connection->destination->city << endl;
+            distanceTraveled += connection->weight;
+        }
+    }
+}
+
+void Graph::printroute(unordered_set<string> &visitedNodes, int distanceTraveled) {
+    cout << "Route: " << endl;
+    for(const string& city : visitedNodes) {
+        cout << city << " ";
+    }
+    cout << endl << "Distance: " << distanceTraveled << endl;
+}
+
+bool Graph::checkCycle(CityNode* currentNode, unordered_set<string> &visitedNodes) {
+    visitedNodes.insert(currentNode->city);
+    for (const Connection& connection : currentNode->connections) {
+        CityNode* nextCity = connection.destination == currentNode ? connection.start : connection.destination;
+        if (connection.realityCheck && visitedNodes.contains(nextCity->city)) {
+            return true;
+        }
+        const bool finalDestination = checkCycle(nextCity, visitedNodes);
+        if (finalDestination) {
+            return finalDestination;    // Guard Clause
+        }
+    }
+    return false;
 }

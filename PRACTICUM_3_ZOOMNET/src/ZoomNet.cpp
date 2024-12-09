@@ -34,6 +34,6 @@ void ZoomNet::designMST(string graphName) {
     }
 
     Graph *graph = graphs[graphName];
-    graph->minimumSpanningTree(graph->getNode("a"));
+    graph->getShortestPath();
 
 }

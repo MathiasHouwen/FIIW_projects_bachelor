@@ -8,30 +8,30 @@
 #include <string>
 #include <unordered_map>
 #include <iostream>
-#include <unordered_set>
 #include "Graph.h"
 #include <queue>
 #include <limits>
-#include <unordered_map>
-#include <unordered_set>
 #include <iostream>
+#include <set>
 #include <vector>
+#include <unordered_set>
 
+struct Connection;
 using namespace std;
 
 struct CityNode{
   std::string city;
-  std::unordered_map<CityNode*, int> connections;
+  set<Connection> connections;
 };
 
-struct Edge {
-  CityNode* source;
-  CityNode* destination;
-  int weight;
+struct Connection {
+  CityNode* start{};
+  CityNode* destination{};
+  int weight{};
+  bool realityCheck{false};
 
-  // Custom comparator for priority queue (min-heap)
-  bool operator>(const Edge& other) const {
-    return weight > other.weight;
+  bool operator<(const Connection& other) const {
+    return weight < other.weight;
   }
 };
 
@@ -41,16 +41,17 @@ public:
   ~Graph() = default;
   void addNode(CityNode* node);
   void removeNode(CityNode* node);
-  CityNode* getNode(const string& city);
-
-  std::unordered_map<CityNode*, int> getConnections(string city);
-
-  static void minimumSpanningTree(CityNode *start);
-
-  static void setConnection(CityNode* source, CityNode* destination, int connection);
+  CityNode* getNode(string city);
+  void getShortestPath();
+  std::set<Connection> getConnections(string city);
+  void setConnection(CityNode* source, CityNode* destination, int connection);
 
 private:
   unordered_map<string, CityNode*> nodes;
+  std::set<Connection*> allConnections;
+  bool checkCycle(CityNode* start, unordered_set<string> &visitedNodes);
+  void visitCity(int distanceTraveled, unordered_set<string> &visitedCities);
+  static void printroute(unordered_set<string> &visitedNodes, int distanceTraveled);
 };
 
 

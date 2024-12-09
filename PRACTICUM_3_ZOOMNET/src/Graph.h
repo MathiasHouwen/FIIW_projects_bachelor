@@ -50,7 +50,7 @@ private:
   unordered_map<string, CityNode*> nodes;
   std::set<Connection*> allConnections;
   bool checkCycle(CityNode* start, unordered_set<string> &visitedNodes);
-  void visitCity(int distanceTraveled, unordered_set<string> &visitedCities);
+  void visitCity(int distanceTraveled);
   static void printroute(unordered_set<string> &visitedNodes, int distanceTraveled);
 };
 

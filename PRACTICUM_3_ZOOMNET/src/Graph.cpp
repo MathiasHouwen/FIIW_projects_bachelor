@@ -38,25 +38,20 @@ CityNode* Graph::getNode(string city) {
 }
 
 void Graph::getShortestPath() {
-    unordered_set<string> visitedCities = {};
-    visitCity(0, visitedCities);
+    visitCity(0);
 }
 
-void Graph::visitCity(int distanceTraveled, unordered_set<string> &visitedCities) {
-    if (visitedCities.size() == nodes.size()-1) {
-        printroute(visitedCities, distanceTraveled);
-        return;
-    }
-
+void Graph::visitCity(int distanceTraveled) {
     for (Connection* connection : allConnections) {
         unordered_set<string> visitedNodes;
         visitedNodes.insert(connection->start->city);
-        if (checkCycle(connection->destination, visitedNodes)) {
+        if (!checkCycle(connection->destination, visitedNodes)) {
             connection->realityCheck = true;
             cout << "Connection: " << connection->start->city << "->" << connection->destination->city << endl;
             distanceTraveled += connection->weight;
         }
     }
+    cout << "Distance: " << distanceTraveled << endl;
 }
 
 void Graph::printroute(unordered_set<string> &visitedNodes, int distanceTraveled) {
@@ -68,16 +63,14 @@ void Graph::printroute(unordered_set<string> &visitedNodes, int distanceTraveled
 }
 
 bool Graph::checkCycle(CityNode* currentNode, unordered_set<string> &visitedNodes) {
+    if (visitedNodes.contains(currentNode->city)){return true;}
     visitedNodes.insert(currentNode->city);
     for (const Connection& connection : currentNode->connections) {
+        if (!connection.realityCheck) {
+            continue;
+        }
         CityNode* nextCity = connection.destination == currentNode ? connection.start : connection.destination;
-        if (connection.realityCheck && visitedNodes.contains(nextCity->city)) {
-            return true;
-        }
-        const bool finalDestination = checkCycle(nextCity, visitedNodes);
-        if (finalDestination) {
-            return finalDestination;    // Guard Clause
-        }
+        if (checkCycle(nextCity, visitedNodes)) {return true;}
     }
     return false;
 }

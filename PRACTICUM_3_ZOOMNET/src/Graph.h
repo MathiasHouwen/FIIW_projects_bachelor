@@ -35,6 +35,12 @@ struct Connection {
   }
 };
 
+struct ConnectionPointerComparator {
+  bool operator()(const Connection* lhs, const Connection* rhs) const {
+    return lhs->weight < rhs->weight;
+  }
+};
+
 class Graph {
 public:
   Graph() = default;
@@ -48,7 +54,7 @@ public:
 
 private:
   unordered_map<string, CityNode*> nodes;
-  std::set<Connection*> allConnections;
+  std::set<Connection*, ConnectionPointerComparator> allConnections;
   bool checkCycle(CityNode* start, unordered_set<string> &visitedNodes);
   void visitCity(int distanceTraveled);
   static void printroute(unordered_set<string> &visitedNodes, int distanceTraveled);

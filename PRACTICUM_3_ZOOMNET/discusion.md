@@ -28,5 +28,5 @@
 
 # Nieuwe connecties introduceren
 1: Voeg nieuwe connectie toe
-2: Check voor lussen
-3: verwijder grootste lus
+2: vind de lus
+3: verwijder connectie van gevonden lus met grootste weight

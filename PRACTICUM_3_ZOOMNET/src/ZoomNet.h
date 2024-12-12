@@ -17,6 +17,7 @@ private:
 public:
     void designMST(string graphName);
     void adaptMST(string graphName);
+    bool newConnectionBetter(const string& source, const string& destination, int weight, Graph *graph);
 };
 
 

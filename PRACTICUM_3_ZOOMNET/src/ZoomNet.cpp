@@ -47,3 +47,9 @@ void ZoomNet::adaptMST(string graphName) {
     graph->generateMST(); // TODO: ADD EX EN IN
 
 }
+
+bool ZoomNet::newConnectionBetter(const string& source, const string& destination, int weight, Graph* graph) {
+    graph->setConnection(graph->getNode(source), graph->getNode(destination), weight);
+    int biggestWeight = graph->findBiggestWeight(new Connection{graph->getNode(source), graph->getNode(destination), weight});
+    return biggestWeight > weight;
+}

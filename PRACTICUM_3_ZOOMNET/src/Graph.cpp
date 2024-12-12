@@ -90,3 +90,18 @@ bool Graph::checkCycle(const CityNode* currentNode, const CityNode* prevNode, un
     }
     return false;
 }
+
+int Graph::findBiggestWeight(Connection *connection) {
+    unordered_set<Connection*> cycle = findCycle(connection);
+    int biggestWeight = 0;
+    for (const Connection* connectionInCycle : cycle) {
+        if (connectionInCycle->weight > biggestWeight) {
+            biggestWeight = connectionInCycle->weight;
+        }
+    }
+    return biggestWeight;
+}
+
+unordered_set<Connection*> Graph::findCycle(Connection *connection) {
+
+}

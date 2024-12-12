@@ -52,12 +52,14 @@ public:
   std::set<Connection*> getConnections(const string& city);
   Connection* getConnection(const CityNode *source, const CityNode *destination) const;
   void setConnection(CityNode* source, CityNode* destination, int connection);
+  int findBiggestWeight(Connection* connection);
 
 private:
   unordered_map<string, CityNode*> nodes;
   std::set<Connection*, ConnectionPointerComparator> allConnections;
   bool checkCycle(const CityNode* start, const CityNode* prevNode, unordered_set<string> &visitedNodes);
   static void printroute(const unordered_set<string> &visitedNodes, int distanceTraveled);
+  unordered_set<Connection*> findCycle(Connection* connection);
 };
 
 

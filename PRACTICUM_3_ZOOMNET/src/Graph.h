@@ -48,8 +48,9 @@ public:
   void addNode(CityNode* node);
   void removeNode(const CityNode* node);
   CityNode* getNode(const string& city);
-  void generateMST(const unordered_set<Connection> &excludeSet = {}, const unordered_set<Connection *>& includeSet = {});
+  void generateMST(const unordered_set<Connection *> &excludeSet = {}, const unordered_set<Connection *> &includeSet = {});
   std::set<Connection*> getConnections(const string& city);
+  Connection* getConnection(const CityNode *source, const CityNode *destination) const;
   void setConnection(CityNode* source, CityNode* destination, int connection);
 
 private:

@@ -29,6 +29,15 @@ void Graph::setConnection(CityNode *source, CityNode *destination, int connectio
     }
 }
 
+Connection* Graph::getConnection(const CityNode *source, const CityNode *destination) const {
+    for (Connection *connection : allConnections) {
+        if (connection->start == source && connection->destination == destination) {
+            return connection;
+        }
+    }
+    return nullptr;
+}
+
 std::set<Connection*> Graph::getConnections(const string& city) {
     return nodes[city]->connections;
 }
@@ -37,7 +46,7 @@ CityNode* Graph::getNode(const string& city) {
     return nodes[city];
 }
 
-void Graph::generateMST(const unordered_set<Connection>& excludeSet, const unordered_set<Connection*>& includeSet) {
+void Graph::generateMST(const unordered_set<Connection*>& excludeSet, const unordered_set<Connection*>& includeSet) {
     int distanceTraveled = 0;
 
     for (Connection* include : includeSet){
@@ -48,7 +57,7 @@ void Graph::generateMST(const unordered_set<Connection>& excludeSet, const unord
         unordered_set<string> visitedNodes;
         visitedNodes.insert(connection->start->city);
 
-        if (excludeSet.contains(*connection)) {
+        if (excludeSet.contains(connection)) {
             continue;
         }
 

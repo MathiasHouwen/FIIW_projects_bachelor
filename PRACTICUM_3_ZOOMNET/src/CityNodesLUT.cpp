@@ -19,5 +19,5 @@ void CityNodesLUT::remove(const string& cityName) {
 
 CityNode *CityNodesLUT::peek(const string& cityName) const{
     if(!lookupTable.contains(cityName)) return nullptr;
-    return lookupTable[cityName];
+    return lookupTable.at(cityName);
 }

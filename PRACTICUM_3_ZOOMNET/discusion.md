@@ -25,3 +25,8 @@
 
 # Channels toevoegen
 * Graph coloring
+
+# Nieuwe connecties introduceren
+1: Voeg nieuwe connectie toe
+2: vind de lus
+3: verwijder connectie van gevonden lus met grootste weight

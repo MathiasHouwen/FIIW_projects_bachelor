@@ -34,6 +34,16 @@ void ZoomNet::designMST(string graphName) {
     }
 
     Graph *graph = graphs[graphName];
-    graph->getShortestPath();
+    graph->generateMST({}, {});
+
+}
+
+void ZoomNet::adaptMST(string graphName) {
+    if (!graphs.contains(graphName)){
+        designMST(graphName);
+    }
+
+    Graph *graph = graphs[graphName];
+    graph->generateMST(); // TODO: ADD EX EN IN
 
 }

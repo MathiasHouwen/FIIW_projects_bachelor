@@ -48,7 +48,7 @@ public:
   void addNode(CityNode* node);
   void removeNode(const CityNode* node);
   CityNode* getNode(const string& city);
-  void getShortestPath();
+  void generateMST(vector<Connection> excludeSet = {}, vector<Connection> includeSet = {});
   std::set<Connection*> getConnections(const string& city);
   void setConnection(CityNode* source, CityNode* destination, int connection);
 

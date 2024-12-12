@@ -22,3 +22,6 @@
 ## edge cases ##
 1. Eilanden
 2. meerder gelijke gewichten
+
+# Channels toevoegen
+* Graph coloring

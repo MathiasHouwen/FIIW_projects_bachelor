@@ -25,3 +25,8 @@
 
 # Channels toevoegen
 * Graph coloring
+
+# Nieuwe connecties introduceren
+1: Voeg nieuwe connectie toe
+2: Check voor lussen
+3: verwijder grootste lus

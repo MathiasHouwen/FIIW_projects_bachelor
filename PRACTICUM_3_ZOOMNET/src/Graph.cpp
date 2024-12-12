@@ -37,29 +37,20 @@ CityNode* Graph::getNode(const string& city) {
     return nodes[city];
 }
 
-void Graph::generateMST(vector<Connection> excludeSet, vector<Connection> includeSet) {
+void Graph::generateMST(const unordered_set<Connection>& excludeSet, const unordered_set<Connection*>& includeSet) {
     int distanceTraveled = 0;
-    
+
+    for (Connection* include : includeSet){
+        include->realityCheck = true;
+    }
+
     for (Connection* connection : allConnections) {
         unordered_set<string> visitedNodes;
         visitedNodes.insert(connection->start->city);
 
-        bool isExcluded{false};
-        for (const Connection& exclude : excludeSet) {
-            if (connection->start->city == exclude.start->city && connection->destination->city == exclude.destination->city) {
-                isExcluded = true;
-                break;
-            }
+        if (excludeSet.contains(*connection)) {
+            continue;
         }
-        if (isExcluded) continue;               // vermeid connecties uit excludedList
-        
-        for (const Connection& include : includeSet){
-            if (connection->start->city == include.start->city && connection->destination->city == include.destination->city) {
-                connection->realityCheck = true;
-                break;
-            }
-        }
-        if (connection->realityCheck) continue; // Vermeid duplicaten van de includeList
 
         if (!checkCycle(connection->destination, connection->start, visitedNodes)) {
             connection->realityCheck = true;

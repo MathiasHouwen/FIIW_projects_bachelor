@@ -70,9 +70,9 @@ Connection *Graph::getConnection(const string &city1Name, const string &city2Nam
 bool Graph::printErrorIfCityIsNull(CityNode *city1, CityNode *city2) {
     if(city1 == nullptr || city2 == nullptr){
         cerr << "ERROR: Trying to connect two cities but one is null: ";
-        if(city1) cerr << city1; else cerr << "null";
+        if(city1) cerr << *city1; else cerr << "null";
         cerr << " + ";
-        if(city2) cerr << city2; else cerr << "null" << endl;
+        if(city2) cerr << *city2; else cerr << "null" << endl;
         return true;
     }
     return false;

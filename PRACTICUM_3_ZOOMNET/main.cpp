@@ -32,9 +32,11 @@ int main() {
     graph.addConnection("C", "F", 8);
     graph.addConnection("D", "E", 12);
     graph.addConnection("F", "D", 18);
-    //unordered_set includeSet = {graph.getConnection("b", "f")};
-    //unordered_set excludeSet = {graph.getConnection("b", "e")};
+    unordered_set includeSet = {graph.getConnection("B", "F")};
+    unordered_set excludeSet = {graph.getConnection("B", "E")};
+    //includeSet = {};
+    //excludeSet = {};
     cout << "generating MST" << endl;
-    graph.generateMST({}, {});
+    graph.generateMST(includeSet, excludeSet);
     cout << graph << endl;
 }

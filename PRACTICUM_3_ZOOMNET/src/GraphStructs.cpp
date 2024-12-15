@@ -10,7 +10,7 @@
 CityNode::CityNode(const std::string& name) : connections(), cityName(name){}
 
 std::ostream &operator<<(std::ostream &os, const CityNode &node) {
-    os << "CITY[" << node.cityName << "]";
+    os << node.cityName;
     return os;
 }
 
@@ -30,8 +30,8 @@ CityNode *Connection::other(CityNode *node) const {
 }
 
 std::ostream &operator<<(std::ostream &os, const Connection &connection) {
-    os << "{ " << connection.cityNodes[0] << "-" << connection.cityNodes[0];
-    os << " | " << connection.weight << (connection.realityCheck ? "real" : "open") << " }";
+    os << "{ " << *connection.cityNodes[0] << "-" << *connection.cityNodes[0];
+    os << " | " << connection.weight << " - " << (connection.realityCheck ? "real" : "open") << " }";
     return os;
 }
 

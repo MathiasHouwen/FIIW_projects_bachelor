@@ -33,6 +33,7 @@ public:
     void removeCity(const std::string& cityName);
     void addConnection(const std::string &city1Name, const std::string &city2Name, int weight);
     void toggleConnection(const std::string &city1Name, const std::string &city2Name, bool real);
+    Connection* getConnection(const std::string &city1Name, const std::string &city2Name);
 
     friend ostream &operator<<(ostream &os, const Graph &graph);
 

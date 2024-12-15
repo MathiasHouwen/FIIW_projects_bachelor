@@ -56,6 +56,17 @@ void Graph::toggleConnection(const string &city1Name, const string &city2Name, b
     connection->realityCheck = real;
 }
 
+Connection *Graph::getConnection(const string &city1Name, const string &city2Name) {
+    // zoek de 2 city pointers
+    auto city1 = cityNodesLookupTable.peek(city1Name);
+    auto city2 = cityNodesLookupTable.peek(city2Name);
+    if (printErrorIfCityIsNull(city1, city2)) return nullptr;
+    if (printErrorIfConnectionIsNotMutual(city1, city2)) return nullptr;
+
+    auto connection = city1->connections[city2];
+    return connection;
+}
+
 bool Graph::printErrorIfCityIsNull(CityNode *city1, CityNode *city2) {
     if(city1 == nullptr || city2 == nullptr){
         cerr << "ERROR: Trying to connect two cities but one is null: ";
@@ -103,3 +114,5 @@ ostream &operator<<(ostream &os, const Graph &graph) {
     }
     return os;
 }
+
+

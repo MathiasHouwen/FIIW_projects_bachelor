@@ -7,12 +7,13 @@
 
 #include <string>
 #include "Graph.h"
+#include "ZoomNetGraph.h"
 
 using namespace std;
 
 class ZoomNet {
 private:
-    unordered_map<string, Graph*> graphs;
+    unordered_map<string, ZoomNetGraph*> graphs;
 
 public:
     void designMST(string graphName);

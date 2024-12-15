@@ -7,7 +7,7 @@
 
 
 #include <string>
-#include "CityNode.h"
+#include "GraphStructs.h"
 #include <unordered_map>
 
 class CityNodesLUT {

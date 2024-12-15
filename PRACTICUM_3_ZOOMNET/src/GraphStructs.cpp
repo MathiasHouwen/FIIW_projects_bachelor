@@ -2,7 +2,7 @@
 // Created by ebbew on 12-12-2024.
 //
 
-#include "CityNode.h"
+#include "GraphStructs.h"
 
 /*
  * CITYNODE

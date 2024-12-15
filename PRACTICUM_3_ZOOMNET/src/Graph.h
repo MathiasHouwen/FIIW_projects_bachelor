@@ -9,7 +9,7 @@
 #include <unordered_map>
 #include <iostream>
 #include "Graph.h"
-#include "CityNode.h"
+#include "GraphStructs.h"
 #include "CityNodesLUT.h"
 #include <queue>
 #include <limits>
@@ -34,23 +34,19 @@ public:
     void addConnection(const std::string &city1Name, const std::string &city2Name, int weight);
     void toggleConnection(const std::string &city1Name, const std::string &city2Name, bool real);
 
-    void generateMST(const unordered_set<Connection *> &excludeSet = {}, const unordered_set<Connection *> &includeSet = {});
-    //Connection* getConnection(const CityNode *source, const CityNode *destination) const;
-    int findBiggestWeight(Connection* connection);
+    friend ostream &operator<<(ostream &os, const Graph &graph);
 
-private:
+
+protected:
     set<Connection*, ConnectionPointerComparator> allConnectionsSorted;
     CityNodesLUT cityNodesLookupTable;
 
+private:
     static bool printErrorIfCityIsNull(CityNode* city1, CityNode* city2);
-    void printWarningIfConnectionExists(Connection* connection);
-    static bool printErrorIfConnectionIsNotMutual(CityNode* city1, CityNode* city2);
-    bool checkCycle(const CityNode* start, const CityNode* prevNode, unordered_set<string> &visitedNodes);
-    static void printroute(const unordered_set<string> &visitedNodes, int distanceTraveled);
-    bool isNewConnectionBetter(const Connection& connection);
-    int getWeightOfPath(CityNode* source, CityNode* destination);
-
     static void printWarningIfConnectionToggleHasNoEffect(bool real, const Connection *connection) ;
+    static bool printErrorIfConnectionIsNotMutual(CityNode* city1, CityNode* city2);
+    void printWarningIfConnectionExists(Connection* connection);
+
 };
 
 

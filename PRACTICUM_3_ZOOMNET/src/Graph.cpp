@@ -47,97 +47,13 @@ void Graph::toggleConnection(const string &city1Name, const string &city2Name, b
     // zoek de 2 city pointers
     auto city1 = cityNodesLookupTable.peek(city1Name);
     auto city2 = cityNodesLookupTable.peek(city2Name);
-    if(printErrorIfCityIsNull(city1, city2)) return;
-    if(printErrorIfConnectionIsNotMutual(city1, city2)) return;
+    if (printErrorIfCityIsNull(city1, city2)) return;
+    if (printErrorIfConnectionIsNotMutual(city1, city2)) return;
 
     // maak connectie real
     auto connection = city1->connections[city2];
     printWarningIfConnectionToggleHasNoEffect(real, connection);
     connection->realityCheck = real;
-}
-
-
-
-
-
-//Connection* Graph::getConnection(const CityNode *source, const CityNode *destination) const {
-//
-//    for (Connection *connection : allConnections) {
-//        if (connection->start == source && connection->destination == destination) {
-//            return connection;
-//        }
-//    }
-//    return nullptr;
-//}
-
-
-void Graph::generateMST(const unordered_set<Connection*>& excludeSet, const unordered_set<Connection*>& includeSet) {
-//    int distanceTraveled = 0;
-//
-//    for (Connection* include : includeSet){
-//        include->realityCheck = true;
-//    }
-//
-//    for (Connection* connection : allConnections) {
-//        unordered_set<string> visitedNodes;
-//        visitedNodes.insert(connection->start->city);
-//
-//        if (excludeSet.contains(connection)) {
-//            continue;
-//        }
-//
-//        if (!checkCycle(connection->destination, connection->start, visitedNodes)) {
-//            connection->realityCheck = true;
-//            cout << "Connection: " << connection->start->city << "->" << connection->destination->city << endl;
-//            distanceTraveled += connection->weight;
-//        }
-//    }
-    //cout << "Distance: " << distanceTraveled << endl;
-}
-
-void Graph::printroute(const unordered_set<string> &visitedNodes, const int distanceTraveled) {
-    cout << "Route: " << endl;
-    for(const string& city : visitedNodes) {
-        cout << city << " ";
-    }
-    cout << endl << "Distance: " << distanceTraveled << endl;
-}
-
-bool Graph::checkCycle(const CityNode* currentNode, const CityNode* prevNode, unordered_set<string> &visitedNodes) {
-//    if (visitedNodes.contains(currentNode->city)){return true;}
-//    visitedNodes.insert(currentNode->city);
-//    for (const Connection* connection : currentNode->connections) {
-//        if (!connection->realityCheck) {
-//            continue;
-//        }
-//        CityNode* nextCity = connection->destination == currentNode ? connection->start : connection->destination;
-//        if (nextCity != prevNode && checkCycle(nextCity, currentNode, visitedNodes)) {return true;}
-//    }
-    return false;
-}
-
-int Graph::findBiggestWeight(Connection *connection) {
-//    unordered_set<Connection*> cycle = findCycle(connection);
-//    int biggestWeight = 0;
-//    for (const Connection* connectionInCycle : cycle) {
-//        if (connectionInCycle->weight > biggestWeight) {
-//            biggestWeight = connectionInCycle->weight;
-//        }
-//    }
-    //return biggestWeight;
-}
-
-bool Graph::isNewConnectionBetter(const Connection &connection) {
-//    int newWeight = connection.weight;
-//    int oldWeight = getWeightOfPath(connection.start, connection.destination);
-//    newWeight < oldWeight;
-}
-
-int Graph::getWeightOfPath(CityNode *source, CityNode *destination) {
-//    for(auto connection : source->connections){
-//        CityNode* destNode = connection->destination == currentNode ? connection->start : connection->destination;
-//    }
-//    return 0;
 }
 
 bool Graph::printErrorIfCityIsNull(CityNode *city1, CityNode *city2) {
@@ -179,4 +95,11 @@ bool Graph::printErrorIfConnectionIsNotMutual(CityNode *city1, CityNode *city2) 
 void Graph::printWarningIfConnectionToggleHasNoEffect(bool real, const Connection *connection) {
     if(connection->realityCheck == real)
         cerr << "WARNING: Trying to toggle connection: " << *connection << " to " << (real ? "real" : "open") << " but it already is.";
+}
+
+ostream &operator<<(ostream &os, const Graph &graph) {
+    for(auto connection : graph.allConnectionsSorted){
+        os << *connection << endl;
+    }
+    return os;
 }

@@ -15,7 +15,9 @@ add_executable(PRACTICUM_3_ZOOMNET
         src/utils/ZoomNetCLI.h
         src/ZoomNet.cpp
         src/ZoomNet.h
-        src/CityNode.h
+        src/GraphStructs.h
         src/CityNodesLUT.h
         src/CityNodesLUT.cpp
-        src/CityNode.cpp)
+        src/GraphStructs.cpp
+        src/ZoomNetGraph.cpp
+        src/ZoomNetGraph.h)

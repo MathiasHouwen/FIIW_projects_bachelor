@@ -20,9 +20,9 @@ void ZoomNetGraph::generateMST(const unordered_set<Connection *> &excludeSet,
             continue;
 
         // als er geen cyclus bestaat, voeg toe
-        if (!checkCycle(connection->cityNodes[0], connection->cityNodes[1], visitedNodes)) {
+        bool cycle = checkCycle(connection->cityNodes[1], connection->cityNodes[0], visitedNodes);
+        if (!cycle)
             connection->realityCheck = true;
-        }
     }
 }
 

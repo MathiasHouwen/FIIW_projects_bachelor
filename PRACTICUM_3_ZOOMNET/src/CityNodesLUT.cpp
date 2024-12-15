@@ -21,3 +21,7 @@ CityNode *CityNodesLUT::peek(const string& cityName) const{
     if(!lookupTable.contains(cityName)) return nullptr;
     return lookupTable.at(cityName);
 }
+
+bool CityNodesLUT::contains(const string &cityName) {
+    return peek(cityName);
+}

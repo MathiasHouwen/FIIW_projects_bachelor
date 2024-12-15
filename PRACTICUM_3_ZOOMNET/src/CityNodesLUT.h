@@ -17,6 +17,7 @@ public:
     void add(const std::string& cityName);
     void remove(const std::string& cityName);
     CityNode* peek(const std::string& cityName) const;
+    bool contains(const std::string& cityName);
 };
 
 

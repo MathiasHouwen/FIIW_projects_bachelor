@@ -7,22 +7,34 @@
 /*
  * CITYNODE
  */
-CityNode::CityNode(std::string name) : connections(), cityName(std::move(name)){}
+CityNode::CityNode(const std::string& name) : connections(), cityName(name){}
 
-
-void CityNode::connect(CityNode *otherCity, int weight){
-    connections.insert({otherCity, weight});
-}
-
-void CityNode::disConnect(CityNode *otherCity, int weight) {
-    connections.erase({otherCity, weight});
+std::ostream &operator<<(std::ostream &os, const CityNode &node) {
+    os << "CITY[" << node.cityName << "]";
+    return os;
 }
 
 /*
  * CONNECTION
  */
-Connection::Connection(CityNode *cityNode, int weight) : cityNode(cityNode), weight(weight) {}
+Connection::Connection(CityNode* cityNode1, CityNode* cityNode2, int weight) : weight(weight), cityNodes(cityNode1, cityNode2) {}
 
 bool Connection::operator<(const Connection &other) const {
     return weight < other.weight;
+}
+
+CityNode *Connection::other(CityNode *node) const {
+    if(node == cityNodes[0]) return cityNodes[1];
+    if(node == cityNodes[1]) return cityNodes[0];
+    return nullptr;
+}
+
+std::ostream &operator<<(std::ostream &os, const Connection &connection) {
+    os << "{ " << connection.cityNodes[0] << "-" << connection.cityNodes[0];
+    os << " | " << connection.weight << (connection.realityCheck ? "real" : "open") << " }";
+    return os;
+}
+
+bool ConnectionPointerComparator::operator()(Connection *a, Connection *b) const {
+    return *a < *b;
 }

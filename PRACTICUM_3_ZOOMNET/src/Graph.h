@@ -9,6 +9,8 @@
 #include <unordered_map>
 #include <iostream>
 #include "Graph.h"
+#include "CityNode.h"
+#include "CityNodesLUT.h"
 #include <queue>
 #include <limits>
 #include <iostream>
@@ -19,47 +21,36 @@
 struct Connection;
 using namespace std;
 
-struct CityNode{
-  std::string city;
-  set<Connection*> connections;
-};
-
-struct Connection {
-  CityNode* start{};
-  CityNode* destination{};
-  int weight{};
-  bool realityCheck{false};
-
-  bool operator<(const Connection& other) const {
-    return weight < other.weight;
-  }
-};
-
-struct ConnectionPointerComparator {
-  bool operator()(const Connection* lhs, const Connection* rhs) const {
-    return lhs->weight < rhs->weight;
-  }
-};
+//struct ConnectionPointerComparator {
+//  bool operator()(const Connection* lhs, const Connection* rhs) const {
+//    return lhs->weight < rhs->weight;
+//  }
+//};
 
 class Graph {
 public:
-  Graph() = default;
-  ~Graph() = default;
-  void addNode(CityNode* node);
-  void removeNode(const CityNode* node);
-  CityNode* getNode(const string& city);
-  void generateMST(const unordered_set<Connection *> &excludeSet = {}, const unordered_set<Connection *> &includeSet = {});
-  std::set<Connection*> getConnections(const string& city);
-  Connection* getConnection(const CityNode *source, const CityNode *destination) const;
-  void setConnection(CityNode* source, CityNode* destination, int connection);
-  int findBiggestWeight(Connection* connection);
+    void addCity(const std::string& cityName);
+    void removeCity(const std::string& cityName);
+    void addConnection(const std::string &city1Name, const std::string &city2Name, int weight);
+    void toggleConnection(const std::string &city1Name, const std::string &city2Name, bool real);
+
+    void generateMST(const unordered_set<Connection *> &excludeSet = {}, const unordered_set<Connection *> &includeSet = {});
+    //Connection* getConnection(const CityNode *source, const CityNode *destination) const;
+    int findBiggestWeight(Connection* connection);
 
 private:
-  unordered_map<string, CityNode*> nodes;
-  std::set<Connection*, ConnectionPointerComparator> allConnections;
-  bool checkCycle(const CityNode* start, const CityNode* prevNode, unordered_set<string> &visitedNodes);
-  static void printroute(const unordered_set<string> &visitedNodes, int distanceTraveled);
-  unordered_set<Connection*> findCycle(Connection* connection);
+    set<Connection*, ConnectionPointerComparator> allConnectionsSorted;
+    CityNodesLUT cityNodesLookupTable;
+
+    static bool printErrorIfCityIsNull(CityNode* city1, CityNode* city2);
+    void printWarningIfConnectionExists(Connection* connection);
+    static bool printErrorIfConnectionIsNotMutual(CityNode* city1, CityNode* city2);
+    bool checkCycle(const CityNode* start, const CityNode* prevNode, unordered_set<string> &visitedNodes);
+    static void printroute(const unordered_set<string> &visitedNodes, int distanceTraveled);
+    bool isNewConnectionBetter(const Connection& connection);
+    int getWeightOfPath(CityNode* source, CityNode* destination);
+
+    static void printWarningIfConnectionToggleHasNoEffect(bool real, const Connection *connection) ;
 };
 
 

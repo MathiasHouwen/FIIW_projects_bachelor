@@ -6,31 +6,31 @@
 
 void ZoomNet::designMST(string graphName) {
     if (!graphs.contains(graphName)){
-        Graph *graph = new Graph();
-        CityNode *a = new CityNode("a", {});
-        CityNode *b = new CityNode("b", {});
-        CityNode *c = new CityNode("c", {});
-        CityNode *d = new CityNode("d", {});
-        CityNode *e = new CityNode("e", {});
-        CityNode *f = new CityNode("f", {});
-        graph->addNode(a);
-        graph->addNode(b);
-        graph->addNode(c);
-        graph->addNode(d);
-        graph->addNode(e);
-        graph->addNode(f);
-        graph->setConnection(a, b, 11);
-        graph->setConnection(a, c, 10);
-        graph->setConnection(a, e, 13);
-        graph->setConnection(b, d, 9);
-        graph->setConnection(b, f, 21);
-        graph->setConnection(c, f, 8);
-        graph->setConnection(d, e, 12);
-        graph->setConnection(b, e, 7);
-        graph->setConnection(f, d, 18);
-        graph->setConnection(b, c, 15);
+//        Graph *graph = new Graph();
+//        CityNode *a = new CityNode("a", {});
+//        CityNode *b = new CityNode("b", {});
+//        CityNode *c = new CityNode("c", {});
+//        CityNode *d = new CityNode("d", {});
+//        CityNode *e = new CityNode("e", {});
+//        CityNode *f = new CityNode("f", {});
+//        graph->addCity(a);
+//        graph->addCity(b);
+//        graph->addCity(c);
+//        graph->addCity(d);
+//        graph->addCity(e);
+//        graph->addCity(f);
+//        graph->setConnection(a, b, 11);
+//        graph->setConnection(a, c, 10);
+//        graph->setConnection(a, e, 13);
+//        graph->setConnection(b, d, 9);
+//        graph->setConnection(b, f, 21);
+//        graph->setConnection(c, f, 8);
+//        graph->setConnection(d, e, 12);
+//        graph->setConnection(b, e, 7);
+//        graph->setConnection(f, d, 18);
+//        graph->setConnection(b, c, 15);
 
-        graphs[graphName] = graph;
+       // graphs[graphName] = graph;
     }
 
     Graph *graph = graphs[graphName];
@@ -49,7 +49,7 @@ void ZoomNet::adaptMST(string graphName) {
 }
 
 bool ZoomNet::newConnectionBetter(const string& source, const string& destination, int weight, Graph* graph) {
-    graph->setConnection(graph->getNode(source), graph->getNode(destination), weight);
-    int biggestWeight = graph->findBiggestWeight(new Connection{graph->getNode(source), graph->getNode(destination), weight});
-    return biggestWeight > weight;
+    //graph->setConnection(graph->getNode(source), graph->getNode(destination), weight);
+    //int biggestWeight = graph->findBiggestWeight(new Connection{graph->getNode(source), graph->getNode(destination), weight});
+    //return biggestWeight > weight;
 }

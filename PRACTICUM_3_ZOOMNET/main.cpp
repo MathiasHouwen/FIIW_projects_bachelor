@@ -19,12 +19,12 @@ int main() {
     auto *d = new CityNode("d", {});
     auto *e = new CityNode("e", {});
     auto *f = new CityNode("f", {});
-    graph->addNode(a);
-    graph->addNode(b);
-    graph->addNode(c);
-    graph->addNode(d);
-    graph->addNode(e);
-    graph->addNode(f);
+    graph->addCity(a);
+    graph->addCity(b);
+    graph->addCity(c);
+    graph->addCity(d);
+    graph->addCity(e);
+    graph->addCity(f);
     graph->setConnection(a, b, 11);
     graph->setConnection(a, c, 10);
     graph->setConnection(a, e, 13);

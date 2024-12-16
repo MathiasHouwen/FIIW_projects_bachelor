@@ -18,17 +18,11 @@
 #include <vector>
 #include <unordered_set>
 
-struct Connection;
 using namespace std;
-
-//struct ConnectionPointerComparator {
-//  bool operator()(const Connection* lhs, const Connection* rhs) const {
-//    return lhs->weight < rhs->weight;
-//  }
-//};
 
 class Graph {
 public:
+    void clearConnections();
     void addCity(const std::string& cityName);
     void removeCity(const std::string& cityName);
     void addConnection(const std::string &city1Name, const std::string &city2Name, int weight);
@@ -42,8 +36,9 @@ protected:
     set<Connection*, ConnectionPointerComparator> allConnectionsSorted;
     CityNodesLUT cityNodesLookupTable;
 
-private:
     static bool printErrorIfCityIsNull(CityNode* city1, CityNode* city2);
+
+private:
     static void printWarningIfConnectionToggleHasNoEffect(bool real, const Connection *connection) ;
     static bool printErrorIfConnectionIsNotMutual(CityNode* city1, CityNode* city2);
     void printWarningIfConnectionExists(Connection* connection);

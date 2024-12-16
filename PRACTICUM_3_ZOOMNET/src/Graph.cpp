@@ -115,4 +115,9 @@ ostream &operator<<(ostream &os, const Graph &graph) {
     return os;
 }
 
+void Graph::clearConnections() {
+    for(auto connection : allConnectionsSorted)
+        connection->realityCheck = false;
+}
+
 

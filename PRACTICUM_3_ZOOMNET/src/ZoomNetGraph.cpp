@@ -6,6 +6,7 @@
 
 void ZoomNetGraph::generateMST(const unordered_set<Connection *> &excludeSet,
                                const unordered_set<Connection *> &includeSet) {
+
     // maak alle connections die ge-include moeten worden, real
     for (Connection* includedConnection : includeSet)
         includedConnection->realityCheck = true;
@@ -36,6 +37,7 @@ bool ZoomNetGraph::checkCycle(CityNode *currentNode, CityNode *prevNode, unorder
     for (auto connectionEntry : currentNode->connections) {
         auto nextCity = connectionEntry.first;
         auto connection = connectionEntry.second;
+
         // connecties die niet real zijn kunnen geskipt worden
         if (!connection->realityCheck)
             continue;
@@ -46,6 +48,45 @@ bool ZoomNetGraph::checkCycle(CityNode *currentNode, CityNode *prevNode, unorder
     return false;
 }
 
+bool ZoomNetGraph::isNewConnectionBetter(const string& city1, const string& city2, int weight) {
+    auto cityNode1 = cityNodesLookupTable.peek(city1);
+    auto cityNode2 = cityNodesLookupTable.peek(city2);
+    if(printErrorIfCityIsNull(cityNode1, cityNode2)) return false;
+
+    unordered_set<CityNode*> visitedNodes = {};
+    int oldWeight = getWeightOfPath(cityNode1, nullptr, cityNode2, 0, visitedNodes);
+    cout << "Old path weight of " << city1 << "-" << city2 << ": " << oldWeight << " vs new connection: " << weight << endl;
+    return weight <= oldWeight; // <= ipv < want nieuwe connection is maar 1 edge -> compactere 'mooiere' graph
+}
+
+int ZoomNetGraph::getWeightOfPath(CityNode *currentCity, CityNode* previousCity, CityNode *endCity, int totalWeight, unordered_set<CityNode*> &visitedNodes) {
+
+    visitedNodes.insert(currentCity);
+
+    // voor alle connecties, visit hun paths
+    for(auto connectionEntry : currentCity->connections){
+        auto otherCity = connectionEntry.first;
+        auto connection = connectionEntry.second;
+
+        // connecties die niet real zijn kunnen geskipt worden
+        // terug komen naar parent kan ook geskipt worden
+        if (!connection->realityCheck || otherCity == previousCity)
+            continue;
+
+        // als de te bezoeken city de eindbestemming is, hoef je niet meer te zoeken
+        if(otherCity == endCity)
+            return connection->weight;
+
+        // als het pad niet -1 is, dan is dat het pad waar de weight van hier boven returned is
+        int pathWeight = getWeightOfPath(otherCity, currentCity, endCity,totalWeight+1, visitedNodes);
+        if(pathWeight != -1)
+            return connection->weight + pathWeight;
+    }
+    return -1;
+}
+
+
+
 //int Graph::findBiggestWeight(Connection *connection) {
 //    unordered_set<Connection*> cycle = findCycle(connection);
 //    int biggestWeight = 0;
@@ -55,12 +96,6 @@ bool ZoomNetGraph::checkCycle(CityNode *currentNode, CityNode *prevNode, unorder
 //        }
 //    }
 //return biggestWeight;
-//}
-
-//bool Graph::isNewConnectionBetter(const Connection &connection) {
-//    int newWeight = connection.weight;
-//    int oldWeight = getWeightOfPath(connection.start, connection.destination);
-//    newWeight < oldWeight;
 //}
 
 //int Graph::getWeightOfPath(CityNode *source, CityNode *destination) {

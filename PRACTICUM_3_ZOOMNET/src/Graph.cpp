@@ -94,9 +94,9 @@ void Graph::printWarningIfConnectionExists(Connection *connection) {
 
 bool Graph::printErrorIfConnectionIsNotMutual(CityNode *city1, CityNode *city2) {
     if(!city1->connections.contains(city2))
-        cerr << "ERROR: Trying to get connection which does not exist with " << *city2 << "on " << *city1 << endl;
+        cerr << "ERROR: Trying to get connection which does not exist with " << *city2 << " on " << *city1 << endl;
     else if(!city2->connections.contains(city1))
-        cerr << "ERROR: Trying to get connection which does not exist with " << *city1 << "on " << *city2 << endl;
+        cerr << "ERROR: Trying to get connection which does not exist with " << *city1 << " on " << *city2 << endl;
     else if(city1->connections[city2] != city2->connections[city1])
         cerr << "ERROR: Connection between " << *city1 << " - " << *city2 << " is not mutually identical";
     else return false;

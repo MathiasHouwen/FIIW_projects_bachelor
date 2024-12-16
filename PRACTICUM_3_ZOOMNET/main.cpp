@@ -12,7 +12,6 @@ int main() {
 //
 //    cli.getInput();
 
-    cout << "making graph" << endl;
     ZoomNetGraph graph;
 
     graph.addCity("A");
@@ -34,9 +33,19 @@ int main() {
     graph.addConnection("F", "D", 18);
     unordered_set includeSet = {graph.getConnection("B", "F")};
     unordered_set excludeSet = {graph.getConnection("B", "E")};
-    //includeSet = {};
-    //excludeSet = {};
-    cout << "generating MST" << endl;
+
+    cout << "=== Initiele MST: =========================================" << endl;
+    graph.generateMST({}, {});
+    cout << graph << endl;
+
+    cout << "=== MST Met include exclude: ==============================" << endl;
+    graph.clearConnections();
     graph.generateMST(excludeSet, includeSet);
     cout << graph << endl;
+
+    cout << "=== New connection better: ================================" << endl;
+    graph.clearConnections();
+    graph.generateMST({}, {});
+    bool better = graph.isNewConnectionBetter("C", "D", 5);
+    cout << (better ? "yes, better" : "no, not better") << endl;
 }

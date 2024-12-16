@@ -11,12 +11,12 @@
 class ZoomNetGraph : public Graph{
 public:
     void generateMST(const unordered_set<Connection *> &excludeSet = {}, const unordered_set<Connection *> &includeSet = {});
+    bool isNewConnectionBetter(const string& city1, const string& city2, int weight);
     //int findBiggestWeight(Connection* connection);
 
 private:
     bool checkCycle(CityNode* currentNode, CityNode* prevNode, unordered_set<CityNode*> &visitedNodes);
-    //bool isNewConnectionBetter(const Connection& connection);
-    //int getWeightOfPath(CityNode* source, CityNode* destination);
+    int getWeightOfPath(CityNode* currentCity, CityNode* previousCity, CityNode* endCity, int totalWeight, unordered_set<CityNode*> &visitedNodes);
 };
 
 

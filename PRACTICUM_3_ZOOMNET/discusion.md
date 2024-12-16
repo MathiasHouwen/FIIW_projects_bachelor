@@ -30,3 +30,6 @@
 1: Voeg nieuwe connectie toe
 2: vind de lus
 3: verwijder connectie van gevonden lus met grootste weight
+
+# Ebbe's OneNote notities: <img src="Robin_kwam_aan_mijn_code.jpg" width="48"/>
+![](Graph_diagrammen.png)

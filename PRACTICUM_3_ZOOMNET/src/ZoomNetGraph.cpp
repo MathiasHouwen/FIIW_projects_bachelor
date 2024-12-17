@@ -105,7 +105,43 @@ void ZoomNetGraph::generateChannels(CityNode *currCity, unordered_set<CityNode*>
     }
 }
 
+void ZoomNetGraph::graphColouring(CityNode *currCity, unordered_set<CityNode*> &visitedNodes){
 
+    visitedNodes.insert(currCity);
+    unordered_set<int> adjacentChannels;
+
+    for(auto connectionEntry : currCity->connections){
+        auto nextCity = connectionEntry.first;
+        auto connection = connectionEntry.second;
+
+        if (!connection->realityCheck)
+            continue;
+
+        // Als stad al een channel heeft voeg die toe
+        if (visitedNodes.contains(nextCity) && nextCity->channel != -1){
+            adjacentChannels.insert(nextCity->channel);
+        }
+    }
+
+    // gaat door all adjecents channels
+    int channel = 0;
+    while (adjacentChannels.contains(channel)){
+        ++channel;
+    }
+    currCity->channel = channel;
+
+    for(auto connectionEntry : currCity->connections){
+        auto nextCity = connectionEntry.first;
+        auto connection = connectionEntry.second;
+
+        if (!connection->realityCheck)
+            continue;
+
+        if(!visitedNodes.contains(nextCity)){
+            graphColouring(nextCity, visitedNodes);
+        }
+    }
+}
 
 //int Graph::findBiggestWeight(Connection *connection) {
 //    unordered_set<Connection*> cycle = findCycle(connection);

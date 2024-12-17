@@ -15,7 +15,7 @@ struct Connection;
 struct CityNode{
     const std::string& cityName{};
     std::unordered_map<CityNode*, Connection*> connections{};
-    int channel{};
+    int channel{-1};
     explicit CityNode(const std::string& name);
 
     friend std::ostream &operator<<(std::ostream &os, const CityNode &node);

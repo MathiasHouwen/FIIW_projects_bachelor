@@ -10,7 +10,7 @@
 CityNode::CityNode(const std::string& name) : connections(), cityName(name){}
 
 std::ostream &operator<<(std::ostream &os, const CityNode &node) {
-    os << node.cityName;
+    os << node.cityName << " #" << node.channel;
     return os;
 }
 

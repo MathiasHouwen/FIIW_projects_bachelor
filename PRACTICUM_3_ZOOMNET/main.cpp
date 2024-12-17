@@ -48,4 +48,5 @@ int main() {
     graph.generateMST({}, {});
     bool better = graph.isNewConnectionBetter("C", "D", 5);
     cout << (better ? "yes, better" : "no, not better") << endl;
+
 }

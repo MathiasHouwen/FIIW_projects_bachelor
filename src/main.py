@@ -9,6 +9,9 @@ __license__ = "GPLv3"
 
 import argparse
 
+def plot(x-as, y-as):
+
+
 def main(args):
     """ Main entry point of the app """
     training_file = args.training_file

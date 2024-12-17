@@ -108,26 +108,27 @@ void ZoomNetGraph::generateChannels(CityNode *currCity, CityNode* previousCity, 
 void ZoomNetGraph::graphColouring(CityNode *currCity, CityNode* previousCity, unordered_set<CityNode*> &visitedNodes){
 
     visitedNodes.insert(currCity);
-    unordered_set<int> adjacentChannels;
 
+    // vind alle adjacent channels (enkel cities die al een channel hebben)
+    unordered_set<int> adjacentChannels;
     for(auto connectionEntry : currCity->connections){
         auto nextCity = connectionEntry.first;
-        auto connection = connectionEntry.second;
 
         if (nextCity == previousCity)
             continue;
 
         // Als stad al een channel heeft voeg die toe
-        if (visitedNodes.contains(nextCity) && nextCity->channel != -1){
+        if (nextCity->channel != -1){
             adjacentChannels.insert(nextCity->channel);
         }
     }
 
-    // gaat door all adjecents channels
+    // bepaal minimale channel die niet in de adjacent channels zit
     int channel = 0;
     while (adjacentChannels.contains(channel)){
         ++channel;
     }
+    // dat wordt de huidige channel
     currCity->channel = channel;
 
     for(auto connectionEntry : currCity->connections){

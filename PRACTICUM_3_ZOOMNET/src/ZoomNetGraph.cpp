@@ -114,9 +114,6 @@ void ZoomNetGraph::graphColouring(CityNode *currCity, CityNode* previousCity, un
     for(auto connectionEntry : currCity->connections){
         auto nextCity = connectionEntry.first;
 
-        if (nextCity == previousCity)
-            continue;
-
         // Als stad al een channel heeft voeg die toe
         if (nextCity->channel != -1){
             adjacentChannels.insert(nextCity->channel);
@@ -125,11 +122,12 @@ void ZoomNetGraph::graphColouring(CityNode *currCity, CityNode* previousCity, un
 
     // bepaal minimale channel die niet in de adjacent channels zit
     int channel = 0;
-    while (adjacentChannels.contains(channel)){
+    while (adjacentChannels.contains(channel) || channel == currCity->channel){
         ++channel;
     }
     // dat wordt de huidige channel
-    currCity->channel = channel;
+    if(currCity->channel == -1)
+        currCity->channel = channel;
 
     for(auto connectionEntry : currCity->connections){
         auto nextCity = connectionEntry.first;

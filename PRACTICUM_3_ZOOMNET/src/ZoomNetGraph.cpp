@@ -121,13 +121,14 @@ void ZoomNetGraph::graphColouring(CityNode *currCity, CityNode* previousCity, un
     }
 
     // bepaal minimale channel die niet in de adjacent channels zit
+    // ookal is de bovenste for loop groot, is adjacentChannels nooit groot
+    // volgende while loop heeft dus geen grote impact op time complexity
     int channel = 0;
     while (adjacentChannels.contains(channel) || channel == currCity->channel){
         ++channel;
     }
     // dat wordt de huidige channel
-    if(currCity->channel == -1)
-        currCity->channel = channel;
+    currCity->channel = channel;
 
     for(auto connectionEntry : currCity->connections){
         auto nextCity = connectionEntry.first;

@@ -86,7 +86,7 @@ int ZoomNetGraph::getWeightOfPath(CityNode *currentCity, CityNode* previousCity,
 }
 
 // Genrate channcels for current networks
-void ZoomNetGraph::generateChannels(CityNode *currCity, unordered_set<CityNode*> &visitedNodes, int channel) {
+void ZoomNetGraph::generateChannels(CityNode *currCity, CityNode* previousCity, unordered_set<CityNode*> &visitedNodes, int channel) {
 
     visitedNodes.insert(currCity);
 
@@ -96,16 +96,16 @@ void ZoomNetGraph::generateChannels(CityNode *currCity, unordered_set<CityNode*>
         auto connection = connectionEntry.second;
 
         // connecties die niet real zijn kunnen geskipt worden
-        if (!connection->realityCheck)
+        if (!connection->realityCheck || nextCity == previousCity)
             continue;
 
         currCity->channel = channel;
 
-        generateChannels(nextCity, visitedNodes, 1 - channel);
+        generateChannels(nextCity, currCity, visitedNodes, 1 - channel);
     }
 }
 
-void ZoomNetGraph::graphColouring(CityNode *currCity, unordered_set<CityNode*> &visitedNodes){
+void ZoomNetGraph::graphColouring(CityNode *currCity, CityNode* previousCity, unordered_set<CityNode*> &visitedNodes){
 
     visitedNodes.insert(currCity);
     unordered_set<int> adjacentChannels;
@@ -114,7 +114,7 @@ void ZoomNetGraph::graphColouring(CityNode *currCity, unordered_set<CityNode*> &
         auto nextCity = connectionEntry.first;
         auto connection = connectionEntry.second;
 
-        if (!connection->realityCheck)
+        if (!connection->realityCheck || nextCity == previousCity)
             continue;
 
         // Als stad al een channel heeft voeg die toe
@@ -138,9 +138,21 @@ void ZoomNetGraph::graphColouring(CityNode *currCity, unordered_set<CityNode*> &
             continue;
 
         if(!visitedNodes.contains(nextCity)){
-            graphColouring(nextCity, visitedNodes);
+            graphColouring(nextCity, currCity, visitedNodes);
         }
     }
+}
+
+void ZoomNetGraph::generateRealChannels() {
+    unordered_set<CityNode*> visitedNodes = {};
+    Connection* fistConn = *allConnectionsSorted.begin();
+    generateChannels(fistConn->cityNodes[0], nullptr, visitedNodes, 1);
+}
+
+void ZoomNetGraph::generateALlPossibleChannels() {
+    unordered_set<CityNode*> visitedNodes = {};
+    Connection* fistConn = *allConnectionsSorted.begin();
+    graphColouring(fistConn->cityNodes[0], nullptr, visitedNodes);
 }
 
 //int Graph::findBiggestWeight(Connection *connection) {

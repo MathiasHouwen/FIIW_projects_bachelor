@@ -45,8 +45,16 @@ int main() {
 
     cout << "=== New connection better: ================================" << endl;
     graph.clearConnections();
-    graph.generateMST({}, {});
+    graph.generateMST();
     bool better = graph.isNewConnectionBetter("C", "D", 5);
     cout << (better ? "yes, better" : "no, not better") << endl;
 
+    cout << "=== Channels echte net: ================================" << endl;
+    graph.generateRealChannels();
+    cout << graph << endl;
+    cout << "=== Channels alle possible connecties: ================================" << endl;
+    graph.clearConnections();
+    graph.generateMST();
+    graph.generateALlPossibleChannels();
+    cout << graph << endl;
 }

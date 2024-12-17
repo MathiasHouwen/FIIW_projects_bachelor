@@ -11,9 +11,11 @@
 #ifndef PRACTICUM_3_ZOOMNET_CITYNODE_H
 #define PRACTICUM_3_ZOOMNET_CITYNODE_H
 struct Connection;
+
 struct CityNode{
     const std::string& cityName{};
     std::unordered_map<CityNode*, Connection*> connections{};
+    int channel{};
     explicit CityNode(const std::string& name);
 
     friend std::ostream &operator<<(std::ostream &os, const CityNode &node);

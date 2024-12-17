@@ -85,6 +85,26 @@ int ZoomNetGraph::getWeightOfPath(CityNode *currentCity, CityNode* previousCity,
     return -1;
 }
 
+// Genrate channcels for current networks
+void ZoomNetGraph::generateChannels(CityNode *currCity, unordered_set<CityNode*> &visitedNodes, int channel) {
+
+    visitedNodes.insert(currCity);
+
+    // voor alle connecties, visit hun paths
+    for(auto connectionEntry : currCity->connections){
+        auto nextCity = connectionEntry.first;
+        auto connection = connectionEntry.second;
+
+        // connecties die niet real zijn kunnen geskipt worden
+        if (!connection->realityCheck)
+            continue;
+
+        currCity->channel = channel;
+
+        generateChannels(nextCity, visitedNodes, 1 - channel);
+    }
+}
+
 
 
 //int Graph::findBiggestWeight(Connection *connection) {

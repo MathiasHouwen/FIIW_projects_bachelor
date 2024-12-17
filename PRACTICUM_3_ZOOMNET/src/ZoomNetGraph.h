@@ -17,6 +17,8 @@ public:
 private:
     bool checkCycle(CityNode* currentNode, CityNode* prevNode, unordered_set<CityNode*> &visitedNodes);
     int getWeightOfPath(CityNode* currentCity, CityNode* previousCity, CityNode* endCity, int totalWeight, unordered_set<CityNode*> &visitedNodes);
+
+    void generateChannels(CityNode *currCity, unordered_set<CityNode *> &visitedNodes, int channel);
 };
 
 

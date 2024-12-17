@@ -1,9 +1,10 @@
-# MijlPunt 1 #
+# Algoritmes
+## 1. Designing the initial network
 
--> MST minum spanning tree
-* Kruskal's Algorithm
-* Prim's Algorithm
-* Borůvka’s Algorithm
+* MST minum spanning tree
+  - Kruskal's Algorithm
+  - Prim's Algorithm
+  - Borůvka’s Algorithm
 
 | **Aspect**               | **Kruskal's Algorithm**                          | **Prim's Algorithm**                           | **Borůvka’s Algorithm**                         |
 |--------------------------|------------------------------------------------|-----------------------------------------------|------------------------------------------------|
@@ -19,17 +20,59 @@
 | **Best Use Case**        | Sparse graphs or when edges are already sorted. | Dense graphs or adjacency list available.     | Highly distributed systems or very large graphs. |
 | **Drawbacks**            | Sorting can be costly for large edge lists.     | Requires a good data structure for efficiency.| Requires more iterations and is less intuitive. |
 
-## edge cases ##
+## 2. Adapting to constraints
+
+* MST via Kruskal's wordt opgebouwd vanuit een edge list
+  - die edge list kan op voorhand worden ingevuld als "include list"
+  - iteraties / recursie calls voor connecties in de "exclude list" kunnen genegeerd worden
+
+## 3. Optimizing upgrades
+### huidige oplossing:
+1. voor de toe te voegen connectie, bepaal de totale weight van het pad daar tussen
+2. vergelijk met de weight van de nieuwe connectie
+### initieel idee:
+1. voeg nieuwe connectie toe
+2. zoek de gevormde lus
+3. verwijder het deel van de lus dat de grootste weight heeft
+* lus zoeken met de connectie is in principe hetzelfde dan pad zoeken zonder de connectie. Pad zoeken is meer intuitief te implementeren
+* complexiteit van de lus zoeken is bepalen waar de lus start en eindigd (om van alle visited nodes te weten welke nodes in de lus zijn en welke vertakkingen zijn)
+
+## 4. Maintaining after roll-out
+
+### realistisch net
+ - DFS (aka 'normale') traversal met een boolean parameter en gewoon in elke recursie call de parameter inverten
+   - elke 'depth' krijg dan een alternerende waarde -> die kan dan channel1 of channel2 zijn
+   - er zijn maar 2 channels omdat de graph een MST is
+
+### Channels voor all possible connecties
+ - Graph coloring algoritme
+
+# Datastructuren
+
+# Edge list vs adjacency matrix?
+ - sparse structuur. Cities hebben vooral connecties met aangrenzende cities. Dus zeker niet met alle andere nodes
+   - Matrix zou dus te veel memory gebruiken
+   - Keuze: edge list
+ ### structur edge list:
+  - Edge list = (sorted) set van connecties: {city1*, city2*, weight, real}
+    - city1+city2 = citynode pointers. Real=possible connectie / echt verbonden connectie
+    - gesorteerd op weight, want helpt bij Kruskal's Algorithm
+  - CityNode struct:
+    - city naam + channel
+    - (unordered) map van connecties die die city heeft
+      - Key = andere cityNode pointer
+      - Value = connectie pointer
+      - Gegeven 2 city node pointers kan je O(1) de connectie pointer vinden
+      - Gegeven een city kan je meteen zijn naburige connecties vinden
+  - CityNode opslag: LookupTable (CityNodeLUT)
+    - alloceer citynode pointer via city naam string
+    - vraag pointer via naam string
+    - delete city via naam string
+    - Kan dus O(1) een city vinden via naam. Dan hoef de public interface van graph geen pointers te vragen -> low coupling
+
+# Edge Cases
 1. Eilanden
 2. meerder gelijke gewichten
-
-# Channels toevoegen
-* Graph coloring
-
-# Nieuwe connecties introduceren
-1: Voeg nieuwe connectie toe
-2: vind de lus
-3: verwijder connectie van gevonden lus met grootste weight
 
 # Ebbe's OneNote notities: <img src="Robin_kwam_aan_mijn_code.jpg" width="48"/>
 ![](Graph_diagrammen.png)

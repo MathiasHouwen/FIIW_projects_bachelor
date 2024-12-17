@@ -90,6 +90,8 @@ void ZoomNetGraph::generateChannels(CityNode *currCity, CityNode* previousCity, 
 
     visitedNodes.insert(currCity);
 
+    currCity->channel = channel;
+
     // voor alle connecties, visit hun paths
     for(auto connectionEntry : currCity->connections){
         auto nextCity = connectionEntry.first;
@@ -98,8 +100,6 @@ void ZoomNetGraph::generateChannels(CityNode *currCity, CityNode* previousCity, 
         // connecties die niet real zijn kunnen geskipt worden
         if (!connection->realityCheck || nextCity == previousCity)
             continue;
-
-        currCity->channel = channel;
 
         generateChannels(nextCity, currCity, visitedNodes, 1 - channel);
     }
@@ -114,7 +114,7 @@ void ZoomNetGraph::graphColouring(CityNode *currCity, CityNode* previousCity, un
         auto nextCity = connectionEntry.first;
         auto connection = connectionEntry.second;
 
-        if (!connection->realityCheck || nextCity == previousCity)
+        if (nextCity == previousCity)
             continue;
 
         // Als stad al een channel heeft voeg die toe
@@ -146,7 +146,7 @@ void ZoomNetGraph::graphColouring(CityNode *currCity, CityNode* previousCity, un
 void ZoomNetGraph::generateRealChannels() {
     unordered_set<CityNode*> visitedNodes = {};
     Connection* fistConn = *allConnectionsSorted.begin();
-    generateChannels(fistConn->cityNodes[0], nullptr, visitedNodes, 1);
+    generateChannels(fistConn->cityNodes[0], nullptr, visitedNodes, 0);
 }
 
 void ZoomNetGraph::generateALlPossibleChannels() {

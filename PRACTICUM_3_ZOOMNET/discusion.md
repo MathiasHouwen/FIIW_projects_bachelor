@@ -71,8 +71,15 @@
     - Kan dus O(1) een city vinden via naam. Dan hoef de public interface van graph geen pointers te vragen -> low coupling
 
 # Edge Cases
-1. Eilanden
+1. Eilanden als input. Alle eilanden moeten behandeld worden
+    - Kruskal's werkt via de edge list op alle connecties, en niet via traversal van connecties van nodes
+    - Eilanden kunnen dus niet gemist worden
 2. meerder gelijke gewichten
+3. 2 possible paths tussen dezeflde twee nodes. ALs ene een 'verleidende' lage weight heeft direct langs een van de twee nodes, maar een extreem grote weight in het midden, dan moet het andere path gekozen worden, dat er aan de eindbestemmingen duurder uitziet maar in totaal goedkoper is
+    - Kruskal's neemt de kleinste connecties van de edge list.
+    - Is dus niet greedy per node in een traversal manier
+    - Te greedy via de edge list als er een extreem lage connectie is? -> edge case 3
+4. weer 2 possible paden, maar waarbij ene een connectie met een extreem lage weight (bvb laagste van de hele graph) heeft
 
 # Ebbe's OneNote notities: <img src="Robin_kwam_aan_mijn_code.jpg" width="48"/>
 ![](Graph_diagrammen.png)

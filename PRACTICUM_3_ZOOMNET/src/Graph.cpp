@@ -116,8 +116,11 @@ ostream &operator<<(ostream &os, const Graph &graph) {
 }
 
 void Graph::clearConnections() {
-    for(auto connection : allConnectionsSorted)
+    for(auto connection : allConnectionsSorted){
         connection->realityCheck = false;
+        connection->cityNodes[0]->channel = -1;
+        connection->cityNodes[1]->channel = -1;
+    }
 }
 
 

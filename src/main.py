@@ -7,23 +7,24 @@ __author__ = "Team names comma separated"
 __version__ = "0.1.0"
 __license__ = "GPLv3"
 
+import matplotlib.pyplot as plt
 import pandas as pd
 import argparse
 
-
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
 
 from src.models import train
 from src.pre_massaging import pre_massage
 from src.utils import split_features
-
-
+from src.visualisation import plot_data_with_regression_line
 
 
 def calculateMAPE(y_true, y_pred):
     """
     Calculate Mean Absolute Percentage Error (MAPE)
     """
-    return mean_absolute_percentage_error(y_true, y_pred)
+    #return mean_absolute_percentage_error(y_true, y_pred)
 
 
 
@@ -38,11 +39,49 @@ def main(args):
     testing_data = pre_massage(testing_data)
 
     x_features_train, y_feature_train = split_features(training_data, 'Last Close')
-    x_features_test, _ = split_features(testing_data, 'Last Close')
+    x_features_test, y_feature_test = split_features(testing_data, 'Last Close')
 
-    model = train(x_features_train, y_feature_train)
-    print(model.weights)
-    #predicted_y_feature = model.predict(x_features_test)
+
+    ###
+    ### ChatGPT deel
+    ### ========================================================================================
+    ### ========================================================================================
+    ###
+
+
+    model = LinearRegression()
+    model.fit(x_features_train, y_feature_train)
+
+    # Predictions
+    y_pred = model.predict(x_features_test)
+
+    # Evaluate the model
+    mse = mean_squared_error(y_feature_test, y_pred)
+    r2 = r2_score(y_feature_test, y_pred)
+    print(f"Mean Squared Error: {mse}")
+    print(f"R^2 Score: {r2}")
+
+    # Coefficients and Intercept
+    print("Coefficients:", model.coef_)
+    print("Intercept:", model.intercept_)
+
+    # Visualization: Predicted vs Actual (since 3D plots aren't feasible)
+    plt.scatter(y_feature_test, y_pred)
+    plt.xlabel("Actual Values")
+    plt.ylabel("Predicted Values")
+    plt.title("Predicted vs Actual")
+    plt.show()
+
+    ###
+    ### ========================================================================================
+    ### ========================================================================================
+    ###
+
+    #model = train(x_features_train, y_feature_train)
+    #plot_data_with_regression_line(x_features_test, model.weights, model.intercept)
+    #plt.show()
+
+#predicted_y_feature = model.predict(x_features_test)
 
 
 

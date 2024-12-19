@@ -1,6 +1,7 @@
-//
-// Created by houwe on 5/12/2024.
-//
+// volledig gemaakt door Mathias
+
+// dit is de main CLI, en de ZoomNet instantie
+// zoomnet kan volledig besuurd worden via de CLI in deze class
 
 #ifndef PRACTICUM_3_ZOOMNET_ZOOMNETCLI_H
 #define PRACTICUM_3_ZOOMNET_ZOOMNETCLI_H

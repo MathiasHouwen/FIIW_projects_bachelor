@@ -1,3 +1,11 @@
+// Modules folder is klassen die we hergebruiken in meerdere practica.
+
+// volledig door Mathias
+
+// CLI class waar custom commandos toegevoegd kunnen worden, met uit te voeren functies en validatie
+// doel: consistente CLI over practica en snelle CLI setup
+
+
 #ifndef CLI_MODULE_CLI_H
 #define CLI_MODULE_CLI_H
 

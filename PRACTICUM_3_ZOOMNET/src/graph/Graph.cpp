@@ -1,13 +1,14 @@
-//
-// Created by robin on 5/12/2024.
-//
+// taakverdeling en uitleg: zie h-file
 
 #include "Graph.h"
+using namespace std;
+
 
 void Graph::addCity(const string &cityName) {
-    // voeg city toe aan LUT (lut maakt zelf CityNode pointer)
+    // edge case: city bestaat al
     if(cityNodesLookupTable.contains(cityName))
         cerr << "WARNING: Trying add city: " << cityName << "to lookupTable, which already exists";
+    // voeg city toe aan LUT (lut maakt zelf CityNode pointer)
     cityNodesLookupTable.add(cityName);
 }
 
@@ -15,10 +16,12 @@ void Graph::addConnection(const std::string &city1Name, const std::string &city2
     // zoek de 2 city pointers
     auto city1 = cityNodesLookupTable.peek(city1Name);
     auto city2 = cityNodesLookupTable.peek(city2Name);
+    // edge case een city (of alebei) bestaat niet
     if(printErrorIfCityIsNull(city1, city2)) return;
 
     // maak connection
     auto connection = new Connection(city1, city2, weight);
+    // edge case: connectie bestaat al
     printWarningIfConnectionExists(connection);
 
     // connecteer elkaar
@@ -35,7 +38,10 @@ void Graph::removeCity(const string &cityName) {
     for(auto connectionEntry : city->connections){
         auto otherCity = connectionEntry.first;
         auto connection = connectionEntry.second;
+
+        // verwijder de connectie uit de adjacent connecties map
         otherCity->connections.erase(city);
+        // verwidjer het connectie object van de heap
         delete connection;
     }
 

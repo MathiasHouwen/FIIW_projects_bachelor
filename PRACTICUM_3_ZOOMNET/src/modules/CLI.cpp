@@ -1,6 +1,4 @@
-//
-// Created by houwe on 27/11/2024.
-//
+// taakverdeling en uitleg: zie h-file
 
 #include <iostream>
 #include "CLI.h"

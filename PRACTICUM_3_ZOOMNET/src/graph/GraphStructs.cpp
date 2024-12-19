@@ -1,6 +1,4 @@
-//
-// Created by ebbew on 12-12-2024.
-//
+// taakverdeling en uitleg: zie h-file
 
 #include "GraphStructs.h"
 

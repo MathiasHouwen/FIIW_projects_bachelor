@@ -1,6 +1,4 @@
-//
-// Created by houwe on 5/12/2024.
-//
+// taakverdeling en uitleg: zie h-file
 
 #include "ZoomNetCLI.h"
 

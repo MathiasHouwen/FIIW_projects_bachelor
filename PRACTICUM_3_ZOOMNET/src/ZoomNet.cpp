@@ -1,10 +1,9 @@
-//
-// Created by houwe on 5/12/2024.
-//
+// taakverdeling en uitleg: zie h-file
+
 
 #include "ZoomNet.h"
 
-void ZoomNet::designMST(string graphName) {
+void ZoomNet::designMST(const std::string& graphName) {
 
     if (!graphs.contains(graphName)){
 
@@ -37,19 +36,18 @@ void ZoomNet::designMST(string graphName) {
 
 }
 
-void ZoomNet::adaptMST(string graphName) {
+void ZoomNet::adaptMST(const std::string& graphName) {
     if (!graphs.contains(graphName)){
         designMST(graphName);
     }
 
     ZoomNetGraph *graph = graphs[graphName];
-    graph->generateMST(); // TODO: ADD EX EN IN
-
+    graph->generateMST();
+    // TODO geef include en exclude parameters mee
 }
 
-bool ZoomNet::newConnectionBetter(const string& source, const string& destination, int weight, Graph* graph) {
-    //graph->setConnection(graph->getNode(source), graph->getNode(destination), weight);
-    //int biggestWeight = graph->findBiggestWeight(new Connection{graph->getNode(source), graph->getNode(destination), weight});
-    //return biggestWeight > weight;
+bool ZoomNet::newConnectionBetter(const std::string& graphName) {
+    //TODO gebruik functie van ZoomNetGraph
+
     return false;
 }

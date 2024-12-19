@@ -1,3 +1,11 @@
+// Modules folder is klassen die we hergebruiken in meerdere practica.
+
+// volledig door Mathias
+
+// doel: parsen van een input string van CLI command formaat
+// gebruikt voor de CLI class
+
+
 #ifndef COMMANDPARSER_H
 #define COMMANDPARSER_H
 

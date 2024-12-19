@@ -6,7 +6,7 @@
 #define PRACTICUM_3_ZOOMNET_ZOOMNETGRAPH_H
 
 
-#include "Graph.h"
+#include "graph/Graph.h"
 
 class ZoomNetGraph : public Graph{
 public:

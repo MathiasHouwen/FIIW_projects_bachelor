@@ -2,7 +2,7 @@
 // Created by robin on 5/12/2024.
 //
 
-#include "src/Graph.h"
+#include "src/graph/Graph.h"
 #include "src/ZoomNet.h"
 #include "src/utils/ZoomNetCLI.h"
 

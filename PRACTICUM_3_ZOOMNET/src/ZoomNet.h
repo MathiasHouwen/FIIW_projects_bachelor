@@ -6,7 +6,7 @@
 #define PRACTICUM_3_ZOOMNET_ZOOMNET_H
 
 #include <string>
-#include "Graph.h"
+#include "graph/Graph.h"
 #include "ZoomNetGraph.h"
 
 using namespace std;

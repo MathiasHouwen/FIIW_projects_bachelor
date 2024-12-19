@@ -5,8 +5,8 @@ set(CMAKE_CXX_STANDARD 23)
 
 add_executable(PRACTICUM_3_ZOOMNET
     main.cpp
-        src/Graph.h
-        src/Graph.cpp
+        src/graph/Graph.h
+        src/graph/Graph.cpp
         src/modules/CLI.cpp
         src/modules/CLI.h
         src/modules/CommandParser.cpp
@@ -15,9 +15,10 @@ add_executable(PRACTICUM_3_ZOOMNET
         src/utils/ZoomNetCLI.h
         src/ZoomNet.cpp
         src/ZoomNet.h
-        src/GraphStructs.h
-        src/CityNodesLUT.h
-        src/CityNodesLUT.cpp
-        src/GraphStructs.cpp
+        src/graph/GraphStructs.h
+        src/utils/namedObjectLUT.h
+        src/utils/namedObjectLUT.cpp
+        src/graph/GraphStructs.cpp
         src/ZoomNetGraph.cpp
-        src/ZoomNetGraph.h)
+        src/ZoomNetGraph.h
+)

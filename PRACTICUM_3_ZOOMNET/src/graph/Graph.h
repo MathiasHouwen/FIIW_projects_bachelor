@@ -10,7 +10,7 @@
 #include <iostream>
 #include "Graph.h"
 #include "GraphStructs.h"
-#include "CityNodesLUT.h"
+#include "../utils/namedObjectLUT.h"
 #include <queue>
 #include <limits>
 #include <iostream>
@@ -34,7 +34,7 @@ public:
 
 protected:
     set<Connection*, ConnectionPointerComparator> allConnectionsSorted;
-    CityNodesLUT cityNodesLookupTable;
+    namedObjectLUT<CityNode> cityNodesLookupTable;
 
     static bool printErrorIfCityIsNull(CityNode* city1, CityNode* city2);
 

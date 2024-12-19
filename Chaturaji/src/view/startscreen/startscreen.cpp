@@ -39,4 +39,10 @@ void StartScreen::set_players(MainWindow* window) {
         QString name = players[i].data();
         window->getModel()->setPlayerName(name, static_cast<Player::colour>(i));
     }
+    if(ui->agressive->isChecked()) {
+        window->getModel()->makeBot(Player::colour::YELLOW, true);
+    }
+    else if(ui->passive->isChecked()) {
+        window->getModel()->makeBot(Player::colour::YELLOW, false);
+    }
 }

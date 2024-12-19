@@ -26,8 +26,8 @@ private:
 
     static QJsonObject pieceToJson(const Piece* piece);
     static QJsonObject boardToJson(const Board *board);
-    QJsonObject playerToJson(const Player *player);
-    QJsonObject playersToJson(const Player *players, Player curr);
+    QJsonObject playerToJson(const std::shared_ptr<Player> *player);
+    QJsonObject playersToJson(const std::shared_ptr<Player> *players, Player curr);
 
     QJsonDocument generateJson(Game *game);
 

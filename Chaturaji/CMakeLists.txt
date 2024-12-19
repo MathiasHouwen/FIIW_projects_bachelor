@@ -69,6 +69,8 @@ add_executable(Chaturaji
         src/view/startscreen/startscreen.ui
         src/view/mainscreen/player/PlayersView.cpp
         src/view/mainscreen/player/PlayersView.h
+        src/model/game/Bot.cpp
+        src/model/game/Bot.h
 )
 target_link_libraries(Chaturaji Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::SvgWidgets Qt${QT_VERSION_MAJOR}::Xml)
 

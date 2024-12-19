@@ -35,7 +35,14 @@
     </widget>
    </item>
    <item>
-    <widget class="QTextEdit" name="player1Input"/>
+    <widget class="QTextEdit" name="player1Input">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QLabel" name="label_4">
@@ -65,9 +72,29 @@
     </widget>
    </item>
    <item>
+    <widget class="QCheckBox" name="agressive">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>agressive bot</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="passive">
+     <property name="text">
+      <string>passive bot</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QTextEdit" name="player4Input">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+      <sizepolicy hsizetype="Ignored" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>

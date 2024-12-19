@@ -6,6 +6,7 @@
 #include "../logic/PatternMover.h"
 #include "Player.h"
 #include "Dice.h"
+#include "Bot.h"
 
 // practicum 2: resultaat van move vervangen van bool tot MoveResult
 // + state machine karakter van game duidelijker gemaakt in de public interface, door MoveState enum
@@ -27,7 +28,12 @@ private:
     Board board;    // bord
     PatternMover mover; // logica voor piece patronen
     Dice dice;
-    Player players[numberOfPlayer] = {{Player::colour::RED}, {Player::colour::BLUE}, {Player::colour::YELLOW}, {Player::colour::GREEN}};
+    std::vector<std::shared_ptr<Player>> players = {
+        std::make_shared<Player>(Player::colour::RED),
+        std::make_shared<Player>(Player::colour::BLUE),
+        std::make_shared<Player>(Player::colour::YELLOW),
+        std::make_shared<Player>(Player::colour::GREEN)
+    };
 
     // state
     QPoint* currentlySelectedCell;  // selectie, geen = null (1 move is eerst cell selecteren, dan volgende cell om te moven)
@@ -46,6 +52,8 @@ public:
     bool isGameOver() const;
     MoveState getMoveState() const;
 
+    void makeBot(Player::colour color, bool agressive);
+
     Dice getDice();
 
     void skip();
@@ -58,7 +66,7 @@ public:
     QSet<QPoint> getPossibleSelections();
     Player &getCurrentPlayer(); // player van de huidige turn
     Player &getPlayerFromColour(Player::colour colour); // zoek de player op basis van kleur
-    const Player *getPlayers() const;
+    std::vector<std::shared_ptr<Player>> getPlayers() const;
 
     void setPlayerName(const QString &name, Player::colour playerColour);
 

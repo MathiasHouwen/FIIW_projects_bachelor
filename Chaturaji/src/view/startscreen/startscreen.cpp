@@ -37,7 +37,6 @@ void StartScreen::set_players(MainWindow* window) {
     players.push_back(ui->player4Input->toPlainText().toStdString());
     for (int i = 0; i < players.size(); i++) {
         QString name = players[i].data();
-        if(!name.isEmpty())
-            window->getModel()->setPlayerName(name, static_cast<Player::colour>(i));
+        window->getModel()->setPlayerName(name, static_cast<Player::colour>(i));
     }
 }

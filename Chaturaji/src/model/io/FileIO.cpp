@@ -129,17 +129,17 @@ QJsonObject FileIO::pieceToJson(const Piece* piece){
     return jsonObject;
 }
 
-QJsonObject FileIO::playerToJson(const Player* player){
+QJsonObject FileIO::playerToJson(const std::shared_ptr<Player>* player){
     QJsonObject jsonObject;
     if (player != nullptr){
-        jsonObject["naam"] = player->getName();
-        jsonObject["colour"] = Player::getColourName(player->getColour());
-        jsonObject["score"] = player->getScore();
+        jsonObject["naam"] = player->get()->getName();
+        jsonObject["colour"] = Player::getColourName(player->get()->getColour());
+        jsonObject["score"] = player->get()->getScore();
     }
     return jsonObject;
 }
 
-QJsonObject FileIO::playersToJson(const Player* players, Player curr){
+QJsonObject FileIO::playersToJson(const std::shared_ptr<Player>* players, Player curr){
     QJsonObject jsonObject;
     QJsonArray playersJson;
 
@@ -182,7 +182,7 @@ int FileIO::save(Game* game, QString filePath){
 
     QJsonObject rootJsonObject;
     rootJsonObject["board"] = boardToJson(&(game->getBoard()))["board"];
-    rootJsonObject["players"] = playersToJson(game->getPlayers(), game->getCurrentPlayer());
+    rootJsonObject["players"] = playersToJson(game->getPlayers().data(), game->getCurrentPlayer());
     QJsonDocument jsonDocument(rootJsonObject);
 
     file.write(jsonDocument.toJson());

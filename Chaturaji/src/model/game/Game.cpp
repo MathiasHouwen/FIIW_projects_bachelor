@@ -13,12 +13,18 @@ Game::Game() : board(), mover(board) {
 }
 
 void Game::setPlayerName(const QString& name, Player::colour playerColour) {
-    players[static_cast<int>(playerColour)].setName(name);
+    players[static_cast<int>(playerColour)]->setName(name);
 }
+
 void Game::setPlayerScore(int score, Player::colour playerColour){
     Player player = getPlayerFromColour(playerColour);
     player.setMScore(score);
 }
+
+void Game::makeBot(Player::colour color, bool agressive) {
+    players[static_cast<int>(color)] = std::make_shared<Bot>(color, agressive);
+}
+
 
 bool Game::selectPiece(QPoint cell) {
     if(board.isCellEmpty(cell)) return false;   // mag geen leeg vak selecteren
@@ -116,17 +122,17 @@ QSet<QPoint> Game::getPossibleMoves() {
  * SIMPELE GETTERS
  */
 Player& Game::getCurrentPlayer(){
-    return players[turn];
+    return *players[turn];
 }
 Player& Game::getPlayerFromColour(Player::colour colour){
-    return players[(int) colour];
+    return *players[(int) colour];
 }
 
 QPoint* Game::getCurrentlySelectedCell() const {return currentlySelectedCell;}
 int Game::getMove() const {return move;}
 Board& Game::getBoard() {return board;}
 bool Game::isGameOver() const {return gameOver;}
-const Player *Game::getPlayers() const {return players;}
+std::vector<std::shared_ptr<Player>> Game::getPlayers() const {return players;}
 Game::MoveState Game::getMoveState() const{return moveState;}
 
 QSet<QPoint> Game::getPossibleSelections() {

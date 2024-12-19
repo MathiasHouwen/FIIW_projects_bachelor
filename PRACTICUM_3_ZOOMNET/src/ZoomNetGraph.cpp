@@ -2,6 +2,7 @@
 
 
 #include "ZoomNetGraph.h"
+using namespace std;
 
 void ZoomNetGraph::generateMST(const unordered_set<Connection *> &excludeSet,
                                const unordered_set<Connection *> &includeSet) {

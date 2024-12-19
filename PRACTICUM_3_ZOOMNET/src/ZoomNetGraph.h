@@ -21,7 +21,7 @@ public:
      * @param includeSet: connecites die er verplicht real moeten worden
      * @author Robin
      */
-    void generateMST(const unordered_set<Connection *> &excludeSet = {}, const unordered_set<Connection *> &includeSet = {});
+    void generateMST(const std::unordered_set<Connection *> &excludeSet = {}, const std::unordered_set<Connection *> &includeSet = {});
     /**
      * Kijkt of een nieuwe connectie de graph kan verbeteren
      * @param city1: eerste city van de connectie
@@ -30,7 +30,7 @@ public:
      * @return: boolean of de connectie beter is
      * @author: Ebbe
      */
-    bool isNewConnectionBetter(const string& city1, const string& city2, int weight);
+    bool isNewConnectionBetter(const std::string& city1, const std::string& city2, int weight);
     /**
      * Genereert channels voor alle cities, op basis van enkel real connecties
      * voorwaarde: er moet al een MST bestaan en alle channels moeten initieel -1 zijn
@@ -52,7 +52,7 @@ private:
      * @return: boolean of er een cyclus is
      * @author: Mathias
      */
-    bool checkCycle(CityNode* currentNode, CityNode* prevNode, unordered_set<CityNode*> &visitedNodes);
+    bool checkCycle(CityNode* currentNode, CityNode* prevNode, std::unordered_set<CityNode*> &visitedNodes);
     /**
      * recursieve functie: berekend de totale weight van het pad (er is maar 1 pad in een MST) tussen twee cities
      * @param currentCity: huidige city ( = in begin de start city)
@@ -81,7 +81,7 @@ private:
      * @param previousCity : vorige city
      * @param visitedNodes : map voor memoisatie
      */
-    void graphColouring(CityNode *currCity, CityNode* previousCity, unordered_set<CityNode *> &visitedNodes);
+    void graphColouring(CityNode *currCity, CityNode* previousCity, std::unordered_set<CityNode *> &visitedNodes);
 };
 
 

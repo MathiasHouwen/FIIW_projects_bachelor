@@ -18,7 +18,7 @@
 class ZoomNet {
 private:
     ///@brief map om meerdere voorbeeld-graphs te mappen op een voorbeeld-identifier-naam
-    std::unordered_map<string, ZoomNetGraph*> graphs;
+    std::unordered_map<std::string, ZoomNetGraph*> graphs;
 
 public:
     /**

@@ -2,6 +2,7 @@
 
 
 #include "ZoomNet.h"
+using namespace std;
 
 void ZoomNet::designMST(const std::string& graphName) {
 

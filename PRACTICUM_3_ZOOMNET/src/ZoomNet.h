@@ -17,13 +17,13 @@
 
 class ZoomNet {
 private:
-    ///@brief map om meerdere voorbeeld-graphs te mappen op een voorbeeld-identifier-naam
-    std::unordered_map<std::string, ZoomNetGraph*> graphs;
 
-
-    void generateGraph(const std::string& graphName);
+//    ZoomNetGraph graph;
 
 public:
+
+//    ZoomNet();
+
     /**
      * Genereert een initieel netwerk
      * @param graphName: naam van voorbeeld

@@ -43,6 +43,10 @@ private:
     bool gameOver{false};
 
     void advance(); // zet game verder naar volgende move, of volgende turn als 2 moves geweest zijn
+    void playBot();
+    void moveBotPiece(Piece *piece);
+    QPoint getNextMove(QSet<QPoint> moves, bool aggressive);
+
 public:
     Game();
     //directe getters

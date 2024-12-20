@@ -25,7 +25,6 @@ void Game::makeBot(Player::colour color, bool agressive) {
     players[static_cast<int>(color)] = std::make_shared<Bot>(color, agressive);
 }
 
-
 bool Game::selectPiece(QPoint cell) {
     if(board.isCellEmpty(cell)) return false;   // mag geen leeg vak selecteren
     Piece piece = *board.getCell(cell);
@@ -73,6 +72,38 @@ Game::MoveResult Game::movePiece(QPoint destinationCell) {
     return result;
 }
 
+QPoint Game::getNextMove(QSet<QPoint> moves, bool aggressive) {
+    //TODO algorithme om meest aggressieve cel te vinden
+}
+
+
+void Game::moveBotPiece(Piece *piece) {
+    selectPiece(piece->getCell());
+    QSet<QPoint> moves = getPossibleMoves();
+    if(moves.isEmpty()) {
+        advance();
+        return;
+    }
+    bool mood = std::dynamic_pointer_cast<Bot>(players[turn])->getAggressive();
+    QPoint destinationCell = getNextMove(moves, mood);
+    movePiece(destinationCell);
+}
+
+
+void Game::playBot() {
+    for(auto type : dice.getAllowedTypes()) {
+        for(auto piece : getCurrentPlayer().getAlivePieces()) {
+            if(piece->getType() == type) {
+                moveBotPiece(piece);
+            }
+            else {
+                advance();
+            }
+        }
+    }
+}
+
+
 void Game::advance() {
     move++;
     if(move > 1) { // als 2e move voorbij, reset move en advance de turn
@@ -87,8 +118,10 @@ void Game::advance() {
         }
         // als 4 keer geprobeerd dan was iedereen dood, dus game over
         gameOver = turnAttempts >= 4;
+        if (std::dynamic_pointer_cast<Bot>(players[turn]) != nullptr) {
+            std::cout << "bot aan de beurt" << std::endl;
+        }
     }
-
 }
 
 QSet<QPoint> Game::getPossibleMoves() {

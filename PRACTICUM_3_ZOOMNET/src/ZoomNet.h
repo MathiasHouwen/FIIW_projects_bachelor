@@ -18,11 +18,11 @@
 class ZoomNet {
 private:
 
-//    ZoomNetGraph graph;
+    ZoomNetGraph graph{};
 
 public:
 
-//    ZoomNet();
+    ZoomNet();
 
     /**
      * Genereert een initieel netwerk

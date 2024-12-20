@@ -5,25 +5,6 @@
 using namespace std;
 
 void ZoomNet::designMST() {
-    ZoomNetGraph graph{};
-
-    graph.addCity("a");
-    graph.addCity("b");
-    graph.addCity("c");
-    graph.addCity("d");
-    graph.addCity("e");
-    graph.addCity("f");
-
-    graph.addConnection("a", "b", 11);
-    graph.addConnection("a", "c", 10);
-    graph.addConnection("a", "e", 13);
-    graph.addConnection("b", "c", 15);
-    graph.addConnection("b", "d", 9);
-    graph.addConnection("b", "e", 7);
-    graph.addConnection("b", "f", 21);
-    graph.addConnection("c", "f", 8);
-    graph.addConnection("d", "e", 12);
-    graph.addConnection("f", "d", 18);
 
     graph.clearConnections();
     graph.generateMST({}, {});
@@ -31,26 +12,6 @@ void ZoomNet::designMST() {
 }
 
 void ZoomNet::adaptMST() {
-
-    ZoomNetGraph graph{};
-
-    graph.addCity("a");
-    graph.addCity("b");
-    graph.addCity("c");
-    graph.addCity("d");
-    graph.addCity("e");
-    graph.addCity("f");
-
-    graph.addConnection("a", "b", 11);
-    graph.addConnection("a", "c", 10);
-    graph.addConnection("a", "e", 13);
-    graph.addConnection("b", "c", 15);
-    graph.addConnection("b", "d", 9);
-    graph.addConnection("b", "e", 7);
-    graph.addConnection("b", "f", 21);
-    graph.addConnection("c", "f", 8);
-    graph.addConnection("d", "e", 12);
-    graph.addConnection("f", "d", 18);
 
     graph.clearConnections();
 
@@ -62,25 +23,6 @@ void ZoomNet::adaptMST() {
 }
 
 bool ZoomNet::newConnectionBetter(const std::string& city1, const std::string& city2, int w) {
-    ZoomNetGraph graph{};
-
-    graph.addCity("a");
-    graph.addCity("b");
-    graph.addCity("c");
-    graph.addCity("d");
-    graph.addCity("e");
-    graph.addCity("f");
-
-    graph.addConnection("a", "b", 11);
-    graph.addConnection("a", "c", 10);
-    graph.addConnection("a", "e", 13);
-    graph.addConnection("b", "c", 15);
-    graph.addConnection("b", "d", 9);
-    graph.addConnection("b", "e", 7);
-    graph.addConnection("b", "f", 21);
-    graph.addConnection("c", "f", 8);
-    graph.addConnection("d", "e", 12);
-    graph.addConnection("f", "d", 18);
 
     graph.clearConnections();
     graph.generateMST();
@@ -93,26 +35,6 @@ bool ZoomNet::newConnectionBetter(const std::string& city1, const std::string& c
 
 void ZoomNet::generateChannels() {
 
-    ZoomNetGraph graph{};
-
-    graph.addCity("a");
-    graph.addCity("b");
-    graph.addCity("c");
-    graph.addCity("d");
-    graph.addCity("e");
-    graph.addCity("f");
-
-    graph.addConnection("a", "b", 11);
-    graph.addConnection("a", "c", 10);
-    graph.addConnection("a", "e", 13);
-    graph.addConnection("b", "c", 15);
-    graph.addConnection("b", "d", 9);
-    graph.addConnection("b", "e", 7);
-    graph.addConnection("b", "f", 21);
-    graph.addConnection("c", "f", 8);
-    graph.addConnection("d", "e", 12);
-    graph.addConnection("f", "d", 18);
-
     graph.clearConnections();
     graph.generateMST({}, {});
     graph.generateRealChannels();
@@ -122,8 +44,14 @@ void ZoomNet::generateChannels() {
 
 void ZoomNet::colourGraph() {
 
-    ZoomNetGraph graph{};
+    graph.clearConnections();
+    graph.generateMST({}, {});
+    graph.generateALlPossibleChannels();
+    cout << graph << endl;
 
+}
+
+ZoomNet::ZoomNet() {
     graph.addCity("a");
     graph.addCity("b");
     graph.addCity("c");
@@ -141,30 +69,5 @@ void ZoomNet::colourGraph() {
     graph.addConnection("c", "f", 8);
     graph.addConnection("d", "e", 12);
     graph.addConnection("f", "d", 18);
-
-    graph.clearConnections();
-    graph.generateMST({}, {});
-    graph.generateALlPossibleChannels();
-    cout << graph << endl;
-
+    cout << "graph generated" << endl;
 }
-
-//ZoomNet::ZoomNet() {
-//    graph.addCity("a");
-//    graph.addCity("b");
-//    graph.addCity("c");
-//    graph.addCity("d");
-//    graph.addCity("e");
-//    graph.addCity("f");
-//
-//    graph.addConnection("a", "b", 11);
-//    graph.addConnection("a", "c", 10);
-//    graph.addConnection("a", "e", 13);
-//    graph.addConnection("b", "c", 15);
-//    graph.addConnection("b", "d", 9);
-//    graph.addConnection("b", "e", 7);
-//    graph.addConnection("b", "f", 21);
-//    graph.addConnection("c", "f", 8);
-//    graph.addConnection("d", "e", 12);
-//    graph.addConnection("f", "d", 18);
-//}

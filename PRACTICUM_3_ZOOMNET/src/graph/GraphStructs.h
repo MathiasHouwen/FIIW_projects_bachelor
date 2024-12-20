@@ -20,7 +20,7 @@ struct Connection;
 
 struct CityNode{
     ///@brief naam van de city
-    const std::string& cityName{};
+    std::string cityName{};
     /**
      * Adjacent connecites
      * Key = CityNode van de connectie

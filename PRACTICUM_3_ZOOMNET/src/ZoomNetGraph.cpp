@@ -149,8 +149,11 @@ void ZoomNetGraph::generateChannels(CityNode *currCity, CityNode* previousCity, 
 void ZoomNetGraph::graphColouring(CityNode *currCity, CityNode* previousCity, unordered_set<CityNode*> &visitedNodes){
 
     /*
-     * main logica:
-     * TODO mathais, leg uit. Ik zie te veel loops om zin te hebben om deze code te lezen
+     * main logica: Eerst worden all channels van adjacent citys opgeslagen in een set
+     * daarna zal bepaald worden welke channel kan gegeven woorden aan de current city
+     * d.m.v. van een simple while loop die kijkt wat het kleinste niet bestaande element
+     * is in de set.
+     * Daarna de recursion call die zorgt dat elke note in de graph bezogt wordt.
      */
     visitedNodes.insert(currCity);
 
@@ -175,6 +178,7 @@ void ZoomNetGraph::graphColouring(CityNode *currCity, CityNode* previousCity, un
     // dat wordt de huidige channel
     currCity->channel = channel;
 
+    // recursieve oproep voor de hele graph te "kleuren"
     for(auto connectionEntry : currCity->connections){
         auto nextCity = connectionEntry.first;
         auto connection = connectionEntry.second;

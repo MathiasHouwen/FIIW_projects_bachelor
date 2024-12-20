@@ -7,54 +7,69 @@
 #include "src/utils/ZoomNetCLI.h"
 
 int main() {
-//    ZoomNet zoomNet;
-//    ZoomNetCLI cli(zoomNet);
+
+    /*
+     * 1: design -g voorbeeld
+     * 2: adapt -g voorbeeld
+     * 3: optimize -g voorbeeld -city1 C -city2 D -w 5
+     * 4.a: maintain -g voorbeeld
+     * 4.b: maintain -g voorbeeld --all
+     */
+
+    ZoomNet zoomNet;
+    ZoomNetCLI cli(zoomNet);
+
+    while(true){
+        cli.getInput();
+    }
+
+    /*
+     *  Testcode dat geuncomment can worden om de cli te skippen
+     */
+
+//    ZoomNetGraph graph;
 //
-//    cli.getInput();
-
-    ZoomNetGraph graph;
-
-    graph.addCity("A");
-    graph.addCity("B");
-    graph.addCity("C");
-    graph.addCity("D");
-    graph.addCity("E");
-    graph.addCity("F");
-
-    graph.addConnection("A", "B", 11);
-    graph.addConnection("A", "C", 10);
-    graph.addConnection("A", "E", 13);
-    graph.addConnection("B", "C", 15);
-    graph.addConnection("B", "D", 9);
-    graph.addConnection("B", "E", 7);
-    graph.addConnection("B", "F", 21);
-    graph.addConnection("C", "F", 8);
-    graph.addConnection("D", "E", 12);
-    graph.addConnection("F", "D", 18);
-    unordered_set includeSet = {graph.getConnection("B", "F")};
-    unordered_set excludeSet = {graph.getConnection("B", "E")};
-
-    cout << "=== Initiele MST: =========================================" << endl;
-    graph.generateMST({}, {});
-    cout << graph << endl;
-
-    cout << "=== MST Met include exclude: ==============================" << endl;
-    graph.clearConnections();
-    graph.generateMST(excludeSet, includeSet);
-    cout << graph << endl;
-
-    cout << "=== New connection better: ================================" << endl;
-    graph.clearConnections();
-    graph.generateMST();
-    bool better = graph.isNewConnectionBetter("C", "D", 5);
-    cout << (better ? "yes, better" : "no, not better") << endl;
-
-    cout << "=== Channels echte net: ================================" << endl;
-    graph.generateRealChannels();
-    cout << graph << endl;
-    cout << "=== Channels alle possible connecties: ================================" << endl;
-    graph.clearConnections();
-    graph.generateMST();
-    graph.generateALlPossibleChannels();
-    cout << graph << endl;
+//    graph.addCity("A");
+//    graph.addCity("B");
+//    graph.addCity("C");
+//    graph.addCity("D");
+//    graph.addCity("E");
+//    graph.addCity("F");
+//
+//    graph.addConnection("A", "B", 11);
+//    graph.addConnection("A", "C", 10);
+//    graph.addConnection("A", "E", 13);
+//    graph.addConnection("B", "C", 15);
+//    graph.addConnection("B", "D", 9);
+//    graph.addConnection("B", "E", 7);
+//    graph.addConnection("B", "F", 21);
+//    graph.addConnection("C", "F", 8);
+//    graph.addConnection("D", "E", 12);
+//    graph.addConnection("F", "D", 18);
+//    unordered_set includeSet = {graph.getConnection("B", "F")};
+//    unordered_set excludeSet = {graph.getConnection("B", "E")};
+//
+//    cout << "=== Initiele MST: =========================================" << endl;
+//    graph.generateMST({}, {});
+//    cout << graph << endl;
+//
+//    cout << "=== MST Met include exclude: ==============================" << endl;
+//    graph.clearConnections();
+//    graph.generateMST(excludeSet, includeSet);
+//    cout << graph << endl;
+//
+//    cout << "=== New connection better: ================================" << endl;
+//    graph.clearConnections();
+//    graph.generateMST();
+//    bool better = graph.isNewConnectionBetter("C", "D", 5);
+//    cout << (better ? "yes, better" : "no, not better") << endl;
+//
+//    cout << "=== Channels echte net: ================================" << endl;
+//    graph.generateRealChannels();
+//    cout << graph << endl;
+//    cout << "=== Channels alle possible connecties: ================================" << endl;
+//    graph.clearConnections();
+//    graph.generateMST();
+//    graph.generateALlPossibleChannels();
+//    cout << graph << endl;
 }

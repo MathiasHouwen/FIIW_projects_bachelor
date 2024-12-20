@@ -32,7 +32,7 @@ private:
     CommandParser parser;
 
     // General CLI
-    string prompt = "";
+    string prompt = "?:";
     unordered_set<string> allowedParams;
     unordered_set<string> allowedFlags;
 

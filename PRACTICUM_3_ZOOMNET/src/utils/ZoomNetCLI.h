@@ -24,9 +24,9 @@ private:
     ZoomNet model;
 
     void design(unordered_map<string, string> params, unordered_set<string> flags);
-    static void adapt(unordered_map<string, string> params, unordered_set<string> flags);
-    static void optimize(unordered_map<string, string> params, unordered_set<string> flags);
-    static void maintain(unordered_map<string, string> params, unordered_set<string> flags);
+    void adapt(unordered_map<string, string> params, unordered_set<string> flags);
+    void optimize(unordered_map<string, string> params, unordered_set<string> flags);
+    void maintain(unordered_map<string, string> params, unordered_set<string> flags);
 
 };
 

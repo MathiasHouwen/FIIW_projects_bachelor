@@ -20,6 +20,9 @@ private:
     ///@brief map om meerdere voorbeeld-graphs te mappen op een voorbeeld-identifier-naam
     std::unordered_map<std::string, ZoomNetGraph*> graphs;
 
+
+    void generateGraph(const std::string& graphName);
+
 public:
     /**
      * Genereert een initieel netwerk
@@ -35,8 +38,17 @@ public:
      * kijkt of een nieuwe connectie beter is
      * @param graphName: naam van voorbeeld
      */
-    bool newConnectionBetter(const std::string& graphName);
-    // TODO nog fucnties voor die channels ( die voor de real + die voor all possible )
+    bool newConnectionBetter(const std::string &graphName, const std::string &city1, const std::string &city2, int w);
+    /**
+     * generate channels voor current network
+     * @param graphName: naam van voorbeeld
+     */
+    void generateChannels(const std::string &graphName);
+    /**
+     * generate channels voor volledig netwerk
+     * @param graphName: naam van voorbeeld
+     */
+    void colourGraph(const std::string &graphName);
 };
 
 

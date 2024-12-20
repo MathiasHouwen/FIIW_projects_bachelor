@@ -9,7 +9,7 @@ bool CLI::getInput() {
     try {
         CommandParser::Command cmd = parser.getInput(prompt);
 
-        if (commands.find(cmd.commandName) == commands.end()) {
+        if (!commands.contains(cmd.commandName)) {
             cout << "Unknown command: " << cmd.commandName << "\n";
             return false;
         }

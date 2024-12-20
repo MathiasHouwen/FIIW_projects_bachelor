@@ -18,7 +18,7 @@ void ZoomNet::adaptMST() {
     unordered_set includeSet = {graph.getConnection("b", "f")};
     unordered_set excludeSet = {graph.getConnection("b", "e")};
 
-    graph.generateMST(includeSet, excludeSet);
+    graph.generateMST( excludeSet, includeSet);
     cout << graph << endl;
 }
 

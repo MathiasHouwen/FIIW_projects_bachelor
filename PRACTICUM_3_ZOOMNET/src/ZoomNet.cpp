@@ -4,7 +4,7 @@
 #include "ZoomNet.h"
 using namespace std;
 
-void ZoomNet::designMST(const std::string& graphName) {
+void ZoomNet::designMST() {
     ZoomNetGraph graph{};
 
     graph.addCity("a");
@@ -30,7 +30,7 @@ void ZoomNet::designMST(const std::string& graphName) {
     cout << graph << endl;
 }
 
-void ZoomNet::adaptMST(const std::string& graphName) {
+void ZoomNet::adaptMST() {
 
     ZoomNetGraph graph{};
 
@@ -54,14 +54,14 @@ void ZoomNet::adaptMST(const std::string& graphName) {
 
     graph.clearConnections();
 
-    unordered_set includeSet = {graph.getConnection("B", "F")};
-    unordered_set excludeSet = {graph.getConnection("B", "E")};
+    unordered_set includeSet = {graph.getConnection("b", "f")};
+    unordered_set excludeSet = {graph.getConnection("b", "e")};
 
     graph.generateMST(includeSet, excludeSet);
     cout << graph << endl;
 }
 
-bool ZoomNet::newConnectionBetter(const std::string& graphName, const std::string& city1, const std::string& city2, int w) {
+bool ZoomNet::newConnectionBetter(const std::string& city1, const std::string& city2, int w) {
     ZoomNetGraph graph{};
 
     graph.addCity("a");
@@ -91,7 +91,7 @@ bool ZoomNet::newConnectionBetter(const std::string& graphName, const std::strin
     return better;
 }
 
-void ZoomNet::generateChannels(const string &graphName) {
+void ZoomNet::generateChannels() {
 
     ZoomNetGraph graph{};
 
@@ -120,7 +120,7 @@ void ZoomNet::generateChannels(const string &graphName) {
 
 }
 
-void ZoomNet::colourGraph(const string &graphName) {
+void ZoomNet::colourGraph() {
 
     ZoomNetGraph graph{};
 

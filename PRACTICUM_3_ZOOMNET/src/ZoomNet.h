@@ -28,27 +28,27 @@ public:
      * Genereert een initieel netwerk
      * @param graphName: naam van voorbeeld
      */
-    void designMST(const std::string& graphName);
+    void designMST();
     /**
      * Genereert het netwerk met included en excluded connecties
      * @param graphName: naam van voorbeeld
      */
-    void adaptMST(const std::string& graphName);
+    void adaptMST();
     /**
      * kijkt of een nieuwe connectie beter is
      * @param graphName: naam van voorbeeld
      */
-    bool newConnectionBetter(const std::string &graphName, const std::string &city1, const std::string &city2, int w);
+    bool newConnectionBetter(const std::string &city1, const std::string &city2, int w);
     /**
      * generate channels voor current network
      * @param graphName: naam van voorbeeld
      */
-    void generateChannels(const std::string &graphName);
+    void generateChannels();
     /**
      * generate channels voor volledig netwerk
      * @param graphName: naam van voorbeeld
      */
-    void colourGraph(const std::string &graphName);
+    void colourGraph();
 };
 
 

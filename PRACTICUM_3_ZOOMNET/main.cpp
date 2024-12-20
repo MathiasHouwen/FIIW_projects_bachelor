@@ -9,11 +9,11 @@
 int main() {
 
     /*
-     * 1: design -g voorbeeld
-     * 2: adapt -g voorbeeld
-     * 3: optimize -g voorbeeld -city1 C -city2 D -w 5
-     * 4.a: maintain -g voorbeeld
-     * 4.b: maintain -g voorbeeld --all
+     * 1: design
+     * 2: adapt
+     * 3: optimize -city1 c -city2 d -w 5
+     * 4.a: maintain
+     * 4.b: maintain --all
      */
 
     ZoomNet zoomNet;

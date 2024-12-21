@@ -71,10 +71,12 @@ void Controller::onCellClicked(QPoint cell) {
 }
 
 void Controller::startBot() {
-    const QPoint cell = model.playBot();
-    onCellClicked(cell);
-    const QPoint destination = model.moveBotPiece();
-    onCellClicked(destination);
+    for(int i = 0 ; i < 2; i++) {
+        const QPoint cell = model.playBot();
+        onCellClicked(cell);
+        const QPoint destination = model.moveBotPiece();
+        onCellClicked(destination);
+    }
 }
 
 // handle een enter of leave op een cell (gewoon een "cursor" highlight toepassen)

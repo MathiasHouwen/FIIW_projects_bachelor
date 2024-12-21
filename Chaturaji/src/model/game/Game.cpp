@@ -92,7 +92,6 @@ QPoint Game::moveBotPiece() {
     if(moves.isEmpty()) {
         return {NULL, NULL};
     }
-    bool mood = std::dynamic_pointer_cast<Bot>(players[turn])->getAggressive();
     return getNextMove(moves);
 }
 
@@ -105,6 +104,7 @@ QPoint Game::playBot() {
             }
         }
     }
+    return {NULL, NULL};
 }
 
 void Game::advance() {

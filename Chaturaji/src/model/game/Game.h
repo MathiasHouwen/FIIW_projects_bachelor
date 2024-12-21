@@ -15,7 +15,7 @@
 
 class Game{
 public:
-    enum class MoveState{READYTOSELECT, READYTOMOVE};
+    enum class MoveState{READYTOSELECT, READYTOMOVE, BOT};
     struct MoveResult{
         bool succes{false};
         Player* affectedPlayer{nullptr};
@@ -43,9 +43,7 @@ private:
     bool gameOver{false};
 
     void advance(); // zet game verder naar volgende move, of volgende turn als 2 moves geweest zijn
-    void playBot();
-    void moveBotPiece(Piece *piece);
-    QPoint getNextMove(QSet<QPoint> moves, bool aggressive);
+    QPoint getNextMove(QSet<QPoint> moves);
 
 public:
     Game();
@@ -57,6 +55,8 @@ public:
     MoveState getMoveState() const;
 
     void makeBot(Player::colour color, bool agressive);
+    QPoint playBot();
+    QPoint moveBotPiece();
 
     Dice getDice();
 

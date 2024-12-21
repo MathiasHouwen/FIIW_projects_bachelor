@@ -72,37 +72,40 @@ Game::MoveResult Game::movePiece(QPoint destinationCell) {
     return result;
 }
 
-QPoint Game::getNextMove(QSet<QPoint> moves, bool aggressive) {
-    //TODO algorithme om meest aggressieve cel te vinden
+QPoint Game::getNextMove(QSet<QPoint> moves) {
+    bool aggressive = std::dynamic_pointer_cast<Bot>(players[turn])->getAggressive();
+    QPoint nextMove;
+    if(aggressive) {
+        nextMove = moves.values().first();
+        //TODO make nextMove as aggressive as possible
+    }
+    else {
+        nextMove = moves.values().last();
+        //TODO make nextmove as passive as possible
+    }
+    return nextMove;
 }
 
-
-void Game::moveBotPiece(Piece *piece) {
-    selectPiece(piece->getCell());
+QPoint Game::moveBotPiece() {
+    moveState = MoveState::BOT;
     QSet<QPoint> moves = getPossibleMoves();
     if(moves.isEmpty()) {
-        advance();
-        return;
+        return {NULL, NULL};
     }
     bool mood = std::dynamic_pointer_cast<Bot>(players[turn])->getAggressive();
-    QPoint destinationCell = getNextMove(moves, mood);
-    movePiece(destinationCell);
+    return getNextMove(moves);
 }
 
-
-void Game::playBot() {
-    for(auto type : dice.getAllowedTypes()) {
-        for(auto piece : getCurrentPlayer().getAlivePieces()) {
+QPoint Game::playBot() {
+    moveState = MoveState::READYTOSELECT;
+    for(auto piece : getCurrentPlayer().getAlivePieces()) {
+        for(auto type : dice.getAllowedTypes()) {
             if(piece->getType() == type) {
-                moveBotPiece(piece);
-            }
-            else {
-                advance();
+                return piece->getCell();
             }
         }
     }
 }
-
 
 void Game::advance() {
     move++;
@@ -119,8 +122,9 @@ void Game::advance() {
         // als 4 keer geprobeerd dan was iedereen dood, dus game over
         gameOver = turnAttempts >= 4;
         if (std::dynamic_pointer_cast<Bot>(players[turn]) != nullptr) {
-            std::cout << "bot aan de beurt" << std::endl;
+            moveState = MoveState::BOT;
         }
+        else {moveState = MoveState::READYTOSELECT;}
     }
 }
 

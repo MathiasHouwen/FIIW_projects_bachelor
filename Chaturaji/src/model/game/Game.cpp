@@ -3,6 +3,9 @@
 #include <iostream>
 #include <ctime>
 #include "Game.h"
+
+#include <qtextstream.h>
+
 #include "board/Piece.h"
 // select, move, advance en getpossiblemoves door ebbe
 // dobbel generatie door mathias
@@ -98,8 +101,9 @@ QPoint Game::moveBotPiece() {
 QPoint Game::playBot() {
     moveState = MoveState::READYTOSELECT;
     for(auto piece : getCurrentPlayer().getAlivePieces()) {
-        for(auto type : dice.getAllowedTypes()) {
+        for(auto types : dice.getAllowedTypes()) {
             if(piece->getType() == type) {
+                std::cout << "movablePiece: " << piece->getScoreValue() << std::endl;
                 return piece->getCell();
             }
         }

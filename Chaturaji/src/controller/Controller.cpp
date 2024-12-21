@@ -75,7 +75,12 @@ void Controller::startBot() {
         const QPoint cell = model.playBot();
         onCellClicked(cell);
         const QPoint destination = model.moveBotPiece();
-        onCellClicked(destination);
+        if(destination == QPoint(NULL, NULL)) {
+            onSkipButtonClicked();
+        }
+        else {
+            onCellClicked(destination);
+        }
     }
 }
 

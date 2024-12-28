@@ -3,7 +3,8 @@ from abc import ABC, abstractmethod
 from typing import Callable, Type, TypeVar, Generic, Optional
 import pandas as pd
 
-from src.util.utils import split_features
+from src.util.utils import split_features, df_to_np_arr
+
 
 # ABC = ABstract Class
 class MLModel(ABC):
@@ -51,8 +52,8 @@ class ModelHandler(Generic[T]):
         x_columns_train, y_column_train = split_features(self._train_dataframe, self._y_column_name)
 
         # convert to numpy array
-        x_cols_np_arr = np.array(x_columns_train.values)
-        y_col_np_arr = np.array(y_column_train.values)
+        x_cols_np_arr = df_to_np_arr(x_columns_train)
+        y_col_np_arr = df_to_np_arr(y_column_train)
 
         # train
         self._model.train(x_cols_np_arr, y_col_np_arr)
@@ -66,7 +67,7 @@ class ModelHandler(Generic[T]):
 
         # predict
         # convert to numpy array
-        x_cols_np_arr = np.array(x_columns_test.values)
+        x_cols_np_arr = df_to_np_arr(x_columns_test)
         predicted_y_column = self._model.predict(x_cols_np_arr)
 
         # store result

@@ -34,6 +34,8 @@ public:
     static QString getTypeName(Type type); // vertaalt type naar string naam
     QString getTypeName();
     static Piece::Type getTypeFromName(const QString& typestr); // vertaalt string naam naar type
+    bool operator>(const Piece &other) const;
+    bool operator<(const Piece &other) const;
 
 private:
     void init(Pattern pattern, int ScoreValue); // initialiseer type specifieke kenmerken

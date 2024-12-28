@@ -71,9 +71,11 @@ void Controller::onCellClicked(QPoint cell) {
 }
 
 void Controller::startBot() {
+    std::cout << std::endl << "NEW MOVE:" << std::endl;
     for(int i = 0 ; i < 2; i++) {
         const QPoint cell = model.playBot();
         onCellClicked(cell);
+        std::cout << "move piece: " << cell.x() << "," << cell.y() << std::endl;
         const QPoint destination = model.moveBotPiece();
         if(destination == QPoint(NULL, NULL)) {
             std::cout << "move skipped: " << cell.x() << "," << cell.y() << std::endl;

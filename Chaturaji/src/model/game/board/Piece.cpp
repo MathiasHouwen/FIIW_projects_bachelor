@@ -85,3 +85,21 @@ const QPoint &Piece::getCell() const {
 void Piece::setCell(const QPoint &cell) {
     Piece::cell = cell;
 }
+
+bool Piece::operator>(const Piece &other) const {
+    if(other.cell.x() == NULL || other.cell.y() == NULL){return true;}
+    int myX = this->cell.x()*attackPattern.forward;
+    int myY = this->cell.y()*attackPattern.forward;
+    int otherX = other.cell.x()*attackPattern.forward;
+    int otherY = other.cell.y()*attackPattern.forward;
+    return myX >= otherX && myY >= otherY;
+}
+
+bool Piece::operator<(const Piece &other) const {
+    if(other.cell.x() == NULL || other.cell.y() == NULL){return true;}
+    int myX = this->cell.x()*attackPattern.forwardDirection.x();
+    int myY = this->cell.y()*attackPattern.forwardDirection.y();
+    int otherX = other.cell.x()*attackPattern.forwardDirection.x();
+    int otherY = other.cell.y()*attackPattern.forwardDirection.y();
+    return myX <= otherX && myY <= otherY;
+}

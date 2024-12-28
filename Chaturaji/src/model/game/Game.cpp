@@ -76,22 +76,33 @@ Game::MoveResult Game::movePiece(QPoint destinationCell) {
 }
 
 QPoint Game::getNextMove(QSet<QPoint> moves) {
+    auto direction = getCurrentPlayer().getAlivePieces().values().first()->getWalkPattern().forwardDirection;
     bool aggressive = std::dynamic_pointer_cast<Bot>(players[turn])->getAggressive();
-    QPoint nextMove;
+    Piece calculated{Piece::Type::KING, {0, 0}, getCurrentPlayer(), {0, 0}};
     if(aggressive) {
-        nextMove = moves.values().first();
-        //TODO make nextMove as aggressive as possible
+        for(auto move : moves) {
+            Piece dummy{Piece::Type::KING, direction, getCurrentPlayer(), move};
+            if(dummy.operator>(calculated)){calculated.setCell(move);}
+        }
     }
     else {
-        nextMove = moves.values().last();
-        //TODO make nextmove as passive as possible
+        calculated.setCell({8,8});
+        for(auto move : moves) {
+            Piece dummy{Piece::Type::KING, direction, getCurrentPlayer(), move};
+            if(dummy.operator<(calculated)){calculated.setCell(move);}
+        }
     }
-    return nextMove;
+    return calculated.getCell();
 }
 
 QPoint Game::moveBotPiece() {
     moveState = MoveState::BOT;
     QSet<QPoint> moves = getPossibleMoves();
+    std::cout << "can move to: ";
+    for(auto move : moves) {
+        std::cout << move.x() << "," << move.y() << "; ";
+    }
+    std::cout << std::endl;
     if(moves.isEmpty()) {
         return {NULL, NULL};
     }
@@ -99,15 +110,19 @@ QPoint Game::moveBotPiece() {
 }
 
 QPoint Game::playBot() {
+    QList<Piece*> availablePieces{};
     moveState = MoveState::READYTOSELECT;
     for(auto piece : getCurrentPlayer().getAlivePieces()) {
         for(auto type : dice.getAllowedTypes()) {
             if(piece->getType() == type) {
-                return piece->getCell();
+                availablePieces.append(piece);
             }
         }
     }
-    return {NULL, NULL};
+    if(availablePieces.isEmpty()) {return {NULL, NULL};}
+
+    int randomIndex = rand() % availablePieces.size();
+    return availablePieces[randomIndex]->getCell();
 }
 
 void Game::advance() {

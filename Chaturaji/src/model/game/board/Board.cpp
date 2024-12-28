@@ -13,9 +13,6 @@ Piece* Board::getCell(const QPoint cell) const {
 
 void Board::setCell(const QPoint cell, Piece piece) {
     Piece* oldPiece = getCell(cell);
-    if(oldPiece){
-        oldPiece->getPlayer().removePiece(oldPiece);
-    }
     delete oldPiece;    // delete oude piece eerst van heap
     auto newPiece = new Piece(std::move(piece));    // maakt kopie van niewe piece op de heap
     newPiece->setCell(cell);
@@ -25,6 +22,7 @@ void Board::setCell(const QPoint cell, Piece piece) {
 
 void Board::move(QPoint fromCell, QPoint toCell) {
     Piece* from = getCell(fromCell);    // get oude piece
+    from->getPlayer().removePiece(from);
     from->setCell(toCell);
     board[fromCell.y()][fromCell.x()] = nullptr; // oude cell op null
     setCell(toCell, *from);  // nieuwe cell wordt oude piece

@@ -17,7 +17,7 @@ public:
     static bool isInRange(QPoint cell); // kijkt of een cell binnen het bord ligt
     static constexpr int getSize(){return size;};  // getter. ALs die in de c++ file ge-implement is, dan wordt die niet meer gezien als const
 
-    void setCell(QPoint cell, Piece value); // vul een cell met een piece (en delete eventuele oude piece)
+    void setCell(QPoint cell, Piece piece); // vul een cell met een piece (en delete eventuele oude piece)
     void move(QPoint fromCell, QPoint toCell);  // verplaats de piece van ene naar andere cell (oude cell wordt null)
     void clear();   // delete alle pieces en vul bord met null
 

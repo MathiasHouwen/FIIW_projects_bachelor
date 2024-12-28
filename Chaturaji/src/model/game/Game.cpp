@@ -101,9 +101,8 @@ QPoint Game::moveBotPiece() {
 QPoint Game::playBot() {
     moveState = MoveState::READYTOSELECT;
     for(auto piece : getCurrentPlayer().getAlivePieces()) {
-        for(auto types : dice.getAllowedTypes()) {
+        for(auto type : dice.getAllowedTypes()) {
             if(piece->getType() == type) {
-                std::cout << "movablePiece: " << piece->getScoreValue() << std::endl;
                 return piece->getCell();
             }
         }

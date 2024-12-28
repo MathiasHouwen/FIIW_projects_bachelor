@@ -28,6 +28,7 @@ private:
     PlayersView* playersView;
     FileIO io;
     QSet<QPoint> currentHighlights{};
+    int numberOfBotMoves = 2;
     void clearHighLights();
     void setSelectionHighlights();
     void setMoveHightlights();

@@ -76,9 +76,11 @@ void Controller::startBot() {
         onCellClicked(cell);
         const QPoint destination = model.moveBotPiece();
         if(destination == QPoint(NULL, NULL)) {
+            std::cout << "move skipped: " << cell.x() << "," << cell.y() << std::endl;
             onSkipButtonClicked();
         }
         else {
+            std::cout << "moved: " << cell.x() << "," << cell.y() << " to: " << destination.x() << "," << destination.y() << std::endl;
             onCellClicked(destination);
         }
     }
@@ -140,6 +142,9 @@ void Controller::onSkipButtonClicked() {
     clearHighLights();
     setSelectionHighlights();
     playersView->updateSetBigAndToTop(model.getCurrentPlayer().getColour());
+    if (model.getMoveState() == Game::MoveState::BOT) {
+        startBot();
+    }
 }
 
 //handled de file save knop

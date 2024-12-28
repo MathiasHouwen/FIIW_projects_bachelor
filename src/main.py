@@ -9,11 +9,11 @@ __license__ = "GPLv3"
 
 import matplotlib.pyplot as plt
 import pandas as pd
-from src.ModelHandler import ModelHandler
-from src.massaging_functions import massage_for_linear_regression
-from src.models.LinearRegressionModel import LinearRegressionModel
-from src.utils import make_parser_and_parse
-from src.visualisation import predicted_vs_actual_line
+from src.model.ModelHandler import ModelHandler
+from src.model.massaging_functions import massage_for_linear_regression
+from src.model.models.LinearRegressionModel import LinearRegressionModel
+from src.util.utils import make_parser_and_parse
+from src.report.visualisation import predicted_vs_actual_line
 
 
 def main(args):

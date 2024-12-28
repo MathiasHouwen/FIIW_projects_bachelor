@@ -1,6 +1,6 @@
 import numpy as np
 from sklearn.linear_model import LinearRegression
-from src.ModelHandler import MLModel
+from src.model.ModelHandler import MLModel
 
 
 class LinearRegressionModel(MLModel):

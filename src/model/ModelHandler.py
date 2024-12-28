@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from typing import Callable, Type, TypeVar, Generic, Optional
 import pandas as pd
 
-from src.utils import split_features
+from src.util.utils import split_features
 
 # ABC = ABstract Class
 class MLModel(ABC):

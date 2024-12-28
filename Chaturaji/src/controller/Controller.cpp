@@ -77,7 +77,11 @@ void Controller::startBot() {
         const QPoint destination = model.moveBotPiece();
         if(destination == QPoint(NULL, NULL)) {
             std::cout << "move skipped: " << cell.x() << "," << cell.y() << std::endl;
-            onSkipButtonClicked();
+            model.skip();
+            setMoveAndDice();
+            clearHighLights();
+            setSelectionHighlights();
+            playersView->updateSetBigAndToTop(model.getCurrentPlayer().getColour());
         }
         else {
             std::cout << "moved: " << cell.x() << "," << cell.y() << " to: " << destination.x() << "," << destination.y() << std::endl;

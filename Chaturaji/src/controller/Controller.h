@@ -34,6 +34,7 @@ private:
     void setMoveHightlights();
     void setMoveAndDice();
     void initPlayersView();
+    void endGame();
 public:
     Controller(Game &model, BoardView* boardView, DiceAndMovesView* diceAndMovesView, FileIOView* fileIoView, PlayersView* playersView);
     void start();

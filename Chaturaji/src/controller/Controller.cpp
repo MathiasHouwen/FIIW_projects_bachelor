@@ -68,6 +68,7 @@ void Controller::onCellClicked(QPoint cell) {
     if(model.getMoveState() == Game::MoveState::BOT) {
         startBot();
     }
+    if(model.isGameOver()){endGame();}
 }
 
 void Controller::startBot() {
@@ -151,6 +152,14 @@ void Controller::onSkipButtonClicked() {
     if (model.getMoveState() == Game::MoveState::BOT) {
         startBot();
     }
+    if(model.isGameOver()){endGame();}
+}
+
+void Controller::endGame() {
+    std::cout << std::endl << "END GAME" << std::endl;
+    std::cout << "WINNER: " << model.getCurrentPlayer().getName().toStdString() << std::endl;
+    _sleep(5000);
+    start();
 }
 
 //handled de file save knop

@@ -88,18 +88,18 @@ void Piece::setCell(const QPoint &cell) {
 
 bool Piece::operator>(const Piece &other) const {
     if(other.cell.x() == NULL || other.cell.y() == NULL){return true;}
-    int myX = this->cell.x()*attackPattern.forward;
-    int myY = this->cell.y()*attackPattern.forward;
-    int otherX = other.cell.x()*attackPattern.forward;
-    int otherY = other.cell.y()*attackPattern.forward;
+    int myX = this->cell.x()*walkPattern.forwardDirection.x();
+    int myY = this->cell.y()*walkPattern.forwardDirection.y()*-1;
+    int otherX = other.cell.x()*walkPattern.forwardDirection.x();
+    int otherY = other.cell.y()*walkPattern.forwardDirection.y()*-1;
     return myX >= otherX && myY >= otherY;
 }
 
 bool Piece::operator<(const Piece &other) const {
     if(other.cell.x() == NULL || other.cell.y() == NULL){return true;}
-    int myX = this->cell.x()*attackPattern.forwardDirection.x();
-    int myY = this->cell.y()*attackPattern.forwardDirection.y();
-    int otherX = other.cell.x()*attackPattern.forwardDirection.x();
-    int otherY = other.cell.y()*attackPattern.forwardDirection.y();
+    int myX = this->cell.x()*walkPattern.forwardDirection.x();
+    int myY = this->cell.y()*walkPattern.forwardDirection.y()*-1;
+    int otherX = other.cell.x()*walkPattern.forwardDirection.x();
+    int otherY = other.cell.y()*walkPattern.forwardDirection.y()*-1;
     return myX <= otherX && myY <= otherY;
 }

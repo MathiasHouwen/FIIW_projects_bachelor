@@ -40,9 +40,9 @@ void StartScreen::set_players(MainWindow* window) {
         window->getModel()->setPlayerName(name, static_cast<Player::colour>(i));
     }
     if(ui->agressive->isChecked()) {
-        window->getModel()->makeBot(Player::colour::GREEN, true);
+        window->getModel()->makeBot(Player::colour::YELLOW, true);
     }
     else if(ui->passive->isChecked()) {
-        window->getModel()->makeBot(Player::colour::GREEN, false);
+        window->getModel()->makeBot(Player::colour::YELLOW, false);
     }
 }

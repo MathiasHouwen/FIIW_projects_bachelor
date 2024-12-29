@@ -78,17 +78,20 @@ Game::MoveResult Game::movePiece(QPoint destinationCell) {
 QPoint Game::getNextMove(QSet<QPoint> moves) {
     auto direction = getCurrentPlayer().getAlivePieces().values().first()->getWalkPattern().forwardDirection;
     bool aggressive = std::dynamic_pointer_cast<Bot>(players[turn])->getAggressive();
-    Piece calculated{Piece::Type::KING, {0, 0}, getCurrentPlayer(), {0, 0}};
+    Piece calculated{Piece::Type::KING, {0, 0}, getCurrentPlayer(), {NULL, NULL}};
     if(aggressive) {
         for(auto move : moves) {
-            Piece dummy{Piece::Type::KING, direction, getCurrentPlayer(), move};
+            Piece* destPiece = board.getCell(move);
+            if(destPiece) {return destPiece->getCell();}
+            Piece dummy{Piece::Type::KING, {0, 0}, getCurrentPlayer(), move};
             if(dummy.operator>(calculated)){calculated.setCell(move);}
         }
     }
     else {
-        calculated.setCell({8,8});
         for(auto move : moves) {
-            Piece dummy{Piece::Type::KING, direction, getCurrentPlayer(), move};
+            Piece* destPiece = board.getCell(move);
+            if(destPiece) {continue;}
+            Piece dummy{Piece::Type::KING, {0, 0}, getCurrentPlayer(), move};
             if(dummy.operator<(calculated)){calculated.setCell(move);}
         }
     }

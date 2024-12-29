@@ -14,7 +14,7 @@ from src.model.massaging_functions import massage_for_linear_regression
 from src.model.models.LinearRegressionModel import LinearRegressionModel
 from src.report.metrics import print_mean_square, print_MAPE
 from src.util.utils import make_parser_and_parse
-from src.report.visualisation import predicted_vs_actual_line
+from src.report.visualisation import predicted_vs_actual_line, ape_boxplot
 
 
 def main(args):
@@ -43,6 +43,8 @@ def main(args):
     print_mean_square(testing_dataframe_result, 'Last Close')
     print_MAPE(testing_dataframe_result, 'Last Close')
     predicted_vs_actual_line(testing_dataframe_result, 'Last Close')
+    plt.figure()
+    ape_boxplot(testing_dataframe_result, 'Last Close')
     plt.show()
 
 

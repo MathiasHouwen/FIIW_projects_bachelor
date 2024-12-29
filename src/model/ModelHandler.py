@@ -29,8 +29,8 @@ class ModelHandler(Generic[T]):
                  model_class: Type[T],
                  massaging_function: Optional[Callable[[pd.DataFrame], pd.DataFrame]] = None):
 
-        self._test_dataframe = test_dataframe
-        self._train_dataframe = train_dataframe
+        self._test_dataframe = test_dataframe.copy() # copy to not edit original object
+        self._train_dataframe = train_dataframe.copy()
         self._y_column_name = y_column
         self._massaging_function = massaging_function
         self._model = model_class()

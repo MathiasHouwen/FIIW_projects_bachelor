@@ -12,7 +12,7 @@ import pandas as pd
 from src.model.ModelHandler import ModelHandler
 from src.model.massaging_functions import massage_for_linear_regression
 from src.model.models.LinearRegressionModel import LinearRegressionModel
-from src.report.metrics import print_mean_square
+from src.report.metrics import print_mean_square, print_MAPE
 from src.util.utils import make_parser_and_parse
 from src.report.visualisation import predicted_vs_actual_line
 
@@ -41,6 +41,7 @@ def main(args):
 
     # visualise & print metrics
     print_mean_square(testing_dataframe_result, 'Last Close')
+    print_MAPE(testing_dataframe_result, 'Last Close')
     predicted_vs_actual_line(testing_dataframe_result, 'Last Close')
     plt.show()
 

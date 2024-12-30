@@ -9,18 +9,6 @@ def drop_date(dataframe: pd.DataFrame) -> pd.DataFrame:
     dataframe = dataframe.drop('Date', axis=1, inplace=False)
     return dataframe
 
-def massage_for_linear_regression(train_df: pd.DataFrame, test_df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame]:
-    train_df = drop_date(train_df)
-    test_df = drop_date(test_df)
-
-    x_columns_train, _ = split_features(train_df, 'Last Close')
-    x_columns_test, _ = split_features(test_df, 'Last Close')
-
-    train_df = include_diff_features(train_df)
-    test_df = include_diff_features(test_df)
-
-    return train_df, test_df
-
 def include_lagged_features(dataframe: pd.DataFrame) -> pd.DataFrame:
     column_names = dataframe.columns
     column_names_lag = [f"previous_{col}" for col in column_names]
@@ -46,7 +34,29 @@ def include_lagged_and_diff(dataframe: pd.DataFrame) -> pd.DataFrame:
     dataframe.dropna(inplace=True) # there will be one empty cell after shifting
     return dataframe
 
+
+
+
+
+
+
+
+
+
+def massage_for_linear_regression(train_df: pd.DataFrame, test_df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    train_df.dropna(inplace=True)
+    test_df.dropna(inplace=True)
+    train_df = drop_date(train_df)
+    test_df = drop_date(test_df)
+
+    # train_df = include_diff_features(train_df)
+    # test_df = include_diff_features(test_df)
+
+    return train_df, test_df
+
 def massage_for_grad_boost(train_df: pd.DataFrame, test_df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    train_df.dropna(inplace=True)
+    test_df.dropna(inplace=True)
     train_df = drop_date(train_df)
     test_df = drop_date(test_df)
 
@@ -66,13 +76,9 @@ def massage_for_grad_boost(train_df: pd.DataFrame, test_df: pd.DataFrame) -> Tup
     return train_df, test_df
 
 def massage_for_neural_network(train_df: pd.DataFrame, test_df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    train_df.dropna(inplace=True)
+    test_df.dropna(inplace=True)
     train_df = drop_date(train_df)
     test_df = drop_date(test_df)
-
-    x_columns_train, _ = split_features(train_df, 'Last Close')
-    x_columns_test, _ = split_features(test_df, 'Last Close')
-
-    train_df = include_diff_features(train_df)
-    test_df = include_diff_features(test_df)
 
     return train_df, test_df

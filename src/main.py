@@ -40,7 +40,7 @@ def main(args):
     testing_dataframe_result = model_handler.getTestDataframe()
 
     # visualise & print metrics
-    plt.figure(figsize=(10, 6))
+    plt.figure()
     plot_input_data(testing_dataframe_raw, 'Last Close')
 
     print_mean_square(testing_dataframe_result, 'Last Close')

@@ -10,7 +10,8 @@ __license__ = "GPLv3"
 import matplotlib.pyplot as plt
 import pandas as pd
 from src.model.ModelHandler import ModelHandler
-from src.model.massaging_functions import massage_for_linear_regression
+from src.model.massaging_functions import massage_for_linear_regression, massage_for_grad_boost
+from src.model.models.GradientBoostingRegressionModel import GradientBoostingRegressionModel
 from src.model.models.LinearRegressionModel import LinearRegressionModel
 from src.report.metrics import print_mean_square, print_MAPE
 from src.util.utils import make_parser_and_parse
@@ -25,12 +26,19 @@ def main(args):
     testing_dataframe_raw = pd.read_csv(args.testing_file)
 
     # config model handler
+    # model_handler = ModelHandler(
+    #     test_dataframe=testing_dataframe_raw,
+    #     train_dataframe=training_dataframe,
+    #     y_column='Last Close',
+    #     model_class=LinearRegressionModel,
+    #     massaging_function=massage_for_linear_regression
+    # )
     model_handler = ModelHandler(
         test_dataframe=testing_dataframe_raw,
         train_dataframe=training_dataframe,
         y_column='Last Close',
-        model_class=LinearRegressionModel,
-        massaging_function=massage_for_linear_regression
+        model_class=GradientBoostingRegressionModel,
+        massaging_function=massage_for_grad_boost
     )
 
     # train and predict

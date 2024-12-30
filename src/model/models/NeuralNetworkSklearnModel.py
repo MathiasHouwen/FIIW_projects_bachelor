@@ -9,13 +9,13 @@ class NeuralNetworkSklearnModel(MLModel):
     def __init__(self):
         super().__init__()
 
-        self.param_grid = {
-            'hidden_layer_sizes': [(10,), (10, 10)],  # Simplified number of layers and neurons
-            'activation': ['relu'],  # 'relu' is a good default choice
-            'alpha': [0.0001, 0.001],  # Narrow range of alpha values
-            'learning_rate_init': [0.001, 0.01],  # Fewer learning rate values
-            'solver': ['adam'],  # 'adam' is often the best optimizer for most cases
-            'max_iter': [500]  # Lower max iterations for faster convergence
+        param_grid = {
+            'hidden_layer_sizes': [(10,), (10, 10), (32, 32)],
+            'activation': ['relu', 'tanh'],
+            'alpha': [0.0001, 0.001, 0.01],
+            'learning_rate_init': [0.0001, 0.001],
+            'solver': ['adam', 'sgd'],
+            'max_iter': [1000, 2000]
         }
 
         self.param_dist = {

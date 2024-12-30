@@ -65,6 +65,14 @@ def massage_for_grad_boost(train_df: pd.DataFrame, test_df: pd.DataFrame) -> Tup
 
     return train_df, test_df
 
-def massage_for_neural_network(dataframe: pd.DataFrame) -> pd.DataFrame:
-    dataframe = drop_date(dataframe)
-    return dataframe
+def massage_for_neural_network(train_df: pd.DataFrame, test_df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    train_df = drop_date(train_df)
+    test_df = drop_date(test_df)
+
+    x_columns_train, _ = split_features(train_df, 'Last Close')
+    x_columns_test, _ = split_features(test_df, 'Last Close')
+
+    train_df = include_diff_features(train_df)
+    test_df = include_diff_features(test_df)
+
+    return train_df, test_df

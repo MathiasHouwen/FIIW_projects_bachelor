@@ -13,8 +13,11 @@ def massage_for_linear_regression(train_df: pd.DataFrame, test_df: pd.DataFrame)
     train_df = drop_date(train_df)
     test_df = drop_date(test_df)
 
-    train_df = include_lagged_and_diff(train_df)
-    test_df = include_lagged_and_diff(test_df)
+    x_columns_train, _ = split_features(train_df, 'Last Close')
+    x_columns_test, _ = split_features(test_df, 'Last Close')
+
+    train_df = include_diff_features(train_df)
+    test_df = include_diff_features(test_df)
 
     return train_df, test_df
 
@@ -26,14 +29,16 @@ def include_lagged_features(dataframe: pd.DataFrame) -> pd.DataFrame:
     return dataframe
 
 def include_diff_features(dataframe: pd.DataFrame) -> pd.DataFrame:
-    column_names = dataframe.columns
+    x_columns, _ = split_features(dataframe, 'Last Close')
+    column_names = x_columns.columns
     column_names_diff = [f"diff_{col}" for col in column_names]
     dataframe[column_names_diff] = dataframe[column_names].diff()
     dataframe.dropna(inplace=True) # there will be one empty cell after shifting
     return dataframe
 
 def include_lagged_and_diff(dataframe: pd.DataFrame) -> pd.DataFrame:
-    column_names = dataframe.columns
+    x_columns, _ = split_features(dataframe, 'Last Close')
+    column_names = x_columns.columns
     column_names_lag = [f"diff_{col}" for col in column_names]
     column_names_diff = [f"previous_{col}" for col in column_names]
     dataframe[column_names_lag] = dataframe[column_names].shift(1)

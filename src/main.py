@@ -26,20 +26,20 @@ def main(args):
     testing_dataframe_raw = pd.read_csv(args.testing_file)
 
     # config model handler
-    # model_handler = ModelHandler(
-    #     test_dataframe=testing_dataframe_raw,
-    #     train_dataframe=training_dataframe,
-    #     y_column='Last Close',
-    #     model_class=LinearRegressionModel,
-    #     massaging_function=massage_for_linear_regression
-    # )
     model_handler = ModelHandler(
         test_dataframe=testing_dataframe_raw,
         train_dataframe=training_dataframe,
         y_column='Last Close',
-        model_class=GradientBoostingRegressionModel,
-        massaging_function=massage_for_grad_boost
+        model_class=LinearRegressionModel,
+        massaging_function=massage_for_linear_regression,
     )
+    # model_handler = ModelHandler(
+    #     test_dataframe=testing_dataframe_raw,
+    #     train_dataframe=training_dataframe,
+    #     y_column='Last Close',
+    #     model_class=GradientBoostingRegressionModel,
+    #     massaging_function=massage_for_grad_boost,
+    # )
 
     # train and predict
     model_handler.massage()
@@ -48,8 +48,8 @@ def main(args):
     testing_dataframe_result = model_handler.getTestDataframe()
 
     # visualise & print metrics
-    plt.figure()
-    plot_input_data(testing_dataframe_raw, 'Last Close')
+    # plt.figure()
+    # plot_input_data(testing_dataframe_raw, 'Last Close')
 
     print_mean_square(testing_dataframe_result, 'Last Close')
     print_MAPE(testing_dataframe_result, 'Last Close')

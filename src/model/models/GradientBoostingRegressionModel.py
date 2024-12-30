@@ -9,7 +9,7 @@ class GradientBoostingRegressionModel(MLModel):
 
     def __init__(self):
         super().__init__()
-        self.scikit_model =GradientBoostingRegressor(n_estimators=100, learning_rate=0.1, max_depth=3)
+        self.scikit_model = GradientBoostingRegressor(n_estimators=100, learning_rate=0.05, max_depth=5)
 
 
     def train(self, x_features: np.array, y_feature: np.array):

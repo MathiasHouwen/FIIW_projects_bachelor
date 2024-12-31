@@ -80,5 +80,7 @@ def massage_for_neural_network(train_df: pd.DataFrame, test_df: pd.DataFrame) ->
     test_df.dropna(inplace=True)
     train_df = drop_date(train_df)
     test_df = drop_date(test_df)
+    # train_df = include_lagged_features(train_df)
+    # test_df = include_lagged_features(test_df)
 
     return train_df, test_df

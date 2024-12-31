@@ -15,9 +15,9 @@ from src.model.massaging_functions import massage_for_linear_regression, massage
 from src.model.models.GradientBoostingRegressionModel import GradientBoostingRegressionModel
 from src.model.models.LinearRegressionModel import LinearRegressionModel
 from src.model.models.NeuralNetworkSklearnModel import NeuralNetworkSklearnModel
-from src.report.metrics import print_mean_square, print_MAPE
+from src.evaluation.metrics import print_mean_square, print_MAPE
 from src.util.utils import make_parser_and_parse
-from src.report.visualisation import predicted_vs_actual_line, ape_boxplot, plot_input_data
+from src.evaluation.visualisation import predicted_vs_actual_line, ape_boxplot, plot_input_data
 
 
 def main(args):
@@ -28,37 +28,25 @@ def main(args):
     testing_dataframe_raw = pd.read_csv(args.testing_file)
 
     # config model handler
-    # model_handler = ModelHandler(
-    #     test_dataframe=testing_dataframe_raw,
-    #     train_dataframe=training_dataframe,
-    #     y_column='Last Close',
-    #     model_class=LinearRegressionModel,
-    #     massaging_function=massage_for_linear_regression,
-    # )
-    # model_handler = ModelHandler(
-    #     test_dataframe=testing_dataframe_raw,
-    #     train_dataframe=training_dataframe,
-    #     y_column='Last Close',
-    #     model_class=GradientBoostingRegressionModel,
-    #     massaging_function=massage_for_grad_boost,
-    # )
     model_handler = ModelHandler(
         test_dataframe=testing_dataframe_raw,
         train_dataframe=training_dataframe,
         y_column='Last Close',
-        model_class=NeuralNetworkSklearnModel,
-        massaging_function=massage_for_neural_network,
+        model_class=LinearRegressionModel,
+        # model_class=GradientBoostingRegressionModel,
+        # model_class=NeuralNetworkSklearnModel,
+        massaging_function=massage_for_linear_regression
+        # massaging_function = massage_for_grad_boost
+        # massaging_function = massage_for_neural_network
     )
+
     # train and predict
     model_handler.massage()
     model_handler.train()
     model_handler.predict()
     testing_dataframe_result = model_handler.getTestDataframe()
 
-    # visualise & print metrics
-    # plt.figure()
-    # plot_input_data(testing_dataframe_raw, 'Last Close')
-
+    # visualise and show metrics
     print_mean_square(testing_dataframe_result, 'Last Close')
     print_MAPE(testing_dataframe_result, 'Last Close')
 

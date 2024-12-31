@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 import matplotlib.dates as mdates
 
 
-from src.report.metrics import calculate_ape
+from src.evaluation.metrics import calculate_ape
 from src.util.utils import split_actual_predicted_df, split_actual_predicted_np_arr, split_features
 
 

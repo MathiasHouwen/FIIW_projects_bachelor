@@ -78,6 +78,9 @@ public:
 
     bool canPromote(QPoint *selectedCell);
     bool promote(QPoint *selectedCell);
+
+    bool canSinhasana(QPoint *selectedCell);
+    bool sinhasana(QPoint *selectedCell);
 };
 
 

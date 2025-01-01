@@ -13,25 +13,6 @@ Game::Game() : board(), mover(board) {
     currentlySelectedCell = nullptr;
 }
 
-bool Game::promote(QPoint *selectedCell){
-    Piece piece = *board.getCell(*selectedCell);
-    Piece::Type type = piece.getType();
-
-    // TODO: ASK FOR WICH TO PROMOTO AND PROMOTE THEM
-}
-
-bool Game::canPromote(QPoint *selectedCell){
-    Piece piece = *board.getCell(*selectedCell);
-    Piece::Type type = piece.getType();
-
-    if(type != Piece::Type::PAWN){
-        return false;
-    }
-
-    Player player = piece.getPlayer();
-    // TODO: CHECK IF IT IS IN THE TOP SQAURE
-}
-
 void Game::setPlayerName(const QString& name, Player::colour playerColour) {
     players[static_cast<int>(playerColour)]->setName(name);
 }
@@ -234,4 +215,38 @@ const int Game::getNumberOfPlayer() {
     return numberOfPlayer;
 }
 
+bool Game::promote(QPoint *selectedCell){
+    Piece piece = *board.getCell(*selectedCell);
+    Piece::Type type = piece.getType();
 
+    // TODO: ASK FOR WICH TO PROMOTO AND PROMOTE THEM
+}
+
+bool Game::canPromote(QPoint *selectedCell){
+    Piece piece = *board.getCell(*selectedCell);
+    Piece::Type type = piece.getType();
+
+    if(type != Piece::Type::PAWN){
+        return false;
+    }
+
+    Player player = piece.getPlayer();
+    // TODO: CHECK IF IT IS IN THE TOP SQAURE
+}
+
+bool Game::canSinhasana(QPoint *selectedCell) {
+    Piece piece = *board.getCell(*selectedCell);
+    Piece::Type type = piece.getType();
+
+    if(type != Piece::Type::KING){
+        return false;
+    }
+
+    // TODO: CHECK IF ITS A KING STARTING POS
+    return false;
+}
+
+bool Game::sinhasana(QPoint *selectedCell) {
+    // TODO: KILL PLAYER
+    return false;
+}

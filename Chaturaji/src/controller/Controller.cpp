@@ -53,8 +53,6 @@ void Controller::onCellClicked(QPoint cell) {
 //            // TODO: PAWN PROMATION
 //            if(model.canPromote(&cell)){
 //                // TODO: ASK FOR WICH PIECE TO PROMOTO IT TO
-//
-//
 //            }
 //
 //

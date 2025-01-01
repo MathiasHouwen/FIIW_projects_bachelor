@@ -250,3 +250,21 @@ bool Game::sinhasana(QPoint *selectedCell) {
     // TODO: KILL PLAYER
     return false;
 }
+
+bool Game::canVrihannauka(QPoint *selectedCell) {
+    Piece piece = *board.getCell(*selectedCell);
+    Piece::Type type = piece.getType();
+
+    if(type != Piece::Type::BOAT){
+        return false;
+    }
+
+    // TODO: CHECK FOR SQAURE OF BOATS
+
+    return false;
+}
+
+bool Game::vrihannauka(QPoint *selectedCell) {
+    // TODO: KILL THE OTHER BOATS
+    return false;
+}

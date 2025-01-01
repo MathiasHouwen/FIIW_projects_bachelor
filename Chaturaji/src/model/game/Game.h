@@ -81,6 +81,9 @@ public:
 
     bool canSinhasana(QPoint *selectedCell);
     bool sinhasana(QPoint *selectedCell);
+
+    bool canVrihannauka(QPoint *selectedCell);
+    bool vrihannauka(QPoint *selectedCell);
 };
 
 

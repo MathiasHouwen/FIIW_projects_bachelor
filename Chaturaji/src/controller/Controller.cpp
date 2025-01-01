@@ -49,6 +49,18 @@ void Controller::onCellClicked(QPoint cell) {
         const Player& currentPlayer = model.getCurrentPlayer();
         Game::MoveResult result = model.movePiece(cell);
         if(result.succes){
+
+//            // TODO: PAWN PROMATION
+//            if(model.canPromote(&cell)){
+//                // TODO: ASK FOR WICH PIECE TO PROMOTO IT TO
+//
+//
+//            }
+//
+//
+//            // TODO: sinhasana
+//            // TODO: vrihannauka
+
             const Player& newPlayer = model.getCurrentPlayer();
             boardView->updatePiece(selectedCell, nullptr);
             boardView->updatePiece(cell, model.getBoard().getCell(cell));

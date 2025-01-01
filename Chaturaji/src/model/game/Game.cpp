@@ -1,5 +1,3 @@
-
-
 #include <iostream>
 #include <ctime>
 #include "Game.h"
@@ -13,6 +11,25 @@
 
 Game::Game() : board(), mover(board) {
     currentlySelectedCell = nullptr;
+}
+
+bool Game::promote(QPoint *selectedCell){
+    Piece piece = *board.getCell(*selectedCell);
+    Piece::Type type = piece.getType();
+
+    // TODO: ASK FOR WICH TO PROMOTO AND PROMOTE THEM
+}
+
+bool Game::canPromote(QPoint *selectedCell){
+    Piece piece = *board.getCell(*selectedCell);
+    Piece::Type type = piece.getType();
+
+    if(type != Piece::Type::PAWN){
+        return false;
+    }
+
+    Player player = piece.getPlayer();
+    // TODO: CHECK IF IT IS IN THE TOP SQAURE
 }
 
 void Game::setPlayerName(const QString& name, Player::colour playerColour) {

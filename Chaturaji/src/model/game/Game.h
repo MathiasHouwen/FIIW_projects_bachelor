@@ -73,10 +73,11 @@ public:
     std::vector<std::shared_ptr<Player>> getPlayers() const;
 
     void setPlayerName(const QString &name, Player::colour playerColour);
-
     void setPlayerScore(int score, Player::colour playerColour);
-
     static const int getNumberOfPlayer();
+
+    bool canPromote(QPoint *selectedCell);
+    bool promote(QPoint *selectedCell);
 };
 
 

@@ -50,6 +50,10 @@ void Controller::onCellClicked(QPoint cell) {
         Game::MoveResult result = model.movePiece(cell);
         if(result.succes){
 
+            if(model.vrihannauka(&selectedCell)){
+                std::cout << "vrihannauka";
+            }
+
 //            // TODO: PAWN PROMATION
 //            if(model.canPromote(&cell)){
 //                // TODO: ASK FOR WICH PIECE TO PROMOTO IT TO
@@ -57,7 +61,6 @@ void Controller::onCellClicked(QPoint cell) {
 //
 //
 //            // TODO: sinhasana
-//            // TODO: vrihannauka
 
             const Player& newPlayer = model.getCurrentPlayer();
             boardView->updatePiece(selectedCell, nullptr);

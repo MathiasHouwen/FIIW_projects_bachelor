@@ -20,6 +20,12 @@ void Board::setCell(const QPoint cell, Piece piece) {
     board[cell.y()][cell.x()] = newPiece;
 }
 
+void Board::clearCell(QPoint cell) {
+    Piece* oldPiece = getCell(cell);
+    delete oldPiece;    // delete oude piece eerst van heap
+    board[cell.y()][cell.x()] = nullptr;
+}
+
 void Board::move(QPoint fromCell, QPoint toCell) {
     Piece* from = getCell(fromCell);    // get oude piece
     from->getPlayer().removePiece(from);
@@ -52,6 +58,3 @@ void Board::errorIfOutOfRane(QPoint cell) {
     if(!isInRange(cell))
         std::cerr << "Cell [" << cell.x() << ", " << cell.y() << "] out of range" << std::endl;
 }
-
-
-

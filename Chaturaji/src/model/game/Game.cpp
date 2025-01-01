@@ -261,21 +261,55 @@ void Game::mergeArmies(Player *fromPlayer, Player *toPlayer){
 }
 
 
-bool Game::canVrihannauka(QPoint *selectedCell) {
+bool Game::vrihannauka(QPoint *selectedCell) {
     Piece piece = *board.getCell(*selectedCell);
     Piece::Type type = piece.getType();
+    Player player = piece.getPlayer();
 
 
-    if(type != Piece::Type::BOAT){
+    if (type != Piece::Type::BOAT) {
         return false;
     }
 
-    // TODO: CHECK FOR SQAURE OF BOATS
+    std::vector<QPoint> topLeftCorners = {
+            QPoint(selectedCell->x() - 1, selectedCell->y() - 1),
+            QPoint(selectedCell->x(), selectedCell->y() - 1),
+            QPoint(selectedCell->x() - 1, selectedCell->y()),
+            QPoint(selectedCell->x(), selectedCell->y())
+    };
+
+    for (const auto& corner : topLeftCorners) {
+        if (isSquareFilledWithBoats(corner)) {
+            captureBoats(corner, player);
+            return true;
+        }
+    }
 
     return false;
 }
 
-bool Game::vrihannauka(QPoint *selectedCell) {
-    // TODO: KILL THE OTHER BOATS
-    return false;
+void Game::captureBoats(QPoint topLeft, Player &safe) {
+    for (int i = 0; i < 2; ++i) {
+        for (int j = 0; j < 2; ++j) {
+            QPoint cell(topLeft.x() + i, topLeft.y() + j);
+            Piece* piece = board.getCell(cell);
+
+            if (piece->getPlayer() != safe){
+                piece->getPlayer().removePiece(piece);
+                board.clearCell(cell);
+            }
+        }
+    }
+}
+
+bool Game::isSquareFilledWithBoats(QPoint topLeft) {
+    for (int i = 0; i < 2; ++i) {
+        for (int j = 0; j < 2; ++j) {
+            QPoint cell(topLeft.x() + i, topLeft.y() + j);
+            if (!board.isInRange(cell) || board.isCellEmpty(cell) || board.getCell(cell)->getType() != Piece::Type::BOAT) {
+                return false;
+            }
+        }
+    }
+    return true;
 }

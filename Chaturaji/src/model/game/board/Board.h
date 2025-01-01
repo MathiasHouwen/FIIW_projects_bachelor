@@ -20,6 +20,7 @@ public:
     void setCell(QPoint cell, Piece piece); // vul een cell met een piece (en delete eventuele oude piece)
     void move(QPoint fromCell, QPoint toCell);  // verplaats de piece van ene naar andere cell (oude cell wordt null)
     void clear();   // delete alle pieces en vul bord met null
+    void clearCell(QPoint cell);
 
     bool isCellEmpty(QPoint cell) const;    // kijkt of een cell geen piece heeft
     Piece* getCell(QPoint cell) const;  // geeft de piece ptr in een cell

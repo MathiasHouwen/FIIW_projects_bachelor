@@ -46,6 +46,8 @@ private:
     QPoint getNextMove(QSet<QPoint> moves);
 
     void mergeArmies(Player *fromPlayer, Player *toPlayer);
+    bool isSquareFilledWithBoats(QPoint topLeft);
+    void captureBoats(QPoint topLeft, Player &safe);
 
 public:
     Game();
@@ -82,9 +84,8 @@ public:
     bool promote(QPoint *selectedCell);
 
     bool sinhasana(QPoint *selectedCell);
-
-    bool canVrihannauka(QPoint *selectedCell);
     bool vrihannauka(QPoint *selectedCell);
+
 };
 
 

@@ -234,7 +234,7 @@ bool Game::canPromote(QPoint *selectedCell){
     // TODO: CHECK IF IT IS IN THE TOP SQAURE
 }
 
-bool Game::canSinhasana(QPoint *selectedCell) {
+bool Game::sinhasana(QPoint *selectedCell) {
     Piece piece = *board.getCell(*selectedCell);
     Piece::Type type = piece.getType();
 
@@ -242,18 +242,29 @@ bool Game::canSinhasana(QPoint *selectedCell) {
         return false;
     }
 
-    // TODO: CHECK IF ITS A KING STARTING POS
-    return false;
+    // TODO: ja idk nog niet hoe ik deze moet krijgen :/
+    std::unordered_map<Player*, QPoint> kingPositions;
+    for (const auto &position : kingPositions){
+        QPoint kingCell = position.second;
+
+        // TODO: CHECK IF PLAYER IS ALLIED???
+        if(&kingCell == selectedCell){
+            Piece piece = *board.getCell(*selectedCell);
+            mergeArmies(position.first, &(piece.getPlayer()));
+        }
+    }
+    return true;
 }
 
-bool Game::sinhasana(QPoint *selectedCell) {
-    // TODO: KILL PLAYER
-    return false;
+void Game::mergeArmies(Player *fromPlayer, Player *toPlayer){
+
 }
+
 
 bool Game::canVrihannauka(QPoint *selectedCell) {
     Piece piece = *board.getCell(*selectedCell);
     Piece::Type type = piece.getType();
+
 
     if(type != Piece::Type::BOAT){
         return false;

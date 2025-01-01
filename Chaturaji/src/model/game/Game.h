@@ -45,6 +45,8 @@ private:
     void advance(); // zet game verder naar volgende move, of volgende turn als 2 moves geweest zijn
     QPoint getNextMove(QSet<QPoint> moves);
 
+    void mergeArmies(Player *fromPlayer, Player *toPlayer);
+
 public:
     Game();
     //directe getters
@@ -79,7 +81,6 @@ public:
     bool canPromote(QPoint *selectedCell);
     bool promote(QPoint *selectedCell);
 
-    bool canSinhasana(QPoint *selectedCell);
     bool sinhasana(QPoint *selectedCell);
 
     bool canVrihannauka(QPoint *selectedCell);

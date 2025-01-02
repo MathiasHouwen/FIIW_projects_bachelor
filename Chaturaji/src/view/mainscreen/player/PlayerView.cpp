@@ -8,7 +8,7 @@
 
 
 PlayerView::PlayerView(const Player& player, QWidget *parent) : QWidget(parent) {
-    color = QColor(Player::getColourName(player.getColour()));
+    color = QColor(Player::getColourName(player.getColor()));
     auto layout = new QVBoxLayout(this);
 
     nameLabel = new QLabel(player.getName());

@@ -119,7 +119,7 @@ QJsonObject FileIO::pieceToJson(const BadPieceClass* piece){
     QJsonObject jsonObject;
     if (piece != nullptr){
         jsonObject["type"] = BadPieceClass::getTypeName(piece->getType());
-        jsonObject["player_colour"] = Player::getColourName(piece->getPlayer().getColour());
+        jsonObject["player_colour"] = Player::getColourName(piece->getPlayer().getColor());
 
         QJsonObject dirobj;
         dirobj["x"] = piece->getWalkPattern().forwardDirection.x();
@@ -133,7 +133,7 @@ QJsonObject FileIO::playerToJson(const std::shared_ptr<Player>* player){
     QJsonObject jsonObject;
     if (player != nullptr){
         jsonObject["naam"] = player->get()->getName();
-        jsonObject["colour"] = Player::getColourName(player->get()->getColour());
+        jsonObject["colour"] = Player::getColourName(player->get()->getColor());
         jsonObject["score"] = player->get()->getScore();
     }
     return jsonObject;
@@ -147,7 +147,7 @@ QJsonObject FileIO::playersToJson(const std::shared_ptr<Player>* players, Player
         playersJson.append(playerToJson(&players[i]));
     }
     jsonObject["allPlayers"] = playersJson;
-    jsonObject["currentPlayer"] = Player::getColourName(curr.getColour());
+    jsonObject["currentPlayer"] = Player::getColourName(curr.getColor());
 
     return jsonObject;
 }

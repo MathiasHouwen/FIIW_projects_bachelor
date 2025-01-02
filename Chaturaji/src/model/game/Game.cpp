@@ -56,13 +56,13 @@ Game::MoveResult Game::movePiece(QPoint destinationCell) {
     result.affectedPiece = destPiece;
 
     if (destPiece && destPiece->getType() == BadPieceClass::Type::KING) {
-        destPiece->getPlayer().killPlayer();
+        destPiece->getPlayer().kill();
         result.affectedPlayer = &destPiece->getPlayer();
     }
 
     // doe de movePiece in bord en update score
     board.movePiece(*currentlySelectedCell, destinationCell);
-    getCurrentPlayer().addScore(scoreToAdd);
+    getCurrentPlayer().increaseScore(scoreToAdd);
 
     // maak selectie leeg
     delete currentlySelectedCell;

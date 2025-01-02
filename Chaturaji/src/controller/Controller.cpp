@@ -68,10 +68,10 @@ void Controller::onCellClicked(QPoint cell) {
             clearHighLights();
             setSelectionHighlights();
             setMoveAndDice();
-            playersView->updateScore(currentPlayer.getColour(), currentPlayer.getScore());
-            playersView->updateSetBigAndToTop(newPlayer.getColour());
+            playersView->updateScore(currentPlayer.getColor(), currentPlayer.getScore());
+            playersView->updateSetBigAndToTop(newPlayer.getColor());
             if(result.affectedPlayer && !result.affectedPlayer->isAlive()) {
-                playersView->updateSetGrey(result.affectedPlayer->getColour());
+                playersView->updateSetGrey(result.affectedPlayer->getColor());
                 for (auto piece: result.affectedPlayer->getAlivePieces()) {
                     boardView->updateSetPieceGrey(piece->getCell());
                 }
@@ -97,7 +97,7 @@ void Controller::startBot() {
             setMoveAndDice();
             clearHighLights();
             setSelectionHighlights();
-            playersView->updateSetBigAndToTop(model.getCurrentPlayer().getColour());
+            playersView->updateSetBigAndToTop(model.getCurrentPlayer().getColor());
         }
         else {
             std::cout << "moved: " << cell.x() << "," << cell.y() << " to: " << destination.x() << "," << destination.y() << std::endl;
@@ -161,7 +161,7 @@ void Controller::onSkipButtonClicked() {
     setMoveAndDice();
     clearHighLights();
     setSelectionHighlights();
-    playersView->updateSetBigAndToTop(model.getCurrentPlayer().getColour());
+    playersView->updateSetBigAndToTop(model.getCurrentPlayer().getColor());
     if (model.getMoveState() == Game::MoveState::BOT) {
         startBot();
     }
@@ -224,7 +224,7 @@ void Controller::initPlayersView() {
     for(Player::colour color : {Player::colour::RED, Player::colour::GREEN, Player::colour::BLUE, Player::colour::YELLOW}){
         Player p = model.getPlayerFromColour(color);
         playersView->addPlayerView(p);
-        playersView->updateScore(p.getColour(), p.getScore());
+        playersView->updateScore(p.getColor(), p.getScore());
     }
-    playersView->updateSetBigAndToTop(model.getCurrentPlayer().getColour());
+    playersView->updateSetBigAndToTop(model.getCurrentPlayer().getColor());
 }

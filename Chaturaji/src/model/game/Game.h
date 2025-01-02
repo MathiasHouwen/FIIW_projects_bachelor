@@ -43,7 +43,7 @@ private:
     bool gameOver{false};
 
     void advance(); // zet game verder naar volgende move, of volgende turn als 2 moves geweest zijn
-    QPoint getNextMove(QSet<QPoint> moves);
+    QPoint getNextMove(const QSet<QPoint>& moves);
 
     void mergeArmies(Player *fromPlayer, Player *toPlayer);
     bool isSquareFilledWithBoats(QPoint topLeft);
@@ -78,7 +78,7 @@ public:
 
     void setPlayerName(const QString &name, Player::colour playerColour);
     void setPlayerScore(int score, Player::colour playerColour);
-    static const int getNumberOfPlayer();
+    static int getNumberOfPlayer();
 
     bool canPromote(QPoint *selectedCell);
     bool promote(QPoint *selectedCell);

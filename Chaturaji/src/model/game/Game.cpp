@@ -1,5 +1,4 @@
 #include <iostream>
-#include <ctime>
 #include "Game.h"
 
 #include <qtextstream.h>
@@ -73,8 +72,7 @@ Game::MoveResult Game::movePiece(QPoint destinationCell) {
     return result;
 }
 
-QPoint Game::getNextMove(QSet<QPoint> moves) {
-    auto direction = getCurrentPlayer().getAlivePieces().values().first()->getWalkPattern().forwardDirection;
+QPoint Game::getNextMove(const QSet<QPoint>& moves) {
     bool aggressive = std::dynamic_pointer_cast<Bot>(players[turn])->getAggressive();
     Piece calculated{Piece::Type::KING, {0, 0}, getCurrentPlayer(), {NULL, NULL}};
     if(aggressive) {
@@ -211,7 +209,7 @@ Dice Game::getDice() {
     return dice;
 }
 
-const int Game::getNumberOfPlayer() {
+int Game::getNumberOfPlayer() {
     return numberOfPlayer;
 }
 

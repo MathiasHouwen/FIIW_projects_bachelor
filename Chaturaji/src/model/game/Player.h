@@ -17,6 +17,7 @@ class Player {
 public:
     enum class colour {RED, BLUE, YELLOW, GREEN};
     Player(colour mColour);
+    virtual ~Player() = default;
 
     //setters
     void setName(const QString &mName);

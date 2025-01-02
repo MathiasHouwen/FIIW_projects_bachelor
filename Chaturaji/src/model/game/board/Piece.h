@@ -11,6 +11,9 @@
 class Piece {
 private:
     Color color{Color::NONE};
+public:
+    Piece(Color color);
+    Color getColor();
 };
 
 

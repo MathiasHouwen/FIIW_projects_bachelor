@@ -4,3 +4,10 @@
 
 #include "Piece.h"
 
+Color Piece::getColor() {
+    return color;
+}
+
+Piece::Piece(Color color) {
+    this->color = color;
+}

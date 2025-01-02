@@ -7,14 +7,15 @@
 
 
 #include "Board.h"
+#include <qDebug>
 
 class BoardQuerier {
 
 private:
     Board& board;
 public:
-    void movePiece(QPoint fromCell, QPoint toCell);  // verplaats de piece van ene naar andere cell (oude cell wordt null)
-
+    std::optional<Piece> movePiece(QPoint fromCell, QPoint toCell);  // verplaats de piece van ene naar andere cell (oude cell wordt null)
+    QList<Piece> getPiecesFromColor(Color color);
 };
 
 

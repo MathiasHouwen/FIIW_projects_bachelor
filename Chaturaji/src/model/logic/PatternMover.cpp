@@ -9,7 +9,7 @@
 PatternMover::PatternMover(Board& board) : board(board) {}
 
 QSet<QPoint> PatternMover::getPossibleMoves(Pattern pattern, QPoint cell) {
-    // Elke richting waarin een piece een move kan doen is een quadrant.
+    // Elke richting waarin een piece een movePiece kan doen is een quadrant.
     // indien er een obstakel is, zal die quadrant invalid worden,
     // waardoor je niet verder kan lopen in die richting
     QVarLengthArray<bool> validQuadrants(4*pattern.sideways.size(), true);
@@ -48,10 +48,10 @@ QSet<QPoint> PatternMover::createPatternLayer(int distance, Pattern pattern, QPo
                 int y = cell.y() + distance * ( - dir.y() * pattern.forward + dir.x() * sw );
                 QPoint newCell = {x,y};
 
-                if(board.isInRange(newCell)){
+                if(board.includes(newCell)){
                     // als cell al bezet is mag je daarna niet verder bewegen in dat quadrant
                     // de cell zelf telt wel nog mee, want je mag mogelijks een piece aanvallen
-                    if(!board.isCellEmpty(newCell))
+                    if(!board.isEmptyAt(newCell))
                         validQuadrants[quadrant] = false;
                     // wel sowieso adden want als huidige bezet is kan je wel die piece aanvallen
                     moves.insert(newCell);

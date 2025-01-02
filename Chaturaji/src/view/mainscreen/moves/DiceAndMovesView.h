@@ -21,7 +21,7 @@ public:
     void updateDiceNumbers(int die1, int die2);
     void updateDisableDie(int die, bool disabled);
     void updateMoveLabel(int move);
-    void updatePiecePreviews(QSet<Piece::Type> types);
+    void updatePiecePreviews(QSet<BadPieceClass::Type> types);
 
 signals:
     void skipButtonClicked();

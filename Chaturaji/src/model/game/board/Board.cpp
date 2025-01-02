@@ -1,60 +1,44 @@
 #include "Board.h"
-#include <iostream>
-#include <utility>
 
 // volledig door robin (kleine refactors door ebbe)
 // practicum 2: enkel logica toegevoegd om piece in board te syncen met piece in player door ebbe
 
 
-Piece* Board::getCell(const QPoint cell) const {
-    errorIfOutOfRane(cell); // randgeval
-    return board[cell.y()][cell.x()];
+std::optional<Piece> Board::getPieceAt(const QPoint& cell) const {
+    if(errorIfOutOfRane(cell)) return std::nullopt;
+    return piecesMap[cell];
 }
 
-void Board::setCell(const QPoint cell, Piece piece) {
-    Piece* oldPiece = getCell(cell);
-    delete oldPiece;    // delete oude piece eerst van heap
-    auto newPiece = new Piece(std::move(piece));    // maakt kopie van niewe piece op de heap
-    newPiece->setCell(cell);
-    newPiece->getPlayer().addPiece(newPiece);
-    board[cell.y()][cell.x()] = newPiece;
+void Board::putPieceAt(const QPoint& cell, Piece piece) {
+    if(errorIfOutOfRane(cell)) return;
+    piecesMap[cell] = piece;
 }
 
-void Board::clearCell(QPoint cell) {
-    Piece* oldPiece = getCell(cell);
-    delete oldPiece;    // delete oude piece eerst van heap
-    board[cell.y()][cell.x()] = nullptr;
-}
-
-void Board::move(QPoint fromCell, QPoint toCell) {
-    Piece* from = getCell(fromCell);    // get oude piece
-    from->getPlayer().removePiece(from);
-    from->setCell(toCell);
-    board[fromCell.y()][fromCell.x()] = nullptr; // oude cell op null
-    setCell(toCell, *from);  // nieuwe cell wordt oude piece
+void Board::clearCell(const QPoint& cell) {
+    if(errorIfOutOfRane(cell)) return;
+    piecesMap.remove(cell);
 }
 
 void Board::clear() {
-    for (auto & i : board) {
-        for (Piece* & j : i) {
-            delete j;
-            j = nullptr; //kan omdat j een reference is
-        }
-    }
+    piecesMap.clear();
 }
 
 
-bool Board::isInRange(QPoint cell) {
-    bool xInRange = cell.x() >= 0 && cell.x() <size;
-    bool yInRange = cell.y() >= 0 && cell.y() <size;
+bool Board::includes(const QPoint& cell) {
+    bool xInRange = cell.x() >= 0 && cell.x() <SIZE;
+    bool yInRange = cell.y() >= 0 && cell.y() <SIZE;
     return xInRange && yInRange;
 }
 
-bool Board::isCellEmpty(QPoint cell) const {
-    return getCell(cell) == nullptr;
+bool Board::isEmptyAt(const QPoint& cell) const {
+    if(errorIfOutOfRane(cell)) return false;
+    piecesMap.contains(cell);
 }
 
-void Board::errorIfOutOfRane(QPoint cell) {
-    if(!isInRange(cell))
-        std::cerr << "Cell [" << cell.x() << ", " << cell.y() << "] out of range" << std::endl;
+bool Board::errorIfOutOfRane(const QPoint& cell) {
+    if(!includes(cell)){
+        qWarning() << "Cell [" << cell.x() << ", " << cell.y() << "] out of range";
+        return true;
+    }
+    return false;
 }

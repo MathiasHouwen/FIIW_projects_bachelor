@@ -35,8 +35,8 @@ void Controller::start() {
 // - is de game READY TO SELECT
 //   -> vraag dan om die cell te selecteren (en update de view voor enkel die cell en zijn highlights)
 // - is de game READY TO MOVE
-//   -> vraaf dan om een move te doen naar die cell (en update -idem)
-//      is er een player affected in het resultaat van die move: maak views grijs indien dood
+//   -> vraaf dan om een movePiece te doen naar die cell (en update -idem)
+//      is er een player affected in het resultaat van die movePiece: maak views grijs indien dood
 void Controller::onCellClicked(QPoint cell) {
     if(model.getMoveState() == Game::MoveState::READYTOSELECT){
         bool succes = model.selectPiece(cell);
@@ -64,7 +64,7 @@ void Controller::onCellClicked(QPoint cell) {
 
             const Player& newPlayer = model.getCurrentPlayer();
             boardView->updatePiece(selectedCell, nullptr);
-            boardView->updatePiece(cell, model.getBoard().getCell(cell));
+            boardView->updatePiece(cell, model.getBoard().getPieceAt(cell));
             clearHighLights();
             setSelectionHighlights();
             setMoveAndDice();
@@ -89,10 +89,10 @@ void Controller::startBot() {
     for(int i = 0 ; i < 2; i++) {
         const QPoint cell = model.playBot();
         onCellClicked(cell);
-        std::cout << "move piece: " << cell.x() << "," << cell.y() << std::endl;
+        std::cout << "movePiece piece: " << cell.x() << "," << cell.y() << std::endl;
         const QPoint destination = model.moveBotPiece();
         if(destination == QPoint(NULL, NULL)) {
-            std::cout << "move skipped: " << cell.x() << "," << cell.y() << std::endl;
+            std::cout << "movePiece skipped: " << cell.x() << "," << cell.y() << std::endl;
             model.skip();
             setMoveAndDice();
             clearHighLights();
@@ -134,7 +134,7 @@ void Controller::setSelectionHighlights() {
 void Controller::setMoveHightlights() {
     auto selectables = model.getPossibleMoves();
     for(QPoint cell : selectables){
-        auto highlight = model.getBoard().getCell(cell)
+        auto highlight = model.getBoard().getPieceAt(cell)
                 ? SquareView::HighLight::ATTACKSUGGEST
                 : SquareView::HighLight::MOVESUGGEST;
         boardView->updateHighlight(cell, highlight);
@@ -146,7 +146,7 @@ void Controller::setMoveHightlights() {
     currentHighlights.insert(*model.getCurrentlySelectedCell());
 }
 
-// update de move en dobbelstenen view
+// update de movePiece en dobbelstenen view
 void Controller::setMoveAndDice() {
     diceAndMovesView->updateMoveLabel(model.getMove());
     diceAndMovesView->updateDiceNumbers(model.getDice().getNumber(0), model.getDice().getNumber(1));
@@ -155,7 +155,7 @@ void Controller::setMoveAndDice() {
     diceAndMovesView->updateDisableDie(1, model.getDice().isUsed(1));
 }
 
-// handled een move skip (game::skip en update alles move/turn gerelateerd)
+// handled een move skip (game::skip en update alles movePiece/turn gerelateerd)
 void Controller::onSkipButtonClicked() {
     model.skip();
     setMoveAndDice();

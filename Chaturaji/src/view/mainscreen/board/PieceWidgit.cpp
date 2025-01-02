@@ -17,7 +17,7 @@
 #include "PieceWidgit.h"
 
 
-PieceWidgit::PieceWidgit(QWidget *parent, Piece *piece)
+PieceWidgit::PieceWidgit(QWidget *parent, BadPieceClass *piece)
     : QWidget(parent) {
     loadSvg(piece->getTypeName());
     svg = new QSvgWidget(this);
@@ -26,9 +26,9 @@ PieceWidgit::PieceWidgit(QWidget *parent, Piece *piece)
     setStroke(QColorConstants::Svg::black);
 }
 
-PieceWidgit::PieceWidgit(QWidget *parent, Piece::Type type)
+PieceWidgit::PieceWidgit(QWidget *parent, BadPieceClass::Type type)
     : QWidget(parent) {
-    loadSvg(Piece::getTypeName(type));
+    loadSvg(BadPieceClass::getTypeName(type));
     svg = new QSvgWidget(this);
     svg->load(svgDOM.toByteArray());
     setFill(Qt::gray);

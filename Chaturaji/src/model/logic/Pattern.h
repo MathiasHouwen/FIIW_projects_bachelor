@@ -11,7 +11,7 @@
 // NIET AANGEPAST IN PRACTICUM 2
 
 /*
- *  Pattern is de move van een piece in 1 richting.
+ *  Pattern is de movePiece van een piece in 1 richting.
  *  Die zal later automatisch gedraaid worden voor alle 4 richtingen
  *
  * Een piece loopt [forward] cellen naar voor en [sideways] cellen opzij

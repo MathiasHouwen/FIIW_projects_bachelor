@@ -19,9 +19,9 @@ FileIO::FileIO()= default;
 // == Loading functionality ==
 // ===========================
 
-Piece FileIO::jsonToPiece(const QJsonObject &jsonObject, Game *gamemodel) {
+BadPieceClass FileIO::jsonToPiece(const QJsonObject &jsonObject, Game *gamemodel) {
     QString typestr = jsonObject["type"].toString();
-    Piece::Type type = Piece::getTypeFromName(typestr);
+    BadPieceClass::Type type = BadPieceClass::getTypeFromName(typestr);
 
     QString colourstr = jsonObject["player_colour"].toString();
     Player::colour colour = Player::getColourFromName(colourstr);
@@ -32,7 +32,7 @@ Piece FileIO::jsonToPiece(const QJsonObject &jsonObject, Game *gamemodel) {
     int y = dirobj["y"].toInt();
     QPoint direction(x, y);
 
-    return Piece(type, direction, player);
+    return BadPieceClass(type, direction, player);
 }
 
 void FileIO::jsonToPlayers(Game* game, QJsonObject rootObj){
@@ -78,8 +78,8 @@ void FileIO::jsonToBoard(QJsonObject boardObject, Game* gamemodel){
         for(int y=0; y<Board::getSize(); y++){
             QJsonObject pieceObj = rij[y].toObject();
             if (!pieceObj.isEmpty()) {
-                Piece piece = FileIO::jsonToPiece(pieceObj, gamemodel);
-                board.setCell(QPoint{x, y}, piece);
+                BadPieceClass piece = FileIO::jsonToPiece(pieceObj, gamemodel);
+                board.putPieceAt(QPoint{x, y}, piece);
             }
         }
     }
@@ -115,10 +115,10 @@ void FileIO::loadBoard(Game* game, QString filePath){
 // == Saving functionality ==
 // ==========================
 
-QJsonObject FileIO::pieceToJson(const Piece* piece){
+QJsonObject FileIO::pieceToJson(const BadPieceClass* piece){
     QJsonObject jsonObject;
     if (piece != nullptr){
-        jsonObject["type"] = Piece::getTypeName(piece->getType());
+        jsonObject["type"] = BadPieceClass::getTypeName(piece->getType());
         jsonObject["player_colour"] = Player::getColourName(piece->getPlayer().getColour());
 
         QJsonObject dirobj;
@@ -158,7 +158,7 @@ QJsonObject FileIO::boardToJson(const Board* board){
     for(int x=0; x<Board::getSize(); x++){
         QJsonArray row;
         for(int y=0; y<Board::getSize(); y++){
-            Piece* piece = board->getCell(QPoint(x, y));
+            BadPieceClass* piece = board->getPieceAt(QPoint(x, y));
 
             if (piece != nullptr){
                 row.append(pieceToJson(piece));

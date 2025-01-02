@@ -11,8 +11,8 @@
 #include <qstring.h>
 #include <qcolor.h>
 #include <QSet>
-#include "board/Piece.h"
-class Piece; // forward decl om circular dependency te voorkomen
+#include "board/BadPieceClass.h"
+class BadPieceClass; // forward decl om circular dependency te voorkomen
 class Player {
 public:
     enum class colour {RED, BLUE, YELLOW, GREEN};
@@ -23,8 +23,8 @@ public:
     virtual void addScore(int score);
     virtual void killPlayer();
     virtual void setMScore(int mScore);
-    virtual void addPiece(Piece* piece);
-    virtual void removePiece(Piece* piece);
+    virtual void addPiece(BadPieceClass* piece);
+    virtual void removePiece(BadPieceClass* piece);
 
     //getters
     virtual int getScore() const;
@@ -39,14 +39,14 @@ public:
     virtual bool operator==(const Player &rhs) const;
     virtual bool operator!=(const Player &rhs) const;
 
-    virtual const QSet<Piece *> &getAlivePieces() const;
+    virtual const QSet<BadPieceClass *> &getAlivePieces() const;
 
 private:
     int m_score;    // huidige score
     bool m_alive;   // leeft nog
     QString m_name; // naam van wie deze player speelt
     colour m_colour;
-    QSet<Piece*> pieces{};
+    QSet<BadPieceClass*> pieces{};
 };
 
 

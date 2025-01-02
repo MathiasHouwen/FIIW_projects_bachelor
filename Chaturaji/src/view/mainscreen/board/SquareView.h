@@ -25,7 +25,7 @@ public:
     enum class HighLight{NONE, HOVER, SELECTED, SELECTSUGGEST, MOVESUGGEST, ATTACKSUGGEST};
     ~SquareView() override;
     SquareView(QWidget *widget, const QPoint &cell);
-    void updatePiece(Piece* piece);
+    void updatePiece(BadPieceClass* piece);
     void updateHighLight(HighLight highLighter);
     void updateSetPieceGrey();
 

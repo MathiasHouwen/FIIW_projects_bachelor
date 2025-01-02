@@ -28,7 +28,7 @@ void SquareView::mousePressEvent(QMouseEvent *event) {
     emit clicked(cell);
 }
 
-void SquareView::updatePiece(Piece *piece) {
+void SquareView::updatePiece(BadPieceClass *piece) {
     if (pieceView) {
         pieceViewContainer->removeWidget(pieceView);
         delete pieceView;  // Delete the old piece view
@@ -114,7 +114,7 @@ void SquareView::updateSetPieceGrey() {
 //    pieceViewContainer->setContentsMargins(2,2,2,2);
 //
 //}
-//    Piece* piece = model.getBoard().getCell(cell);
+//    BadPieceClass* piece = model.getBoard().getPieceAt(cell);
 //    if (piece) {
 //        if (!selection && piece->getPlayer() == model.getCurrentPlayer()
 //            && (piece->getType() == model.getDice().first
@@ -137,7 +137,7 @@ void SquareView::updateSetPieceGrey() {
 //    painter.setPen(pen);
 //    painter.drawRect(square);
 //
-//    auto newPiece = model.getBoard().getCell(cell);
+//    auto newPiece = model.getBoard().getPieceAt(cell);
 //    if (newPiece != piece) {
 //        piece = newPiece;
 //        if (pieceView) {
@@ -195,7 +195,7 @@ void SquareView::updateSetPieceGrey() {
 //        border = QColorConstants::Svg::lightseagreen;
 //    }
 //
-//    Piece* piece = model.getBoard().getCell(cell);
+//    BadPieceClass* piece = model.getBoard().getPieceAt(cell);
 //    if (piece) {
 //        if (!selection && piece->getPlayer() == model.getCurrentPlayer()
 //            && (piece->getType() == model.getDice().first
@@ -210,9 +210,9 @@ void SquareView::updateSetPieceGrey() {
 //    QWidget::mouseReleaseEvent(event);
 //
 //    model.selectPiece(cell);
-//    bool move = model.movePiece(cell);
+//    bool movePiece = model.movePiece(cell);
 //
-//    if (move) {
+//    if (movePiece) {
 //        model.advance();
 //    }
 //

@@ -12,7 +12,7 @@
 #define CHATURAJI_DICE_H
 
 
-#include "board/Piece.h"
+#include "board/BadPieceClass.h"
 #include <QSet>
 #include <QPair>
 
@@ -24,20 +24,20 @@ public:
     };
     void doubleDobbel();
     Dice();
-    bool allows(Piece::Type type); // kijkt of dit piece type geldig is volgens de 2 dobbelstenen
+    bool allows(BadPieceClass::Type type); // kijkt of dit piece type geldig is volgens de 2 dobbelstenen
     int getNumber(int die);
     bool isUsed(int die);
-    void setUsed(Piece::Type type);
-    QSet<Piece::Type> getAllowedTypes(); // geeft alle alowed types terug (gebruikt door view. game hoeft alleen te valideren met allows)
+    void setUsed(BadPieceClass::Type type);
+    QSet<BadPieceClass::Type> getAllowedTypes(); // geeft alle alowed types terug (gebruikt door view. game hoeft alleen te valideren met allows)
 private:
     // QSet kan niet const of constexpr in literar declaratie
-    static inline QSet<Piece::Type> typesMap[6] = {
-            {Piece::Type::PAWN, Piece::Type::KING},
-            {Piece::Type::BOAT},
-            {Piece::Type::KNIGHT},
-            {Piece::Type::ELEPH},
-            {Piece::Type::PAWN, Piece::Type::KING},
-            {Piece::Type::ELEPH}
+    static inline QSet<BadPieceClass::Type> typesMap[6] = {
+            {BadPieceClass::Type::PAWN, BadPieceClass::Type::KING},
+            {BadPieceClass::Type::BOAT},
+            {BadPieceClass::Type::KNIGHT},
+            {BadPieceClass::Type::ELEPH},
+            {BadPieceClass::Type::PAWN, BadPieceClass::Type::KING},
+            {BadPieceClass::Type::ELEPH}
     };
     Die dice[2];
 };

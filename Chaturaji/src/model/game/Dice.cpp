@@ -18,7 +18,7 @@ Dice::Dice() {
     doubleDobbel();
 }
 
-bool Dice::allows(Piece::Type type) {
+bool Dice::allows(BadPieceClass::Type type) {
     return getAllowedTypes().contains(type);
 }
 
@@ -26,8 +26,8 @@ int Dice::getNumber(int die) {
     return dice[die].number + 1;
 }
 
-QSet<Piece::Type> Dice::getAllowedTypes() {
-    QSet<Piece::Type> set{};
+QSet<BadPieceClass::Type> Dice::getAllowedTypes() {
+    QSet<BadPieceClass::Type> set{};
     for(auto die : dice){
         if(die.used) continue;
         set.unite(typesMap[die.number]);
@@ -39,7 +39,7 @@ bool Dice::isUsed(int die) {
     return dice[die].used;
 }
 
-void Dice::setUsed(Piece::Type type) {
+void Dice::setUsed(BadPieceClass::Type type) {
     for(auto& die : dice){
         if(die.used) continue;
         if(typesMap[die.number].contains(type)){

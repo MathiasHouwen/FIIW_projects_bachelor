@@ -2,5 +2,4 @@
 // Created by ebbew on 2-1-2025.
 //
 
-#include "Piece.h"
-
+#include "BoardQuerier.h"

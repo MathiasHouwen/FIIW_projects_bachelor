@@ -4,8 +4,8 @@
 
 #include <qtextstream.h>
 
-#include "board/Piece.h"
-// select, move, advance en getpossiblemoves door ebbe
+#include "board/BadPieceClass.h"
+// select, movePiece, advance en getpossiblemoves door ebbe
 // dobbel generatie door mathias
 // dobbel validatie en implementatie in select door robin
 
@@ -27,8 +27,8 @@ void Game::makeBot(Player::colour color, bool agressive) {
 }
 
 bool Game::selectPiece(QPoint cell) {
-    if(board.isCellEmpty(cell)) return false;   // mag geen leeg vak selecteren
-    Piece piece = *board.getCell(cell);
+    if(board.isEmptyAt(cell)) return false;   // mag geen leeg vak selecteren
+    BadPieceClass piece = *board.getPieceAt(cell);
     if(piece.getPlayer() != getCurrentPlayer()) return false;   // mag enkel jouw eigen piece selecteren
     if(!dice.allows(piece.getType())) return false;
     // update selectie
@@ -48,20 +48,20 @@ Game::MoveResult Game::movePiece(QPoint destinationCell) {
     }
     if(!moves.contains(destinationCell)) return result;  // keuze van eind-cell moet in mogelijke moves zitten
 
-    Piece piece = *board.getCell(*currentlySelectedCell);
+    BadPieceClass piece = *board.getPieceAt(*currentlySelectedCell);
     dice.setUsed(piece.getType());
 
-    Piece* destPiece = board.getCell(destinationCell);
+    BadPieceClass* destPiece = board.getPieceAt(destinationCell);
     int scoreToAdd = destPiece ? destPiece->getScoreValue() : 0;
     result.affectedPiece = destPiece;
 
-    if (destPiece && destPiece->getType() == Piece::Type::KING) {
+    if (destPiece && destPiece->getType() == BadPieceClass::Type::KING) {
         destPiece->getPlayer().killPlayer();
         result.affectedPlayer = &destPiece->getPlayer();
     }
 
-    // doe de move in bord en update score
-    board.move(*currentlySelectedCell, destinationCell);
+    // doe de movePiece in bord en update score
+    board.movePiece(*currentlySelectedCell, destinationCell);
     getCurrentPlayer().addScore(scoreToAdd);
 
     // maak selectie leeg
@@ -76,20 +76,20 @@ Game::MoveResult Game::movePiece(QPoint destinationCell) {
 QPoint Game::getNextMove(QSet<QPoint> moves) {
     auto direction = getCurrentPlayer().getAlivePieces().values().first()->getWalkPattern().forwardDirection;
     bool aggressive = std::dynamic_pointer_cast<Bot>(players[turn])->getAggressive();
-    Piece calculated{Piece::Type::KING, {0, 0}, getCurrentPlayer(), {NULL, NULL}};
+    BadPieceClass calculated{BadPieceClass::Type::KING, {0, 0}, getCurrentPlayer(), {NULL, NULL}};
     if(aggressive) {
         for(auto move : moves) {
-            Piece* destPiece = board.getCell(move);
+            BadPieceClass* destPiece = board.getPieceAt(move);
             if(destPiece) {return destPiece->getCell();}
-            Piece dummy{Piece::Type::KING, {0, 0}, getCurrentPlayer(), move};
+            BadPieceClass dummy{BadPieceClass::Type::KING, {0, 0}, getCurrentPlayer(), move};
             if(dummy.operator>(calculated)){calculated.setCell(move);}
         }
     }
     else {
         for(auto move : moves) {
-            Piece* destPiece = board.getCell(move);
+            BadPieceClass* destPiece = board.getPieceAt(move);
             if(destPiece) {continue;}
-            Piece dummy{Piece::Type::KING, {0, 0}, getCurrentPlayer(), move};
+            BadPieceClass dummy{BadPieceClass::Type::KING, {0, 0}, getCurrentPlayer(), move};
             if(dummy.operator<(calculated)){calculated.setCell(move);}
         }
     }
@@ -99,7 +99,7 @@ QPoint Game::getNextMove(QSet<QPoint> moves) {
 QPoint Game::moveBotPiece() {
     moveState = MoveState::BOT;
     QSet<QPoint> moves = getPossibleMoves();
-    std::cout << "can move to: ";
+    std::cout << "can movePiece to: ";
     for(auto move : moves) {
         std::cout << move.x() << "," << move.y() << "; ";
     }
@@ -111,7 +111,7 @@ QPoint Game::moveBotPiece() {
 }
 
 QPoint Game::playBot() {
-    QList<Piece*> availablePieces{};
+    QList<BadPieceClass*> availablePieces{};
     moveState = MoveState::READYTOSELECT;
     for(auto piece : getCurrentPlayer().getAlivePieces()) {
         for(auto type : dice.getAllowedTypes()) {
@@ -128,7 +128,7 @@ QPoint Game::playBot() {
 
 void Game::advance() {
     move++;
-    if(move > 1) { // als 2e move voorbij, reset move en advance de turn
+    if(move > 1) { // als 2e move voorbij, reset movePiece en advance de turn
         dice.doubleDobbel();
         move = 0;
         // probeer 4 keer de turn te verzetten
@@ -150,7 +150,7 @@ void Game::advance() {
 QSet<QPoint> Game::getPossibleMoves() {
     if(!currentlySelectedCell) return {};   // als er geen selectie is gedaan zijn er geen moves
     QPoint cell = *currentlySelectedCell;
-    Piece* piece = board.getCell(cell);
+    BadPieceClass* piece = board.getPieceAt(cell);
     if(!piece) return {};   // als de selectie een lege cell is zijn er geen moves
 
     // haal de loop en aanval pattronen
@@ -159,13 +159,13 @@ QSet<QPoint> Game::getPossibleMoves() {
     QSet<QPoint> possibleMoves = {};
 
     for(QPoint move : walkMoves) {
-        if(board.isCellEmpty(move)) // lopen mag alleen naar een lege cell
+        if(board.isEmptyAt(move)) // lopen mag alleen naar een lege cell
             possibleMoves.insert(move);
     }
 
     for(QPoint move : attackMoves){
-        if(!board.isCellEmpty(move)){ // aanvallen mag alleen op een andere piece
-            Piece targetPiece = *board.getCell(move);
+        if(!board.isEmptyAt(move)){ // aanvallen mag alleen op een andere piece
+            BadPieceClass targetPiece = *board.getPieceAt(move);
             if(targetPiece.getPlayer() != getCurrentPlayer())  // die andere piece mag niet van jou zelf zijn
                 possibleMoves.insert(move);
         }
@@ -195,7 +195,7 @@ QSet<QPoint> Game::getPossibleSelections() {
     QSet<QPoint> selectables{};
     for(int x=0; x<Board::getSize(); x++){
     for(int y=0; y<Board::getSize(); y++){
-        Piece* piece = board.getCell({x,y});
+        BadPieceClass* piece = board.getPieceAt({x, y});
         if(!piece) continue;
         if(piece->getPlayer() == getCurrentPlayer() && dice.allows(piece->getType()))
             selectables.insert({x,y});
@@ -216,17 +216,17 @@ const int Game::getNumberOfPlayer() {
 }
 
 bool Game::promote(QPoint *selectedCell){
-    Piece piece = *board.getCell(*selectedCell);
-    Piece::Type type = piece.getType();
+    BadPieceClass piece = *board.getPieceAt(*selectedCell);
+    BadPieceClass::Type type = piece.getType();
 
     // TODO: ASK FOR WICH TO PROMOTO AND PROMOTE THEM
 }
 
 bool Game::canPromote(QPoint *selectedCell){
-    Piece piece = *board.getCell(*selectedCell);
-    Piece::Type type = piece.getType();
+    BadPieceClass piece = *board.getPieceAt(*selectedCell);
+    BadPieceClass::Type type = piece.getType();
 
-    if(type != Piece::Type::PAWN){
+    if(type != BadPieceClass::Type::PAWN){
         return false;
     }
 
@@ -235,10 +235,10 @@ bool Game::canPromote(QPoint *selectedCell){
 }
 
 bool Game::sinhasana(QPoint *selectedCell) {
-    Piece piece = *board.getCell(*selectedCell);
-    Piece::Type type = piece.getType();
+    BadPieceClass piece = *board.getPieceAt(*selectedCell);
+    BadPieceClass::Type type = piece.getType();
 
-    if(type != Piece::Type::KING){
+    if(type != BadPieceClass::Type::KING){
         return false;
     }
 
@@ -249,7 +249,7 @@ bool Game::sinhasana(QPoint *selectedCell) {
 
         // TODO: CHECK IF PLAYER IS ALLIED???
         if(&kingCell == selectedCell){
-            Piece piece = *board.getCell(*selectedCell);
+            BadPieceClass piece = *board.getPieceAt(*selectedCell);
             mergeArmies(position.first, &(piece.getPlayer()));
         }
     }
@@ -262,12 +262,12 @@ void Game::mergeArmies(Player *fromPlayer, Player *toPlayer){
 
 
 bool Game::vrihannauka(QPoint *selectedCell) {
-    Piece piece = *board.getCell(*selectedCell);
-    Piece::Type type = piece.getType();
+    BadPieceClass piece = *board.getPieceAt(*selectedCell);
+    BadPieceClass::Type type = piece.getType();
     Player player = piece.getPlayer();
 
 
-    if (type != Piece::Type::BOAT) {
+    if (type != BadPieceClass::Type::BOAT) {
         return false;
     }
 
@@ -292,7 +292,7 @@ void Game::captureBoats(QPoint topLeft, Player &safe) {
     for (int i = 0; i < 2; ++i) {
         for (int j = 0; j < 2; ++j) {
             QPoint cell(topLeft.x() + i, topLeft.y() + j);
-            Piece* piece = board.getCell(cell);
+            BadPieceClass* piece = board.getPieceAt(cell);
 
             if (piece->getPlayer() != safe){
                 piece->getPlayer().removePiece(piece);
@@ -306,7 +306,8 @@ bool Game::isSquareFilledWithBoats(QPoint topLeft) {
     for (int i = 0; i < 2; ++i) {
         for (int j = 0; j < 2; ++j) {
             QPoint cell(topLeft.x() + i, topLeft.y() + j);
-            if (!board.isInRange(cell) || board.isCellEmpty(cell) || board.getCell(cell)->getType() != Piece::Type::BOAT) {
+            if (!board.includes(cell) || board.isEmptyAt(cell) ||
+                board.getPieceAt(cell)->getType() != BadPieceClass::Type::BOAT) {
                 return false;
             }
         }

@@ -66,14 +66,14 @@ void Player::setMScore(int mScore) {
     m_score = mScore;
 }
 
-void Player::addPiece(Piece *piece) {
+void Player::addPiece(BadPieceClass *piece) {
     pieces.insert(piece);
 }
 
-void Player::removePiece(Piece *piece) {
+void Player::removePiece(BadPieceClass *piece) {
     pieces.remove(piece);
 }
 
-const QSet<Piece *> &Player::getAlivePieces() const {
+const QSet<BadPieceClass *> &Player::getAlivePieces() const {
     return pieces;
 }

@@ -8,7 +8,7 @@
 #include "Dice.h"
 #include "Bot.h"
 
-// practicum 2: resultaat van move vervangen van bool tot MoveResult
+// practicum 2: resultaat van movePiece vervangen van bool tot MoveResult
 // + state machine karakter van game duidelijker gemaakt in de public interface, door MoveState enum
 // voor de rest minimale veranderingen
 // door iedereen van de groep
@@ -19,7 +19,7 @@ public:
     struct MoveResult{
         bool succes{false};
         Player* affectedPlayer{nullptr};
-        Piece* affectedPiece{nullptr};
+        BadPieceClass* affectedPiece{nullptr};
     };
 private:
     const static int numberOfPlayer = 4;
@@ -36,13 +36,13 @@ private:
     };
 
     // state
-    QPoint* currentlySelectedCell;  // selectie, geen = null (1 move is eerst cell selecteren, dan volgende cell om te moven)
+    QPoint* currentlySelectedCell;  // selectie, geen = null (1 movePiece is eerst cell selecteren, dan volgende cell om te moven)
     MoveState moveState{MoveState::READYTOSELECT};
-    int move{0};    // elke beurt heeft 2 moves (move = 0 / 1)
+    int move{0};    // elke beurt heeft 2 moves (movePiece = 0 / 1)
     int turn{0};    // player beurt (0-3)
     bool gameOver{false};
 
-    void advance(); // zet game verder naar volgende move, of volgende turn als 2 moves geweest zijn
+    void advance(); // zet game verder naar volgende movePiece, of volgende turn als 2 moves geweest zijn
     QPoint getNextMove(QSet<QPoint> moves);
 
     void mergeArmies(Player *fromPlayer, Player *toPlayer);
@@ -66,7 +66,7 @@ public:
 
     void skip();
 
-    // game is een state machine, en wisselt telkens tussen select en move
+    // game is een state machine, en wisselt telkens tussen select en movePiece
     bool selectPiece(QPoint cell);  // selecteert een cell en returnt of die keuze geldig is
     MoveResult movePiece(QPoint destinationCell); // selecteert de cell om de geselecteerde piece naar te verzetten en returnt of dit geldig is
 

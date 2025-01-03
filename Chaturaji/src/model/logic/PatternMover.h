@@ -10,7 +10,7 @@
 #include <QSet>
 #include <QPoint>
 #include "../game/board/Board.h"
-#include "Pattern.h"
+#include "../enums_and_structs/Pattern.h"
 
 
 class PatternMover {

@@ -37,7 +37,7 @@ add_executable(Chaturaji
         src/model/io/FileIO.cpp
         src/model/io/FileIO.h
         src/model/io/FileIO.h
-        src/model/logic/Pattern.h
+        src/model/enums_and_structs/Pattern.h
         src/view/mainscreen/MainWindow.cpp
         src/view/mainscreen/MainWindow.h
         src/view/mainscreen/mainwindow.ui
@@ -71,7 +71,7 @@ add_executable(Chaturaji
         src/model/game/Bot.h
         src/model/game/board/BoardQuerier.cpp
         src/model/game/board/BoardQuerier.h
-        src/model/game/Color.h
+        src/model/enums_and_structs/Color.h
         src/model/game/board/Piece.cpp
         src/model/game/board/Piece.h
 )

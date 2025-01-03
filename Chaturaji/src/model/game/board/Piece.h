@@ -6,7 +6,7 @@
 #define CHATURAJI_PIECE_H
 
 
-#include "../Color.h"
+#include "../../enums_and_structs/Color.h"
 
 class Piece {
 private:

@@ -8,8 +8,7 @@
 #define CHATURAJI_PLAYER_H
 
 #include <QString>
-#include "Color.h"
-#include "board/BadPieceClass.h"
+#include "../enums_and_structs/Color.h"
 
 class Player {
 private:

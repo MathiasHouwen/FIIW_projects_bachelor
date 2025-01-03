@@ -9,7 +9,7 @@
 
 #include <QPoint>
 #include "../Player.h"
-#include "../../logic/Pattern.h"
+#include "../../enums_and_structs/Pattern.h"
 class Player; // forward decl om circular dependency te voorkomen
 class BadPieceClass {
 public:

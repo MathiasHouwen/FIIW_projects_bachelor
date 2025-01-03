@@ -15,31 +15,33 @@
 class Piece; // forward decl om circular dependency te voorkomen
 class Player {
 public:
+    virtual ~Player() = default;
+
     enum class colour {RED, BLUE, YELLOW, GREEN};
     Player(colour mColour);
 
     //setters
-    virtual void setName(const QString &mName);
-    virtual void addScore(int score);
-    virtual void killPlayer();
-    virtual void setMScore(int mScore);
-    virtual void addPiece(Piece* piece);
-    virtual void removePiece(Piece* piece);
+    void setName(const QString &mName);
+    void addScore(int score);
+    void killPlayer();
+    void setMScore(int mScore);
+    void addPiece(Piece* piece);
+    void removePiece(Piece* piece);
 
     //getters
-    virtual int getScore() const;
-    virtual bool isAlive() const;
-    virtual const QString &getName() const;
-    virtual colour getColour() const;
+    int getScore() const;
+    bool isAlive() const;
+    const QString &getName() const;
+    colour getColour() const;
 
     static QString getColourName(Player::colour colour);        // vertaalt kleur naar een string woord
     static colour getColourFromName(const QString &colourstr);  // vertaalt terug naar kleur
 
     // vergelijkers
-    virtual bool operator==(const Player &rhs) const;
-    virtual bool operator!=(const Player &rhs) const;
+    bool operator==(const Player &rhs) const;
+    bool operator!=(const Player &rhs) const;
 
-    virtual const QSet<Piece *> &getAlivePieces() const;
+    const QSet<Piece *> &getAlivePieces() const;
 
 private:
     int m_score;    // huidige score

@@ -1,6 +1,8 @@
 #include <iostream>
-#include <ctime>
 #include "Game.h"
+#include "bots/Bot.h"
+#include "bots/AggressiveMoveStrategy.h"
+#include "bots/PassiveMoveStrategy.h"
 
 #include <qtextstream.h>
 
@@ -22,9 +24,18 @@ void Game::setPlayerScore(int score, Player::colour playerColour){
     player.setMScore(score);
 }
 
-void Game::makeBot(Player::colour color, bool agressive) {
-    players[static_cast<int>(color)] = std::make_shared<Bot>(color, agressive);
+void Game::makeBot(Player::colour color, bool aggressive) {
+    std::shared_ptr<MoveStrategy> strategy;
+
+    if (aggressive) {
+        strategy = std::make_shared<AggressiveMoveStrategy>();
+    } else {
+        strategy = std::make_shared<PassiveMoveStrategy>();
+    }
+
+    players[static_cast<int>(color)] = std::make_shared<Bot>(color, strategy);
 }
+
 
 bool Game::selectPiece(QPoint cell) {
     if(board.isCellEmpty(cell)) return false;   // mag geen leeg vak selecteren
@@ -73,27 +84,9 @@ Game::MoveResult Game::movePiece(QPoint destinationCell) {
     return result;
 }
 
-QPoint Game::getNextMove(QSet<QPoint> moves) {
-    auto direction = getCurrentPlayer().getAlivePieces().values().first()->getWalkPattern().forwardDirection;
-    bool aggressive = std::dynamic_pointer_cast<Bot>(players[turn])->getAggressive();
-    Piece calculated{Piece::Type::KING, {0, 0}, getCurrentPlayer(), {NULL, NULL}};
-    if(aggressive) {
-        for(auto move : moves) {
-            Piece* destPiece = board.getCell(move);
-            if(destPiece) {return destPiece->getCell();}
-            Piece dummy{Piece::Type::KING, {0, 0}, getCurrentPlayer(), move};
-            if(dummy.operator>(calculated)){calculated.setCell(move);}
-        }
-    }
-    else {
-        for(auto move : moves) {
-            Piece* destPiece = board.getCell(move);
-            if(destPiece) {continue;}
-            Piece dummy{Piece::Type::KING, {0, 0}, getCurrentPlayer(), move};
-            if(dummy.operator<(calculated)){calculated.setCell(move);}
-        }
-    }
-    return calculated.getCell();
+QPoint Game::getNextMove(const QSet<QPoint>& moves) {
+    auto bot = std::dynamic_pointer_cast<Bot>(players[turn]);
+    return bot->getNextMove(*this, moves);
 }
 
 QPoint Game::moveBotPiece() {
@@ -211,7 +204,7 @@ Dice Game::getDice() {
     return dice;
 }
 
-const int Game::getNumberOfPlayer() {
+int Game::getNumberOfPlayer() {
     return numberOfPlayer;
 }
 

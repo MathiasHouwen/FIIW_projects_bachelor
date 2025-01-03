@@ -1,0 +1,23 @@
+//
+// Created by robin on 3/01/2025.
+//
+
+#ifndef MOVESTRATEGY_H
+#define MOVESTRATEGY_H
+
+
+
+#include <QSet>
+#include <QPoint>
+#include "../board/Piece.h"
+#include "../Game.h"
+
+class MoveStrategy {
+public:
+    virtual ~MoveStrategy() = default;
+    virtual QPoint getNextMove(Game& game, const QSet<QPoint>& moves) = 0;
+};
+
+
+
+#endif //MOVESTRATEGY_H

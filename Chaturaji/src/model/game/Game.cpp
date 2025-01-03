@@ -1,8 +1,8 @@
 #include <iostream>
 #include "Game.h"
 #include "bots/Bot.h"
-#include "bots/AggressiveBot.h"
-#include "bots/PassiveBot.h"
+#include "bots/AggressiveMoveStrategy.h"
+#include "bots/PassiveMoveStrategy.h"
 
 #include <qtextstream.h>
 
@@ -25,12 +25,17 @@ void Game::setPlayerScore(int score, Player::colour playerColour){
 }
 
 void Game::makeBot(Player::colour color, bool aggressive) {
+    std::shared_ptr<MoveStrategy> strategy;
+
     if (aggressive) {
-        players[static_cast<int>(color)] = std::make_shared<AggressiveBot>(color);
+        strategy = std::make_shared<AggressiveMoveStrategy>();
     } else {
-        players[static_cast<int>(color)] = std::make_shared<PassiveBot>(color);
+        strategy = std::make_shared<PassiveMoveStrategy>();
     }
+
+    players[static_cast<int>(color)] = std::make_shared<Bot>(color, strategy);
 }
+
 
 bool Game::selectPiece(QPoint cell) {
     if(board.isCellEmpty(cell)) return false;   // mag geen leeg vak selecteren

@@ -88,6 +88,15 @@ void Controller::startBot() {
     std::cout << std::endl << "NEW MOVE:" << std::endl;
     for(int i = 0 ; i < 2; i++) {
         const QPoint cell = model.playBot();
+        if(cell == QPoint(NULL, NULL)) {
+            std::cout << "move skipped: " << cell.x() << "," << cell.y() << std::endl;
+            model.skip();
+            setMoveAndDice();
+            clearHighLights();
+            setSelectionHighlights();
+            playersView->updateSetBigAndToTop(model.getCurrentPlayer().getColour());
+            continue;
+        }
         onCellClicked(cell);
         std::cout << "move piece: " << cell.x() << "," << cell.y() << std::endl;
         const QPoint destination = model.moveBotPiece();

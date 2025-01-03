@@ -216,24 +216,36 @@ bool Game::promote(QPoint *selectedCell){
 }
 
 bool Game::canPromote(QPoint *selectedCell){
-    Piece piece = *board.getCell(*selectedCell);
-    Piece::Type type = piece.getType();
+    Piece* piece = board.getCell(*selectedCell);
+    if (!piece) {
+        return false;
+    }
+
+    Piece::Type type = piece->getType();
 
     if(type != Piece::Type::PAWN){
         return false;
     }
 
-    QPoint dir = piece.getWalkPattern().forwardDirection;
+    QPoint dir = piece->getWalkPattern().forwardDirection;
     return endOfBoard(dir, selectedCell);
 }
 
 bool Game::endOfBoard(QPoint dir, QPoint *selectedCell){
+    int x = dir.x();
+    int y = dir.y();
+
+
     return false;
 }
 
 bool Game::sinhasana(QPoint *selectedCell) {
-    Piece piece = *board.getCell(*selectedCell);
-    Piece::Type type = piece.getType();
+    Piece* piece = board.getCell(*selectedCell);
+    if (!piece) {
+        return false;
+    }
+
+    Piece::Type type = piece->getType();
 
     if(type != Piece::Type::KING){
         return false;
@@ -254,20 +266,34 @@ bool Game::sinhasana(QPoint *selectedCell) {
 }
 
 void Game::mergeArmies(Player *fromPlayer, Player *toPlayer){
-    for (Piece* piece : fromPlayer->getAlivePieces()){
+    for (int row = 0; row < Board::getSize(); ++row) {
+        for (int col = 0; col < Board::getSize(); ++col) {
+            QPoint cell(row, col);
+            Piece* piece = board.getCell(cell);
 
+            if (!piece || &piece->getPlayer() != fromPlayer) {
+                continue;
+            }
+
+            Piece::Type type = piece->getType();
+            QPoint dir = piece->getWalkPattern().forwardDirection;
+
+            // Piece(Type type, QPoint direction, Player& player, QPoint cell = {-1,-1});
+            Piece* newPiece = new Piece(type, dir, *toPlayer, cell);
+
+            board.setCell(cell, *newPiece);
+        }
     }
 }
 
-
 bool Game::vrihannauka(QPoint *selectedCell) {
     if (!board.isInRange(*selectedCell)) {
-        return false; // Out of range
+        return false;
     }
 
     Piece* piece = board.getCell(*selectedCell);
     if (!piece) {
-        return false; // No piece at the selected cell
+        return false;
     }
 
     Piece::Type type = piece->getType();

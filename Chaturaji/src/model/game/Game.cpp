@@ -246,32 +246,37 @@ bool Game::sinhasana(QPoint *selectedCell) {
     }
 
     Piece::Type type = piece->getType();
+    Player &currentPlayer = piece->getPlayer();
 
     if(type != Piece::Type::KING){
         return false;
     }
 
-    // TODO: ja idk nog niet hoe ik deze moet krijgen :/
-    std::unordered_map<Player*, QPoint> kingPositions;
-    for (const auto &position : kingPositions){
-        QPoint kingCell = position.second;
+    // TODO: MAKE BETTER :)
+    std::vector<std::pair<QPoint, Player::colour>> kingPositions = {
+            {QPoint(3, 7), Player::colour::YELLOW},
+            {QPoint(7, 4), Player::colour::GREEN},
+            {QPoint(0, 3), Player::colour::BLUE},
+            {QPoint(4, 0), Player::colour::RED}
+    };
 
-        // TODO: CHECK IF PLAYER IS ALLIED???
-        if(&kingCell == selectedCell){
-            Piece piece = *board.getCell(*selectedCell);
-            mergeArmies(position.first, &(piece.getPlayer()));
+    for (const auto& kingpos : kingPositions) {
+        const QPoint& cell = kingpos.first;
+        if(cell == *selectedCell){
+            Player::colour colour = kingpos.second;
+            mergeArmies(currentPlayer, getPlayerFromColour(colour));
         }
     }
     return true;
 }
 
-void Game::mergeArmies(Player *fromPlayer, Player *toPlayer){
+void Game::mergeArmies(Player &fromPlayer, Player &toPlayer){
     for (int row = 0; row < Board::getSize(); ++row) {
         for (int col = 0; col < Board::getSize(); ++col) {
             QPoint cell(row, col);
             Piece* piece = board.getCell(cell);
 
-            if (!piece || &piece->getPlayer() != fromPlayer) {
+            if (!piece || piece->getPlayer() != fromPlayer) {
                 continue;
             }
 

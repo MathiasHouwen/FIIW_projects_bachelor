@@ -44,7 +44,7 @@ private:
     void advance(); // zet game verder naar volgende move, of volgende turn als 2 moves geweest zijn
     QPoint getNextMove(const QSet<QPoint>& moves);
 
-    void mergeArmies(Player *fromPlayer, Player *toPlayer);
+    void mergeArmies(Player &fromPlayer, Player &toPlayer);
     bool isSquareFilledWithBoats(QPoint topLeft);
     void captureBoats(QPoint topLeft, Player &safe);
 

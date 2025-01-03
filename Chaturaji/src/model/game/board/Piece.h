@@ -8,11 +8,13 @@
 
 #include "../../enums_and_structs/Color.h"
 #include "../../enums_and_structs/PieceType.h"
+#include "../../enums_and_structs/HomeBoardSide.h"
 
 class Piece {
 private:
     Color color{Color::NONE};
     PieceType type{PieceType::PAWN};
+    HomeBoardSide homeSide{HomeBoardSide::LEFT};
 public:
     Piece() = default; // nodig voor maps
     explicit Piece(Color color, PieceType type);

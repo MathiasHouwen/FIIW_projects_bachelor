@@ -6,7 +6,7 @@
 #define CHATURAJI_PIECETYPE_H
 
 enum class PieceType {
-    PAWN, BOAT, ELEPHANT, KNIGHT, KING
+    PAWN, BOAT, ELEPHANT, HORSE, KING
 };
 
 #endif //CHATURAJI_PIECETYPE_H

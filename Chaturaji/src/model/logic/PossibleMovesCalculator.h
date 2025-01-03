@@ -11,17 +11,26 @@
 #include <QPoint>
 #include "../game/board/Board.h"
 #include "../enums_and_structs/Pattern.h"
+#include "../enums_and_structs/HomeBoardSide.h"
 
 
 class PossibleMovesCalculator {
+private:
+    struct Patterns{
+        Pattern move, attack;
+        Patterns(const Pattern &move, const Pattern &attack);
+        explicit Patterns(const Pattern &move);
+    };
 public:
-    PossibleMovesCalculator(Board& board);
-    // creeert alle mogelijke moves vanaf een cell (moves zijn bestemmingen, geen delta verplaatsingen)
-    QSet<QPoint> getPossibleMoves(Pattern pattern, QPoint cell);
+    explicit PossibleMovesCalculator(Board& board);
+    QSet<QPoint> getPossibleMoves(QPoint location, HomeBoardSide side, PieceType pieceType);
 private:
     Board& board;
+    QSet<QPoint> getPossibleMoves(const Pattern& pattern, QPoint cell);
+    static QPoint sideToForwardDirection(HomeBoardSide side);
+    static Patterns convertToPatterns(PieceType type, HomeBoardSide side);
     // creeert de possible moves voor 1 bepaalde diepte* (*zie cpp file -> getPossibleMoves)
-    QSet<QPoint> createPatternLayer(int d, Pattern pattern, QPoint cell, QVarLengthArray<bool>& validQuadrants);
+    QSet<QPoint> createPatternLayer(int d, const Pattern& pattern, QPoint cell, QVarLengthArray<bool>& validQuadrants);
 
 };
 

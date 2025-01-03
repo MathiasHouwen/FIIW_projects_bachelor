@@ -209,10 +209,16 @@ int Game::getNumberOfPlayer() {
 }
 
 bool Game::promote(QPoint *selectedCell){
-    Piece piece = *board.getCell(*selectedCell);
-    Piece::Type type = piece.getType();
+    Piece oldPiece = *board.getCell(*selectedCell);
 
-    // TODO: ASK FOR WICH TO PROMOTO AND PROMOTE THEM
+    Piece::Type newType = choosePromotionPiece();
+    QPoint dir = oldPiece.getWalkPattern().forwardDirection;
+    Player player = oldPiece.getPlayer();
+
+    // Piece(Type type, QPoint direction, Player& player, QPoint cell = {-1,-1});
+    Piece* newPiece = new Piece(newType, dir, player, *selectedCell);
+
+    board.setCell(*selectedCell, *newPiece);
 }
 
 bool Game::canPromote(QPoint *selectedCell){
@@ -231,12 +237,19 @@ bool Game::canPromote(QPoint *selectedCell){
     return endOfBoard(dir, selectedCell);
 }
 
+
+
 bool Game::endOfBoard(QPoint dir, QPoint *selectedCell){
     int x = dir.x();
     int y = dir.y();
 
 
     return false;
+}
+
+// TODO: ADD LOGIC :)
+Piece::Type Game::choosePromotionPiece() {
+    return Piece::Type::BOAT;
 }
 
 bool Game::sinhasana(QPoint *selectedCell) {
@@ -284,7 +297,7 @@ void Game::mergeArmies(Player &fromPlayer, Player &toPlayer){
             QPoint dir = piece->getWalkPattern().forwardDirection;
 
             // Piece(Type type, QPoint direction, Player& player, QPoint cell = {-1,-1});
-            Piece* newPiece = new Piece(type, dir, *toPlayer, cell);
+            Piece* newPiece = new Piece(type, dir, toPlayer, cell);
 
             board.setCell(cell, *newPiece);
         }

@@ -47,6 +47,9 @@ private:
     void mergeArmies(Player &fromPlayer, Player &toPlayer);
     bool isSquareFilledWithBoats(QPoint topLeft);
     void captureBoats(QPoint topLeft, Player &safe);
+    Piece::Type choosePromotionPiece();
+    bool endOfBoard(QPoint dir, QPoint *selectedCell);
+
 
 public:
     Game();
@@ -85,7 +88,6 @@ public:
     bool sinhasana(QPoint *selectedCell);
     bool vrihannauka(QPoint *selectedCell);
 
-    bool endOfBoard(QPoint dir, QPoint *selectedCell);
 };
 
 

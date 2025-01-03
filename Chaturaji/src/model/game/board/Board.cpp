@@ -23,20 +23,13 @@ void Board::clear() {
     piecesMap.clear();
 }
 
-
-bool Board::includes(const QPoint& cell) {
-    bool xInRange = cell.x() >= 0 && cell.x() <SIZE;
-    bool yInRange = cell.y() >= 0 && cell.y() <SIZE;
-    return xInRange && yInRange;
-}
-
 bool Board::isEmptyAt(const QPoint& cell) const {
     if(errorIfOutOfRane(cell)) return false;
     piecesMap.contains(cell);
 }
 
 bool Board::errorIfOutOfRane(const QPoint& cell) {
-    if(!includes(cell)){
+    if(!dimension.includes(cell)){
         qWarning() << "Cell [" << cell.x() << ", " << cell.y() << "] out of range";
         return true;
     }

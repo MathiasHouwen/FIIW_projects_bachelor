@@ -4,11 +4,11 @@
 
 #include <qvarlengtharray.h>
 #include <iostream>
-#include "PatternMover.h"
+#include "PossibleMovesCalculator.h"
 
-PatternMover::PatternMover(Board& board) : board(board) {}
+PossibleMovesCalculator::PossibleMovesCalculator(Board& board) : board(board) {}
 
-QSet<QPoint> PatternMover::getPossibleMoves(Pattern pattern, QPoint cell) {
+QSet<QPoint> PossibleMovesCalculator::getPossibleMoves(Pattern pattern, QPoint cell) {
     // Elke richting waarin een piece een movePiece kan doen is een quadrant.
     // indien er een obstakel is, zal die quadrant invalid worden,
     // waardoor je niet verder kan lopen in die richting
@@ -29,7 +29,7 @@ QSet<QPoint> PatternMover::getPossibleMoves(Pattern pattern, QPoint cell) {
     return createPatternLayer(1, pattern, cell, validQuadrants);
 }
 
-QSet<QPoint> PatternMover::createPatternLayer(int distance, Pattern pattern, QPoint cell, QVarLengthArray<bool>& validQuadrants) {
+QSet<QPoint> PossibleMovesCalculator::createPatternLayer(int distance, Pattern pattern, QPoint cell, QVarLengthArray<bool>& validQuadrants) {
     QSet<QPoint> moves;
     for(int sw : pattern.sideways){
         int quadrant = 0;

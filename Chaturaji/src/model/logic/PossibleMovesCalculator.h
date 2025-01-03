@@ -4,8 +4,8 @@
 // NIET AANGEPAST IN PRACTICUM 2
 
 
-#ifndef CHATURAJI_PATTERNMOVER_H
-#define CHATURAJI_PATTERNMOVER_H
+#ifndef CHATURAJI_POSSIBLEMOVESCALCULATOR_H
+#define CHATURAJI_POSSIBLEMOVESCALCULATOR_H
 
 #include <QSet>
 #include <QPoint>
@@ -13,9 +13,9 @@
 #include "../enums_and_structs/Pattern.h"
 
 
-class PatternMover {
+class PossibleMovesCalculator {
 public:
-    PatternMover(Board& board);
+    PossibleMovesCalculator(Board& board);
     // creeert alle mogelijke moves vanaf een cell (moves zijn bestemmingen, geen delta verplaatsingen)
     QSet<QPoint> getPossibleMoves(Pattern pattern, QPoint cell);
 private:
@@ -27,4 +27,4 @@ private:
 
 
 
-#endif //CHATURAJI_PATTERNMOVER_H
+#endif //CHATURAJI_POSSIBLEMOVESCALCULATOR_H

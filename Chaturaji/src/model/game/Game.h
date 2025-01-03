@@ -3,7 +3,7 @@
 
 
 #include "board/Board.h"
-#include "../logic/PatternMover.h"
+#include "../logic/PossibleMovesCalculator.h"
 #include "Player.h"
 #include "Dice.h"
 #include "Bot.h"
@@ -26,7 +26,7 @@ private:
 
     // model classes
     Board board;    // bord
-    PatternMover mover; // logica voor piece patronen
+    PossibleMovesCalculator mover; // logica voor piece patronen
     Dice dice;
     std::vector<std::shared_ptr<Player>> players = {
         std::make_shared<Player>(Player::colour::RED),

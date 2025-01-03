@@ -8,4 +8,7 @@ Color Piece::getColor() {
     return color;
 }
 
-Piece::Piece(Color color) : color(color){}
+Piece::Piece(Color color, PieceType type)
+    : color(color), type(type)
+{}
+

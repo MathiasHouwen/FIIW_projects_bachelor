@@ -5,6 +5,7 @@
 #define CHATURAJI_BOARD_H
 
 #include "Piece.h"
+#include "SquareDimension.h"
 #include <qDebug>
 #include <QPoint>
 #include <QHash>
@@ -15,8 +16,8 @@ private:
     static bool errorIfOutOfRane(const QPoint& cell);  // print error als een cell buiten het bord ligt
 
 public:
-    static const int SIZE = 8; // breedte/hoogte bord
-    static bool includes(const QPoint& cell); // kijkt of een cell binnen het bord ligt
+    // is static const dus encapsulatie met getter heeft geen meerwaarde, daarom pulic
+    static const SquareDimension dimension; // breedte/hoogte bord
 
     void putPieceAt(const QPoint& cell, Piece piece); // vul een cell met een piece (en delete eventuele oude piece)
     void clearCell(const QPoint& cell);

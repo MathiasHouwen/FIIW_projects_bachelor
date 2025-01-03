@@ -29,8 +29,8 @@ add_executable(Chaturaji
         src/model/game/board/Board.cpp
 #        src/controller/CLI_Controller.h
 #        src/controller/CLI_Controller.cpp
-        src/model/logic/PatternMover.h
-        src/model/logic/PatternMover.cpp
+        src/model/logic/PossibleMovesCalculator.h
+        src/model/logic/PossibleMovesCalculator.cpp
         src/model/game/Player.cpp
         src/model/game/Player.h
         src/model/game/Player.h
@@ -74,6 +74,9 @@ add_executable(Chaturaji
         src/model/enums_and_structs/Color.h
         src/model/game/board/Piece.cpp
         src/model/game/board/Piece.h
+        src/model/game/board/SquareDimension.cpp
+        src/model/game/board/SquareDimension.h
+        src/model/enums_and_structs/PieceType.h
 )
 target_link_libraries(Chaturaji Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::SvgWidgets Qt${QT_VERSION_MAJOR}::Xml)
 

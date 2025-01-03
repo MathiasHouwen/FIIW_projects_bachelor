@@ -7,12 +7,15 @@
 
 
 #include "../../enums_and_structs/Color.h"
+#include "../../enums_and_structs/PieceType.h"
 
 class Piece {
 private:
     Color color{Color::NONE};
+    PieceType type{PieceType::PAWN};
 public:
-    Piece(Color color);
+    Piece() = default; // nodig voor maps
+    explicit Piece(Color color, PieceType type);
     Color getColor();
 };
 

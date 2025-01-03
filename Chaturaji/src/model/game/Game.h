@@ -6,7 +6,6 @@
 #include "../logic/PatternMover.h"
 #include "Player.h"
 #include "Dice.h"
-#include "bots/Bot.h"
 
 // practicum 2: resultaat van move vervangen van bool tot MoveResult
 // + state machine karakter van game duidelijker gemaakt in de public interface, door MoveState enum

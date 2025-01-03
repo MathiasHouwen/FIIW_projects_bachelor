@@ -15,9 +15,10 @@
 class Piece; // forward decl om circular dependency te voorkomen
 class Player {
 public:
+    virtual ~Player() = default;
+
     enum class colour {RED, BLUE, YELLOW, GREEN};
     Player(colour mColour);
-    virtual ~Player() = default;
 
     //setters
     void setName(const QString &mName);

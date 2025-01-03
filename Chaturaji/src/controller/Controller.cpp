@@ -50,9 +50,9 @@ void Controller::onCellClicked(QPoint cell) {
         Game::MoveResult result = model.movePiece(cell);
         if(result.succes){
 
-            if(model.vrihannauka(&selectedCell)){
-                std::cout << "vrihannauka";
-            }
+//            if(model.vrihannauka(&selectedCell)){
+//                std::cout << "vrihannauka";
+//            }
 
 //            // TODO: PAWN PROMATION
 //            if(model.canPromote(&cell)){

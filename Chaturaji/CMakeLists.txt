@@ -71,10 +71,13 @@ add_executable(Chaturaji
         src/view/mainscreen/player/PlayersView.h
         src/model/game/bots/Bot.cpp
         src/model/game/bots/Bot.h
-        src/model/game/bots/Aggressive.cpp
-        src/model/game/bots/Aggressive.h
-        src/model/game/bots/Passive.cpp
-        src/model/game/bots/Passive.h
+        src/model/game/bots/MoveStrategy.h
+        src/model/game/bots/AggressiveMoveStrategy.cpp
+        src/model/game/bots/AggressiveMoveStrategy.h
+        src/model/game/bots/PassiveMoveStrategy.cpp
+        src/model/game/bots/PassiveMoveStrategy.h
+        src/model/game/bots/AggressiveBot.h
+        src/model/game/bots/PassiveBot.h
 )
 target_link_libraries(Chaturaji Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::SvgWidgets Qt${QT_VERSION_MAJOR}::Xml)
 

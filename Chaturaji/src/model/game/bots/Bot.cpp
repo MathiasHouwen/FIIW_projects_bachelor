@@ -4,11 +4,9 @@
 
 #include "Bot.h"
 
-Bot::Bot(colour mColour, bool aggressive)
-        : Player(mColour),
-          aggressive(aggressive){
-}
+Bot::Bot(colour mColour, std::shared_ptr<MoveStrategy> strategy)
+        : Player(mColour), strategy(std::move(strategy)) {}
 
-bool Bot::getAggressive() {
-    return aggressive;
+QPoint Bot::getNextMove(Game& game, const QSet<QPoint>& moves) {
+    return strategy->getNextMove(game, moves);
 }

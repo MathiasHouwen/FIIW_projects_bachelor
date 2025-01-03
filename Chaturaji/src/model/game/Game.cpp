@@ -1,5 +1,8 @@
 #include <iostream>
 #include "Game.h"
+#include "bots/Bot.h"
+#include "bots/AggressiveBot.h"
+#include "bots/PassiveBot.h"
 
 #include <qtextstream.h>
 
@@ -21,8 +24,12 @@ void Game::setPlayerScore(int score, Player::colour playerColour){
     player.setMScore(score);
 }
 
-void Game::makeBot(Player::colour color, bool agressive) {
-    players[static_cast<int>(color)] = std::make_shared<Bot>(color, agressive);
+void Game::makeBot(Player::colour color, bool aggressive) {
+    if (aggressive) {
+        players[static_cast<int>(color)] = std::make_shared<AggressiveBot>(color);
+    } else {
+        players[static_cast<int>(color)] = std::make_shared<PassiveBot>(color);
+    }
 }
 
 bool Game::selectPiece(QPoint cell) {
@@ -73,25 +80,8 @@ Game::MoveResult Game::movePiece(QPoint destinationCell) {
 }
 
 QPoint Game::getNextMove(const QSet<QPoint>& moves) {
-    bool aggressive = std::dynamic_pointer_cast<Bot>(players[turn])->getAggressive();
-    Piece calculated{Piece::Type::KING, {0, 0}, getCurrentPlayer(), {NULL, NULL}};
-    if(aggressive) {
-        for(auto move : moves) {
-            Piece* destPiece = board.getCell(move);
-            if(destPiece) {return destPiece->getCell();}
-            Piece dummy{Piece::Type::KING, {0, 0}, getCurrentPlayer(), move};
-            if(dummy.operator>(calculated)){calculated.setCell(move);}
-        }
-    }
-    else {
-        for(auto move : moves) {
-            Piece* destPiece = board.getCell(move);
-            if(destPiece) {continue;}
-            Piece dummy{Piece::Type::KING, {0, 0}, getCurrentPlayer(), move};
-            if(dummy.operator<(calculated)){calculated.setCell(move);}
-        }
-    }
-    return calculated.getCell();
+    auto bot = std::dynamic_pointer_cast<Bot>(players[turn]);
+    return bot->getNextMove(*this, moves);
 }
 
 QPoint Game::moveBotPiece() {

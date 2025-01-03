@@ -21,3 +21,5 @@ bool SpecialRulesChecker::validSinhasana(PieceType type, HomeBoardSide homeSide,
     //TODO
     return false;
 }
+
+SpecialRulesChecker::SpecialRulesChecker(Board &board) : board(board) {}

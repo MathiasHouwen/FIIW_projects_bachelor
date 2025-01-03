@@ -9,8 +9,14 @@
 #include <QPoint>
 #include "../enums_and_structs/PieceType.h"
 #include "../enums_and_structs/HomeBoardSide.h"
+#include "../game/board/Board.h"
 
 class SpecialRulesChecker {
+private:
+    Board& board;
+public:
+    explicit SpecialRulesChecker(Board &board);
+
 public:
     bool validPawnPromotion(PieceType type, HomeBoardSide homeSide, QPoint destination);
     bool validVrihannauka(PieceType type, HomeBoardSide homeSide, QPoint destination); // aka die boat dinges

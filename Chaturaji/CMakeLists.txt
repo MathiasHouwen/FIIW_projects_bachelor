@@ -80,6 +80,9 @@ add_executable(Chaturaji
         src/model/enums_and_structs/HomeBoardSide.h
         src/model/logic/SpecialRulesChecker.cpp
         src/model/logic/SpecialRulesChecker.h
+        src/model/enums_and_structs/ClassifiedMove.h
+        src/model/logic/MovesManager.cpp
+        src/model/logic/MovesManager.h
 )
 target_link_libraries(Chaturaji Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::SvgWidgets Qt${QT_VERSION_MAJOR}::Xml)
 

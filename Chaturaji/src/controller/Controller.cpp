@@ -49,8 +49,7 @@ void Controller::onCellClicked(QPoint cell) {
         const Player& currentPlayer = model.getCurrentPlayer();
         Game::MoveResult result = model.movePiece(cell);
         if(result.succes){
-
-            if(model.vrihannauka(&selectedCell)){
+            if(model.vrihannauka(&cell)){
                 std::cout << "vrihannauka";
             }
 

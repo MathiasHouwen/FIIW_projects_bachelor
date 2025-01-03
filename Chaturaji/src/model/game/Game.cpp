@@ -230,8 +230,12 @@ bool Game::canPromote(QPoint *selectedCell){
         return false;
     }
 
-    Player player = piece.getPlayer();
-    // TODO: CHECK IF IT IS IN THE TOP SQAURE
+    QPoint dir = piece.getWalkPattern().forwardDirection;
+    return endOfBoard(dir, selectedCell);
+}
+
+bool Game::endOfBoard(QPoint dir, QPoint *selectedCell){
+    return false;
 }
 
 bool Game::sinhasana(QPoint *selectedCell) {
@@ -257,18 +261,27 @@ bool Game::sinhasana(QPoint *selectedCell) {
 }
 
 void Game::mergeArmies(Player *fromPlayer, Player *toPlayer){
+    for (Piece* piece : fromPlayer->getAlivePieces()){
 
+    }
 }
 
 
 bool Game::vrihannauka(QPoint *selectedCell) {
-    Piece piece = *board.getCell(*selectedCell);
-    Piece::Type type = piece.getType();
-    Player player = piece.getPlayer();
+    if (!board.isInRange(*selectedCell)) {
+        return false; // Out of range
+    }
 
+    Piece* piece = board.getCell(*selectedCell);
+    if (!piece) {
+        return false; // No piece at the selected cell
+    }
+
+    Piece::Type type = piece->getType();
+    Player player = piece->getPlayer();
 
     if (type != Piece::Type::BOAT) {
-        return false;
+        return false; // Not a boat
     }
 
     std::vector<QPoint> topLeftCorners = {

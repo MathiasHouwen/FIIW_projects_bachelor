@@ -86,6 +86,7 @@ public:
     bool sinhasana(QPoint *selectedCell);
     bool vrihannauka(QPoint *selectedCell);
 
+    bool endOfBoard(QPoint dir, QPoint *selectedCell);
 };
 
 

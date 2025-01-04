@@ -17,8 +17,8 @@
 #include <QPainter>
 #include <qpainterpath.h>
 #include <QVBoxLayout>
-#include "../../../model/game/Player.h"
-#include "../../../model/game/Game.h"
+#include "../../../model/game/identities/Player.h"
+#include "../../../model/game/oude_garbage/Game.h"
 
 class PlayerView : public QWidget {
 Q_OBJECT

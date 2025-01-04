@@ -9,9 +9,9 @@
 
 #include <QSet>
 #include <QPoint>
-#include "../game/board/Board.h"
-#include "../enums_and_structs/Pattern.h"
-#include "../enums_and_structs/HomeBoardSide.h"
+#include "../state/Board.h"
+#include "../../enums_and_structs/Pattern.h"
+#include "../../enums_and_structs/HomeBoardSide.h"
 
 // BEREKENT ALLE POSSIBLE MOVES.
 // HOUDT DUS GEEN REKENING MET OF ER EEN PIECE STAAT IN DE DESTINATION CELL

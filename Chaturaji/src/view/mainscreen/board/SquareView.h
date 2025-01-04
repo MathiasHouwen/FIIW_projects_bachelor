@@ -15,7 +15,7 @@
 #include <QPushButton>
 
 #include "PieceWidgit.h"
-#include "../../../model/game/Game.h"
+#include "../../../model/game/oude_garbage/Game.h"
 
 namespace QCol = QColorConstants::Svg;
 

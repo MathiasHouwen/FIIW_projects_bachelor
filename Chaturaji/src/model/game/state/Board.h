@@ -4,9 +4,9 @@
 #ifndef CHATURAJI_BOARD_H
 #define CHATURAJI_BOARD_H
 
-#include "Piece.h"
-#include "SquareDimension.h"
-#include <qDebug>
+#include "../identities/Piece.h"
+#include "../util/SquareDimension.h"
+#include <QDebug>
 #include <QPoint>
 #include <QHash>
 

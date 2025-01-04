@@ -11,7 +11,7 @@
 
 #include <qobject.h>
 #include <qobjectdefs.h>
-#include "../model/game/Game.h"
+#include "../model/game/oude_garbage/Game.h"
 #include "../view/mainscreen/board/BoardView.h"
 #include "../view/mainscreen/moves/DiceAndMovesView.h"
 #include "../view/mainscreen/toolbar/FileIOView.h"

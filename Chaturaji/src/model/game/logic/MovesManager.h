@@ -6,9 +6,9 @@
 #define CHATURAJI_MOVESMANAGER_H
 
 
-#include "../enums_and_structs/ClassifiedMove.h"
-#include "../game/board/Piece.h"
-#include "../game/board/Board.h"
+#include "../../enums_and_structs/ClassifiedMove.h"
+#include "../identities/Piece.h"
+#include "../state/Board.h"
 #include "PossibleMovesCalculator.h"
 #include "SpecialRulesChecker.h"
 

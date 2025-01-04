@@ -10,8 +10,8 @@
 
 #include <QWidget>
 #include <QVBoxLayout>
-#include "../../../model/game/board/Board.h"
-#include "../../../model/game/Game.h"
+#include "../../../model/game/state/Board.h"
+#include "../../../model/game/oude_garbage/Game.h"
 #include "SquareView.h"
 
 class BoardView : public QWidget{

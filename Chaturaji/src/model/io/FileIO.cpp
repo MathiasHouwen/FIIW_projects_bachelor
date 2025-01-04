@@ -2,7 +2,7 @@
 // nog steeds volledig van mathias
 
 #include "FileIO.h"
-#include "../game/Game.h"
+#include "../game/oude_garbage/Game.h"
 
 #include <QTextStream>
 #include <QDebug>

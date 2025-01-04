@@ -9,8 +9,8 @@
 
 #include <qstring.h>
 #include <QFile>
-#include "../game/board/Board.h"
-#include "../game/Game.h"
+#include "../game/state/Board.h"
+#include "../game/oude_garbage/Game.h"
 
 class FileIO {
 public:

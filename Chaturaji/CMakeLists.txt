@@ -19,25 +19,25 @@ add_definitions(-DSAVES_PATH="${CMAKE_SOURCE_DIR}/Saves")
 
 add_executable(Chaturaji
         src/main.cpp
-        src/model/game/Game.h
-        src/model/game/Game.cpp
+        src/model/game/oude_garbage/Game.h
+        src/model/game/oude_garbage/Game.cpp
 #        src/view/CLIView.h
 #        src/controller/ConsoleIO.h
 #        src/controller/ConsoleIO.cpp
 #        src/view/CLIView.cpp
-        src/model/game/board/Board.h
-        src/model/game/board/Board.cpp
+        src/model/game/state/Board.h
+        src/model/game/state/Board.cpp
 #        src/controller/CLI_Controller.h
 #        src/controller/CLI_Controller.cpp
-        src/model/logic/PossibleMovesCalculator.h
-        src/model/logic/PossibleMovesCalculator.cpp
-        src/model/game/Player.cpp
-        src/model/game/Player.h
-        src/model/game/Player.h
+        src/model/game/logic/PossibleMovesCalculator.h
+        src/model/game/logic/PossibleMovesCalculator.cpp
+        src/model/game/state/identities/Player.cpp
+        src/model/game/state/identities/Player.h
+        src/model/game/state/identities/Player.h
         src/model/io/FileIO.cpp
         src/model/io/FileIO.h
         src/model/io/FileIO.h
-        src/model/enums_and_structs/Pattern.h
+        src/model/game/enums_and_structs/Pattern.h
         src/view/mainscreen/MainWindow.cpp
         src/view/mainscreen/MainWindow.h
         src/view/mainscreen/mainwindow.ui
@@ -56,8 +56,8 @@ add_executable(Chaturaji
         src/controller/Controller.cpp
         src/controller/Controller.h
         src/controller/Controller.h
-        src/model/game/Dice.cpp
-        src/model/game/Dice.h
+        src/model/game/state/Dice.cpp
+        src/model/game/state/Dice.h
         src/view/mainscreen/moves/DieView.cpp
         src/view/mainscreen/moves/DieView.h
         src/view/mainscreen/moves/DiceAndMovesView.cpp
@@ -67,22 +67,22 @@ add_executable(Chaturaji
         src/view/startscreen/startscreen.ui
         src/view/mainscreen/player/PlayersView.cpp
         src/view/mainscreen/player/PlayersView.h
-        src/model/game/Bot.cpp
-        src/model/game/Bot.h
-        src/model/game/board/BoardQuerier.cpp
-        src/model/game/board/BoardQuerier.h
-        src/model/enums_and_structs/Color.h
-        src/model/game/board/Piece.cpp
-        src/model/game/board/Piece.h
-        src/model/game/board/SquareDimension.cpp
-        src/model/game/board/SquareDimension.h
-        src/model/enums_and_structs/PieceType.h
-        src/model/enums_and_structs/HomeBoardSide.h
-        src/model/logic/SpecialRulesChecker.cpp
-        src/model/logic/SpecialRulesChecker.h
-        src/model/enums_and_structs/ClassifiedMove.h
-        src/model/logic/MovesManager.cpp
-        src/model/logic/MovesManager.h
+        src/model/game/oude_garbage/Bot.cpp
+        src/model/game/oude_garbage/Bot.h
+        src/model/game/logic/BoardQuerier.cpp
+        src/model/game/logic/BoardQuerier.h
+        src/model/game/enums_and_structs/Color.h
+        src/model/game/state/identities/Piece.cpp
+        src/model/game/state/identities/Piece.h
+        src/model/game/util/SquareDimension.cpp
+        src/model/game/util/SquareDimension.h
+        src/model/game/enums_and_structs/PieceType.h
+        src/model/game/enums_and_structs/HomeBoardSide.h
+        src/model/game/logic/SpecialRulesChecker.cpp
+        src/model/game/logic/SpecialRulesChecker.h
+        src/model/game/enums_and_structs/ClassifiedMove.h
+        src/model/game/logic/MovesManager.cpp
+        src/model/game/logic/MovesManager.h
 )
 target_link_libraries(Chaturaji Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::SvgWidgets Qt${QT_VERSION_MAJOR}::Xml)
 

@@ -6,8 +6,8 @@
 #define CHATURAJI_BOARDQUERIER_H
 
 
-#include "Board.h"
-#include <qDebug>
+#include "../state/Board.h"
+#include <QDebug>
 
 class BoardQuerier {
 

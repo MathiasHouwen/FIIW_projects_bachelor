@@ -7,9 +7,9 @@
 
 
 #include <QPoint>
-#include "../enums_and_structs/PieceType.h"
-#include "../enums_and_structs/HomeBoardSide.h"
-#include "../game/board/Board.h"
+#include "../../enums_and_structs/PieceType.h"
+#include "../../enums_and_structs/HomeBoardSide.h"
+#include "../state/Board.h"
 
 class SpecialRulesChecker {
 private:

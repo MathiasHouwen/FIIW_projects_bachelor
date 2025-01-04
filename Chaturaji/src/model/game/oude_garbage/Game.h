@@ -2,10 +2,10 @@
 #define CHATURAJI_GAME_H
 
 
-#include "board/Board.h"
+#include "../state/Board.h"
 #include "../logic/PossibleMovesCalculator.h"
-#include "Player.h"
-#include "Dice.h"
+#include "identities/Player.h"
+#include "../state/Dice.h"
 #include "Bot.h"
 
 // practicum 2: resultaat van movePiece vervangen van bool tot MoveResult

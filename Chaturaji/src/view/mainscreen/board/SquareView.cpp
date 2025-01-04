@@ -191,7 +191,7 @@ void SquareView::updateSetPieceGrey() {
 //        border = QColorConstants::Svg::aquamarine;
 //        color = QColorConstants::Svg::darkseagreen;
 //    }
-//    else if (selection && model.getPossibleMoves().contains(cell)) {
+//    else if (selection && model.generatePossibleMoves().contains(cell)) {
 //        border = QColorConstants::Svg::lightseagreen;
 //    }
 //

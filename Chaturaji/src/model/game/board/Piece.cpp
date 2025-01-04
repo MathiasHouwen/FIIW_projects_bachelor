@@ -4,11 +4,19 @@
 
 #include "Piece.h"
 
-Color Piece::getColor() {
+Color Piece::getColor() const {
     return color;
 }
 
 Piece::Piece(Color color, PieceType type)
     : color(color), type(type)
 {}
+
+PieceType Piece::getType() const {
+    return type;
+}
+
+HomeBoardSide Piece::getHomeSide() const {
+    return homeSide;
+}
 

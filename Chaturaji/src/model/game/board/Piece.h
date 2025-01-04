@@ -18,7 +18,10 @@ private:
 public:
     Piece() = default; // nodig voor maps
     explicit Piece(Color color, PieceType type);
-    Color getColor();
+
+    [[nodiscard]] PieceType getType() const;
+    [[nodiscard]] HomeBoardSide getHomeSide() const;
+    [[nodiscard]] Color getColor() const;
 };
 
 

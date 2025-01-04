@@ -19,8 +19,9 @@ private:
     Board& board;
     PossibleMovesCalculator calculator{board};
     SpecialRulesChecker rulesChecker{board};
+    SpecialMoveType classifySpecialMove(Piece piece, QPoint destination);
 public:
-    QSet<ClassifiedMove> generateClassifiedMoves(Piece piece);
+    QSet<ClassifiedMove> generateClassifiedMoves(Piece piece, QPoint location);
 };
 
 

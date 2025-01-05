@@ -9,7 +9,6 @@
 
 #include <QSet>
 #include <QPoint>
-#include "../board/Piece.h"
 #include "../Game.h"
 
 class MoveStrategy {

@@ -6,7 +6,6 @@
 #define PASSIVEMOVESTRATEGY_H
 
 #include "MoveStrategy.h"
-#include "../board/Piece.h"
 #include "../Game.h"
 
 class PassiveMoveStrategy : public MoveStrategy {

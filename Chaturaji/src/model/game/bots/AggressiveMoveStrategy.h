@@ -8,7 +8,6 @@
 
 
 #include "MoveStrategy.h"
-#include "../board/Piece.h"
 #include "../Game.h"
 
 class AggressiveMoveStrategy : public MoveStrategy {

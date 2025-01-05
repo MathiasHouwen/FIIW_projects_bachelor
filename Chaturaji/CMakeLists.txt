@@ -82,6 +82,9 @@ add_executable(Chaturaji
         src/controller/GameController.cpp
         src/controller/GameController.h
         src/model/game/enums_and_structs/PlayerType.h
+        src/model/game/bots/Bot.cpp
+        src/model/game/bots/PassiveMoveStrategy.cpp
+        src/model/game/bots/AggressiveMoveStrategy.cpp
         #        src/model/game/bots/Bot.cpp
 #        src/model/game/bots/Bot.h
 #        src/model/game/bots/MoveStrategy.h

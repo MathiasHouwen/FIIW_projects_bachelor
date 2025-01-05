@@ -31,6 +31,15 @@ void Game::executeClassifiedMove(QPoint from, ClassifiedMove move, PieceType paw
     if(move.moveType == MoveType::ATTACK){
         int score = pieceTypeToScore(killedPiece.value().getType());
         gameState.getCurrentPlayer().increaseScore(score);
+        if(killedPiece->getType() == PieceType::KING){
+            gameState.getPlayerByColor(killedPiece->getColor()).kill();
+            // maak alle pieces grey pieces (zodat die niet geassocieerd is met een speler)
+            for(auto cell : querier.getPiecesFromColor(killedPiece->getColor())){
+                auto piece = gameState.getBoard().getPieceAt(cell);
+                auto newPiece = Piece(Color::NONE, piece->getType(), piece->getHomeSide());
+                gameState.getBoard().putPieceAt(cell, newPiece);
+            }
+        }
     }
     switch (move.specialMoveType) {
         case SpecialMoveType::SINHASANA:
@@ -38,6 +47,7 @@ void Game::executeClassifiedMove(QPoint from, ClassifiedMove move, PieceType paw
             break;
         case SpecialMoveType::VRIHANNAUKA:
             rulesExecutor.vrihannauka(move.destination);
+            gameState.getCurrentPlayer().increaseScore(6);
             break;
         case SpecialMoveType::PAWNPROMOTE:
             rulesExecutor.promotePawn(move.destination, pawnPromoteType);

@@ -14,7 +14,7 @@
 class MoveStrategy {
 public:
     virtual ~MoveStrategy() = default;
-    virtual QPoint getNextMove(Game& game, const QSet<QPoint>& moves) = 0;
+    virtual QPoint getNextMove(Game& game, const QSet<ClassifiedMove>& moves) = 0;
 };
 
 

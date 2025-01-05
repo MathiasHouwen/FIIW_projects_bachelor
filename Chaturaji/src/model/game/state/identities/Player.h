@@ -11,12 +11,16 @@
 #include "../../enums_and_structs/Color.h"
 
 class Player {
+protected:
+    int isBot{false};
 private:
     int score{0};    // huidige score
     bool alive{true};   // leeft nog
     QString name; // naam van wie deze player speelt
     Color color{Color::NONE};
 public:
+    int getIsBot() const;
+
     Player(Color color, QString name, int startingScore=0); // starting score zodat json reader die kan invullen
     Player() = default;
     void increaseScore(int extraScore);

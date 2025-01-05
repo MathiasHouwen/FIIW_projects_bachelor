@@ -3,6 +3,7 @@
 //
 
 #include "GameController.h"
+#include "../model/game/bots/Bot.h"
 
 QSet<ClassifiedMove> GameController::getMovesForHighlight() {
     if(state == StepState::READYTOPICK)
@@ -26,6 +27,11 @@ void GameController::handleCellSelect(QPoint cell, PieceType pawnPromoteType) {
     } else {
         game.doMove(selectedCell.value(), cell, pawnPromoteType);
         selectedCell = std::nullopt;
+    }
+    if(game.getGameState().getCurrentPlayer().getIsBot()){
+        Bot bot = static_cast<Bot>(game.getGameState().getCurrentPlayer());
+        auto moves = getMovesForHighlight();
+        auto movePoint = bot.getNextMove(game, moves);
     }
 }
 

@@ -12,7 +12,7 @@
 class Bot : public Player {
 public:
     Bot(Color color, std::shared_ptr<MoveStrategy> strategy);
-    QPoint getNextMove(Game& game, const QSet<QPoint>& moves);
+    QPoint getNextMove(Game& game, const QSet<ClassifiedMove>& moves);
 
 private:
     std::shared_ptr<MoveStrategy> strategy;

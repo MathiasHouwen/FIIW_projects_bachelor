@@ -16,7 +16,7 @@ Q_OBJECT
 public:
     explicit PlayersView(QWidget *parent = nullptr);
     ~PlayersView() override;
-    void addPlayerView(const Player& player);
+    void addPlayerView(Player* player);
 
     void updateScore(Color color, int score);
     void updateSetBigAndToTop(Color color);

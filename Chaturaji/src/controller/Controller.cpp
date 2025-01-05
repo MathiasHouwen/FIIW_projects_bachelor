@@ -21,10 +21,13 @@ Controller::Controller(GameController& gameController, BoardView* boardView, Dic
 }
 
 void Controller::start() {
+
     io.load(gameController.getGame(), QString(SAVES_PATH) + "/startingFile.json");
+
     boardView->updateFullBoard(gameController.getGame().getGameState().getBoard());
     initPlayersView();
     update();
+
 }
 void Controller::onCellClicked(QPoint cell) {
     if(gameController.moveIsPawnPromote(cell)){
@@ -37,27 +40,6 @@ void Controller::onCellClicked(QPoint cell) {
     update();
 }
 
-//void Controller::startBot() {
-//    std::cout << std::endl << "NEW MOVE:" << std::endl;
-//    for(int i = 0 ; i < 2; i++) {
-//        const QPoint cell = model.playBot();
-//        onCellClicked(cell);
-//        std::cout << "movePiece piece: " << cell.x() << "," << cell.y() << std::endl;
-//        const QPoint destination = model.moveBotPiece();
-//        if(destination == QPoint(NULL, NULL)) {
-//            std::cout << "movePiece skipped: " << cell.x() << "," << cell.y() << std::endl;
-//            model.skip();
-//            updateMoveAndDiceView();
-//            clearHighLights();
-//            setSelectionHighlights();
-//            playersView->updateSetBigAndToTop(model.getCurrentPlayer().getColor());
-//        }
-//        else {
-//            std::cout << "moved: " << cell.x() << "," << cell.y() << " to: " << destination.x() << "," << destination.y() << std::endl;
-//            onCellClicked(destination);
-//        }
-//    }
-//}
 
 // handle een enter of leave op een cell (gewoon een "cursor" highlight toepassen)
 void Controller::onCellHoverChanged(QPoint cell, bool hover) {
@@ -93,34 +75,34 @@ void Controller::onSkipButtonClicked() {
     playersView->updateSetBigAndToTop(gameController.getGame().getGameState().getCurrentTurn());
 }
 
-//void Controller::endGame() {
-//    std::cout << std::endl << "END GAME" << std::endl;
-//    std::cout << "WINNER: " << gameController.getPlayer(gameController.getCurrentPlayer()).getName().toStdString() << std::endl;
-//    _sleep(5000);
-//    start();
-//}
+void Controller::endGame() {
+    qDebug() << "\nEND GAME";
+    qDebug() << "WINNER: " << gameController.getCurrentPlayerName();
+    _sleep(5000);
+    start();
+}
 
 //handled de file save knop
-//void Controller::onSave(){
-//    qDebug("Save button clicked!");
-//    QString filePath = QFileDialog::getSaveFileName(
-//            fileIoView,
-//            "Save File",
-//            "../Saves",
-//            "Text Files (*.txt)"
-//    );
-//
-//    if (!filePath.isEmpty()) {
-//        if (!filePath.endsWith(".txt", Qt::CaseInsensitive)) {
-//            filePath += ".txt";
-//        }
-//        qDebug() << "Saving to file:" << filePath;
-//
-//        io.save(&model, filePath);
-//    } else {
-//        qDebug() << ">:( Geen naam";
-//    }
-//}
+void Controller::onSave(){
+    qDebug("Save button clicked!");
+    QString filePath = QFileDialog::getSaveFileName(
+            fileIoView,
+            "Save File",
+            "../Saves",
+            "Text Files (*.txt)"
+    );
+
+    if (!filePath.isEmpty()) {
+        if (!filePath.endsWith(".txt", Qt::CaseInsensitive)) {
+            filePath += ".txt";
+        }
+        qDebug() << "Saving to file:" << filePath;
+
+        io.save(gameController.getGame(), filePath);
+    } else {
+        qDebug() << ">:( Geen naam";
+    }
+}
 
 //handled de file load knop
 void Controller::onLoad(){
@@ -134,6 +116,7 @@ void Controller::onLoad(){
 
     if (!filePath.isEmpty()) {
         qDebug() << "FilePath:" << filePath;
+        gameController.getGame().getGameState().clearPlayers();
         io.load(gameController.getGame(), filePath);
         boardView->updateFullBoard(gameController.getGame().getGameState().getBoard());
         update();
@@ -146,9 +129,9 @@ void Controller::onLoad(){
 void Controller::initPlayersView() {
     playersView->clear();
     for(Color color : {Color::RED, Color::GREEN, Color::BLUE, Color::YELLOW}){
-        Player p = gameController.getGame().getGameState().getPlayerByColor(color);
+        auto p = gameController.getGame().getGameState().getPlayerByColor(color);
         playersView->addPlayerView(p);
-        playersView->updateScore(p.getColor(), p.getScore());
+        playersView->updateScore(p->getColor(), p->getScore());
     }
     playersView->updateSetBigAndToTop(gameController.getGame().getGameState().getCurrentTurn());
 }
@@ -159,9 +142,10 @@ void Controller::updateHighlights() {
 
     currentHighlights.unite(selectables);
     auto moves = gameController.getMovesForHighlight();
+
     for(auto move : moves){
-        auto highlight = move.moveType == MoveType::NORMAL ? SquareView::HighLight::ATTACKSUGGEST
-                                                           : SquareView::HighLight::MOVESUGGEST;
+        auto highlight = move.moveType == MoveType::NORMAL ? SquareView::HighLight::MOVESUGGEST
+                                                           : SquareView::HighLight::ATTACKSUGGEST;
         boardView->updateHighlight(move.destination, highlight);
         currentHighlights.insert(move.destination);
     }
@@ -173,10 +157,12 @@ void Controller::updateHighlights() {
 }
 
 void Controller::update() {
+    boardView->updateFullBoard(gameController.getGame().getGameState().getBoard());
     auto highlights = gameController.getMovesForHighlight();
     auto selectedCell = gameController.getSelectedCell();
     clearHighLights();
     updateHighlights();
     updateMoveAndDiceView();
+    playersView->updateSetBigAndToTop(gameController.getGame().getGameState().getCurrentTurn());
     if(gameController.getGame().getGameState().isGameOver()){endGame();}
 }

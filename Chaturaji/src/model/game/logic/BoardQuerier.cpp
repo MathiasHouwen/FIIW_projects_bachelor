@@ -19,7 +19,7 @@ std::optional<Piece> BoardQuerier::movePiece(QPoint fromCell, QPoint toCell) {
 QSet<QPoint> BoardQuerier::getPiecesFromColor(Color color) {
     // Log N is niet erg want board is toch maar klein
     QSet<QPoint> result{};
-    for(auto cell : board){
+    for(auto cell : board.iterableCells()){
         if(board.getPieceAt(cell)->getColor() == color) result.insert(cell);
     }
     return result;
@@ -30,7 +30,7 @@ BoardQuerier::BoardQuerier(Board &board) : board(board) {}
 QSet<QPoint> BoardQuerier::getPiecesFromBoardHomeSide(HomeBoardSide homeSide) {
     // Log N is niet erg want board is toch maar klein
     QSet<QPoint> result{};
-    for(auto cell : board){
+    for(auto cell : board.iterableCells()){
         if(board.getPieceAt(cell)->getHomeSide() == homeSide) result.insert(cell);
     }
     return result;

@@ -6,6 +6,7 @@
 
 std::optional<Piece> Board::getPieceAt(const QPoint& cell) const {
     if(errorIfOutOfRane(cell)) return std::nullopt;
+    if(isEmptyAt(cell)) return std::nullopt;
     return piecesMap[cell];
 }
 
@@ -25,7 +26,7 @@ void Board::clear() {
 
 bool Board::isEmptyAt(const QPoint& cell) const {
     if(errorIfOutOfRane(cell)) return false;
-    piecesMap.contains(cell);
+    return !piecesMap.contains(cell);
 }
 
 bool Board::errorIfOutOfRane(const QPoint& cell) {
@@ -35,3 +36,4 @@ bool Board::errorIfOutOfRane(const QPoint& cell) {
     }
     return false;
 }
+

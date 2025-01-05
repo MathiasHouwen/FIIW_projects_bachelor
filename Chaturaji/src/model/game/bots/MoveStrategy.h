@@ -9,8 +9,9 @@
 
 #include <QSet>
 #include <QPoint>
-#include "../Game.h"
 
+class Game;
+struct ClassifiedMove;
 class MoveStrategy {
 public:
     virtual ~MoveStrategy() = default;

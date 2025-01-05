@@ -26,7 +26,7 @@ public:
 
 private:
     void getPlayers();
-    QSet<QString> players{};
+    QList<QString> players{};
     Ui::StartScreen *ui;
 };
 

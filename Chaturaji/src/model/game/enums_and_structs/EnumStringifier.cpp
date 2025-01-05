@@ -10,6 +10,7 @@ QString EnumStringifier::cToString(Color color) {
         case Color::RED: return "red";
         case Color::BLUE: return "blue";
         case Color::GREEN: return "green";
+        case Color::NONE: return "grey";
     }
 }
 
@@ -37,6 +38,7 @@ Color EnumStringifier::cFromString(QString color) {
     if(color == "blue") return Color::BLUE;
     if(color == "yellow") return Color::YELLOW;
     if(color == "green") return Color::GREEN;
+    if(color == "grey") return Color::NONE;
 }
 
 HomeBoardSide EnumStringifier::sFromString(QString side) {

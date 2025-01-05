@@ -11,6 +11,8 @@ bool Game::doMove(QPoint from, QPoint to, PieceType pawnPromoteType) {
     for(auto move : moves){
         if(move.destination == to){
             executeClassifiedMove(from, move, pawnPromoteType);
+            gameState.advance();
+            gameState.getDice().setUsed(fromPiece->getType());
             return true;
         }
     }
@@ -20,8 +22,7 @@ bool Game::doMove(QPoint from, QPoint to, PieceType pawnPromoteType) {
 Game::Game()
         : movesManager(gameState.getBoard()),
           querier(gameState.getBoard()),
-          rulesExecutor(gameState.getBoard()),
-          gameState()
+          rulesExecutor(gameState.getBoard())
 {
 
 }
@@ -30,9 +31,9 @@ void Game::executeClassifiedMove(QPoint from, ClassifiedMove move, PieceType paw
     auto killedPiece = querier.movePiece(from, move.destination);
     if(move.moveType == MoveType::ATTACK){
         int score = pieceTypeToScore(killedPiece.value().getType());
-        gameState.getCurrentPlayer().increaseScore(score);
+        gameState.getCurrentPlayer()->increaseScore(score);
         if(killedPiece->getType() == PieceType::KING){
-            gameState.getPlayerByColor(killedPiece->getColor()).kill();
+            gameState.getPlayerByColor(killedPiece->getColor())->kill();
             // maak alle pieces grey pieces (zodat die niet geassocieerd is met een speler)
             for(auto cell : querier.getPiecesFromColor(killedPiece->getColor())){
                 auto piece = gameState.getBoard().getPieceAt(cell);
@@ -47,7 +48,7 @@ void Game::executeClassifiedMove(QPoint from, ClassifiedMove move, PieceType paw
             break;
         case SpecialMoveType::VRIHANNAUKA:
             rulesExecutor.vrihannauka(move.destination);
-            gameState.getCurrentPlayer().increaseScore(6);
+            gameState.getCurrentPlayer()->increaseScore(6);
             break;
         case SpecialMoveType::PAWNPROMOTE:
             rulesExecutor.promotePawn(move.destination, pawnPromoteType);
@@ -74,6 +75,6 @@ GameState &Game::getGameState() {
 bool Game::isCellFromCurrentPlayer(QPoint cell) {
     Board& board = gameState.getBoard();
     if(board.isEmptyAt(cell)) return false;
-    return board.getPieceAt(cell)->getColor() == gameState.getCurrentPlayer().getColor();
+    return board.getPieceAt(cell)->getColor() == gameState.getCurrentPlayer()->getColor();
 }
 

@@ -29,10 +29,11 @@ void GameController::handleCellSelect(QPoint cell, PieceType pawnPromoteType) {
         selectedCell = std::nullopt;
         state = StepState::READYTOPICK;
     }
-    if(game.getGameState().getCurrentPlayer().getIsBot()){
-        Bot bot = static_cast<Bot>(game.getGameState().getCurrentPlayer());
+    if(game.getGameState().getCurrentPlayer()->isBot()){
+        Bot* bot = static_cast<Bot *>(game.getGameState().getCurrentPlayer());
         auto moves = getMovesForHighlight();
-        auto movePoint = bot.getNextMove(game, moves);
+        auto movePoint = bot->getNextMove(game, moves);
+        game.doMove(selectedCell.value(), movePoint, pawnPromoteType);
     }
 }
 
@@ -65,6 +66,18 @@ QSet<QPoint> GameController::getSelectablesForHighlight() {
 
 Game &GameController::getGame() {
     return game;
+}
+
+void GameController::addBot(QString name, std::shared_ptr<MoveStrategy> strategy) {
+    game.getGameState().addBot(name, strategy);
+}
+
+void GameController::addPlayer(QString name) {
+    game.getGameState().addPlayer(name);
+}
+
+QString GameController::getCurrentPlayerName() {
+    return game.getGameState().getCurrentPlayer()->getName();
 }
 
 

@@ -15,37 +15,20 @@
 
 
 #include "PieceWidgit.h"
-
-QString PieceWidgit::pieceTypeToString(PieceType type) {
-    switch (type) {
-        case PieceType::PAWN: return "pawn";
-        case PieceType::KING: return "king";
-        case PieceType::ELEPHANT: return "elephant";
-        case PieceType::HORSE: return "horse";
-        case PieceType::BOAT: return "boat";
-    }
-}
-QString PieceWidgit::ColorToString(Color color) {
-    switch (color) {
-        case Color::YELLOW: return "yellow";
-        case Color::RED: return "red";
-        case Color::BLUE: return "blue";
-        case Color::GREEN: return "green";
-    }
-}
+#include "../../../model/game/enums_and_structs/EnumStringifier.h"
 
 PieceWidgit::PieceWidgit(QWidget *parent, Piece piece)
     : QWidget(parent) {
-    loadSvg(pieceTypeToString(piece.getType()));
+    loadSvg(EnumStringifier::tToString(piece.getType()));
     svg = new QSvgWidget(this);
     svg->load(svgDOM.toByteArray());
-    setFill(ColorToString(piece.getColor()));
+    setFill(EnumStringifier::cToString(piece.getColor()));
     setStroke(QColorConstants::Svg::black);
 }
 
 PieceWidgit::PieceWidgit(QWidget *parent, PieceType type)
     : QWidget(parent) {
-    loadSvg(pieceTypeToString(type));
+    loadSvg(EnumStringifier::tToString(type));
     svg = new QSvgWidget(this);
     svg->load(svgDOM.toByteArray());
     setFill(Qt::gray);

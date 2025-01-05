@@ -27,17 +27,16 @@ Piece FileIO::jsonToPiece(const QJsonObject &jsonObject) {
 
 void FileIO::jsonToPlayers(Game& game, QJsonObject rootObj){
     QJsonArray players = rootObj["players"].toArray();
-    game.getGameState().clearPlayers();
     for(auto playerVal : players){
         QJsonObject playerObj = playerVal.toObject();
         Color color = EnumStringifier::cFromString(playerObj["color"].toString());
         QString name = playerObj["name"].toString();
         int score = playerObj["score"].toInt();
-        bool alie = playerObj["alive"].toBool();
+        bool alive = playerObj["alive"].toBool();
         HomeBoardSide side = EnumStringifier::sFromString(playerObj["home"].toString());
         auto player = Player(color, name, side, score);
-        if(!alie) player.kill();
         game.getGameState().addPlayer(player);
+        if(!alive) game.getGameState().getPlayerByColor(color)->kill();
     }
 }
 
@@ -96,7 +95,7 @@ QJsonObject FileIO::pieceToJson(Piece piece){
 
 QJsonArray FileIO::boardToJson(Board &board) {
     QJsonArray boardArray;
-    for(auto cell : board){
+    for(auto cell : board.iterableCells()){
         auto piece = board.getPieceAt(cell).value();
         QJsonObject pieceObject = pieceToJson(piece);
         QJsonObject squareObject;
@@ -114,11 +113,11 @@ QJsonArray FileIO::playersToJson(Game &game) {
     for(auto color : colors){
         auto player = game.getGameState().getPlayerByColor(color);
         QJsonObject playerObject;
-        playerObject["name"] = player.getName();
-        playerObject["color"] = EnumStringifier::cToString(player.getColor());
-        playerObject["score"] = player.getScore();
-        playerObject["alive"] = player.isAlive();
-        playerObject["home"] = EnumStringifier::sToString(player.getHomeBoardSide());
+        playerObject["name"] = player->getName();
+        playerObject["color"] = EnumStringifier::cToString(player->getColor());
+        playerObject["score"] = player->getScore();
+        playerObject["alive"] = player->isAlive();
+        playerObject["home"] = EnumStringifier::sToString(player->getHomeBoardSide());
         playersArray.append(playerObject);
     }
     return playersArray;

@@ -7,11 +7,11 @@
 #include "PlayerView.h"
 
 
-PlayerView::PlayerView(const Player& player, QWidget *parent) : QWidget(parent) {
-    color = QColor(ColorToString(player.getColor()));
+PlayerView::PlayerView(Player* player, QWidget *parent) : QWidget(parent) {
+    color = QColor(ColorToString(player->getColor()));
     auto layout = new QVBoxLayout(this);
 
-    nameLabel = new QLabel(player.getName());
+    nameLabel = new QLabel(player->getName());
     scoreLabel = new QLabel("Score: _");
     nameLabel->setContentsMargins(16, 0, 16, 0);
     scoreLabel->setContentsMargins(16, 0, 16, 0);

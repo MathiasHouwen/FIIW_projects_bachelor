@@ -10,6 +10,8 @@
 #include <ostream>
 
 #include "ui_StartScreen.h"
+#include "../../model/game/bots/AggressiveMoveStrategy.h"
+#include "../../model/game/bots/PassiveMoveStrategy.h"
 
 
 StartScreen::StartScreen(QWidget *parent) :
@@ -24,6 +26,7 @@ StartScreen::~StartScreen() {
 
 void StartScreen::on_pushButton_clicked() {
     auto *w = new MainWindow();
+    getPlayers();
     set_players(w);
     w->startController();
     w->show();
@@ -33,19 +36,21 @@ void StartScreen::on_pushButton_clicked() {
 void StartScreen::set_players(MainWindow* window) {
 
     for (QString name : players) {
-        window->getGameController().getGame().getGameState().addPlayer(name, PlayerType::HUMAN);
+        window->getGameController().addPlayer(name);
     }
-//    if(ui->agressive->isChecked()) {
-//        window->getModel()->makeBot(Player::colour::BLUE, true);
-//    }
-//    if(ui->passive->isChecked()) {
-//        window->getModel()->makeBot(Player::colour::GREEN, false);
-//    }
+    QString player4name = ui->player4Input->toPlainText();
+    if(ui->agressive->isChecked()) {
+        window->getGameController().addBot(player4name, std::make_shared<AggressiveMoveStrategy>());
+    } else if(ui->passive->isChecked()) {
+        window->getGameController().addBot(player4name, std::make_shared<PassiveMoveStrategy>());
+    } else {
+        window->getGameController().addPlayer(player4name);
+    }
+
 }
 
 void StartScreen::getPlayers() {
-    players.insert(ui->player1Input->toPlainText());
-    players.insert(ui->player2Input->toPlainText());
-    players.insert(ui->player3Input->toPlainText());
-    players.insert(ui->player4Input->toPlainText());
+    players.append(ui->player1Input->toPlainText());
+    players.append(ui->player2Input->toPlainText());
+    players.append(ui->player3Input->toPlainText());
 }

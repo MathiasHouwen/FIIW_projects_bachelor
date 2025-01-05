@@ -22,8 +22,6 @@ protected:
     void resizeEvent(QResizeEvent *event) override;
 
 private:
-    QString pieceTypeToString(PieceType type);
-    QString ColorToString(Color color);
     QSvgWidget* svg;
     QDomDocument svgDOM;
     bool hovered{false};

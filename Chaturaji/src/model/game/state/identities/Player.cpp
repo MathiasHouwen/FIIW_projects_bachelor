@@ -30,8 +30,8 @@ Color Player::getColor() const {
 Player::Player(Color color, QString name, HomeBoardSide homeBoardSide, int startingScore)
     : color(color), name(name), score(startingScore), homeBoardSide(homeBoardSide) {}
 
-int Player::getIsBot() const {
-    return isBot;
+int Player::isBot() const {
+    return bot;
 }
 
 HomeBoardSide Player::getHomeBoardSide() const {

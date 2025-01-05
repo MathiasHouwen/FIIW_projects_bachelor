@@ -4,7 +4,7 @@
             "x": 3,
             "y": 4,
             "piece": {
-                "type": "PAWN",
+                "type": "pawn",
                 "color": "red",
                 "homeside": "bottom"
             }
@@ -13,11 +13,12 @@
             "x": 3,
             "y": 5,
             "piece": {
-                "type": "PAWN",
+                "type": "pawn",
                 "color": "green",
                 "homeside": "right"
             }
         }
     ],
+    "players": [],
     "currentPlayer": "red"
 }

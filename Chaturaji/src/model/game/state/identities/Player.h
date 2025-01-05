@@ -13,7 +13,7 @@
 
 class Player {
 protected:
-    int isBot{false};
+    int bot{false};
 private:
     int score{0};    // huidige score
     bool alive{true};   // leeft nog
@@ -21,9 +21,6 @@ private:
     Color color{Color::NONE};
     HomeBoardSide homeBoardSide{HomeBoardSide::TOP};
 public:
-    HomeBoardSide getHomeBoardSide() const;
-
-    int getIsBot() const;
     Player(Color color, QString name, HomeBoardSide homeBoardSide, int startingScore=0); // starting score zodat json reader die kan invullen
     Player() = default;
     void increaseScore(int extraScore);
@@ -32,6 +29,8 @@ public:
     [[nodiscard]] bool isAlive() const;
     [[nodiscard]] const QString &getName() const;
     [[nodiscard]] Color getColor() const;
+    [[nodiscard]] HomeBoardSide getHomeBoardSide() const;
+    [[nodiscard]] int isBot() const;
 
 };
 

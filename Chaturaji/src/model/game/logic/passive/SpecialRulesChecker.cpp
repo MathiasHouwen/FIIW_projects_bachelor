@@ -53,7 +53,7 @@ bool SpecialRulesChecker::validSinhasana(PieceType type, HomeBoardSide homeSide,
     return homeSide != HomeBoardSide::BOTTOM && destination != QPoint{4,3}
            || homeSide != HomeBoardSide::TOP && destination != QPoint{3,7}
            || homeSide != HomeBoardSide::RIGHT && destination != QPoint{7,4}
-           || homeSide != HomeBoardSide::LEFT && destination != QPoint{0,3}
+           || homeSide != HomeBoardSide::LEFT && destination != QPoint{0,3};
 }
 
 SpecialRulesChecker::SpecialRulesChecker(Board &board) : board(board) {}

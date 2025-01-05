@@ -4,9 +4,11 @@
 
 #include "Bot.h"
 
-Bot::Bot(Color color, std::shared_ptr<MoveStrategy> strategy)
-        : Player(color, "bot"), strategy(std::move(strategy)) {
-    isBot = true;
+#include <utility>
+
+Bot::Bot(Color color, QString name, HomeBoardSide homeBoardSide, std::shared_ptr<MoveStrategy> strategy)
+        : Player(color, std::move(name), homeBoardSide), strategy(std::move(strategy)) {
+    bot = true;
 }
 
 QPoint Bot::getNextMove(Game& game, const QSet<ClassifiedMove>& moves) {

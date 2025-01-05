@@ -24,9 +24,10 @@ public:
     bool moveIsPawnPromote(QPoint cell);
     StepState getState() const;
     const std::optional<QPoint> &getSelectedCell() const;
-
     Game &getGame();
-
+    void addBot(QString name, std::shared_ptr<MoveStrategy> strategy);
+    void addPlayer(QString name);
+    QString getCurrentPlayerName();
 };
 
 

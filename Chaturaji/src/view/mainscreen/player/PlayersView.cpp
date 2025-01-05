@@ -9,9 +9,9 @@ PlayersView::PlayersView(QWidget *parent)
     layout->setDirection(QBoxLayout::BottomToTop);
 }
 
-void PlayersView::addPlayerView(const Player &player) {
+void PlayersView::addPlayerView(Player* player) {
     auto playerView = new PlayerView(player, nullptr);
-    players[player.getColor()] = playerView;
+    players[player->getColor()] = playerView;
     layout->addWidget(playerView);
 }
 

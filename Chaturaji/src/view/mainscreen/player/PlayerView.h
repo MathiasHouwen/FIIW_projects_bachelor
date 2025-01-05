@@ -24,7 +24,7 @@ Q_OBJECT
 
 public:
     QString ColorToString(Color color);
-    PlayerView(const Player& player, QWidget *parent);
+    PlayerView(Player* player, QWidget *parent);
     void updateScore(int score);
     void updateSetGrey();
     void updateSetBigOrSmall(bool big);

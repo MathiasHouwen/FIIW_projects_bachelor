@@ -7,11 +7,12 @@
 #include <utility>
 
 #include "MoveStrategy.h"
+#include "../state/identities/Player.h"
 
 
 class Bot : public Player {
 public:
-    Bot(Color color, std::shared_ptr<MoveStrategy> strategy);
+    Bot(Color color, QString name, HomeBoardSide homeBoardSide, std::shared_ptr<MoveStrategy> strategy);
     QPoint getNextMove(Game& game, const QSet<ClassifiedMove>& moves);
 
 private:

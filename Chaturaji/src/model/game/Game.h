@@ -6,14 +6,14 @@
 #define CHATURAJI_GAME_H
 
 
-#include "state/GameState.h"
 #include "logic/passive/MovesManager.h"
 #include "logic/BoardQuerier.h"
 #include "logic/active/SpecialRulesExecutor.h"
+#include "state/GameState.h"
 
 class Game {
 private:
-    GameState gameState;
+    GameState gameState{};
     MovesManager movesManager;
     BoardQuerier querier;
     SpecialRulesExecutor rulesExecutor;

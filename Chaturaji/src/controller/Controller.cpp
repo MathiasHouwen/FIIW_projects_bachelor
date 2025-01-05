@@ -21,8 +21,8 @@ Controller::Controller(GameController& gameController, BoardView* boardView, Dic
 }
 
 void Controller::start() {
-    io.load(&model, QString(SAVES_PATH) + "/startingFile.txt");
-    boardView->updateFullBoard(model.getBoard());
+    io.load(gameController.getGame(), QString(SAVES_PATH) + "/startingFile.json");
+    boardView->updateFullBoard(gameController.getGame().getGameState().getBoard());
     initPlayersView();
     update();
 }
@@ -37,27 +37,27 @@ void Controller::onCellClicked(QPoint cell) {
     update();
 }
 
-void Controller::startBot() {
-    std::cout << std::endl << "NEW MOVE:" << std::endl;
-    for(int i = 0 ; i < 2; i++) {
-        const QPoint cell = model.playBot();
-        onCellClicked(cell);
-        std::cout << "movePiece piece: " << cell.x() << "," << cell.y() << std::endl;
-        const QPoint destination = model.moveBotPiece();
-        if(destination == QPoint(NULL, NULL)) {
-            std::cout << "movePiece skipped: " << cell.x() << "," << cell.y() << std::endl;
-            model.skip();
-            updateMoveAndDiceView();
-            clearHighLights();
-            setSelectionHighlights();
-            playersView->updateSetBigAndToTop(model.getCurrentPlayer().getColor());
-        }
-        else {
-            std::cout << "moved: " << cell.x() << "," << cell.y() << " to: " << destination.x() << "," << destination.y() << std::endl;
-            onCellClicked(destination);
-        }
-    }
-}
+//void Controller::startBot() {
+//    std::cout << std::endl << "NEW MOVE:" << std::endl;
+//    for(int i = 0 ; i < 2; i++) {
+//        const QPoint cell = model.playBot();
+//        onCellClicked(cell);
+//        std::cout << "movePiece piece: " << cell.x() << "," << cell.y() << std::endl;
+//        const QPoint destination = model.moveBotPiece();
+//        if(destination == QPoint(NULL, NULL)) {
+//            std::cout << "movePiece skipped: " << cell.x() << "," << cell.y() << std::endl;
+//            model.skip();
+//            updateMoveAndDiceView();
+//            clearHighLights();
+//            setSelectionHighlights();
+//            playersView->updateSetBigAndToTop(model.getCurrentPlayer().getColor());
+//        }
+//        else {
+//            std::cout << "moved: " << cell.x() << "," << cell.y() << " to: " << destination.x() << "," << destination.y() << std::endl;
+//            onCellClicked(destination);
+//        }
+//    }
+//}
 
 // handle een enter of leave op een cell (gewoon een "cursor" highlight toepassen)
 void Controller::onCellHoverChanged(QPoint cell, bool hover) {
@@ -77,50 +77,50 @@ void Controller::clearHighLights() {
 
 // update de movePiece en dobbelstenen view
 void Controller::updateMoveAndDiceView() {
-    diceAndMovesView->updateMoveLabel(model.getCurrentMove());
-    diceAndMovesView->updateDiceNumbers(model.getDice().asNumber(0), model.getDice().asNumber(1));
-    diceAndMovesView->updatePiecePreviews(model.getDice().getAllowedTypes());
-    diceAndMovesView->updateDisableDie(0, model.getDice().isUsed(0));
-    diceAndMovesView->updateDisableDie(1, model.getDice().isUsed(1));
+    diceAndMovesView->updateMoveLabel(gameController.getGame().getGameState().getCurrentMove());
+    diceAndMovesView->updateDiceNumbers(gameController.getGame().getGameState().getDice().asNumber(0), gameController.getGame().getGameState().getDice().asNumber(1));
+    diceAndMovesView->updatePiecePreviews(gameController.getGame().getGameState().getDice().getAllowedTypes());
+    diceAndMovesView->updateDisableDie(0, gameController.getGame().getGameState().getDice().isUsed(0));
+    diceAndMovesView->updateDisableDie(1, gameController.getGame().getGameState().getDice().isUsed(1));
 }
 
 // handled een move skip (game::skip en update alles movePiece/turn gerelateerd)
 void Controller::onSkipButtonClicked() {
-    gameController.skip();
+    gameController.getGame().getGameState().advance();
     updateMoveAndDiceView();
     clearHighLights();
     updateHighlights();
-    playersView->updateSetBigAndToTop(gameController.getCurrentPlayer());
+    playersView->updateSetBigAndToTop(gameController.getGame().getGameState().getCurrentTurn());
 }
 
-void Controller::endGame() {
-    std::cout << std::endl << "END GAME" << std::endl;
-    std::cout << "WINNER: " << gameController.getPlayer(gameController.getCurrentPlayer()).getName().toStdString() << std::endl;
-    _sleep(5000);
-    start();
-}
+//void Controller::endGame() {
+//    std::cout << std::endl << "END GAME" << std::endl;
+//    std::cout << "WINNER: " << gameController.getPlayer(gameController.getCurrentPlayer()).getName().toStdString() << std::endl;
+//    _sleep(5000);
+//    start();
+//}
 
 //handled de file save knop
-void Controller::onSave(){
-    qDebug("Save button clicked!");
-    QString filePath = QFileDialog::getSaveFileName(
-            fileIoView,
-            "Save File",
-            "../Saves",
-            "Text Files (*.txt)"
-    );
-
-    if (!filePath.isEmpty()) {
-        if (!filePath.endsWith(".txt", Qt::CaseInsensitive)) {
-            filePath += ".txt";
-        }
-        qDebug() << "Saving to file:" << filePath;
-
-        io.save(&model, filePath);
-    } else {
-        qDebug() << ">:( Geen naam";
-    }
-}
+//void Controller::onSave(){
+//    qDebug("Save button clicked!");
+//    QString filePath = QFileDialog::getSaveFileName(
+//            fileIoView,
+//            "Save File",
+//            "../Saves",
+//            "Text Files (*.txt)"
+//    );
+//
+//    if (!filePath.isEmpty()) {
+//        if (!filePath.endsWith(".txt", Qt::CaseInsensitive)) {
+//            filePath += ".txt";
+//        }
+//        qDebug() << "Saving to file:" << filePath;
+//
+//        io.save(&model, filePath);
+//    } else {
+//        qDebug() << ">:( Geen naam";
+//    }
+//}
 
 //handled de file load knop
 void Controller::onLoad(){
@@ -134,10 +134,9 @@ void Controller::onLoad(){
 
     if (!filePath.isEmpty()) {
         qDebug() << "FilePath:" << filePath;
-        io.load(&model, filePath);
-        boardView->updateFullBoard(model.getBoard());
-        clearHighLights();
-        setSelectionHighlights();
+        io.load(gameController.getGame(), filePath);
+        boardView->updateFullBoard(gameController.getGame().getGameState().getBoard());
+        update();
         initPlayersView();
     } else {
         qDebug() << ">:( Geen geldig filepath";
@@ -179,8 +178,5 @@ void Controller::update() {
     clearHighLights();
     updateHighlights();
     updateMoveAndDiceView();
-    if(gameController.getMoveState() == Game::MoveState::BOT) {
-        startBot();
-    }
     if(gameController.getGame().getGameState().isGameOver()){endGame();}
 }

@@ -15,7 +15,7 @@ class FileIOView : public QWidget {
 Q_OBJECT
 
 public:
-    explicit FileIOView(Game& game, QWidget *parent = nullptr);
+    explicit FileIOView(QWidget *parent = nullptr);
 
 signals:
     void onLoad();
@@ -26,7 +26,6 @@ private slots:
     void onSaveButtonClicked();
 
 private:
-    Game& game;
     FileIO io;
 
     QHBoxLayout *toolbar;

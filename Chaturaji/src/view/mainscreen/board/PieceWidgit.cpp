@@ -16,19 +16,36 @@
 
 #include "PieceWidgit.h"
 
+QString PieceWidgit::pieceTypeToString(PieceType type) {
+    switch (type) {
+        case PieceType::PAWN: return "pawn";
+        case PieceType::KING: return "king";
+        case PieceType::ELEPHANT: return "elephant";
+        case PieceType::HORSE: return "horse";
+        case PieceType::BOAT: return "boat";
+    }
+}
+QString PieceWidgit::ColorToString(Color color) {
+    switch (color) {
+        case Color::YELLOW: return "yellow";
+        case Color::RED: return "red";
+        case Color::BLUE: return "blue";
+        case Color::GREEN: return "green";
+    }
+}
 
-PieceWidgit::PieceWidgit(QWidget *parent, BadPieceClass *piece)
+PieceWidgit::PieceWidgit(QWidget *parent, Piece piece)
     : QWidget(parent) {
-    loadSvg(piece->getTypeName());
+    loadSvg(pieceTypeToString(piece.getType()));
     svg = new QSvgWidget(this);
     svg->load(svgDOM.toByteArray());
-    setFill(piece->getColorName());
+    setFill(ColorToString(piece.getColor()));
     setStroke(QColorConstants::Svg::black);
 }
 
-PieceWidgit::PieceWidgit(QWidget *parent, BadPieceClass::Type type)
+PieceWidgit::PieceWidgit(QWidget *parent, PieceType type)
     : QWidget(parent) {
-    loadSvg(BadPieceClass::getTypeName(type));
+    loadSvg(pieceTypeToString(type));
     svg = new QSvgWidget(this);
     svg->load(svgDOM.toByteArray());
     setFill(Qt::gray);

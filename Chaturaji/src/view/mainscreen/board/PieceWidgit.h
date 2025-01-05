@@ -11,7 +11,8 @@
 #include <QWidget>
 #include <QSvgWidget>
 #include <QDomDocument>
-#include "../../../model/game/board/BadPieceClass.h"
+#include "../../../model/game/state/identities/Piece.h"
+#include "../../../model/game/enums_and_structs/PieceType.h"
 
 
 class PieceWidgit : public QWidget {
@@ -21,6 +22,8 @@ protected:
     void resizeEvent(QResizeEvent *event) override;
 
 private:
+    QString pieceTypeToString(PieceType type);
+    QString ColorToString(Color color);
     QSvgWidget* svg;
     QDomDocument svgDOM;
     bool hovered{false};
@@ -29,8 +32,8 @@ private:
     void setFill(QColor color);
     void setStroke(QColor color);
 public:
-    PieceWidgit(QWidget *parent, BadPieceClass* piece);
-    PieceWidgit(QWidget *parent, BadPieceClass::Type type);
+    PieceWidgit(QWidget *parent, Piece piece);
+    PieceWidgit(QWidget *parent, PieceType type);
     void setHovered(bool hovered);
     void setGray();
 };

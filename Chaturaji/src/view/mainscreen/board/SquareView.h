@@ -15,7 +15,7 @@
 #include <QPushButton>
 
 #include "PieceWidgit.h"
-#include "../../../model/game/oude_garbage/Game.h"
+#include "../../../model/game/state/identities/Piece.h"
 
 namespace QCol = QColorConstants::Svg;
 
@@ -25,9 +25,10 @@ public:
     enum class HighLight{NONE, HOVER, SELECTED, SELECTSUGGEST, MOVESUGGEST, ATTACKSUGGEST};
     ~SquareView() override;
     SquareView(QWidget *widget, const QPoint &cell);
-    void updatePiece(BadPieceClass* piece);
+    void updatePiece(Piece piece);
     void updateHighLight(HighLight highLighter);
     void updateSetPieceGrey();
+    void removePiece();
 
 private:
     constexpr static QPair<QColor, QColor> defaultColor{QCol::beige, QCol::burlywood};

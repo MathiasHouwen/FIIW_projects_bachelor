@@ -28,16 +28,14 @@ void SquareView::mousePressEvent(QMouseEvent *event) {
     emit clicked(cell);
 }
 
-void SquareView::updatePiece(BadPieceClass *piece) {
+void SquareView::updatePiece(Piece piece) {
     if (pieceView) {
         pieceViewContainer->removeWidget(pieceView);
         delete pieceView;  // Delete the old piece view
         pieceView = nullptr;
     }
-    if (piece) {
-        pieceView = new PieceWidgit(nullptr, piece);
-        pieceViewContainer->addWidget(pieceView);
-    }
+    pieceView = new PieceWidgit(nullptr, piece);
+    pieceViewContainer->addWidget(pieceView);
 }
 
 void SquareView::setFillAndBorder(SquareView::HighLight highLighter) {
@@ -99,6 +97,14 @@ void SquareView::leaveEvent(QEvent *event) {
 void SquareView::updateSetPieceGrey() {
     if(pieceView){
         pieceView->setGray();
+    }
+}
+
+void SquareView::removePiece() {
+    if (pieceView) {
+        pieceViewContainer->removeWidget(pieceView);
+        delete pieceView;  // Delete the old piece view
+        pieceView = nullptr;
     }
 }
 

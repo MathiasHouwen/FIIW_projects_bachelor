@@ -27,11 +27,11 @@ MainWindow::MainWindow(QWidget *parent) :
         QWidget(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
-    setWindowIcon(QIcon(QString(ASSET_PATH) + "/Boat.svg"));
+    setWindowIcon(QIcon(QString(ASSET_PATH) + "/boat.svg"));
 
     auto boardView = new BoardView(ui->boardPanel);
     auto diceAndMovesView = new DiceAndMovesView(ui->turnsPanel);
-    auto ioView = new FileIOView(gameController, ui->topBar);
+    auto ioView = new FileIOView(ui->topBar);
     auto playersView = new PlayersView(ui->sidePanel);
     controller = new Controller(gameController, boardView, diceAndMovesView, ioView, playersView);
 }

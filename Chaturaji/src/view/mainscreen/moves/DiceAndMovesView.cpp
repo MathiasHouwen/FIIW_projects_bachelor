@@ -56,7 +56,7 @@ void DiceAndMovesView::updateMoveLabel(int move) {
     moveLabel->setText(s);
 }
 
-void DiceAndMovesView::updatePiecePreviews(QSet<BadPieceClass::Type> types) {
+void DiceAndMovesView::updatePiecePreviews(QSet<PieceType> types) {
     for(auto pieceView : pieceViews){
         piecePreviewsLayout->removeWidget(pieceView);
         delete pieceView;

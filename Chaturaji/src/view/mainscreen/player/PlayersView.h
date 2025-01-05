@@ -18,13 +18,13 @@ public:
     ~PlayersView() override;
     void addPlayerView(const Player& player);
 
-    void updateScore(Player::colour color, int score);
-    void updateSetBigAndToTop(Player::colour color);
-    void updateSetGrey(Player::colour color);
+    void updateScore(Color color, int score);
+    void updateSetBigAndToTop(Color color);
+    void updateSetGrey(Color color);
     void clear();
 
 private:
-    QMap<Player::colour, PlayerView*> players;
+    QMap<Color, PlayerView*> players;
     PlayerView* bigPlayer{nullptr};
     QVBoxLayout* layout;
 };

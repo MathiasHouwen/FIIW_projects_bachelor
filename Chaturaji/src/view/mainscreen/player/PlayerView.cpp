@@ -8,7 +8,7 @@
 
 
 PlayerView::PlayerView(const Player& player, QWidget *parent) : QWidget(parent) {
-    color = QColor(Player::getColourName(player.getColor()));
+    color = QColor(ColorToString(player.getColor()));
     auto layout = new QVBoxLayout(this);
 
     nameLabel = new QLabel(player.getName());
@@ -55,4 +55,13 @@ void PlayerView::updateSetBigOrSmall(bool big) {
     nameLabel->setFont(QFont( "Arial", big ? 15 : 10, QFont::Bold));
     scoreLabel->setFont(QFont( "Arial", big ? 15 : 10, QFont::Bold));
     update();
+}
+
+QString PlayerView::ColorToString(Color color) {
+    switch (color) {
+        case Color::YELLOW: return "yellow";
+        case Color::RED: return "red";
+        case Color::BLUE: return "blue";
+        case Color::GREEN: return "green";
+    }
 }

@@ -17,13 +17,13 @@
 #include <QPainter>
 #include <qpainterpath.h>
 #include <QVBoxLayout>
-#include "../../../model/game/identities/Player.h"
-#include "../../../model/game/oude_garbage/Game.h"
+#include "../../../model/game/state/identities/Player.h"
 
 class PlayerView : public QWidget {
 Q_OBJECT
 
 public:
+    QString ColorToString(Color color);
     PlayerView(const Player& player, QWidget *parent);
     void updateScore(int score);
     void updateSetGrey();

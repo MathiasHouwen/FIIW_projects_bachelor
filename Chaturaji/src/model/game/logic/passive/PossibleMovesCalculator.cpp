@@ -98,10 +98,5 @@ PossibleMovesCalculator::Patterns PossibleMovesCalculator::convertToPatterns(Pie
     }
 }
 
-QSet<QPoint>
-PossibleMovesCalculator::generatePossibleMoves(QPoint location, HomeBoardSide side, PieceType pieceType, bool attack) {
-    return QSet<QPoint>();
-}
-
 PossibleMovesCalculator::Patterns::Patterns(const Pattern &move, const Pattern &attack) : move(move), attack(attack) {}
 PossibleMovesCalculator::Patterns::Patterns(const Pattern &move) : move(move), attack(move) {}

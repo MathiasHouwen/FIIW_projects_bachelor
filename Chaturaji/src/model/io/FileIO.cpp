@@ -36,7 +36,10 @@ void FileIO::jsonToPlayers(Game& game, QJsonObject rootObj){
         Color color = ColorFromString(playerObj["color"].toString());
         QString name = playerObj["name"].toString();
         int score = playerObj["score"].toInt();
-        game.getGameState().addPlayer(Player(color, name, score));
+        bool alie = playerObj["alive"].toBool();
+        auto player = Player(color, name, score);
+        if(!alie) player.kill();
+        game.getGameState().addPlayer(player);
     }
 }
 
@@ -45,7 +48,7 @@ void FileIO::jsonToBoard(QJsonObject rootObj, Board& board){
     board.clear();
     for(auto square : boardArray){
         QJsonObject squareObj = square.toObject();
-        QPoint point(squareObj["x"].toInt(), squareObj["x"].toInt());
+        QPoint point(squareObj["x"].toInt(), squareObj["y"].toInt());
         Piece piece = jsonToPiece(squareObj["piece"].toObject());
         board.putPieceAt(point, piece);
     }

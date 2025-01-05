@@ -8,7 +8,6 @@
 #include <QWidget>
 
 #include "player/PlayersView.h"
-#include "../../model/game/oude_garbage/Game.h"
 #include "../../controller/Controller.h"
 
 

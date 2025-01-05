@@ -9,8 +9,7 @@
 
 #include "FileIOView.h"
 
-FileIOView::FileIOView(Game& game, QWidget *parent)
-    : game(game){
+FileIOView::FileIOView(QWidget *parent){
 
     parent->layout()->addWidget(this);
     toolbar = new QHBoxLayout(this);

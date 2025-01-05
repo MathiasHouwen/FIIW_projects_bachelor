@@ -4,8 +4,6 @@
 
 #include "Game.h"
 
-#include <utility>
-
 bool Game::doMove(QPoint from, QPoint to, PieceType pawnPromoteType) {
     if(gameState.getBoard().isEmptyAt(from)) return false;
     auto fromPiece = gameState.getBoard().getPieceAt(from);

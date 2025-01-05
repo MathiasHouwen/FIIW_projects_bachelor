@@ -51,12 +51,13 @@ Player &GameState::getPlayerByColor(Color color) {
 }
 
 void GameState::addPlayer(QString name, PlayerType type) {
+    if(name.isEmpty()) name = "new player";
     Color colors[4] = {Color::BLUE, Color::RED, Color::YELLOW, Color::GREEN};
     for(auto color : colors){
         if(players.contains(color)) continue;
         switch (type) {
             case PlayerType::HUMAN:
-                players[color] = Player(color,name);
+                players[color] = Player(color, name);
                 break;
 //            case PlayerType::PASSIVE_BOT:
 //                players[color] = PassiveBot(color,name);

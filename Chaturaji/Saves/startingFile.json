@@ -1,0 +1,24 @@
+{
+    "board": [
+        {
+            "x": 3,
+            "y": 4,
+            "piece": {
+                "type": "PAWN",
+                "color": "red",
+                "homeside": "bottom"
+            }
+        },
+        {
+            "x": 3,
+            "y": 5,
+            "piece": {
+                "type": "PAWN",
+                "color": "green",
+                "homeside": "right"
+            }
+        }
+    ],
+    "players": [
+    ]
+}

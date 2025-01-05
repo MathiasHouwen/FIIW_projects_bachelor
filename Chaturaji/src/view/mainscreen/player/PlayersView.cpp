@@ -15,11 +15,11 @@ void PlayersView::addPlayerView(const Player &player) {
     layout->addWidget(playerView);
 }
 
-void PlayersView::updateScore(Player::colour color, int score) {
+void PlayersView::updateScore(Color color, int score) {
     players[color]->updateScore(score);
 }
 
-void PlayersView::updateSetBigAndToTop(Player::colour color) {
+void PlayersView::updateSetBigAndToTop(Color color) {
     if(bigPlayer){
         bigPlayer->updateSetBigOrSmall(false);
     }
@@ -30,7 +30,7 @@ void PlayersView::updateSetBigAndToTop(Player::colour color) {
     layout->addWidget(bigPlayer);
 }
 
-void PlayersView::updateSetGrey(Player::colour color) {
+void PlayersView::updateSetGrey(Color color) {
     players[color]->updateSetGrey();
 }
 

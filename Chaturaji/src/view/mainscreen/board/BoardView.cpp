@@ -16,13 +16,14 @@ BoardView::BoardView(QWidget* parent) : QWidget(parent) {
 
     // maak square views
     // piece views staan hier apart van, odmat squareview permanent is en pieceview niet):
-    for(int y=0; y<Board::getSize(); y++){
-        for(int x=0; x<Board::getSize(); x++){
+    int size = Board::dimension.getSize();
+    for(int y=0; y<size; y++){
+        for(int x=0; x<size; x++){
             auto squareView = new SquareView(nullptr, {x, y});
             connect(squareView, &SquareView::clicked, this, &BoardView::onSquareViewClicked);
             connect(squareView, &SquareView::hoverUpdated, this, &BoardView::onSquareHoverUpdated);
             layout->addWidget(squareView, x, y);
-            squareViews[x][y] = squareView;
+            squareViews[{x,y}] = squareView;
         }
     }
 }
@@ -33,7 +34,7 @@ BoardView::~BoardView() {
 }
 
 void BoardView::updateHighlight(QPoint cell, SquareView::HighLight highlight) {
-    squareViews[cell.x()][cell.y()]->updateHighLight(highlight);
+    squareViews[cell]->updateHighLight(highlight);
 }
 
 void BoardView::updateHighlights(const QSet<QPoint>& cells, SquareView::HighLight highlight) {
@@ -42,15 +43,21 @@ void BoardView::updateHighlights(const QSet<QPoint>& cells, SquareView::HighLigh
     }
 }
 
-void BoardView::updatePiece(QPoint cell, BadPieceClass *piece) {
-    squareViews[cell.x()][cell.y()]->updatePiece(piece);
+void BoardView::updatePiece(QPoint cell, Piece piece) {
+    squareViews[cell]->updatePiece(piece);
 }
 
 
 void BoardView::updateFullBoard(const Board &board) {
-    for(int y=0; y<Board::getSize(); y++){
-        for(int x=0; x<Board::getSize(); x++){
-            updatePiece({x,y}, board.getPieceAt({x, y}));
+    int size = Board::dimension.getSize();
+
+    for(int y=0; y<size; y++){
+        for(int x=0; x<size; x++){
+            auto piece = board.getPieceAt({x, y});
+            if(piece.has_value())
+                updatePiece({x,y}, piece.value());
+            else
+                removePiece({x,y});
         }
     }
 }
@@ -60,7 +67,11 @@ void BoardView::onSquareViewClicked(QPoint cell) {emit cellClicked(cell);}
 void BoardView::onSquareHoverUpdated(QPoint cell, bool hover) {emit cellHoverChanged(cell, hover);}
 
 void BoardView::updateSetPieceGrey(QPoint cell) {
-    squareViews[cell.x()][cell.y()]->updateSetPieceGrey();
+    squareViews[cell]->updateSetPieceGrey();
+}
+
+void BoardView::removePiece(QPoint cell) {
+    squareViews[cell]->removePiece();
 }
 
 

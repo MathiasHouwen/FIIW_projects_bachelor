@@ -56,7 +56,7 @@ QSet<QPoint> GameController::getSelectablesForHighlight() {
     }
 }
 
-Game &GameController::getGame() const {
+Game &GameController::getGame() {
     return game;
 }
 

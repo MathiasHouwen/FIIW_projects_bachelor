@@ -25,7 +25,7 @@ public:
     StepState getState() const;
     const std::optional<QPoint> &getSelectedCell() const;
 
-    Game &getGame() const;
+    Game &getGame();
 
 };
 

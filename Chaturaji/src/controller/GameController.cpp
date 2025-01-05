@@ -27,6 +27,7 @@ void GameController::handleCellSelect(QPoint cell, PieceType pawnPromoteType) {
     } else {
         game.doMove(selectedCell.value(), cell, pawnPromoteType);
         selectedCell = std::nullopt;
+        state = StepState::READYTOPICK;
     }
     if(game.getGameState().getCurrentPlayer().getIsBot()){
         Bot bot = static_cast<Bot>(game.getGameState().getCurrentPlayer());

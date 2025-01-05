@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  auth-api:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - JWT_SECRET=your-very-secure-secret
+      - PORT=3000

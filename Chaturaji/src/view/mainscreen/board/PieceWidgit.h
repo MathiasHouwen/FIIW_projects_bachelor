@@ -11,7 +11,7 @@
 #include <QWidget>
 #include <QSvgWidget>
 #include <QDomDocument>
-#include "../../../model/game/board/Piece.h"
+#include "../../../model/game/board/BadPieceClass.h"
 
 
 class PieceWidgit : public QWidget {
@@ -29,8 +29,8 @@ private:
     void setFill(QColor color);
     void setStroke(QColor color);
 public:
-    PieceWidgit(QWidget *parent, Piece* piece);
-    PieceWidgit(QWidget *parent, Piece::Type type);
+    PieceWidgit(QWidget *parent, BadPieceClass* piece);
+    PieceWidgit(QWidget *parent, BadPieceClass::Type type);
     void setHovered(bool hovered);
     void setGray();
 };

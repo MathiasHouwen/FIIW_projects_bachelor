@@ -42,7 +42,7 @@ void BoardView::updateHighlights(const QSet<QPoint>& cells, SquareView::HighLigh
     }
 }
 
-void BoardView::updatePiece(QPoint cell, Piece *piece) {
+void BoardView::updatePiece(QPoint cell, BadPieceClass *piece) {
     squareViews[cell.x()][cell.y()]->updatePiece(piece);
 }
 
@@ -50,7 +50,7 @@ void BoardView::updatePiece(QPoint cell, Piece *piece) {
 void BoardView::updateFullBoard(const Board &board) {
     for(int y=0; y<Board::getSize(); y++){
         for(int x=0; x<Board::getSize(); x++){
-            updatePiece({x,y}, board.getCell({x,y}));
+            updatePiece({x,y}, board.getPieceAt({x, y}));
         }
     }
 }

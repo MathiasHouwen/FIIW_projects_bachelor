@@ -19,27 +19,23 @@ add_definitions(-DSAVES_PATH="${CMAKE_SOURCE_DIR}/Saves")
 
 add_executable(Chaturaji
         src/main.cpp
-        src/model/game/Game.h
-        src/model/game/Game.cpp
-#        src/view/CLIView.h
+        #        src/view/CLIView.h
 #        src/controller/ConsoleIO.h
 #        src/controller/ConsoleIO.cpp
 #        src/view/CLIView.cpp
-        src/model/game/board/Board.h
-        src/model/game/board/Board.cpp
+        src/model/game/state/Board.h
+        src/model/game/state/Board.cpp
 #        src/controller/CLI_Controller.h
 #        src/controller/CLI_Controller.cpp
-        src/model/logic/PatternMover.h
-        src/model/logic/PatternMover.cpp
-        src/model/game/board/Piece.h
-        src/model/game/board/Piece.cpp
-        src/model/game/Player.cpp
-        src/model/game/Player.h
-        src/model/game/Player.h
+        src/model/game/logic/passive/PossibleMovesCalculator.h
+        src/model/game/logic/passive/PossibleMovesCalculator.cpp
+        src/model/game/state/identities/Player.cpp
+        src/model/game/state/identities/Player.h
+        src/model/game/state/identities/Player.h
         src/model/io/FileIO.cpp
         src/model/io/FileIO.h
         src/model/io/FileIO.h
-        src/model/logic/Pattern.h
+        src/model/game/enums_and_structs/Pattern.h
         src/view/mainscreen/MainWindow.cpp
         src/view/mainscreen/MainWindow.h
         src/view/mainscreen/mainwindow.ui
@@ -58,8 +54,8 @@ add_executable(Chaturaji
         src/controller/Controller.cpp
         src/controller/Controller.h
         src/controller/Controller.h
-        src/model/game/Dice.cpp
-        src/model/game/Dice.h
+        src/model/game/state/Dice.cpp
+        src/model/game/state/Dice.h
         src/view/mainscreen/moves/DieView.cpp
         src/view/mainscreen/moves/DieView.h
         src/view/mainscreen/moves/DiceAndMovesView.cpp
@@ -69,6 +65,30 @@ add_executable(Chaturaji
         src/view/startscreen/startscreen.ui
         src/view/mainscreen/player/PlayersView.cpp
         src/view/mainscreen/player/PlayersView.h
+        src/model/game/oude_garbage/Bot.cpp
+        src/model/game/oude_garbage/Bot.h
+        src/model/game/logic/BoardQuerier.cpp
+        src/model/game/logic/BoardQuerier.h
+        src/model/game/enums_and_structs/Color.h
+        src/model/game/state/identities/Piece.cpp
+        src/model/game/state/identities/Piece.h
+        src/model/game/util/SquareDimension.cpp
+        src/model/game/util/SquareDimension.h
+        src/model/game/enums_and_structs/PieceType.h
+        src/model/game/enums_and_structs/HomeBoardSide.h
+        src/model/game/logic/passive/SpecialRulesChecker.cpp
+        src/model/game/logic/passive/SpecialRulesChecker.h
+        src/model/game/enums_and_structs/ClassifiedMove.h
+        src/model/game/logic/passive/MovesManager.cpp
+        src/model/game/logic/passive/MovesManager.h
+        src/model/game/logic/active/SpecialRulesExecutor.cpp
+        src/model/game/logic/active/SpecialRulesExecutor.h
+        src/model/game/state/GameState.cpp
+        src/model/game/state/GameState.h
+        src/model/game/Game.cpp
+        src/model/game/Game.h
+        src/controller/GameController.cpp
+        src/controller/GameController.h
         src/model/game/bots/Bot.cpp
         src/model/game/bots/Bot.h
         src/model/game/bots/MoveStrategy.h

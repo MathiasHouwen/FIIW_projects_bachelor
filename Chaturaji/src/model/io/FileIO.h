@@ -9,8 +9,8 @@
 
 #include <qstring.h>
 #include <QFile>
-#include "../game/board/Board.h"
-#include "../game/Game.h"
+#include "../game/state/Board.h"
+#include "../game/oude_garbage/Game.h"
 
 class FileIO {
 public:
@@ -19,12 +19,12 @@ public:
     int save(Game *game, QString filePath);
     void loadBoard(Game *game, QString filePath);
 
-    static Piece jsonToPiece(const QJsonObject& jsonObject, Game* gamemodel);
+    static BadPieceClass jsonToPiece(const QJsonObject& jsonObject, Game* gamemodel);
 
 private:
     static void jsonToBoard(QJsonObject boardObject, Game *gamemodel);
 
-    static QJsonObject pieceToJson(const Piece* piece);
+    static QJsonObject pieceToJson(const BadPieceClass* piece);
     static QJsonObject boardToJson(const Board *board);
     QJsonObject playerToJson(const std::shared_ptr<Player> *player);
     QJsonObject playersToJson(const std::shared_ptr<Player> *players, Player curr);

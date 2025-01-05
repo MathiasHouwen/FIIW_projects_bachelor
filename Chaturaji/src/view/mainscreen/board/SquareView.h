@@ -15,7 +15,7 @@
 #include <QPushButton>
 
 #include "PieceWidgit.h"
-#include "../../../model/game/Game.h"
+#include "../../../model/game/oude_garbage/Game.h"
 
 namespace QCol = QColorConstants::Svg;
 
@@ -25,7 +25,7 @@ public:
     enum class HighLight{NONE, HOVER, SELECTED, SELECTSUGGEST, MOVESUGGEST, ATTACKSUGGEST};
     ~SquareView() override;
     SquareView(QWidget *widget, const QPoint &cell);
-    void updatePiece(Piece* piece);
+    void updatePiece(BadPieceClass* piece);
     void updateHighLight(HighLight highLighter);
     void updateSetPieceGrey();
 

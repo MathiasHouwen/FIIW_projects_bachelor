@@ -11,7 +11,7 @@ PlayersView::PlayersView(QWidget *parent)
 
 void PlayersView::addPlayerView(const Player &player) {
     auto playerView = new PlayerView(player, nullptr);
-    players[player.getColour()] = playerView;
+    players[player.getColor()] = playerView;
     layout->addWidget(playerView);
 }
 

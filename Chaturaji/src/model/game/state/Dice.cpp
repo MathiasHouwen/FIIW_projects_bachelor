@@ -18,19 +18,19 @@ Dice::Dice() {
     doubleDobbel();
 }
 
-bool Dice::allows(Piece::Type type) {
+bool Dice::allowsType(PieceType type) {
     return getAllowedTypes().contains(type);
 }
 
-int Dice::getNumber(int die) {
+int Dice::asNumber(int die) {
     return dice[die].number + 1;
 }
 
-QSet<Piece::Type> Dice::getAllowedTypes() {
-    QSet<Piece::Type> set{};
+QSet<PieceType> Dice::getAllowedTypes() {
+    QSet<PieceType> set{};
     for(auto die : dice){
         if(die.used) continue;
-        set.unite(typesMap[die.number]);
+        set.unite(numberToTypes(die.number));
     }
     return set;
 }
@@ -39,12 +39,24 @@ bool Dice::isUsed(int die) {
     return dice[die].used;
 }
 
-void Dice::setUsed(Piece::Type type) {
+void Dice::setUsed(PieceType type) {
     for(auto& die : dice){
         if(die.used) continue;
-        if(typesMap[die.number].contains(type)){
+        if(numberToTypes(die.number).contains(type)){
             die.used = true;
             break;
         }
     }
+}
+
+QSet<PieceType> Dice::numberToTypes(int number) {
+    QSet<PieceType> typesMap[6] = {
+            {PieceType::PAWN, PieceType::KING},
+            {PieceType::BOAT},
+            {PieceType::HORSE},
+            {PieceType::ELEPHANT},
+            {PieceType::PAWN, PieceType::KING},
+            {PieceType::ELEPHANT}
+    };
+    return typesMap[number];
 }

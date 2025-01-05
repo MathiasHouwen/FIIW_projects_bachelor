@@ -19,9 +19,10 @@ private:
     int turn{0};
 public:
     void advance();
-    const Board &getBoard() const;
+    [[nodiscard]] Board &getBoard();
     [[nodiscard]] bool isGameOver() const;
     [[nodiscard]] Color getCurrentTurn() const;
+    Player& getCurrentPlayer();
 };
 
 

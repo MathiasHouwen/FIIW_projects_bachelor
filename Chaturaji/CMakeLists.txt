@@ -19,9 +19,7 @@ add_definitions(-DSAVES_PATH="${CMAKE_SOURCE_DIR}/Saves")
 
 add_executable(Chaturaji
         src/main.cpp
-        src/model/game/oude_garbage/Game.h
-        src/model/game/oude_garbage/Game.cpp
-#        src/view/CLIView.h
+        #        src/view/CLIView.h
 #        src/controller/ConsoleIO.h
 #        src/controller/ConsoleIO.cpp
 #        src/view/CLIView.cpp
@@ -85,10 +83,10 @@ add_executable(Chaturaji
         src/model/game/logic/passive/MovesManager.h
         src/model/game/logic/active/SpecialRulesExecutor.cpp
         src/model/game/logic/active/SpecialRulesExecutor.h
-        src/model/game/logic/active/GameLogic.cpp
-        src/model/game/logic/active/GameLogic.h
         src/model/game/state/GameState.cpp
         src/model/game/state/GameState.h
+        src/model/game/Game.cpp
+        src/model/game/Game.h
 )
 target_link_libraries(Chaturaji Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::SvgWidgets Qt${QT_VERSION_MAJOR}::Xml)
 

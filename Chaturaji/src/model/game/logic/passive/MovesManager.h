@@ -7,7 +7,6 @@
 
 
 #include "../../enums_and_structs/ClassifiedMove.h"
-#include "../identities/Piece.h"
 #include "../../state/Board.h"
 #include "PossibleMovesCalculator.h"
 #include "SpecialRulesChecker.h"
@@ -21,6 +20,7 @@ private:
     SpecialRulesChecker rulesChecker{board};
     SpecialMoveType classifySpecialMove(Piece piece, QPoint destination);
 public:
+    explicit MovesManager(Board &board);
     QSet<ClassifiedMove> generateClassifiedMoves(Piece piece, QPoint location);
 };
 

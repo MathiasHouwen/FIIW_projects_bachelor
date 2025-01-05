@@ -33,3 +33,5 @@ SpecialMoveType MovesManager::classifySpecialMove(Piece piece, QPoint destinatio
         return SpecialMoveType::SINHASANA;
     return SpecialMoveType::NONE;
 }
+
+MovesManager::MovesManager(Board &board) : board(board) {}

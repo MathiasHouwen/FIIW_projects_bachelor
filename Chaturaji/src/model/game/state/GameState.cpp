@@ -4,7 +4,7 @@
 
 #include "GameState.h"
 
-const Board &GameState::getBoard() const {
+Board &GameState::getBoard() {
     return board;
 }
 
@@ -21,4 +21,8 @@ void GameState::advance() {
     do{
         turn++;
     } while(!players[getCurrentTurn()].isAlive());
+}
+
+Player &GameState::getCurrentPlayer() {
+    return players[getCurrentTurn()];
 }

@@ -9,7 +9,7 @@
 
 #include <QSet>
 #include <QPoint>
-#include "../state/Board.h"
+#include "../../state/Board.h"
 #include "../../enums_and_structs/Pattern.h"
 #include "../../enums_and_structs/HomeBoardSide.h"
 

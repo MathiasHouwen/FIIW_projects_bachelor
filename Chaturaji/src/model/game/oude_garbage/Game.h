@@ -3,7 +3,7 @@
 
 
 #include "../state/Board.h"
-#include "../logic/PossibleMovesCalculator.h"
+#include "../logic/passive/PossibleMovesCalculator.h"
 #include "identities/Player.h"
 #include "../state/Dice.h"
 #include "Bot.h"

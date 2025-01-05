@@ -24,3 +24,14 @@ QList<Piece> BoardQuerier::getPiecesFromColor(Color color) {
     }
     return result;
 }
+
+BoardQuerier::BoardQuerier(Board &board) : board(board) {}
+
+QList<Piece> BoardQuerier::getPiecesFromBoardHomeSide(HomeBoardSide homeSide) {
+    // Log N is niet erg want board is toch maar klein
+    QList<Piece> result{};
+    for(auto piece : board){
+        if(piece.getHomeSide() == homeSide) result.append(piece);
+    }
+    return result;
+}

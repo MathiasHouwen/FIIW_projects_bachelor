@@ -17,7 +17,7 @@ private:
     HomeBoardSide homeSide{HomeBoardSide::LEFT};
 public:
     Piece() = default; // nodig voor maps
-    explicit Piece(Color color, PieceType type);
+    explicit Piece(Color color, PieceType type, HomeBoardSide homeSide);
 
     [[nodiscard]] PieceType getType() const;
     [[nodiscard]] HomeBoardSide getHomeSide() const;

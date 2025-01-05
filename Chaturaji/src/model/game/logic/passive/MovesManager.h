@@ -8,7 +8,7 @@
 
 #include "../../enums_and_structs/ClassifiedMove.h"
 #include "../identities/Piece.h"
-#include "../state/Board.h"
+#include "../../state/Board.h"
 #include "PossibleMovesCalculator.h"
 #include "SpecialRulesChecker.h"
 

@@ -8,8 +8,8 @@ Color Piece::getColor() const {
     return color;
 }
 
-Piece::Piece(Color color, PieceType type)
-    : color(color), type(type)
+Piece::Piece(Color color, PieceType type, HomeBoardSide homeSide)
+    : color(color), type(type), homeSide(homeSide)
 {}
 
 PieceType Piece::getType() const {

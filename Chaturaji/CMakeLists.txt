@@ -29,8 +29,8 @@ add_executable(Chaturaji
         src/model/game/state/Board.cpp
 #        src/controller/CLI_Controller.h
 #        src/controller/CLI_Controller.cpp
-        src/model/game/logic/PossibleMovesCalculator.h
-        src/model/game/logic/PossibleMovesCalculator.cpp
+        src/model/game/logic/passive/PossibleMovesCalculator.h
+        src/model/game/logic/passive/PossibleMovesCalculator.cpp
         src/model/game/state/identities/Player.cpp
         src/model/game/state/identities/Player.h
         src/model/game/state/identities/Player.h
@@ -78,11 +78,13 @@ add_executable(Chaturaji
         src/model/game/util/SquareDimension.h
         src/model/game/enums_and_structs/PieceType.h
         src/model/game/enums_and_structs/HomeBoardSide.h
-        src/model/game/logic/SpecialRulesChecker.cpp
-        src/model/game/logic/SpecialRulesChecker.h
+        src/model/game/logic/passive/SpecialRulesChecker.cpp
+        src/model/game/logic/passive/SpecialRulesChecker.h
         src/model/game/enums_and_structs/ClassifiedMove.h
-        src/model/game/logic/MovesManager.cpp
-        src/model/game/logic/MovesManager.h
+        src/model/game/logic/passive/MovesManager.cpp
+        src/model/game/logic/passive/MovesManager.h
+        src/model/game/logic/active/SpecialRulesExecutor.cpp
+        src/model/game/logic/active/SpecialRulesExecutor.h
 )
 target_link_libraries(Chaturaji Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::SvgWidgets Qt${QT_VERSION_MAJOR}::Xml)
 

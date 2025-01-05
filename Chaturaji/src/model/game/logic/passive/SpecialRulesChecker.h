@@ -21,6 +21,7 @@ public:
     bool validPawnPromotion(PieceType type, HomeBoardSide homeSide, QPoint destination);
     bool validVrihannauka(PieceType type, HomeBoardSide homeSide, QPoint destination); // aka die boat dinges
     bool validSinhasana(PieceType type, HomeBoardSide homeSide, QPoint destination) ; // aka die king dinges
+    bool isSquareFilledWithBoats(QPoint topLeft);
 };
 
 

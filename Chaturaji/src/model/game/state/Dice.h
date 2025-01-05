@@ -12,34 +12,27 @@
 #define CHATURAJI_DICE_H
 
 
-#include "board/BadPieceClass.h"
+#include "../enums_and_structs/PieceType.h"
 #include <QSet>
 #include <QPair>
 
 class Dice {
 public:
+    void doubleDobbel();
+    Dice();
+    bool allowsType(PieceType type); // kijkt of dit piece type geldig is volgens de 2 dobbelstenen
+    int asNumber(int die);
+    bool isUsed(int die);
+    void setUsed(PieceType type);
+    QSet<PieceType> getAllowedTypes(); // geeft alle alowed types terug (gebruikt door view. game hoeft alleen te valideren met allowsType)
+private:
     struct Die{
         bool used{false}; // gebruikte dobbelsteen zal zichzelf ongeldig maken
         int number; // nummer van dobbelsteen om in view te gebruiken
     };
-    void doubleDobbel();
-    Dice();
-    bool allows(BadPieceClass::Type type); // kijkt of dit piece type geldig is volgens de 2 dobbelstenen
-    int getNumber(int die);
-    bool isUsed(int die);
-    void setUsed(BadPieceClass::Type type);
-    QSet<BadPieceClass::Type> getAllowedTypes(); // geeft alle alowed types terug (gebruikt door view. game hoeft alleen te valideren met allows)
-private:
     // QSet kan niet const of constexpr in literar declaratie
-    static inline QSet<BadPieceClass::Type> typesMap[6] = {
-            {BadPieceClass::Type::PAWN, BadPieceClass::Type::KING},
-            {BadPieceClass::Type::BOAT},
-            {BadPieceClass::Type::KNIGHT},
-            {BadPieceClass::Type::ELEPH},
-            {BadPieceClass::Type::PAWN, BadPieceClass::Type::KING},
-            {BadPieceClass::Type::ELEPH}
-    };
     Die dice[2];
+    static QSet<PieceType> numberToTypes(int number);
 };
 
 

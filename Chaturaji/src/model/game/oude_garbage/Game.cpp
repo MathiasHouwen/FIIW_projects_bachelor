@@ -30,7 +30,7 @@ bool Game::selectPiece(QPoint cell) {
     if(board.isEmptyAt(cell)) return false;   // mag geen leeg vak selecteren
     BadPieceClass piece = *board.getPieceAt(cell);
     if(piece.getPlayer() != getCurrentPlayer()) return false;   // mag enkel jouw eigen piece selecteren
-    if(!dice.allows(piece.getType())) return false;
+    if(!dice.allowsType(piece.getType())) return false;
     // update selectie
     delete currentlySelectedCell;
     currentlySelectedCell = new QPoint(cell);
@@ -197,7 +197,7 @@ QSet<QPoint> Game::getPossibleSelections() {
     for(int y=0; y<Board::getSize(); y++){
         BadPieceClass* piece = board.getPieceAt({x, y});
         if(!piece) continue;
-        if(piece->getPlayer() == getCurrentPlayer() && dice.allows(piece->getType()))
+        if(piece->getPlayer() == getCurrentPlayer() && dice.allowsType(piece->getType()))
             selectables.insert({x,y});
     }}
     return selectables;

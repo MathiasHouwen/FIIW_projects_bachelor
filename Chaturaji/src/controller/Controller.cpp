@@ -149,7 +149,7 @@ void Controller::setMoveHightlights() {
 // update de movePiece en dobbelstenen view
 void Controller::setMoveAndDice() {
     diceAndMovesView->updateMoveLabel(model.getMove());
-    diceAndMovesView->updateDiceNumbers(model.getDice().getNumber(0), model.getDice().getNumber(1));
+    diceAndMovesView->updateDiceNumbers(model.getDice().asNumber(0), model.getDice().asNumber(1));
     diceAndMovesView->updatePiecePreviews(model.getDice().getAllowedTypes());
     diceAndMovesView->updateDisableDie(0, model.getDice().isUsed(0));
     diceAndMovesView->updateDisableDie(1, model.getDice().isUsed(1));

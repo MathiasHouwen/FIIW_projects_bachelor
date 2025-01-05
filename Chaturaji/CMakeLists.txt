@@ -85,6 +85,10 @@ add_executable(Chaturaji
         src/model/game/logic/passive/MovesManager.h
         src/model/game/logic/active/SpecialRulesExecutor.cpp
         src/model/game/logic/active/SpecialRulesExecutor.h
+        src/model/game/logic/active/GameLogic.cpp
+        src/model/game/logic/active/GameLogic.h
+        src/model/game/state/GameState.cpp
+        src/model/game/state/GameState.h
 )
 target_link_libraries(Chaturaji Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::SvgWidgets Qt${QT_VERSION_MAJOR}::Xml)
 

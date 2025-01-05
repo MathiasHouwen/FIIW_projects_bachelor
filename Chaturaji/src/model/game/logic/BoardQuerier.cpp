@@ -16,22 +16,32 @@ std::optional<Piece> BoardQuerier::movePiece(QPoint fromCell, QPoint toCell) {
     return toPiece;
 }
 
-QList<Piece> BoardQuerier::getPiecesFromColor(Color color) {
+QSet<QPoint> BoardQuerier::getPiecesFromColor(Color color) {
     // Log N is niet erg want board is toch maar klein
-    QList<Piece> result{};
-    for(auto piece : board){
-        if(piece.getColor() == color) result.append(piece);
+    QSet<QPoint> result{};
+    for(auto cell : board){
+        if(board.getPieceAt(cell)->getColor() == color) result.insert(cell);
     }
     return result;
 }
 
 BoardQuerier::BoardQuerier(Board &board) : board(board) {}
 
-QList<Piece> BoardQuerier::getPiecesFromBoardHomeSide(HomeBoardSide homeSide) {
+QSet<QPoint> BoardQuerier::getPiecesFromBoardHomeSide(HomeBoardSide homeSide) {
     // Log N is niet erg want board is toch maar klein
-    QList<Piece> result{};
-    for(auto piece : board){
-        if(piece.getHomeSide() == homeSide) result.append(piece);
+    QSet<QPoint> result{};
+    for(auto cell : board){
+        if(board.getPieceAt(cell)->getHomeSide() == homeSide) result.insert(cell);
+    }
+    return result;
+}
+
+QSet<QPoint> BoardQuerier::getPiecesWithTypesAndColor(QSet<PieceType> types, Color color) {
+    // Log N is niet erg want board is toch maar klein
+    QSet<QPoint> result{};
+    QSet<QPoint> colorPieces = getPiecesFromColor(color);
+    for(auto cell : colorPieces){
+        if(types.contains(board.getPieceAt(cell)->getType())) result.insert(cell);
     }
     return result;
 }

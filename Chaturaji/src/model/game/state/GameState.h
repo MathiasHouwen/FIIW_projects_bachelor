@@ -17,13 +17,18 @@ private:
     Dice dice;
     bool gameOver;
     int turn{0};
+    int move{1};
 public:
     void advance();
     [[nodiscard]] Board &getBoard();
     [[nodiscard]] bool isGameOver() const;
     [[nodiscard]] Color getCurrentTurn() const;
+    int getCurrentMove() const;
     Player& getCurrentPlayer();
+    Dice &getDice();
+    Player& getPlayerByColor(Color color);
 };
+
 
 
 #endif //CHATURAJI_GAMESTATE_H

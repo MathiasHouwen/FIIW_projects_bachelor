@@ -11,30 +11,33 @@
 
 #include <qobject.h>
 #include <qobjectdefs.h>
-#include "../model/game/oude_garbage/Game.h"
 #include "../view/mainscreen/board/BoardView.h"
 #include "../view/mainscreen/moves/DiceAndMovesView.h"
 #include "../view/mainscreen/toolbar/FileIOView.h"
 #include "../view/mainscreen/player/PlayersView.h"
+#include "GameController.h"
 
 class Controller: public QObject{
 Q_OBJECT
 
 private:
-    Game& model;
+    GameController gameController;
+
     BoardView* boardView;
     DiceAndMovesView* diceAndMovesView;
     FileIOView* fileIoView;
     PlayersView* playersView;
+
     FileIO io;
     QSet<QPoint> currentHighlights{};
+
     int numberOfBotMoves = 2;
     void clearHighLights();
-    void setSelectionHighlights();
-    void setMoveHightlights();
-    void setMoveAndDice();
+    void updateHighlights();
+    void updateMoveAndDiceView();
     void initPlayersView();
     void endGame();
+    void update();
 public:
     Controller(Game &model, BoardView* boardView, DiceAndMovesView* diceAndMovesView, FileIOView* fileIoView, PlayersView* playersView);
     void start();

@@ -8,12 +8,15 @@ QSet<ClassifiedMove> GameController::getMovesForHighlight() {
     if(state == StepState::READYTOPICK)
         return {};
     else{
-        auto piece = game.getGameState().getBoard().getPieceAt(selectedCell);
-        return movesManager.generateClassifiedMoves(piece.value(), selectedCell);
+        auto piece = game.getGameState().getBoard().getPieceAt(selectedCell.value());
+        return movesManager.generateClassifiedMoves(piece.value(), selectedCell.value());
     }
 }
 
-GameController::GameController() : movesManager(game.getGameState().getBoard()) {}
+GameController::GameController(Game& game) :
+    game(game),
+    movesManager(game.getGameState().getBoard()),
+    querier(game.getGameState().getBoard()){}
 
 void GameController::handleCellSelect(QPoint cell, PieceType pawnPromoteType) {
     if(state == StepState::READYTOPICK){
@@ -44,4 +47,18 @@ GameController::StepState GameController::getState() const {
 const std::optional<QPoint> &GameController::getSelectedCell() const {
     return selectedCell;
 }
+
+QSet<QPoint> GameController::getSelectablesForHighlight() {
+    if(state == StepState::READYTOPLACE)
+        return {};
+    else{
+        auto types = game.getGameState().getDice().getAllowedTypes();
+        return querier.getPiecesWithTypesAndColor(types, game.getGameState().getCurrentTurn());
+    }
+}
+
+Game &GameController::getGame() const {
+    return game;
+}
+
 

@@ -17,8 +17,9 @@ public:
     explicit BoardQuerier(Board &board);
 
     std::optional<Piece> movePiece(QPoint fromCell, QPoint toCell);  // verplaats de piece van ene naar andere cell (oude cell wordt null)
-    QList<Piece> getPiecesFromColor(Color color); // QList want ik was te lui om piece hashable te maken voor qset
-    QList<Piece> getPiecesFromBoardHomeSide(HomeBoardSide homeSide);
+    QSet<QPoint> getPiecesFromColor(Color color); // QList want ik was te lui om piece hashable te maken voor qset
+    QSet<QPoint> getPiecesFromBoardHomeSide(HomeBoardSide homeSide);
+    QSet<QPoint> getPiecesWithTypesAndColor(QSet<PieceType> types, Color color);
 };
 
 

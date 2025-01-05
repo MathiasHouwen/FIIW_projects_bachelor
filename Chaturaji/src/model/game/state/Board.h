@@ -26,8 +26,8 @@ public:
     [[nodiscard]] bool isEmptyAt(const QPoint& cell) const;    // kijkt of een cell geen piece heeft
     [[nodiscard]] std::optional<Piece> getPieceAt(const QPoint& cell) const;  // geeft de piece ptr in een cell
 
-    [[nodiscard]] auto begin() const { return piecesMap.cbegin(); }
-    [[nodiscard]] auto end() const { return piecesMap.cend(); }
+    [[nodiscard]] auto begin() const { return piecesMap.keys().cbegin(); }
+    [[nodiscard]] auto end() const { return piecesMap.keys().cend(); }
 
 };
 

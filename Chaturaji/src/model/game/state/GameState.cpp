@@ -18,18 +18,34 @@ Color GameState::getCurrentTurn() const {
 }
 
 void GameState::advance() {
-    int attempts = 0;
-    do{
-        turn++;
-        if(turn == 4) turn = 0;
-        attempts++;
-        if(attempts > 4){
-            gameOver = true;
-            break;
-        }
-    } while(!players[getCurrentTurn()].isAlive());
+    move++;
+    if(move == 1){
+        move = 0;
+        int attempts = 0;
+        do{
+            turn++;
+            if(turn == 4) turn = 0;
+            attempts++;
+            if(attempts > 4){
+                gameOver = true;
+                break;
+            }
+        } while(!players[getCurrentTurn()].isAlive());
+    }
 }
 
 Player &GameState::getCurrentPlayer() {
     return players[getCurrentTurn()];
+}
+
+Dice &GameState::getDice() {
+    return dice;
+}
+
+int GameState::getCurrentMove() const {
+    return move;
+}
+
+Player &GameState::getPlayerByColor(Color color) {
+    return players[color];
 }

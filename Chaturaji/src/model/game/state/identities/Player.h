@@ -9,6 +9,7 @@
 
 #include <QString>
 #include "../../enums_and_structs/Color.h"
+#include "../../enums_and_structs/HomeBoardSide.h"
 
 class Player {
 protected:
@@ -18,10 +19,12 @@ private:
     bool alive{true};   // leeft nog
     QString name; // naam van wie deze player speelt
     Color color{Color::NONE};
+    HomeBoardSide homeBoardSide{HomeBoardSide::TOP};
 public:
-    int getIsBot() const;
+    HomeBoardSide getHomeBoardSide() const;
 
-    Player(Color color, QString name, int startingScore=0); // starting score zodat json reader die kan invullen
+    int getIsBot() const;
+    Player(Color color, QString name, HomeBoardSide homeBoardSide, int startingScore=0); // starting score zodat json reader die kan invullen
     Player() = default;
     void increaseScore(int extraScore);
     void kill();

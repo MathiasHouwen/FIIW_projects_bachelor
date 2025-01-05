@@ -2,9 +2,9 @@
 // nog steeds volledig van mathias
 
 #include "FileIO.h"
+#include "../game/enums_and_structs/EnumStringifier.h"
 
 #include <QTextStream>
-#include <QDebug>
 #include <QFile>
 #include <QCoreApplication>
 #include <QJsonObject>
@@ -19,12 +19,9 @@ FileIO::FileIO()= default;
 // ===========================
 
 Piece FileIO::jsonToPiece(const QJsonObject &jsonObject) {
-    QString typestr = jsonObject["type"].toString();
-    PieceType type = pieceTypeFromString(typestr);
-    QString colourstr = jsonObject["color"].toString();
-    Color color = ColorFromString(colourstr);
-    QString sidestr = jsonObject["homeside"].toString();
-    HomeBoardSide side = homeBoardSideFromString(sidestr);
+    PieceType type = EnumStringifier::tFromString(jsonObject["type"].toString());
+    Color color = EnumStringifier::cFromString(jsonObject["color"].toString());
+    HomeBoardSide side = EnumStringifier::sFromString(jsonObject["homeside"].toString());
     return Piece(color, type, side);
 }
 
@@ -33,11 +30,12 @@ void FileIO::jsonToPlayers(Game& game, QJsonObject rootObj){
     game.getGameState().clearPlayers();
     for(auto playerVal : players){
         QJsonObject playerObj = playerVal.toObject();
-        Color color = ColorFromString(playerObj["color"].toString());
+        Color color = EnumStringifier::cFromString(playerObj["color"].toString());
         QString name = playerObj["name"].toString();
         int score = playerObj["score"].toInt();
         bool alie = playerObj["alive"].toBool();
-        auto player = Player(color, name, score);
+        HomeBoardSide side = EnumStringifier::sFromString(playerObj["home"].toString());
+        auto player = Player(color, name, side, score);
         if(!alie) player.kill();
         game.getGameState().addPlayer(player);
     }
@@ -77,130 +75,72 @@ void FileIO::load(Game& game, QString filePath){
         qDebug() << "'players' key not found in JSON.";
         return;
     }
+    Color currentPlayer = EnumStringifier::cFromString(rootObj["currentPlayer"].toString());
+    while (game.getGameState().getCurrentTurn() != currentPlayer){
+        game.getGameState().advance();
+    }
     FileIO::jsonToPlayers(game, rootObj);
 }
 
 // ==========================
 // == Saving functionality ==
 // ==========================
-//
-//QJsonObject FileIO::pieceToJson(Piece piece){
-//    QJsonObject jsonObject;
-//    jsonObject["type"] = pieceTypeToString(piece.getType());
-//    jsonObject["homeside"] = homeBoardSideToString(piece.getHomeSide());
-//    jsonObject["color"] = ColorToString(piece.getColor());
-//    return jsonObject;
-//}
-//
-//QJsonObject FileIO::playerToJson(const std::shared_ptr<Player>* player){
-//    QJsonObject jsonObject;
-//    if (player != nullptr){
-//        jsonObject["naam"] = player->get()->getName();
-//        jsonObject["colour"] = Player::getColourName(player->get()->getColor());
-//        jsonObject["score"] = player->get()->getScore();
-//    }
-//    return jsonObject;
-//}
-//
-//QJsonObject FileIO::playersToJson(const std::shared_ptr<Player>* players, Player curr){
-//    QJsonObject jsonObject;
-//    QJsonArray playersJson;
-//
-//    for (int i = 0; i<Game::getNumberOfPlayer(); i++){
-//        playersJson.append(playerToJson(&players[i]));
-//    }
-//    jsonObject["allPlayers"] = playersJson;
-//    jsonObject["currentPlayer"] = Player::getColourName(curr.getColor());
-//
-//    return jsonObject;
-//}
-//
-//QJsonObject FileIO::boardToJson(const Board* board){
-//    QJsonObject boardObject;
-//    QJsonArray boardArray;
-//    for(int x=0; x<Board::getSize(); x++){
-//        QJsonArray row;
-//        for(int y=0; y<Board::getSize(); y++){
-//            BadPieceClass* piece = board->getPieceAt(QPoint(x, y));
-//
-//            if (piece != nullptr){
-//                row.append(pieceToJson(piece));
-//            } else {
-//                row.append(QJsonValue::Null);
-//            }
-//        }
-//        boardArray.append(row);
-//    }
-//    boardObject["board"] = boardArray;
-//    return boardObject;
-//}
-//
-//int FileIO::save(Game* game, QString filePath){
-//    QFile file = QFile(filePath);
-//
-//    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-//        qDebug() << "Could not open file for writing:" << file.errorString();
-//        return EXIT_FAILURE;
-//    }
-//
-//    QJsonObject rootJsonObject;
-//    rootJsonObject["board"] = boardToJson(&(game->getBoard()))["board"];
-//    rootJsonObject["players"] = playersToJson(game->getPlayers().data(), game->getCurrentPlayer());
-//    QJsonDocument jsonDocument(rootJsonObject);
-//
-//    file.write(jsonDocument.toJson());
-//    file.close();
-//
-//    qDebug() << "File written successfully.";
-//    return 0; // Exit successfully
-//}
 
-QString FileIO::pieceTypeToString(PieceType type) {
-    switch (type) {
-        case PieceType::PAWN: return "pawn";
-        case PieceType::KING: return "king";
-        case PieceType::ELEPHANT: return "elephant";
-        case PieceType::HORSE: return "horse";
-        case PieceType::BOAT: return "boat";
+QJsonObject FileIO::pieceToJson(Piece piece){
+    QJsonObject jsonObject;
+    jsonObject["type"] = EnumStringifier::tToString(piece.getType());
+    jsonObject["homeside"] = EnumStringifier::sToString(piece.getHomeSide());
+    jsonObject["color"] = EnumStringifier::cToString(piece.getColor());
+    return jsonObject;
+}
+
+QJsonArray FileIO::boardToJson(Board &board) {
+    QJsonArray boardArray;
+    for(auto cell : board){
+        auto piece = board.getPieceAt(cell).value();
+        QJsonObject pieceObject = pieceToJson(piece);
+        QJsonObject squareObject;
+        squareObject["x"] = cell.x();
+        squareObject["y"] = cell.y();
+        squareObject["piece"] = pieceObject;
+        boardArray.append(squareObject);
     }
+    return boardArray;
 }
 
-QString FileIO::ColorToString(Color color) {
-    switch (color) {
-        case Color::YELLOW: return "yellow";
-        case Color::RED: return "red";
-        case Color::BLUE: return "blue";
-        case Color::GREEN: return "green";
+QJsonArray FileIO::playersToJson(Game &game) {
+    QJsonArray playersArray;
+    Color colors[4] = {Color::RED, Color::GREEN, Color::BLUE, Color::YELLOW};
+    for(auto color : colors){
+        auto player = game.getGameState().getPlayerByColor(color);
+        QJsonObject playerObject;
+        playerObject["name"] = player.getName();
+        playerObject["color"] = EnumStringifier::cToString(player.getColor());
+        playerObject["score"] = player.getScore();
+        playerObject["alive"] = player.isAlive();
+        playerObject["home"] = EnumStringifier::sToString(player.getHomeBoardSide());
+        playersArray.append(playerObject);
     }
+    return playersArray;
 }
 
-PieceType FileIO::pieceTypeFromString(QString type) {
-    if(type == "pawn") return PieceType::PAWN;
-    if(type == "king") return PieceType::KING;
-    if(type == "elephant") return PieceType::ELEPHANT;
-    if(type == "horse") return PieceType::HORSE;
-    if(type == "boat") return PieceType::BOAT;
-}
+int FileIO::save(Game& game, QString filePath){
+    QFile file = QFile(filePath);
 
-Color FileIO::ColorFromString(QString color) {
-    if(color == "red") return Color::RED;
-    if(color == "blue") return Color::BLUE;
-    if(color == "yellow") return Color::YELLOW;
-    if(color == "green") return Color::GREEN;
-}
-
-QString FileIO::homeBoardSideToString(HomeBoardSide side) {
-    switch (side) {
-        case HomeBoardSide::LEFT: return "left";
-        case HomeBoardSide::RIGHT: return "right";
-        case HomeBoardSide::TOP: return "top";
-        case HomeBoardSide::BOTTOM: return "bottom";
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        qDebug() << "Could not open file for writing:" << file.errorString();
+        return EXIT_FAILURE;
     }
-}
 
-HomeBoardSide FileIO::homeBoardSideFromString(QString side) {
-    if(side == "left") return HomeBoardSide::LEFT;
-    if(side == "right") return HomeBoardSide::RIGHT;
-    if(side == "top") return HomeBoardSide::TOP;
-    if(side == "bottom") return HomeBoardSide::BOTTOM;
+    QJsonObject rootJsonObject;
+    rootJsonObject["board"] = boardToJson(game.getGameState().getBoard());
+    rootJsonObject["players"] = playersToJson(game);
+    rootJsonObject["currentPlayer"] = EnumStringifier::cToString(game.getGameState().getCurrentTurn());
+    QJsonDocument jsonDocument(rootJsonObject);
+
+    file.write(jsonDocument.toJson());
+    file.close();
+
+    qDebug() << "File written successfully.";
+    return 0; // Exit successfully
 }

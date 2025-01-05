@@ -85,6 +85,8 @@ add_executable(Chaturaji
         src/model/game/bots/Bot.cpp
         src/model/game/bots/PassiveMoveStrategy.cpp
         src/model/game/bots/AggressiveMoveStrategy.cpp
+        src/model/game/enums_and_structs/EnumStringifier.cpp
+        src/model/game/enums_and_structs/EnumStringifier.h
         #        src/model/game/bots/Bot.cpp
 #        src/model/game/bots/Bot.h
 #        src/model/game/bots/MoveStrategy.h

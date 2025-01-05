@@ -27,10 +27,14 @@ Color Player::getColor() const {
     return color;
 }
 
-Player::Player(Color color, QString name, int startingScore)
-    : color(color), name(name), score(startingScore) {}
+Player::Player(Color color, QString name, HomeBoardSide homeBoardSide, int startingScore)
+    : color(color), name(name), score(startingScore), homeBoardSide(homeBoardSide) {}
 
 int Player::getIsBot() const {
     return isBot;
+}
+
+HomeBoardSide Player::getHomeBoardSide() const {
+    return homeBoardSide;
 }
 

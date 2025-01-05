@@ -12,13 +12,13 @@
 
 class Player {
 private:
-    int score;    // huidige score
-    bool alive;   // leeft nog
+    int score{0};    // huidige score
+    bool alive{true};   // leeft nog
     QString name; // naam van wie deze player speelt
-    Color color;
+    Color color{Color::NONE};
 public:
     Player(Color color, QString name, int startingScore); // starting score zodat json reader die kan invullen
-
+    Player() = default;
     void increaseScore(int extraScore);
     void kill();
     [[nodiscard]] int getScore() const;

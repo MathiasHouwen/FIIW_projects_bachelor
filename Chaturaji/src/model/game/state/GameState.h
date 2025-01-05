@@ -6,8 +6,22 @@
 #define CHATURAJI_GAMESTATE_H
 
 
-class GameState {
+#include "Board.h"
+#include "identities/Player.h"
+#include "Dice.h"
 
+class GameState {
+private:
+    Board board;
+    QHash<Color, Player> players;
+    Dice dice;
+    bool gameOver;
+    int turn{0};
+public:
+    void advance();
+    const Board &getBoard() const;
+    [[nodiscard]] bool isGameOver() const;
+    [[nodiscard]] Color getCurrentTurn() const;
 };
 
 

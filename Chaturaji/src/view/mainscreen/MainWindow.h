@@ -22,8 +22,9 @@ Q_OBJECT
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;
-    Game* getModel();
     void startController();
+
+    GameController &getGameController();
 
 protected:
     void resizeEvent(QResizeEvent *event) override;
@@ -31,8 +32,8 @@ protected:
 
 private:
     Ui::MainWindow *ui;
-    Game model{};
     Controller* controller;
+    GameController gameController;
     void makeBoardPanelShapeSquare();
 };
 

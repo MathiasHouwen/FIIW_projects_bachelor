@@ -13,8 +13,7 @@ QSet<ClassifiedMove> GameController::getMovesForHighlight() {
     }
 }
 
-GameController::GameController(Game& game) :
-    game(game),
+GameController::GameController() :
     movesManager(game.getGameState().getBoard()),
     querier(game.getGameState().getBoard()){}
 

@@ -21,7 +21,7 @@ class Controller: public QObject{
 Q_OBJECT
 
 private:
-    GameController gameController;
+    GameController& gameController;
 
     BoardView* boardView;
     DiceAndMovesView* diceAndMovesView;
@@ -39,7 +39,7 @@ private:
     void endGame();
     void update();
 public:
-    Controller(Game &model, BoardView* boardView, DiceAndMovesView* diceAndMovesView, FileIOView* fileIoView, PlayersView* playersView);
+    Controller(GameController& gameController, BoardView* boardView, DiceAndMovesView* diceAndMovesView, FileIOView* fileIoView, PlayersView* playersView);
     void start();
     void startBot();
 

@@ -31,18 +31,21 @@ void StartScreen::on_pushButton_clicked() {
 }
 
 void StartScreen::set_players(MainWindow* window) {
-    players.push_back(ui->player1Input->toPlainText().toStdString());
-    players.push_back(ui->player2Input->toPlainText().toStdString());
-    players.push_back(ui->player3Input->toPlainText().toStdString());
-    players.push_back(ui->player4Input->toPlainText().toStdString());
-    for (int i = 0; i < players.size(); i++) {
-        QString name = players[i].data();
-        window->getModel()->setPlayerName(name, static_cast<Player::colour>(i));
+
+    for (QString name : players) {
+        window->getGameController().getGame().getGameState().addPlayer(name, PlayerType::HUMAN);
     }
-    if(ui->agressive->isChecked()) {
-        window->getModel()->makeBot(Player::colour::BLUE, true);
-    }
-    if(ui->passive->isChecked()) {
-        window->getModel()->makeBot(Player::colour::GREEN, false);
-    }
+//    if(ui->agressive->isChecked()) {
+//        window->getModel()->makeBot(Player::colour::BLUE, true);
+//    }
+//    if(ui->passive->isChecked()) {
+//        window->getModel()->makeBot(Player::colour::GREEN, false);
+//    }
+}
+
+void StartScreen::getPlayers() {
+    players.insert(ui->player1Input->toPlainText());
+    players.insert(ui->player2Input->toPlainText());
+    players.insert(ui->player3Input->toPlainText());
+    players.insert(ui->player4Input->toPlainText());
 }

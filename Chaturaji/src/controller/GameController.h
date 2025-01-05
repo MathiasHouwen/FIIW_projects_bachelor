@@ -12,12 +12,12 @@ class GameController {
 private:
     enum class StepState{READYTOPICK, READYTOPLACE};
     StepState state{StepState::READYTOPICK};
-    Game& game;
+    Game game;
     std::optional<QPoint> selectedCell;
     MovesManager movesManager;
     BoardQuerier querier;
 public:
-    explicit GameController(Game& game);
+    explicit GameController();
     QSet<ClassifiedMove> getMovesForHighlight();
     QSet<QPoint> getSelectablesForHighlight();
     void handleCellSelect(QPoint cell, PieceType pawnPromoteType = PieceType::PAWN);

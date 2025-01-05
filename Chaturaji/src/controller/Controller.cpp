@@ -9,8 +9,8 @@
 #include "../model/io/FileIO.h"
 
 
-Controller::Controller(Game &model, BoardView* boardView, DiceAndMovesView* diceAndMovesView, FileIOView* fileIoView, PlayersView* playersView)
-        : QObject(nullptr), gameController(model), boardView(boardView),
+Controller::Controller(GameController& gameController, BoardView* boardView, DiceAndMovesView* diceAndMovesView, FileIOView* fileIoView, PlayersView* playersView)
+        : QObject(nullptr), gameController(gameController), boardView(boardView),
         diceAndMovesView(diceAndMovesView), fileIoView(fileIoView), playersView(playersView){
     // connect alle signals van views met de handlers in controller
     connect(boardView, &BoardView::cellClicked, this, &Controller::onCellClicked);
@@ -21,7 +21,7 @@ Controller::Controller(Game &model, BoardView* boardView, DiceAndMovesView* dice
 }
 
 void Controller::start() {
-    io.loadBoard(&model, QString(SAVES_PATH) + "/startingFile.txt");
+    io.load(&model, QString(SAVES_PATH) + "/startingFile.txt");
     boardView->updateFullBoard(model.getBoard());
     initPlayersView();
     update();
@@ -134,7 +134,7 @@ void Controller::onLoad(){
 
     if (!filePath.isEmpty()) {
         qDebug() << "FilePath:" << filePath;
-        io.loadBoard(&model, filePath);
+        io.load(&model, filePath);
         boardView->updateFullBoard(model.getBoard());
         clearHighLights();
         setSelectionHighlights();

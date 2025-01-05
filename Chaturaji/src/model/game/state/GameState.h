@@ -9,6 +9,7 @@
 #include "Board.h"
 #include "identities/Player.h"
 #include "Dice.h"
+#include "../enums_and_structs/PlayerType.h"
 
 class GameState {
 private:
@@ -27,6 +28,9 @@ public:
     Player& getCurrentPlayer();
     Dice &getDice();
     Player& getPlayerByColor(Color color);
+    void addPlayer(QString name, PlayerType type);
+    void addPlayer(Player player);
+    void clearPlayers();
 };
 
 

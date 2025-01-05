@@ -2,7 +2,6 @@
 // nog steeds volledig van mathias
 
 #include "FileIO.h"
-#include "../game/oude_garbage/Game.h"
 
 #include <QTextStream>
 #include <QDebug>
@@ -19,73 +18,40 @@ FileIO::FileIO()= default;
 // == Loading functionality ==
 // ===========================
 
-BadPieceClass FileIO::jsonToPiece(const QJsonObject &jsonObject, Game *gamemodel) {
+Piece FileIO::jsonToPiece(const QJsonObject &jsonObject) {
     QString typestr = jsonObject["type"].toString();
-    BadPieceClass::Type type = BadPieceClass::getTypeFromName(typestr);
-
-    QString colourstr = jsonObject["player_colour"].toString();
-    Player::colour colour = Player::getColourFromName(colourstr);
-    Player& player = gamemodel->getPlayerFromColour(colour);
-
-    QJsonObject dirobj = jsonObject["direction"].toObject();
-    int x = dirobj["x"].toInt();
-    int y = dirobj["y"].toInt();
-    QPoint direction(x, y);
-
-    return BadPieceClass(type, direction, player);
+    PieceType type = pieceTypeFromString(typestr);
+    QString colourstr = jsonObject["color"].toString();
+    Color color = ColorFromString(colourstr);
+    QString sidestr = jsonObject["homeside"].toString();
+    HomeBoardSide side = homeBoardSideFromString(sidestr);
+    return Piece(color, type, side);
 }
 
-void FileIO::jsonToPlayers(Game* game, QJsonObject rootObj){
-    if (!rootObj.contains("players")) {
-        qDebug() << "'players' key not found in playerObject";
-        return;
-    }
-    if (!rootObj["players"].isObject()){
-        qDebug() << "'players' is not an object in JSON.";
-        return;
-    }
-
-    QJsonObject playersObj = rootObj["players"].toObject();
-    QJsonArray allPlayersArray = playersObj["allPlayers"].toArray();
-    for (const QJsonValue& playerVal : allPlayersArray) {
+void FileIO::jsonToPlayers(Game& game, QJsonObject rootObj){
+    QJsonArray players = rootObj["players"].toArray();
+    game.getGameState().clearPlayers();
+    for(auto playerVal : players){
         QJsonObject playerObj = playerVal.toObject();
-
-        QString colourStr = playerObj["colour"].toString();
-        Player::colour colour = Player::getColourFromName(colourStr);
-
-        QString naam = playerObj["naam"].toString();
-        game->setPlayerName(naam, colour);
-
+        Color color = ColorFromString(playerObj["color"].toString());
+        QString name = playerObj["name"].toString();
         int score = playerObj["score"].toInt();
-        game->setPlayerScore(score, colour);
+        game.getGameState().addPlayer(Player(color, name, score));
     }
 }
 
-void FileIO::jsonToBoard(QJsonObject boardObject, Game* gamemodel){
-    if (!boardObject.contains("board")) {
-        qDebug() << "'board' key not found in boardObject";
-        return;
-    } else if (!boardObject["board"].isArray()){
-        qDebug() << "'board' is not an array in JSON.";
-    }
-
-    QJsonArray boardArray = boardObject["board"].toArray();
-    Board& board = gamemodel->getBoard();
-
+void FileIO::jsonToBoard(QJsonObject rootObj, Board& board){
+    QJsonArray boardArray = rootObj["board"].toArray();
     board.clear();
-    for(int x=0; x<Board::getSize(); x++){
-        QJsonArray rij = boardArray[x].toArray();
-        for(int y=0; y<Board::getSize(); y++){
-            QJsonObject pieceObj = rij[y].toObject();
-            if (!pieceObj.isEmpty()) {
-                BadPieceClass piece = FileIO::jsonToPiece(pieceObj, gamemodel);
-                board.putPieceAt(QPoint{x, y}, piece);
-            }
-        }
+    for(auto square : boardArray){
+        QJsonObject squareObj = square.toObject();
+        QPoint point(squareObj["x"].toInt(), squareObj["x"].toInt());
+        Piece piece = jsonToPiece(squareObj["piece"].toObject());
+        board.putPieceAt(point, piece);
     }
 }
 
-void FileIO::loadBoard(Game* game, QString filePath){
+void FileIO::load(Game& game, QString filePath){
     QFile file = QFile(filePath);
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)){
@@ -102,7 +68,7 @@ void FileIO::loadBoard(Game* game, QString filePath){
         qDebug() << "'board' key not found in JSON.";
         return;
     }
-    FileIO::jsonToBoard(rootObj, game);
+    FileIO::jsonToBoard(rootObj, game.getGameState().getBoard());
 
     if (!rootObj.contains("players")) {
         qDebug() << "'players' key not found in JSON.";
@@ -114,80 +80,124 @@ void FileIO::loadBoard(Game* game, QString filePath){
 // ==========================
 // == Saving functionality ==
 // ==========================
+//
+//QJsonObject FileIO::pieceToJson(Piece piece){
+//    QJsonObject jsonObject;
+//    jsonObject["type"] = pieceTypeToString(piece.getType());
+//    jsonObject["homeside"] = homeBoardSideToString(piece.getHomeSide());
+//    jsonObject["color"] = ColorToString(piece.getColor());
+//    return jsonObject;
+//}
+//
+//QJsonObject FileIO::playerToJson(const std::shared_ptr<Player>* player){
+//    QJsonObject jsonObject;
+//    if (player != nullptr){
+//        jsonObject["naam"] = player->get()->getName();
+//        jsonObject["colour"] = Player::getColourName(player->get()->getColor());
+//        jsonObject["score"] = player->get()->getScore();
+//    }
+//    return jsonObject;
+//}
+//
+//QJsonObject FileIO::playersToJson(const std::shared_ptr<Player>* players, Player curr){
+//    QJsonObject jsonObject;
+//    QJsonArray playersJson;
+//
+//    for (int i = 0; i<Game::getNumberOfPlayer(); i++){
+//        playersJson.append(playerToJson(&players[i]));
+//    }
+//    jsonObject["allPlayers"] = playersJson;
+//    jsonObject["currentPlayer"] = Player::getColourName(curr.getColor());
+//
+//    return jsonObject;
+//}
+//
+//QJsonObject FileIO::boardToJson(const Board* board){
+//    QJsonObject boardObject;
+//    QJsonArray boardArray;
+//    for(int x=0; x<Board::getSize(); x++){
+//        QJsonArray row;
+//        for(int y=0; y<Board::getSize(); y++){
+//            BadPieceClass* piece = board->getPieceAt(QPoint(x, y));
+//
+//            if (piece != nullptr){
+//                row.append(pieceToJson(piece));
+//            } else {
+//                row.append(QJsonValue::Null);
+//            }
+//        }
+//        boardArray.append(row);
+//    }
+//    boardObject["board"] = boardArray;
+//    return boardObject;
+//}
+//
+//int FileIO::save(Game* game, QString filePath){
+//    QFile file = QFile(filePath);
+//
+//    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+//        qDebug() << "Could not open file for writing:" << file.errorString();
+//        return EXIT_FAILURE;
+//    }
+//
+//    QJsonObject rootJsonObject;
+//    rootJsonObject["board"] = boardToJson(&(game->getBoard()))["board"];
+//    rootJsonObject["players"] = playersToJson(game->getPlayers().data(), game->getCurrentPlayer());
+//    QJsonDocument jsonDocument(rootJsonObject);
+//
+//    file.write(jsonDocument.toJson());
+//    file.close();
+//
+//    qDebug() << "File written successfully.";
+//    return 0; // Exit successfully
+//}
 
-QJsonObject FileIO::pieceToJson(const BadPieceClass* piece){
-    QJsonObject jsonObject;
-    if (piece != nullptr){
-        jsonObject["type"] = BadPieceClass::getTypeName(piece->getType());
-        jsonObject["player_colour"] = Player::getColourName(piece->getPlayer().getColor());
-
-        QJsonObject dirobj;
-        dirobj["x"] = piece->getWalkPattern().forwardDirection.x();
-        dirobj["y"] = piece->getWalkPattern().forwardDirection.y();
-        jsonObject["direction"] = dirobj;
+QString FileIO::pieceTypeToString(PieceType type) {
+    switch (type) {
+        case PieceType::PAWN: return "pawn";
+        case PieceType::KING: return "king";
+        case PieceType::ELEPHANT: return "elephant";
+        case PieceType::HORSE: return "horse";
+        case PieceType::BOAT: return "boat";
     }
-    return jsonObject;
 }
 
-QJsonObject FileIO::playerToJson(const std::shared_ptr<Player>* player){
-    QJsonObject jsonObject;
-    if (player != nullptr){
-        jsonObject["naam"] = player->get()->getName();
-        jsonObject["colour"] = Player::getColourName(player->get()->getColor());
-        jsonObject["score"] = player->get()->getScore();
+QString FileIO::ColorToString(Color color) {
+    switch (color) {
+        case Color::YELLOW: return "yellow";
+        case Color::RED: return "red";
+        case Color::BLUE: return "blue";
+        case Color::GREEN: return "green";
     }
-    return jsonObject;
 }
 
-QJsonObject FileIO::playersToJson(const std::shared_ptr<Player>* players, Player curr){
-    QJsonObject jsonObject;
-    QJsonArray playersJson;
-
-    for (int i = 0; i<Game::getNumberOfPlayer(); i++){
-        playersJson.append(playerToJson(&players[i]));
-    }
-    jsonObject["allPlayers"] = playersJson;
-    jsonObject["currentPlayer"] = Player::getColourName(curr.getColor());
-
-    return jsonObject;
+PieceType FileIO::pieceTypeFromString(QString type) {
+    if(type == "pawn") return PieceType::PAWN;
+    if(type == "king") return PieceType::KING;
+    if(type == "elephant") return PieceType::ELEPHANT;
+    if(type == "horse") return PieceType::HORSE;
+    if(type == "boat") return PieceType::BOAT;
 }
 
-QJsonObject FileIO::boardToJson(const Board* board){
-    QJsonObject boardObject;
-    QJsonArray boardArray;
-    for(int x=0; x<Board::getSize(); x++){
-        QJsonArray row;
-        for(int y=0; y<Board::getSize(); y++){
-            BadPieceClass* piece = board->getPieceAt(QPoint(x, y));
-
-            if (piece != nullptr){
-                row.append(pieceToJson(piece));
-            } else {
-                row.append(QJsonValue::Null);
-            }
-        }
-        boardArray.append(row);
-    }
-    boardObject["board"] = boardArray;
-    return boardObject;
+Color FileIO::ColorFromString(QString color) {
+    if(color == "red") return Color::RED;
+    if(color == "blue") return Color::BLUE;
+    if(color == "yellow") return Color::YELLOW;
+    if(color == "green") return Color::GREEN;
 }
 
-int FileIO::save(Game* game, QString filePath){
-    QFile file = QFile(filePath);
-
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        qDebug() << "Could not open file for writing:" << file.errorString();
-        return EXIT_FAILURE;
+QString FileIO::homeBoardSideToString(HomeBoardSide side) {
+    switch (side) {
+        case HomeBoardSide::LEFT: return "left";
+        case HomeBoardSide::RIGHT: return "right";
+        case HomeBoardSide::TOP: return "top";
+        case HomeBoardSide::BOTTOM: return "bottom";
     }
+}
 
-    QJsonObject rootJsonObject;
-    rootJsonObject["board"] = boardToJson(&(game->getBoard()))["board"];
-    rootJsonObject["players"] = playersToJson(game->getPlayers().data(), game->getCurrentPlayer());
-    QJsonDocument jsonDocument(rootJsonObject);
-
-    file.write(jsonDocument.toJson());
-    file.close();
-
-    qDebug() << "File written successfully.";
-    return 0; // Exit successfully
+HomeBoardSide FileIO::homeBoardSideFromString(QString side) {
+    if(side == "left") return HomeBoardSide::LEFT;
+    if(side == "right") return HomeBoardSide::RIGHT;
+    if(side == "top") return HomeBoardSide::TOP;
+    if(side == "bottom") return HomeBoardSide::BOTTOM;
 }

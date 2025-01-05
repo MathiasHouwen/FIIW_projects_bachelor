@@ -19,14 +19,8 @@ add_definitions(-DSAVES_PATH="${CMAKE_SOURCE_DIR}/Saves")
 
 add_executable(Chaturaji
         src/main.cpp
-        #        src/view/CLIView.h
-#        src/controller/ConsoleIO.h
-#        src/controller/ConsoleIO.cpp
-#        src/view/CLIView.cpp
         src/model/game/state/Board.h
         src/model/game/state/Board.cpp
-#        src/controller/CLI_Controller.h
-#        src/controller/CLI_Controller.cpp
         src/model/game/logic/passive/PossibleMovesCalculator.h
         src/model/game/logic/passive/PossibleMovesCalculator.cpp
         src/model/game/state/identities/Player.cpp
@@ -65,8 +59,6 @@ add_executable(Chaturaji
         src/view/startscreen/startscreen.ui
         src/view/mainscreen/player/PlayersView.cpp
         src/view/mainscreen/player/PlayersView.h
-        src/model/game/oude_garbage/Bot.cpp
-        src/model/game/oude_garbage/Bot.h
         src/model/game/logic/BoardQuerier.cpp
         src/model/game/logic/BoardQuerier.h
         src/model/game/enums_and_structs/Color.h
@@ -89,13 +81,14 @@ add_executable(Chaturaji
         src/model/game/Game.h
         src/controller/GameController.cpp
         src/controller/GameController.h
-        src/model/game/bots/Bot.cpp
-        src/model/game/bots/Bot.h
-        src/model/game/bots/MoveStrategy.h
-        src/model/game/bots/AggressiveMoveStrategy.cpp
-        src/model/game/bots/AggressiveMoveStrategy.h
-        src/model/game/bots/PassiveMoveStrategy.cpp
-        src/model/game/bots/PassiveMoveStrategy.h
+        src/model/game/enums_and_structs/PlayerType.h
+        #        src/model/game/bots/Bot.cpp
+#        src/model/game/bots/Bot.h
+#        src/model/game/bots/MoveStrategy.h
+#        src/model/game/bots/AggressiveMoveStrategy.cpp
+#        src/model/game/bots/AggressiveMoveStrategy.h
+#        src/model/game/bots/PassiveMoveStrategy.cpp
+#        src/model/game/bots/PassiveMoveStrategy.h
 )
 target_link_libraries(Chaturaji Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::SvgWidgets Qt${QT_VERSION_MAJOR}::Xml)
 

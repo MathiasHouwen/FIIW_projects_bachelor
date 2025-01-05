@@ -31,9 +31,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     auto boardView = new BoardView(ui->boardPanel);
     auto diceAndMovesView = new DiceAndMovesView(ui->turnsPanel);
-    auto ioView = new FileIOView(model, ui->topBar);
+    auto ioView = new FileIOView(gameController, ui->topBar);
     auto playersView = new PlayersView(ui->sidePanel);
-    controller = new Controller(model, boardView, diceAndMovesView, ioView, playersView);
+    controller = new Controller(gameController, boardView, diceAndMovesView, ioView, playersView);
 }
 
 MainWindow::~MainWindow() {
@@ -62,8 +62,8 @@ void MainWindow::paintEvent(QPaintEvent *event) {
     makeBoardPanelShapeSquare();
 }
 
-Game* MainWindow::getModel() {
-    return &model;
+GameController &MainWindow::getGameController() {
+    return gameController;
 }
 
 void MainWindow::startController() {

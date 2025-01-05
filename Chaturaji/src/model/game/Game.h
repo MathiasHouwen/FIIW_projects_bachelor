@@ -20,8 +20,8 @@ private:
     void executeClassifiedMove(QPoint from, ClassifiedMove move, PieceType pawnPromoteType = PieceType::PAWN);
     static int pieceTypeToScore(PieceType type);
 public:
-    GameState &getGameState();
     Game();
+    GameState &getGameState();
     bool doMove(QPoint from, QPoint to, PieceType pawnPromoteType);
     bool isCellFromCurrentPlayer(QPoint cell);
 };

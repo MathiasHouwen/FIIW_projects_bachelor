@@ -10,28 +10,36 @@
 #include <qstring.h>
 #include <QFile>
 #include "../game/state/Board.h"
-#include "../game/oude_garbage/Game.h"
+#include "../game/Game.h"
 
 class FileIO {
 public:
     explicit FileIO();
 
-    int save(Game *game, QString filePath);
-    void loadBoard(Game *game, QString filePath);
+    //int save(Game& game, QString filePath);
+    void load(Game& game, QString filePath);
 
-    static BadPieceClass jsonToPiece(const QJsonObject& jsonObject, Game* gamemodel);
+    static Piece jsonToPiece(const QJsonObject& jsonObject);
 
 private:
-    static void jsonToBoard(QJsonObject boardObject, Game *gamemodel);
+    static QString pieceTypeToString(PieceType type);
+    static QString ColorToString(Color color);
+    static QString homeBoardSideToString(HomeBoardSide side);
 
-    static QJsonObject pieceToJson(const BadPieceClass* piece);
-    static QJsonObject boardToJson(const Board *board);
-    QJsonObject playerToJson(const std::shared_ptr<Player> *player);
-    QJsonObject playersToJson(const std::shared_ptr<Player> *players, Player curr);
+    static PieceType pieceTypeFromString(QString type);
+    static Color ColorFromString(QString color);
+    static HomeBoardSide homeBoardSideFromString(QString side);
 
-    QJsonDocument generateJson(Game *game);
+    static void jsonToBoard(QJsonObject rootObj, Board& board);
+    static QJsonObject pieceToJson(Piece piece);
 
-    void jsonToPlayers(Game *game, QJsonObject players);
+    static QJsonObject boardToJson(Board& board);
+//    QJsonObject playerToJson(const std::shared_ptr<Player> *player);
+//    QJsonObject playersToJson(const std::shared_ptr<Player> *players, Player curr);
+
+//    QJsonDocument generateJson(Game *game);
+
+    static void jsonToPlayers(Game& game, QJsonObject players);
 };
 
 #endif //CHATURAJI_FILEIO_H

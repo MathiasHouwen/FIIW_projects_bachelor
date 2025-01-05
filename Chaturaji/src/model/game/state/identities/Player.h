@@ -17,7 +17,7 @@ private:
     QString name; // naam van wie deze player speelt
     Color color{Color::NONE};
 public:
-    Player(Color color, QString name, int startingScore); // starting score zodat json reader die kan invullen
+    Player(Color color, QString name, int startingScore=0); // starting score zodat json reader die kan invullen
     Player() = default;
     void increaseScore(int extraScore);
     void kill();

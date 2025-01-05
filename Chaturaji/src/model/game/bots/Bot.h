@@ -6,14 +6,12 @@
 #define BOT_H
 #include <utility>
 
-#include "../Player.h"
 #include "MoveStrategy.h"
 
 
 class Bot : public Player {
 public:
-    Bot(colour mColour, std::shared_ptr<MoveStrategy> strategy);
-
+    Bot(Color color, std::shared_ptr<MoveStrategy> strategy);
     QPoint getNextMove(Game& game, const QSet<QPoint>& moves);
 
 private:

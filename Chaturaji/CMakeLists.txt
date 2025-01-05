@@ -87,6 +87,8 @@ add_executable(Chaturaji
         src/model/game/state/GameState.h
         src/model/game/Game.cpp
         src/model/game/Game.h
+        src/controller/GameController.cpp
+        src/controller/GameController.h
 )
 target_link_libraries(Chaturaji Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Gui Qt${QT_VERSION_MAJOR}::SvgWidgets Qt${QT_VERSION_MAJOR}::Xml)
 

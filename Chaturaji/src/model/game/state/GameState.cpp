@@ -18,8 +18,15 @@ Color GameState::getCurrentTurn() const {
 }
 
 void GameState::advance() {
+    int attempts = 0;
     do{
         turn++;
+        if(turn == 4) turn = 0;
+        attempts++;
+        if(attempts > 4){
+            gameOver = true;
+            break;
+        }
     } while(!players[getCurrentTurn()].isAlive());
 }
 

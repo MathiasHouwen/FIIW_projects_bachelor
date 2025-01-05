@@ -53,3 +53,13 @@ int Game::pieceTypeToScore(PieceType type) {
         case PieceType::KING: return 5;
     }
 }
+
+GameState &Game::getGameState() {
+    return gameState;
+}
+
+bool Game::isCellFromCurrentPlayer(QPoint cell) {
+    Board& board = gameState.getBoard();
+    if(board.isEmptyAt(cell)) return false;
+    return board.getPieceAt(cell)->getColor() == gameState.getCurrentPlayer().getColor();
+}

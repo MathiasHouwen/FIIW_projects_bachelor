@@ -11,6 +11,7 @@
 class PassiveMoveStrategy : public MoveStrategy {
 public:
     QPoint getNextMove(Game& game, const QSet<ClassifiedMove>& moves) override;
+    QPoint getNextSelectedCell(Game& game, const QSet<QPoint>& selectables) override;
 };
 
 #endif //PASSIVEMOVESTRATEGY_H

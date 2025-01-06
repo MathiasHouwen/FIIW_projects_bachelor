@@ -14,3 +14,7 @@ Bot::Bot(Color color, QString name, HomeBoardSide homeBoardSide, std::shared_ptr
 QPoint Bot::getNextMove(Game& game, const QSet<ClassifiedMove>& moves) {
     return strategy->getNextMove(game, moves);
 }
+
+QPoint Bot::getNextSelectedCell(Game &game, const QSet<QPoint> &selectables) {
+    return strategy->getNextSelectedCell(game, selectables);
+}

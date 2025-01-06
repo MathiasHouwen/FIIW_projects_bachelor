@@ -14,6 +14,7 @@ class Bot : public Player {
 public:
     Bot(Color color, QString name, HomeBoardSide homeBoardSide, std::shared_ptr<MoveStrategy> strategy);
     QPoint getNextMove(Game& game, const QSet<ClassifiedMove>& moves);
+    QPoint getNextSelectedCell(Game& game, const QSet<QPoint>& selectables);
 
 private:
     std::shared_ptr<MoveStrategy> strategy;

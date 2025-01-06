@@ -16,6 +16,8 @@ class MoveStrategy {
 public:
     virtual ~MoveStrategy() = default;
     virtual QPoint getNextMove(Game& game, const QSet<ClassifiedMove>& moves) = 0;
+    virtual QPoint getNextSelectedCell(Game& game, const QSet<QPoint>& selectables) = 0;
+
 };
 
 

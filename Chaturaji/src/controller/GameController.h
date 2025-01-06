@@ -16,18 +16,19 @@ private:
     std::optional<QPoint> selectedCell;
     MovesManager movesManager;
     BoardQuerier querier;
+    void controllBot();
 public:
     explicit GameController();
     QSet<ClassifiedMove> getMovesForHighlight();
     QSet<QPoint> getSelectablesForHighlight();
     void handleCellSelect(QPoint cell, PieceType pawnPromoteType = PieceType::PAWN);
     bool moveIsPawnPromote(QPoint cell);
-    StepState getState() const;
     const std::optional<QPoint> &getSelectedCell() const;
     Game &getGame();
     void addBot(QString name, std::shared_ptr<MoveStrategy> strategy);
     void addPlayer(QString name);
     QString getCurrentPlayerName();
+    void skip();
 };
 
 

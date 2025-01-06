@@ -30,7 +30,7 @@ public:
     [[nodiscard]] const QString &getName() const;
     [[nodiscard]] Color getColor() const;
     [[nodiscard]] HomeBoardSide getHomeBoardSide() const;
-    [[nodiscard]] int isBot() const;
+    [[nodiscard]] int isBot();
 
 };
 

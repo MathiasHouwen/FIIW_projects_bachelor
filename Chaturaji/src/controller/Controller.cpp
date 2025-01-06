@@ -68,11 +68,8 @@ void Controller::updateMoveAndDiceView() {
 
 // handled een move skip (game::skip en update alles movePiece/turn gerelateerd)
 void Controller::onSkipButtonClicked() {
-    gameController.getGame().getGameState().advance();
-    updateMoveAndDiceView();
-    clearHighLights();
-    updateHighlights();
-    playersView->updateSetBigAndToTop(gameController.getGame().getGameState().getCurrentTurn());
+    gameController.skip();
+    update();
 }
 
 void Controller::endGame() {

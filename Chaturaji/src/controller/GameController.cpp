@@ -20,7 +20,7 @@ GameController::GameController() :
 
 void GameController::handleCellSelect(QPoint cell, PieceType pawnPromoteType) {
     if(state == StepState::READYTOPICK){
-        if(game.isCellFromCurrentPlayer(cell)){
+        if(game.isCellAllowedToBePicked(cell)){
             selectedCell = cell;
             state = StepState::READYTOPLACE;
         }

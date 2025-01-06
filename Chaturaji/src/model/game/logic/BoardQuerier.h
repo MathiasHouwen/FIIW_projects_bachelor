@@ -20,6 +20,7 @@ public:
     QSet<QPoint> getPiecesFromColor(Color color); // QList want ik was te lui om piece hashable te maken voor qset
     QSet<QPoint> getPiecesFromBoardHomeSide(HomeBoardSide homeSide);
     QSet<QPoint> getPiecesWithTypesAndColor(QSet<PieceType> types, Color color);
+    bool isPointFromBoardSideEdge(QPoint cell, HomeBoardSide boardSide);
 };
 
 

@@ -23,7 +23,7 @@ public:
     Game();
     GameState &getGameState();
     bool doMove(QPoint from, QPoint to, PieceType pawnPromoteType);
-    bool isCellFromCurrentPlayer(QPoint cell);
+    bool isCellAllowedToBePicked(QPoint cell);
 };
 
 

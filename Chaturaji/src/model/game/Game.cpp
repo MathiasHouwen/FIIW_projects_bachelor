@@ -48,13 +48,16 @@ void Game::executeClassifiedMove(QPoint from, ClassifiedMove move, PieceType paw
     switch (move.specialMoveType) {
         case SpecialMoveType::SINHASANA:
             rulesExecutor.sinhasana(move.destination);
+            qDebug() << "SINHASANA";
             break;
         case SpecialMoveType::VRIHANNAUKA:
             rulesExecutor.vrihannauka(move.destination);
             gameState.getCurrentPlayer()->increaseScore(6);
+            qDebug() << "VRIHANNAUKA";
             break;
         case SpecialMoveType::PAWNPROMOTE:
             rulesExecutor.promotePawn(move.destination, pawnPromoteType);
+            qDebug() << "PAWNPROMOTE";
             break;
         case SpecialMoveType::NONE:
             break;
@@ -75,9 +78,10 @@ GameState &Game::getGameState() {
     return gameState;
 }
 
-bool Game::isCellFromCurrentPlayer(QPoint cell) {
+bool Game::isCellAllowedToBePicked(QPoint cell) {
     Board& board = gameState.getBoard();
     if(board.isEmptyAt(cell)) return false;
+    if(!gameState.getDice().allowsType(board.getPieceAt(cell)->getType())) return false;
     return board.getPieceAt(cell)->getColor() == gameState.getCurrentPlayer()->getColor();
 }
 

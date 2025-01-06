@@ -69,16 +69,15 @@ void FileIO::load(Game& game, QString filePath){
         return;
     }
     FileIO::jsonToBoard(rootObj, game.getGameState().getBoard());
-
     if (!rootObj.contains("players")) {
         qDebug() << "'players' key not found in JSON.";
         return;
     }
+    FileIO::jsonToPlayers(game, rootObj);
     Color currentPlayer = EnumStringifier::cFromString(rootObj["currentPlayer"].toString());
     while (game.getGameState().getCurrentTurn() != currentPlayer){
         game.getGameState().advance();
     }
-    FileIO::jsonToPlayers(game, rootObj);
 }
 
 // ==========================

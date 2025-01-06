@@ -45,3 +45,10 @@ QSet<QPoint> BoardQuerier::getPiecesWithTypesAndColor(QSet<PieceType> types, Col
     }
     return result;
 }
+
+bool BoardQuerier::isPointFromBoardSideEdge(QPoint cell, HomeBoardSide boardSide) {
+    return cell.x() == 0 && boardSide == HomeBoardSide::LEFT
+    || cell.x() == Board::dimension.getSize()-1 && boardSide == HomeBoardSide::RIGHT
+    || cell.y() == 0 && boardSide == HomeBoardSide::TOP
+    || cell.y() == Board::dimension.getSize()-1 && boardSide == HomeBoardSide::BOTTOM;
+}

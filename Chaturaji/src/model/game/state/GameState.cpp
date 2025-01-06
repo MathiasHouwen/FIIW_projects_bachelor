@@ -28,7 +28,7 @@ void GameState::advance() {
             turn++;
             if(turn == 4) turn = 0;
             attempts++;
-            if(attempts > 4){
+            if(attempts >= 3){
                 gameOver = true;
                 break;
             }
@@ -60,7 +60,7 @@ void GameState::clearPlayers() {
 }
 
 void GameState::addPlayer(Player player) {
-    Player* playerRef = new Player();
+    Player* playerRef = new Player(player);
     players[player.getColor()] = playerRef;
 }
 

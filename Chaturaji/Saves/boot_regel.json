@@ -1,0 +1,55 @@
+{
+    "board": [
+        {"x": 0, "y": 5,
+            "piece": {"type": "king", "color": "red", "homeside": "bottom"}},
+        {"x": 1, "y": 5,
+            "piece": {"type": "king", "color": "green", "homeside": "right"}},
+        {"x": 2, "y": 5,
+            "piece": {"type": "king", "color": "blue", "homeside": "left"}},
+        {"x": 3, "y": 5,
+            "piece": {"type": "king", "color": "yellow", "homeside": "top"}},
+
+        {"x": 5, "y": 5,
+            "piece": {"type": "boat", "color": "red", "homeside": "bottom"}},
+
+        {"x": 3, "y": 2,
+            "piece": {"type": "boat", "color": "green", "homeside": "right"}},
+        {"x": 2, "y": 3,
+            "piece": {"type": "boat", "color": "blue", "homeside": "left"}},
+        {"x": 2, "y": 2,
+            "piece": {"type": "boat", "color": "yellow", "homeside": "top"}}
+
+
+    ],
+    "currentPlayer": "red",
+    "players": [
+        {
+            "alive": true,
+            "color": "red",
+            "home": "bottom",
+            "name": "rode player",
+            "score": 10
+        },
+        {
+            "alive": true,
+            "color": "green",
+            "home": "right",
+            "name": "groene player",
+            "score": 10
+        },
+        {
+            "alive": true,
+            "color": "blue",
+            "home": "left",
+            "name": "blauwe player",
+            "score": 10
+        },
+        {
+            "alive": true,
+            "color": "yellow",
+            "home": "top",
+            "name": "gele player",
+            "score": 10
+        }
+    ]
+}

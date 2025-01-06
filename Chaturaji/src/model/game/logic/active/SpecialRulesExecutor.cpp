@@ -13,59 +13,46 @@ void SpecialRulesExecutor::promotePawn(QPoint location, PieceType newPieceType) 
 }
 
 void SpecialRulesExecutor::vrihannauka(QPoint location) {
-    std::vector<QPoint> topLeftCorners = {
-            QPoint(location.x() - 1, location.y() - 1),
-            QPoint(location.x(), location.y() - 1),
-            QPoint(location.x() - 1, location.y()),
-            QPoint(location.x(), location.y())
-    };
-    for (const auto& corner : topLeftCorners) {
-        if (isSquareFilledWithBoats(corner)) {
-            captureBoats(corner);
-            return;
-        }
+    int topLeftX, topLeftY;
+    // zoek de topleft corner (de special rules checker class heeft al gevalidate dat er 4 boten bestan)
+    QPoint leftX = {location.x()-1, location.y()};
+    QPoint topY = {location.x(), location.y()-1};
+    if(Board::dimension.includes(leftX) && !board.isEmptyAt(leftX)){
+        topLeftX = board.getPieceAt(leftX).value().getType() == PieceType::BOAT
+                ? leftX.x() : location.x();
     }
+    if(Board::dimension.includes(topY) && !board.isEmptyAt(topY)){
+        topLeftY = board.getPieceAt(topY).value().getType() == PieceType::BOAT
+                   ? topY.y() : location.y();
+    }
+    captureBoats({topLeftX, topLeftY}, board.getPieceAt(location)->getColor());
 }
 
 void SpecialRulesExecutor::sinhasana(QPoint location) {
     auto currentPiece = board.getPieceAt(location);
-    HomeBoardSide side;
-    if(location.x() == 0){
-        side = HomeBoardSide::LEFT;
-    } else if(location.x() == 8){
-        side = HomeBoardSide::RIGHT;
-    } else if(location.y() == 0){
-        side = HomeBoardSide::TOP;
-    } else{
-        side = HomeBoardSide::BOTTOM;
+    HomeBoardSide sides[4] = {HomeBoardSide::LEFT, HomeBoardSide::RIGHT, HomeBoardSide::TOP, HomeBoardSide::BOTTOM};
+    // vind de side
+    HomeBoardSide capturedSide;
+    for(auto side : sides){
+        if(querier.isPointFromBoardSideEdge(location, side))
+            capturedSide = side;
     }
     // vind alle pieces van die side
-    auto cells = querier.getPiecesFromBoardHomeSide(side);
+    auto cells = querier.getPiecesFromBoardHomeSide(capturedSide);
     // maak al die pieces van jou
     for(auto cell : cells){
         auto piece = board.getPieceAt(cell);
         Piece newPiece(currentPiece->getColor(), piece->getType(), piece->getHomeSide());
-        board.putPieceAt(location, newPiece);
+        board.putPieceAt(cell, newPiece);
     }
 }
 
-void SpecialRulesExecutor::captureBoats(QPoint topLeft) {
+void SpecialRulesExecutor::captureBoats(QPoint topLeft, Color ownColor) {
     for (int i = 0; i < 2; ++i) {
         for (int j = 0; j < 2; ++j) {
             QPoint cell(topLeft.x() + i, topLeft.y() + j);
+            if(board.getPieceAt(cell)->getColor() == ownColor) continue;
             board.clearCell(cell);
         }
     }
-}
-
-bool SpecialRulesExecutor::isSquareFilledWithBoats(QPoint topLeft) {
-    for (int i = 0; i < 2; ++i) {
-        for (int j = 0; j < 2; ++j) {
-            QPoint cell(topLeft.x() + i, topLeft.y() + j);
-            if (!Board::dimension.includes(cell) || board.isEmptyAt(cell) || board.getPieceAt(cell)->getType() != PieceType::BOAT) {
-                return false;
-            }
-        }
-    }
-    return true;
 }

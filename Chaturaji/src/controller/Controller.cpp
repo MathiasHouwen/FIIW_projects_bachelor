@@ -4,9 +4,10 @@
 //nieuw sinds practicum 2 (controller class uit practicum 1 is 100% vervangen [verwijderd])
 
 #include <QFileDialog>
+#include <QInputDialog>
 #include <iostream>
 #include "Controller.h"
-#include "../model/io/FileIO.h"
+#include "../model/game/enums_and_structs/EnumStringifier.h"
 
 
 Controller::Controller(GameController& gameController, BoardView* boardView, DiceAndMovesView* diceAndMovesView, FileIOView* fileIoView, PlayersView* playersView)
@@ -31,8 +32,7 @@ void Controller::start() {
 }
 void Controller::onCellClicked(QPoint cell) {
     if(gameController.moveIsPawnPromote(cell)){
-        // TODO pawn promote
-        PieceType chosenType = PieceType::PAWN;
+        PieceType chosenType = openPawnPromoteDialog();
         gameController.handleCellSelect(cell, chosenType);
     } else {
         gameController.handleCellSelect(cell);
@@ -89,12 +89,12 @@ void Controller::onSave(){
             fileIoView,
             "Save File",
             "../Saves",
-            "Text Files (*.txt)"
+            "Text Files (*.json)"
     );
 
     if (!filePath.isEmpty()) {
-        if (!filePath.endsWith(".txt", Qt::CaseInsensitive)) {
-            filePath += ".txt";
+        if (!filePath.endsWith(".json", Qt::CaseInsensitive)) {
+            filePath += ".json";
         }
         qDebug() << "Saving to file:" << filePath;
 
@@ -111,7 +111,7 @@ void Controller::onLoad(){
             fileIoView,
             "Select a file to load",
             "../Saves",
-            "Text Files (*.txt)"
+            "Text Files (*.json)"
     );
 
     if (!filePath.isEmpty()) {
@@ -119,8 +119,8 @@ void Controller::onLoad(){
         gameController.getGame().getGameState().clearPlayers();
         io.load(gameController.getGame(), filePath);
         boardView->updateFullBoard(gameController.getGame().getGameState().getBoard());
-        update();
         initPlayersView();
+        update();
     } else {
         qDebug() << ">:( Geen geldig filepath";
     }
@@ -174,4 +174,19 @@ void Controller::update() {
 
     playersView->updateSetBigAndToTop(gameController.getGame().getGameState().getCurrentTurn());
     if(gameController.getGame().getGameState().isGameOver()){endGame();}
+}
+
+PieceType Controller::openPawnPromoteDialog() {
+    auto types = {PieceType::BOAT, PieceType::HORSE, PieceType::KING, PieceType::ELEPHANT};
+    QList<QString> optionStrings = {};
+    for(auto type : types)
+        optionStrings.append(EnumStringifier::tToString(type));
+    // Show the input dialog
+    bool ok = false;
+    QString chosenTypeString;
+    while(!ok){
+        chosenTypeString = QInputDialog::getItem(nullptr,"Pawn promote","Select new piece type:",optionStrings,0,false,&ok);
+
+    }
+    return EnumStringifier::tFromString(chosenTypeString);
 }

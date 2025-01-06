@@ -19,8 +19,7 @@ public:
     void promotePawn(QPoint location, PieceType newPieceType);
     void vrihannauka(QPoint location); // aka die boat dinges
     void sinhasana(QPoint location); // aka die king dinges
-    bool isSquareFilledWithBoats(QPoint topLeft);
-    void captureBoats(QPoint topLeft);
+    void captureBoats(QPoint topLeft, Color ownColor);
 };
 
 

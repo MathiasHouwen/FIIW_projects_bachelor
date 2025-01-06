@@ -38,6 +38,7 @@ private:
     void initPlayersView();
     void endGame();
     void update();
+    PieceType openPawnPromoteDialog();
 public:
     Controller(GameController& gameController, BoardView* boardView, DiceAndMovesView* diceAndMovesView, FileIOView* fileIoView, PlayersView* playersView);
     void start();

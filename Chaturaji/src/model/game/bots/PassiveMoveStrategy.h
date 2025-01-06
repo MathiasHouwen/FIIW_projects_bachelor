@@ -1,6 +1,7 @@
-//
-// Created by robin on 3/01/2025.
-//
+
+
+//practicum 3:
+// - Robin: class gemaakt en geschreven
 
 #ifndef PASSIVEMOVESTRATEGY_H
 #define PASSIVEMOVESTRATEGY_H

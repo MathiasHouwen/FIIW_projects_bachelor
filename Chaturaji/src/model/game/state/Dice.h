@@ -1,6 +1,5 @@
-//
-// Created by ebbew on 13-11-2024.
-//
+//practicum 3:
+// - Ebbe: zeer minimale refactor voor nieuwe model classes compatibility
 
 //volledig door ebbe, nieuw sinds practicum 2
 // doel: complexiteit van Game class (vooral Game::movePiece()) verlagen door dobbelsteen logica apart te zetten

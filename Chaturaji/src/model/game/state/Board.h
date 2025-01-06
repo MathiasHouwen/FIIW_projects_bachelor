@@ -1,3 +1,8 @@
+//practicum 3:
+// - Ebbe: zeer minimale refactor voor nieuwe model classes compatibility
+//    -> pointers vervangen door nieuwe datastructuur, dan kan interne data niet buiten af gemanipuleerd worden
+//    -> gedeelte decoupled naar de SquareDimension class en BoardQuerier class
+
 // weinig veranderd in practicum 2
 // enkel logica toegevoegd om piece in board te syncen met piece in player, en ook piece.cell door ebbe
 

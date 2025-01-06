@@ -1,6 +1,9 @@
-//
-// Created by ebbew on 12-11-2024.
-//
+
+//practicum 3:
+// - Robin: controle (piece pakken en neerzetten automatiseren in geval van bot)
+// - MAthias:
+// - Ebbe: refactor voor nieuwe model classes compatibility en logica verplaatst naar GameController
+
 
 //nieuw sinds practicum 2 (controller class uit practicum 1 is 100% vervangen [verwijderd])
 //gemaakt door ebbe. onload en onsave slots gemaakt door mathias

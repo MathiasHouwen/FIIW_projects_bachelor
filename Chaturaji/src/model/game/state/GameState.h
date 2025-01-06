@@ -1,6 +1,7 @@
-//
-// Created by ebbew on 5-1-2025.
-//
+//practicum 3:
+// - Ebbe: class gemaakt, copy paste van de oude Game class
+// - Robin: addbot gemaakt toen we nog de oude game class hadden
+// doel: logica decouplen van Game
 
 #ifndef CHATURAJI_GAMESTATE_H
 #define CHATURAJI_GAMESTATE_H

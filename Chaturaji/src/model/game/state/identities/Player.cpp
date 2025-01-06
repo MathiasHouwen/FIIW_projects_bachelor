@@ -1,4 +1,4 @@
-// volledig door mathias
+// taakverdeling: zie h-file
 
 #include "Player.h"
 

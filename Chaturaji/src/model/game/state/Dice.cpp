@@ -1,7 +1,4 @@
-//
-// Created by ebbew on 13-11-2024.
-//
-//volledig van ebbe, nieuw sinds practicum 2
+// taakverdeling: zie h-file
 
 #include <ctime>
 #include "Dice.h"

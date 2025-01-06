@@ -1,6 +1,5 @@
-//
-// Created by ebbew on 2-1-2025.
-//
+// taakverdeling: zie h-file
+
 
 #include "Piece.h"
 

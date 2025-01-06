@@ -1,6 +1,5 @@
-//
-// Created by robin on 19/12/2024.
-//
+// taakverdeling: zie h-file
+
 
 #include "Bot.h"
 

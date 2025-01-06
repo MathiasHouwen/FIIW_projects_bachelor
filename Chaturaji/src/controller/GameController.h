@@ -1,6 +1,9 @@
-//
-// Created by ebbew on 5-1-2025.
-//
+
+//practicum 3:
+// doel: game wrappen om controller clean te houden, en de state van de 2 stappen:
+// pick up en place down managen (want dat is eigelijk iets typisch aan onze UI en hoort dus niet
+// thuis in de Game class (waar het eerst wel was)
+// - Ebbe: nieuwe class. Logica is gedeeltelijk afkomstig van de oude Controller class
 
 #ifndef CHATURAJI_GAMECONTROLLER_H
 #define CHATURAJI_GAMECONTROLLER_H

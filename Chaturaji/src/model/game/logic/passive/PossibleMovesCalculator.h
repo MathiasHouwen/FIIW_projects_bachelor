@@ -1,6 +1,6 @@
-//
-// Created by ebbew on 7-10-2024.
-//
+//practicum 3:
+//(dit is de oude PatternMover class)
+// - Ebbe: minimale refactor voor nieuwe model classes compatability
 // NIET AANGEPAST IN PRACTICUM 2
 
 

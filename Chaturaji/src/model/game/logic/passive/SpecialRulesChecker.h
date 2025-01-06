@@ -1,6 +1,7 @@
-//
-// Created by ebbew on 3-1-2025.
-//
+//practicum 3:
+// - Ebbe: class aangemaakt
+// - Mathias: logica/implementatie in de oude Game class, door ebbe naar hier verplaatst en refactored
+// doel: validatie voor alle speciale regels centraliseren
 
 #ifndef CHATURAJI_SPECIALRULESCHECKER_H
 #define CHATURAJI_SPECIALRULESCHECKER_H

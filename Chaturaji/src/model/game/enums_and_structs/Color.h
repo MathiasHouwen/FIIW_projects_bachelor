@@ -1,6 +1,6 @@
-//
-// Created by ebbew on 2-1-2025.
-//
+//practicum 3:
+// - Ebbe: van de oude Player class naar een eigen file verplaatst
+// doel: info voor identities (player & piece)
 
 #ifndef CHATURAJI_COLOR_H
 #define CHATURAJI_COLOR_H

@@ -1,6 +1,6 @@
 //
-// Created by ebbew on 3-1-2025.
-//
+//practicum 3:
+// - Ebbe: van de oude Piece class naar een eigen file verplaatst
 
 #ifndef CHATURAJI_PIECETYPE_H
 #define CHATURAJI_PIECETYPE_H

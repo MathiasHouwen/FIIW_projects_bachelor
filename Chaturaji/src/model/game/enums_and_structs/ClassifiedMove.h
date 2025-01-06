@@ -1,6 +1,6 @@
-//
-// Created by ebbew on 3-1-2025.
-//
+//practicum 3:
+// - Ebbe: gemaakt
+// doel: zie model/logic/passive/MovesManager class
 
 #ifndef CHATURAJI_CLASSIFIEDMOVE_H
 #define CHATURAJI_CLASSIFIEDMOVE_H

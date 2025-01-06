@@ -1,6 +1,6 @@
-//
-// Created by ebbew on 3-1-2025.
-//
+//practicum 3:
+// - Ebbe: gemaakt
+// doel: info voor identities (player & piece)
 
 #ifndef CHATURAJI_HOMEBOARDSIDE_H
 #define CHATURAJI_HOMEBOARDSIDE_H

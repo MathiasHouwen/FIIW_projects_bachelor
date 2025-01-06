@@ -1,6 +1,7 @@
-//
-// Created by ebbew on 5-1-2025.
-//
+//practicum 3:
+// - Ebbe: class gemaakt en geschreven
+// doel: enkel game logica bevatten ( het uitvoeren van een move ).
+// logica is gedeeltelijk afkomstig van de oude Controller en Game classes
 
 #ifndef CHATURAJI_GAME_H
 #define CHATURAJI_GAME_H

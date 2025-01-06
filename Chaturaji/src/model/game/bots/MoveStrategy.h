@@ -1,11 +1,9 @@
-//
-// Created by robin on 3/01/2025.
-//
 
 #ifndef MOVESTRATEGY_H
 #define MOVESTRATEGY_H
 
-
+//practicum 3:
+// - Robin: class gemaakt en geschreven
 
 #include <QSet>
 #include <QPoint>

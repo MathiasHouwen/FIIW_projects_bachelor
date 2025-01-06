@@ -1,6 +1,5 @@
-//
-// Created by ebbew on 5-1-2025.
-//
+// taakverdeling: zie h-file
+
 
 #include "GameController.h"
 #include "../model/game/bots/Bot.h"

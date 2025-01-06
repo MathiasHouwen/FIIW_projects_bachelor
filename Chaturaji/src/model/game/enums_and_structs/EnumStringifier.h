@@ -1,6 +1,9 @@
-//
-// Created by ebbew on 5-1-2025.
-//
+//practicum 3:
+// - Ebbe: class aangemaakt en geschreven
+// doel: vertalen van enums centraliseren
+//     -> vertalen hoorde niet thuis in sommige model classes
+//          bvb colors vertalen in player class
+//     -> bij gebruikende class zetten kan ook niet want er zijn meerdere die dezelfde enum gebruiken -> niet DRY om overal te zetten
 
 #ifndef CHATURAJI_ENUMSTRINGIFIER_H
 #define CHATURAJI_ENUMSTRINGIFIER_H

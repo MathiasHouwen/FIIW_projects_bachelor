@@ -1,6 +1,8 @@
-//
-// Created by robin on 3/01/2025.
-//
+
+
+//practicum 3:
+// - Robin: class gemaakt en geschreven
+// - Ebbe: refactor voor nieuwe model classes compatibility
 
 #ifndef AGGRESSIVEMOVESTRATEGY_H
 #define AGGRESSIVEMOVESTRATEGY_H

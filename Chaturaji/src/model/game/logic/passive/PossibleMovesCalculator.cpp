@@ -1,5 +1,5 @@
-// volledig van ebbe
-// NIET AANGEPAST IN PRACTICUM 2
+// taakverdeling: zie h-file
+
 
 
 #include <qvarlengtharray.h>

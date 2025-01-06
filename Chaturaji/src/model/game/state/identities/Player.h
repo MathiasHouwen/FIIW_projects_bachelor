@@ -1,6 +1,7 @@
-//
-// Created by houwe on 10/10/2024.
-//
+//practicum 3:
+// - Ebbe: gestript van alle logica: deze class is nu enkel een "identity"
+//     -> relaties met bvb alle pieces van zijn te vinden via andere classes zoals BoardQuerier
+
 // veranderingen in practicum 2:
 // - player houdt set van pieces bij -> nodig om alle pieces te updaten als die grijs moeten worden
 

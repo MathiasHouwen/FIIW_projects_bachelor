@@ -1,6 +1,6 @@
-//
-// Created by ebbew on 2-1-2025.
-//
+//practicum 3:
+// - Ebbe: gestript van alle logica: deze class is nu enkel een "identity"
+//     -> relaties met bvb player zijn te vinden via andere classes zoals GameState + Color
 
 #ifndef CHATURAJI_PIECE_H
 #define CHATURAJI_PIECE_H

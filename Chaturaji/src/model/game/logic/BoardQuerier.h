@@ -1,6 +1,6 @@
-//
-// Created by ebbew on 2-1-2025.
-//
+//practicum 3:
+// - Ebbe: class gemaakt, = extractie van oude Board class + extra functies
+//     doel: high level logica zoals zoeken decouplen zodat de Board class enkel verantwoordelijk is voor state
 
 #ifndef CHATURAJI_BOARDQUERIER_H
 #define CHATURAJI_BOARDQUERIER_H

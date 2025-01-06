@@ -1,6 +1,5 @@
-//
-// Created by ebbew on 11-10-2024.
-//
+//practicum 3:
+// - niet aagepast
 
 #ifndef CHATURAJI_PATTERN_H
 #define CHATURAJI_PATTERN_H

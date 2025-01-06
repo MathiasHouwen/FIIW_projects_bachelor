@@ -1,6 +1,5 @@
-//
-// Created by robin on 3/01/2025.
-//
+// taakverdeling: zie h-file
+
 
 #include "AggressiveMoveStrategy.h"
 

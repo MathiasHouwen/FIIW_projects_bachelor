@@ -2,12 +2,17 @@
 // Created by robin on 19/12/2024.
 //
 
+//practicum 3:
+// - Robin: class gemaakt en geschreven
+
 #ifndef BOT_H
 #define BOT_H
 #include <utility>
 
 #include "MoveStrategy.h"
 #include "../state/identities/Player.h"
+
+
 
 
 class Bot : public Player {

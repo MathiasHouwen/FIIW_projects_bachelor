@@ -1,7 +1,5 @@
 #include "Board.h"
-
-// volledig door robin (kleine refactors door ebbe)
-// practicum 2: enkel logica toegevoegd om piece in board te syncen met piece in player door ebbe
+// taakverdeling: zie h-file
 
 
 std::optional<Piece> Board::getPieceAt(const QPoint& cell) const {

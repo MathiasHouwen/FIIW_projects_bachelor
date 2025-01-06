@@ -1,5 +1,5 @@
-// volledig van mathias
-// nog steeds volledig van mathias
+// taakverdeling: zie h-file
+
 
 #include "FileIO.h"
 #include "../game/enums_and_structs/EnumStringifier.h"

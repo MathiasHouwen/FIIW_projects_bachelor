@@ -1,6 +1,9 @@
-//
-// Created by ebbew on 3-1-2025.
-//
+//practicum 3:
+// - Ebbe: class gemaakt
+//     doel: facade om moves te maken met metadata zoals attack/normal en special rules
+//      -> dingen hoeven niet meer validated te worden in bvb de Game class.
+//          Alles wat van hier komt is al validated en "classified" met de juiste info
+//      -> helpt game door logic te verminderen en controller voor highlight kleuren direct te mappen
 
 #ifndef CHATURAJI_MOVESMANAGER_H
 #define CHATURAJI_MOVESMANAGER_H

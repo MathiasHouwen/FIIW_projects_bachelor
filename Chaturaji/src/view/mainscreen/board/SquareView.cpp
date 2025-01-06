@@ -56,6 +56,10 @@ void SquareView::setFillAndBorder(SquareView::HighLight highLighter) {
             border = QCol::tomato;
             fill = getColor(attackColor);
             break;
+        case HighLight::SPECIAL:
+            border = QCol::darkorange;
+            fill = getColor(specialColor);
+            break;
     }
 }
 

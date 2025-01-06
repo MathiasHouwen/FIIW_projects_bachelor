@@ -146,12 +146,14 @@ void Controller::updateHighlights() {
     for(auto move : moves){
         auto highlight = move.moveType == MoveType::NORMAL ? SquareView::HighLight::MOVESUGGEST
                                                            : SquareView::HighLight::ATTACKSUGGEST;
+        if(move.specialMoveType != SpecialMoveType::NONE) highlight = SquareView::HighLight::SPECIAL;
         boardView->updateHighlight(move.destination, highlight);
         currentHighlights.insert(move.destination);
     }
 
     auto selectedCell = gameController.getSelectedCell();
     if(selectedCell.has_value()){
+        currentHighlights.insert(selectedCell.value());
         boardView->updateHighlight(selectedCell.value(), SquareView::HighLight::SELECTED);
     }
 }
@@ -163,6 +165,13 @@ void Controller::update() {
     clearHighLights();
     updateHighlights();
     updateMoveAndDiceView();
+    for(auto color : {Color::RED, Color::GREEN, Color::BLUE, Color::YELLOW}){
+        auto p = gameController.getGame().getGameState().getPlayerByColor(color);
+        playersView->updateScore(color,  p->getScore());
+        if(!p->isAlive())
+            playersView->updateSetGrey(color);
+    }
+
     playersView->updateSetBigAndToTop(gameController.getGame().getGameState().getCurrentTurn());
     if(gameController.getGame().getGameState().isGameOver()){endGame();}
 }

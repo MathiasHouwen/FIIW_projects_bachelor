@@ -6,8 +6,10 @@
 
 bool Game::doMove(QPoint from, QPoint to, PieceType pawnPromoteType) {
     if(gameState.getBoard().isEmptyAt(from)) return false;
+
     auto fromPiece = gameState.getBoard().getPieceAt(from);
     auto moves = movesManager.generateClassifiedMoves(fromPiece.value(), from);
+
     for(auto move : moves){
         if(move.destination == to){
             executeClassifiedMove(from, move, pawnPromoteType);
@@ -31,6 +33,7 @@ void Game::executeClassifiedMove(QPoint from, ClassifiedMove move, PieceType paw
     auto killedPiece = querier.movePiece(from, move.destination);
     if(move.moveType == MoveType::ATTACK){
         int score = pieceTypeToScore(killedPiece.value().getType());
+
         gameState.getCurrentPlayer()->increaseScore(score);
         if(killedPiece->getType() == PieceType::KING){
             gameState.getPlayerByColor(killedPiece->getColor())->kill();

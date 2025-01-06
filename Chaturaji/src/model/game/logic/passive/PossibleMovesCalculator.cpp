@@ -68,7 +68,7 @@ QSet<QPoint> PossibleMovesCalculator::createPatternLayer(int distance, const Pat
 QSet<QPoint> PossibleMovesCalculator::generatePossibleMoves(QPoint location, HomeBoardSide side, PieceType pieceType, bool attack) {
     Patterns patterns = convertToPatterns(pieceType, side);
     Pattern pattern = attack ? patterns.attack : patterns.move;
-    return getPossibleMoves(patterns.move, location);
+    return getPossibleMoves(pattern, location);
 }
 
 QPoint PossibleMovesCalculator::sideToForwardDirection(HomeBoardSide side) {

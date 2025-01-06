@@ -7,19 +7,21 @@
 QSet<ClassifiedMove> MovesManager::generateClassifiedMoves(Piece piece, QPoint location) {
     auto walkMoves = calculator.generatePossibleMoves(location, piece.getHomeSide(), piece.getType(), false);
     auto attackMoves = calculator.generatePossibleMoves(location, piece.getHomeSide(), piece.getType(), true);
-
+    QSet<QPoint> destinations = {};
     QSet<ClassifiedMove> classifiedMoves{};
     for(auto moveLocation : walkMoves){
         if(!board.isEmptyAt(moveLocation)) continue; // board moet empty zijn
         auto specialType = classifySpecialMove(piece, moveLocation);
         classifiedMoves.insert({moveLocation, MoveType::NORMAL, specialType});
+        destinations.insert(moveLocation);
     }
     for(auto moveLocation : attackMoves){
-        if(walkMoves.contains(moveLocation)) continue; // dan is het al gehandled door de vorige loop
+        if(destinations.contains(moveLocation)) continue; // dan is het al gehandled door de vorige loop
         if(board.isEmptyAt(moveLocation)) continue; // je moet iemand kunnen aanvallen -> niet empty
         if(board.getPieceAt(moveLocation)->getColor() == piece.getColor()) continue; // je kan niet je eigen kleur aanvallen
         auto specialType = classifySpecialMove(piece, moveLocation);
         classifiedMoves.insert({moveLocation, MoveType::ATTACK, specialType});
+        destinations.insert(moveLocation);
     }
     return classifiedMoves;
 }

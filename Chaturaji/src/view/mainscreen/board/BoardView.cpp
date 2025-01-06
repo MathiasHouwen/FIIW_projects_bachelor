@@ -22,7 +22,7 @@ BoardView::BoardView(QWidget* parent) : QWidget(parent) {
             auto squareView = new SquareView(nullptr, {x, y});
             connect(squareView, &SquareView::clicked, this, &BoardView::onSquareViewClicked);
             connect(squareView, &SquareView::hoverUpdated, this, &BoardView::onSquareHoverUpdated);
-            layout->addWidget(squareView, x, y);
+            layout->addWidget(squareView, y, x);
             squareViews[{x,y}] = squareView;
         }
     }

@@ -22,7 +22,7 @@ namespace QCol = QColorConstants::Svg;
 class SquareView : public QWidget{
 Q_OBJECT
 public:
-    enum class HighLight{NONE, HOVER, SELECTED, SELECTSUGGEST, MOVESUGGEST, ATTACKSUGGEST};
+    enum class HighLight{NONE, HOVER, SELECTED, SELECTSUGGEST, MOVESUGGEST, ATTACKSUGGEST, SPECIAL};
     ~SquareView() override;
     SquareView(QWidget *widget, const QPoint &cell);
     void updatePiece(Piece piece);
@@ -35,6 +35,7 @@ private:
     constexpr static QPair<QColor, QColor> hoverColor{QCol::white, QCol::blanchedalmond};
     constexpr static QPair<QColor, QColor> selectedColor{QCol::lightgreen, QCol::darkseagreen};
     constexpr static QPair<QColor, QColor> attackColor{QCol::lightsalmon, QCol::lightcoral};
+    constexpr static QPair<QColor, QColor> specialColor{QCol::gold, QCol::goldenrod};
 
     QColor getColor(QPair<QColor, QColor> colorPair);
     void setFillAndBorder(SquareView::HighLight highLighter);

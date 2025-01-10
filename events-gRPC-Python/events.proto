@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package events;
+
+service EventService {
+  rpc GetEventsFromDay (GetEventsRequest) returns (GetEventsResponse);
+}
+
+message GetEventsRequest {
+  string date = 1;  // date in the format 'YYYY-MM-DD'
+}
+
+message GetEventsResponse {
+  repeated Event events = 1;
+}
+
+message Event {
+  string title = 1;
+  string description = 2;
+  string date = 3;
+}

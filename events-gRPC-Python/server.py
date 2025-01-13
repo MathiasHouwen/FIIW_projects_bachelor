@@ -1,6 +1,7 @@
 import grpc
 from concurrent import futures
 import time
+
 import events_pb2
 import events_pb2_grpc
 

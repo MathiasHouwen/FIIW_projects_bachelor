@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  soap_containter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: soap_containter
+    ports:
+      - "3007:3007"

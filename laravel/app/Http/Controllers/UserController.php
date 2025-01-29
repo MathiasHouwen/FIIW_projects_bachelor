@@ -39,6 +39,7 @@ class UserController extends Controller
             ]);
         }
 
+
         // Handle errors
         return response()->json([
             'success' => false,
@@ -65,12 +66,9 @@ class UserController extends Controller
         // Send the POST request to the external login endpoint
         $response = Http::post('http://localhost:3000/login', $data);
 
-        // Handle the response
         if ($response->successful()) {
-            return response()->json([
-                'message' => 'Login successful',
-                'data' => $response->json()
-            ]);
+            // Assume $response->json() contains an associative array
+            return view('dashboard', ['response' => $response->json()]);
         }
 
         return response()->json([

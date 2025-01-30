@@ -9,7 +9,7 @@ import events_pb2_grpc
 events_data = [
     {"title": "Event 1", "description": "Description of Event 1", "date": "2025-01-08"},
     {"title": "Event 2", "description": "Description of Event 2", "date": "2025-01-08"},
-    {"title": "Event 3", "description": "Description of Event 3", "date": "2025-01-09"}
+    {"title": "Event 3", "description": "Description of Event 3", "date": "2025-01-30"}
 ]
 
 class EventService(events_pb2_grpc.EventServiceServicer):

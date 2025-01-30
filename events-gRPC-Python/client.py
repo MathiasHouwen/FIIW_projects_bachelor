@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from grpc_client import GRPCClient
 
 app = Flask(__name__)
-grpc_client = GRPCClient(host='localhost', port=50051)
+grpc_client = GRPCClient(host='grpc-server', port=50051)
 
 @app.route('/api/v1/events', methods=['GET'])
 def get_events():

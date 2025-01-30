@@ -20,3 +20,5 @@ Route::get('/dashboard', function () {return view('dashboard');})->name('dashboa
 Route::get('/km-teller', [App\Http\Controllers\KmTellerController::class, 'index']);
 Route::get('/km-teller/get-total', [App\Http\Controllers\KmTellerController::class, 'getTotalKilometers'])->name('kmTeller.getTotal');
 Route::post('/km-teller/add', [App\Http\Controllers\KmTellerController::class, 'addKilometers'])->name('kmTeller.add');
+
+Route::get('/events', [App\Http\Controllers\EventController::class, 'index']);

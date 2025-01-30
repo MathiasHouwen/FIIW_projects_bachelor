@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  grpc-server:
+    build: .
+    container_name: grpc_server
+    ports:
+      - "50051:50051"
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+
+  grpc-client:
+    build: .
+    container_name: grpc_client
+    depends_on:
+      - grpc-server
+    command: ["python", "client.py"]
+    environment:
+      - PYTHONUNBUFFERED=1
+    ports:
+      - "7000:7000"  # Exposing the correct port
+    restart: unless-stopped

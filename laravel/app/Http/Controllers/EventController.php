@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class EventController extends Controller
 {
@@ -25,29 +26,23 @@ class EventController extends Controller
         // Decode response
         $events = $response->json()['events'] ?? [];
 
+        foreach ($events as &$event) {
+
+            Log::debug('Event: ', $event);
+            // Call the rating API for each event (assume it's based on event name)
+            $ratingResponse = Http::get('http://localhost:7070/event', [
+                'name' => $event['title'],
+            ]);
+
+            // If rating API is successful, add the rating to the event
+            if ($ratingResponse->successful()) {
+                $rating = $ratingResponse->json()['rating'] ?? 'No rating';
+                $event['rating'] = $rating;
+            } else {
+                $event['rating'] = 'Failed to fetch rating';
+            }
+        }
+
         return view('events', compact('events', 'date'));
     }
-    // Method to fetch events from Flask API
-    // public function getEvents(Request $request)
-    // {
-    //     // Get the date parameter from the query string
-    //     $date = $request->query('date');
-    //     
-    //     if (!$date) {
-    //         return response()->json(['error' => 'Missing date parameter'], 400);
-    //     }
-// 
-    //     // Send a GET request to Flask API
-    //     $response = Http::get("http://localhost:8080/api/v1/events", [
-    //         'date' => $date
-    //     ]);
-// 
-    //     // Check if the response was successful
-    //     if ($response->successful()) {
-    //         $events = $response->json()['events']; // Get the events from the response
-    //         return view('events.index', compact('events'));
-    //     } else {
-    //         return view('events.index', ['error' => 'Failed to fetch events from the API']);
-    //     }
-    // }
 }

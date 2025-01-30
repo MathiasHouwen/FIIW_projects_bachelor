@@ -1,0 +1,7 @@
+version: '3.8'
+
+services:
+  flask-event-rating:
+    build: .
+    ports:
+      - "7070:7070"

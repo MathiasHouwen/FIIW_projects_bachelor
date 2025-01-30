@@ -8,7 +8,7 @@ import jakarta.jws.WebService;
 @WebService(endpointInterface = "kmteller.soap.java.KmTellerService")
 public class KmTellerServiceImpl implements KmTellerService {
 
-    private double totalKilometers = 0.0;
+    private double totalKilometers = 5;
 
     @Override
     public double getTotalKilometers() {

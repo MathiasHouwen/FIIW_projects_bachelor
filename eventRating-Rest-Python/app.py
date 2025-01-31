@@ -6,9 +6,9 @@ CORS(app, origins="http://127.0.0.1:8000")
 
 # Example data: event ratings, now using event name as the key
 events = {
-    "Event1": {"event_name": "Concert A", "rating": 4.5},
-    "Event2": {"event_name": "Conference B", "rating": 3.8},
-    "Event3": {"event_name": "Festival C", "rating": 4.9}
+    "voetballen": {"event_name": "Concert A", "rating": 3},
+    "vollybal": {"event_name": "Conference B", "rating": 2},
+    "toestelturnen": {"event_name": "Festival C", "rating": 5}
 }
 
 # Route to get the rating of an event by its name

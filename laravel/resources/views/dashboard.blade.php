@@ -22,11 +22,34 @@
         <p style="color: red;">❌ geen weer data, das sad .</p>
     @endif
 
+    <div class="container mt-4">
+        <a href="{{ route('soapOp') }}" class="btn btn-primary">Km Teller</a>
+        <a href="/events" class="btn btn-success">Events</a>
+        <a href="{{ route('dashboard') }}" class="btn btn-warning">Dashboard</a>
+        <a href="{{ route('graphql.form') }}" class="btn btn-info">GraphQL</a>
+    </div>
+    
     <script>
-        // Pass PHP data to JavaScript
-        const responseData = @json($weatherData);
+        @isset($weatherData)
+            const weatherData = @json($weatherData);
+        @else
+            const weatherData = null;
+        @endisset
 
-        console.log(responseData);
+        @isset($response)
+            const responseData = @json($response ?? null);
+        @else
+            const responseData = null;
+        @endisset
+
+        if (weatherData) {
+            console.log("Weather Data:", weatherData);
+        }
+
+        if (responseData) {
+            localStorage.setItem('responseData', JSON.stringify(responseData));
+            console.log("Response Data:", responseData);
+        }
     </script>
 </body>
 </html>

@@ -17,7 +17,7 @@ Route::post('/graphql', [App\Http\Controllers\GraphQLController::class, 'fetchDa
 
 Route::get('/dashboard', [App\Http\Controllers\WeatherController::class, 'showDashboard'])->name('dashboard');
 
-Route::get('/km-teller', [App\Http\Controllers\KmTellerController::class, 'index']);
+Route::get('/km-teller', [App\Http\Controllers\KmTellerController::class, 'index'])->name('soapOp');
 Route::get('/km-teller/get-total', [App\Http\Controllers\KmTellerController::class, 'getTotalKilometers'])->name('kmTeller.getTotal');
 Route::post('/km-teller/add', [App\Http\Controllers\KmTellerController::class, 'addKilometers'])->name('kmTeller.add');
 

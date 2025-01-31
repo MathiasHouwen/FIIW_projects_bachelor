@@ -7,9 +7,9 @@ import events_pb2_grpc
 
 # Sample events data (in a real scenario, this could be from a database)
 events_data = [
-    {"title": "Event1", "description": "Description of Event 1", "date": "2025-01-08"},
-    {"title": "Event2", "description": "Description of Event 2", "date": "2025-01-08"},
-    {"title": "Event3", "description": "Description of Event 3", "date": "2025-01-30"}
+    {"title": "voetballen", "description": "voetbalmatch 20:00", "date": "2025-02-01"},
+    {"title": "vollybal", "description": "vollybalen training", "date": "2025-02-01"},
+    {"title": "toestelturnen", "description": "proberen niet ons nek te breken", "date": "2025-01-31"}
 ]
 
 class EventService(events_pb2_grpc.EventServiceServicer):

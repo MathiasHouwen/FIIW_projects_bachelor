@@ -16,7 +16,7 @@ class WeatherController extends Controller
 
     public function showDashboard()
     {
-        // Define the coordinates for the location
+        // Diepenbeek
         $lat = 50.91;
         $lon = 5.41;
 

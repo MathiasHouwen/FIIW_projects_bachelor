@@ -6,7 +6,7 @@ from cv2.typing import MatLike
 def fourier_transform(img: MatLike):
     f = np.fft.fft2(img)
     fshift = np.fft.fftshift(f)
-    return fshift
+    return 20*np.log(np.abs(fshift))
 
 
 def create_filter(img: MatLike, radius = 50):

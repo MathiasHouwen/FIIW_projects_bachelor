@@ -1,10 +1,11 @@
 import cv2
 from src.utils.preprocesing import *
 from src.utils.postprocesing import *
-
 import matplotlib.pyplot as plt
 import numpy as np
 from skimage.metrics import structural_similarity as ssim
+import os
+
 
 def test_4_removenoise():
     # img = load_as_gray('./../images/test_1/input/01_missing_hole_01.jpg')
@@ -50,30 +51,30 @@ def test_4_removenoise():
 def main():
     #test_4_removenoise()
 
-    # Load images
-    template_path = "./../images/template_images/01.JPG"  # Path to the correct PCB image
-    test_path = "./../images/test_1/input/01_missing_hole_01.jpg"
+    # file paths
+    template_path = "./../images/template_images/01.JPG"
+    defect = "01_missing_hole_01.JPG"
+    test_path = f"./../images/test_1/input/{defect}"
+    output_path = "./../images/test_1/output"
+    os.makedirs(output_path, exist_ok=True)
+    output_path = os.path.join(output_path, defect)
 
     template = cv2.imread(template_path, cv2.IMREAD_GRAYSCALE)
     test = cv2.imread(test_path, cv2.IMREAD_GRAYSCALE)
 
-    # Compute Structural Similarity Index (SSIM) and get the difference image
+    # Vind de defecten d.m.v. ssim
     score, diff = ssim(template, test, full=True)
     diff = (diff * 255).astype("uint8")
-
-    # Threshold the difference image
     _, thresh = cv2.threshold(diff, 50, 255, cv2.THRESH_BINARY_INV)
-    thresh_bgr = cv2.cvtColor(thresh, cv2.COLOR_GRAY2BGR)
-
-    # Find contours in the thresholded image
     contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    imgbox = draw_bounding_boxes(test_path, contours)
 
-    # Display the result
+    imgbox = draw_bounding_boxes(test_path, contours, 1)
+    cv2.imwrite(output_path, imgbox)
+
+    # Display
     plt.imshow(imgbox)
     plt.title("Thresholded Defect Areas with Red Boxes")
     plt.axis("off")
     plt.show()
-
 if __name__ == '__main__':
     main()

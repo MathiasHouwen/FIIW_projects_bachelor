@@ -1,6 +1,6 @@
 import cv2
 
-
+# TODO: ADD PADDING FOR SMALL BOXES
 def draw_bounding_boxes(test_path, contours, min_area = 50):
     # Set minimum area to filter out small contours (adjust based on your needs)
     test_w_box = cv2.imread(test_path)

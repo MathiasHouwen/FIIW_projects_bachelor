@@ -1,5 +1,7 @@
 import cv2
 from src.utils.preprocesing import *
+from src.utils.postprocesing import *
+
 import matplotlib.pyplot as plt
 import numpy as np
 from skimage.metrics import structural_similarity as ssim
@@ -61,23 +63,11 @@ def main():
 
     # Threshold the difference image
     _, thresh = cv2.threshold(diff, 50, 255, cv2.THRESH_BINARY_INV)
-
     thresh_bgr = cv2.cvtColor(thresh, cv2.COLOR_GRAY2BGR)
 
     # Find contours in the thresholded image
     contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
-    # Set minimum area to filter out small contours (adjust based on your needs)
-    min_area = 1
-    test_w_box = cv2.imread(test_path)
-    # Draw red rectangles around significant contours
-    for contour in contours:
-        if cv2.contourArea(contour) > min_area:
-            x, y, w, h = cv2.boundingRect(contour)
-            cv2.rectangle(test_w_box, (x, y), (x + w, y + h), (0, 0, 255), 2)  # Red in BGR
-
-    # Convert BGR to RGB for correct display in Matplotlib
-    imgbox = cv2.cvtColor(test_w_box, cv2.COLOR_BGR2RGB)
+    imgbox = draw_bounding_boxes(test_path, contours)
 
     # Display the result
     plt.imshow(imgbox)
@@ -85,27 +75,5 @@ def main():
     plt.axis("off")
     plt.show()
 
-    # img = load_as_gray('./../images/test_1/input/01_missing_hole_01.jpg')
-    # cv2.imshow('Grayscale', img)
-
-    # fft = fourier_transform(img)
-    #
-    # # cv2.imshow('', img)
-    # cv2.imshow('', fft)
-
-    #fshift = fourier_transform(img)
-    #mask = create_filter(img)
-    #masked = fshift * mask
-    #image_filtered = inverse_fourier_transform(masked)
-    #cv2.imshow('lowpass', image_filtered)
-
-    #cv2.waitKey(0)
-    #cv2.destroyAllWindows()
-
-
 if __name__ == '__main__':
     main()
-    # try:
-    #     main()
-    # except Exception as e:
-    #     print(f"Oeijoe er is een foutje: {e}")

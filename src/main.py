@@ -8,7 +8,6 @@ import os
 from src.utils.images_io import *
 
 BASE_PATH = './../images'
-
 folder = ImageFolder(BASE_PATH, 'test_1')
 
 

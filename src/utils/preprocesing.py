@@ -20,9 +20,16 @@ def remove_periodische_ruis(img:MatLike, notch_position:tuple[int]):
     # plt.show()
     return filtered
 
+
+def remove_pepper_and_salt(img:MatLike, kernel=3):
+    # Apply median blur
+    denoised = cv2.medianBlur(img, 3)  # Kernel size can be 3, 5, or 7 (must be odd)
+    return denoised
+
 '''
 HULP FUNCTIES
 '''
+
 def magnitude_transform(fshift):
     return 20 * np.log1p(np.abs(fshift))
 

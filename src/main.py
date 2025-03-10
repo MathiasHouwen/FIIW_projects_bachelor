@@ -1,8 +1,6 @@
 from typing import Callable
 
-from src.utils.preprocesing import *
-from src.utils.postprocesing import *
-import matplotlib.pyplot as plt
+from src.processing import boxes_with_ssim
 from src.utils.images_io import *
 
 BASE_PATH = './../images'

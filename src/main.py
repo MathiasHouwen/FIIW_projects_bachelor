@@ -65,7 +65,7 @@ def main():
         _, thresh = cv2.threshold(diff, 50, 255, cv2.THRESH_BINARY_INV)
         contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-        imgbox = draw_bounding_boxes(image_pair.test, contours, 10)
+        imgbox = draw_bounding_boxes(image_pair.test, contours)
         images_test_1.write_out_image(imgbox, image_pair)
 
 

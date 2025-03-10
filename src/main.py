@@ -5,9 +5,15 @@ import matplotlib.pyplot as plt
 import numpy as np
 from skimage.metrics import structural_similarity as ssim
 import os
+from src.utils.images_io import *
+
+BASE_PATH = './../images'
+
+folder = ImageFolder(BASE_PATH, 'test_1')
 
 
-def test_4_removenoise():
+
+def removenoise_test_4():
     # img = load_as_gray('./../images/test_1/input/01_missing_hole_01.jpg')
     # cv2.imshow('Grayscale', img)
 
@@ -32,24 +38,24 @@ def test_4_removenoise():
     mask_overlay = magnitude_norm.copy()
     mask_overlay[gaussian_mask == 0] = 255  # Highlight masked regions
 
-    cv2.imshow('filtered', img_filtered_norm)
-    cv2.imshow('raw', img)
-    plt.figure(figsize=(10, 8))
-
-    plt.subplot(2, 1, 1)
-    plt.imshow(magnitude_norm, cmap='gray')
-    plt.title("Original Magnitude Spectrum")
-
-    plt.subplot(2, 1, 2)
-    plt.imshow(filtered_magnitude_norm, cmap='gray')
-    plt.title("Filtered Magnitude Spectrum")
-
-    plt.tight_layout()
-    plt.show()
+    # cv2.imshow('filtered', img_filtered_norm)
+    # cv2.imshow('raw', img)
+    # plt.figure(figsize=(10, 8))
+    #
+    # plt.subplot(2, 1, 1)
+    # plt.imshow(magnitude_norm, cmap='gray')
+    # plt.title("Original Magnitude Spectrum")
+    #
+    # plt.subplot(2, 1, 2)
+    # plt.imshow(filtered_magnitude_norm, cmap='gray')
+    # plt.title("Filtered Magnitude Spectrum")
+    #
+    # plt.tight_layout()
+    # plt.show()
 
 
 def main():
-    #test_4_removenoise()
+    removenoise_test_4()
 
     # file paths
     template_path = "./../images/template_images/01.JPG"

@@ -1,13 +1,46 @@
 import cv2
-from cv2.typing import MatLike
 
 
-def draw_bounding_boxes(img:MatLike, contours, min_area = 50, pad=5):
-    # Set minimum area to filter out small contours (adjust based on your needs)
-    # Draw red rectangles around significant contours
+
+
+def draw_bounding_boxes(img, contours, min_defect_area=0, pad=10, box_merge_area=50):
+    boxes = []
+
+    # Collect valid bounding boxes
     for contour in contours:
-        if cv2.contourArea(contour) > min_area:
+        if cv2.contourArea(contour) > min_defect_area:
             x, y, w, h = cv2.boundingRect(contour)
-            cv2.rectangle(img, (x-pad, y-pad), (x + w + pad, y + h + pad), (255, 0, 0), 3)  # Red in BGR
+            boxes.append((x, y, x + w, y + h))  # Store (x1, y1, x2, y2)
+
+    # Merge close boxes
+    boxes = merge_boxes(boxes, box_merge_area)
+
+    # Draw refined bounding boxes
+    for x1, y1, x2, y2 in boxes:
+        cv2.rectangle(img, (x1 - pad, y1 - pad), (x2 + pad, y2 + pad), (255, 0, 0), 3)  # Red in BGR
 
     return img
+
+def merge_boxes(boxes, merge_distance):
+    merged_boxes = []
+
+    while len(boxes) > 0:
+        x1, y1, x2, y2 = boxes[0]  # Take first box
+        boxes = boxes[1:]
+
+        close_boxes = []
+        for (xx1, yy1, xx2, yy2) in boxes:
+            if (
+                xx1 <= x2 + merge_distance and xx2 >= x1 - merge_distance and
+                yy1 <= y2 + merge_distance and yy2 >= y1 - merge_distance
+            ):
+                # Expand the box
+                x1, y1, x2, y2 = min(x1, xx1), min(y1, yy1), max(x2, xx2), max(y2, yy2)
+                close_boxes.append((xx1, yy1, xx2, yy2))
+
+        # Remove merged boxes
+        boxes = [b for b in boxes if b not in close_boxes]
+
+        merged_boxes.append((x1, y1, x2, y2))
+
+    return merged_boxes

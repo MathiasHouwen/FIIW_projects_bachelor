@@ -1,11 +1,9 @@
-from src.utils.preprocesing import *
-from src.utils.postprocesing import *
-import matplotlib.pyplot as plt
-from skimage.metrics import structural_similarity as ssim
+from typing import Callable
+
+from src.processing import boxes_with_ssim
 from src.utils.images_io import *
 
 BASE_PATH = './../images'
-folder = ImageFolder(BASE_PATH, 'test_1')
 
 
 #
@@ -50,31 +48,19 @@ folder = ImageFolder(BASE_PATH, 'test_1')
 #     # plt.show()
 
 
+
+def do(test_dir_name:str, process:Callable[[MatLike, MatLike], MatLike], gray=False):
+    folder = ImageFolder(BASE_PATH, test_dir_name, gray)
+    folder.clean_and_make_out_folder()
+    for image_pair in folder.images:
+        out_img = process(image_pair.test, image_pair.template)
+        folder.write_out_image(out_img, image_pair)
+
+
 def main():
     # removenoise_test_4()
 
-    images_test_1 = ImageFolder(BASE_PATH, 'test_1', True)
-    images_test_1.clean_and_make_out_folder()
+    do('test_1', boxes_with_ssim, True)
 
-
-    for image_pair in images_test_1.images:
-        # Vind de defecten d.m.v. ssim
-        score, diff = ssim(image_pair.template, image_pair.test, full=True)
-        diff = (diff * 255).astype("uint8")
-        _, thresh = cv2.threshold(diff, 50, 255, cv2.THRESH_BINARY_INV)
-        contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
-        imgbox = draw_bounding_boxes(image_pair.test, contours, 1)
-        images_test_1.write_out_image(imgbox, image_pair)
-
-
-
-
-
-    # Display
-    plt.imshow(imgbox)
-    plt.title("Thresholded Defect Areas with Red Boxes")
-    plt.axis("off")
-    plt.show()
 if __name__ == '__main__':
     main()

@@ -13,8 +13,3 @@ def boxes_with_ssim(test:MatLike, template:MatLike) -> MatLike:
     _, thresh = cv2.threshold(diff, 50, 255, cv2.THRESH_BINARY_INV)
     contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     return draw_bounding_boxes(test, contours)
-
-
-def ssim_after_period_ruis(test:MatLike, template:MatLike):
-    clean_img = remove_periodische_ruis(test)
-    return boxes_with_ssim(clean_img, template)

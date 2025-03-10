@@ -1,17 +1,23 @@
 import cv2
 import numpy as np
 from cv2.typing import MatLike
+from matplotlib import pyplot as plt
 
 '''
 NOISE REMOVAL
 '''
 
-def remove_periodische_ruis(img:MatLike):
+def remove_periodische_ruis(img:MatLike, notch_position:tuple[int]):
     fshift = fourier_transform(img)
-    gaussian_mask = gaussian_filter(img, (540, 140))
+    gaussian_mask = gaussian_filter(img, notch_position)
     fshift_filtered = fshift * gaussian_mask
+    fshift_filtered_magnitude = np.log1p(np.abs(fshift_filtered))
     img_filtered = inverse_fourier_transform(fshift_filtered)
-    return cv2.normalize(img_filtered, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8U)
+    filtered = cv2.normalize(img_filtered, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8U)
+    plt.imshow(filtered, cmap='gray')
+    plt.imshow(fshift_filtered_magnitude, cmap='gray')
+    plt.show()
+    return filtered
 
 '''
 HULP FUNCTIES

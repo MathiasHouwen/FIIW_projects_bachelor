@@ -4,12 +4,15 @@ from matplotlib import pyplot as plt
 
 from src.processing import boxes_with_ssim
 from src.utils.images_io import *
-from src.utils.preprocesing import fourier_transform, magnitude_transform, gaussian_filter, inverse_fourier_transform, \
-    remove_periodische_ruis
+from src.utils.preprocesing import *
 
 BASE_PATH = './../images'
 PROCESS_PARAMS = {
     'test_1': {},
+    'test_2': {
+        '01': {'min_defect_area': 50},
+        '05': {'min_defect_area': 50}
+    },
     'test_4': {
         '01': {'notch': (540, 140)},
         '05': {'notch': (450, 220)}
@@ -19,16 +22,19 @@ PROCESS_PARAMS = {
 def handle_test_1(test:MatLike, template:MatLike) -> MatLike:
     return boxes_with_ssim(test, template)
 
+def handle_test_2(test:MatLike, template:MatLike, params:dict) -> MatLike:
+    return boxes_with_ssim(test, template, min_defect_area=params['min_defect_area'])
+
 def handle_test_4(test:MatLike, template:MatLike, params:dict) -> MatLike:
     filtered = remove_periodische_ruis(test, params['notch'])
     return boxes_with_ssim(filtered, template)
-
 
 def main():
     # removenoise_test_4()
 
     # do('test_1', handle_test_1, True)
-    do('test_4', handle_test_4, True)
+    do('test_2', handle_test_2, True)
+    # do('test_4', handle_test_4, True)
 
 def do(test_dir_name:str, process:Callable[..., MatLike], gray=False):
     folder = ImageFolder(BASE_PATH, test_dir_name, gray)

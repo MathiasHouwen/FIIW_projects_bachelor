@@ -3,7 +3,7 @@ import cv2
 
 
 
-def draw_bounding_boxes(img, contours, min_defect_area=0, pad=10, box_merge_area=50):
+def draw_bounding_boxes(img, contours, min_defect_area=1, pad=10, box_merge_area=50):
     boxes = []
 
     # Collect valid bounding boxes

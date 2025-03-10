@@ -2,7 +2,20 @@ import cv2
 import numpy as np
 from cv2.typing import MatLike
 
+'''
+NOISE REMOVAL
+'''
 
+def remove_periodische_ruis(img:MatLike):
+    fshift = fourier_transform(img)
+    gaussian_mask = gaussian_filter(img, (540, 140))
+    fshift_filtered = fshift * gaussian_mask
+    img_filtered = inverse_fourier_transform(fshift_filtered)
+    return cv2.normalize(img_filtered, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8U)
+
+'''
+HULP FUNCTIES
+'''
 def magnitude_transform(fshift):
     return 20 * np.log1p(np.abs(fshift))
 

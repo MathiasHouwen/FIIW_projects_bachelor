@@ -17,6 +17,7 @@ class ImagePair:
 
         self.template = cv2.imread(full_template_path)
         self.test = cv2.imread(test_path)
+        self.test_raw = self.test
         if gray:
             self.template = cv2.cvtColor(self.template, cv2.COLOR_BGR2GRAY)
             self.test = cv2.cvtColor(self.test, cv2.COLOR_BGR2GRAY)

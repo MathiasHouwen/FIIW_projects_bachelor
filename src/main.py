@@ -36,8 +36,8 @@ def handle_median_filter(test:MatLike, template:MatLike, test_raw:MatLike, param
 
 
 def main():
-    do('test_1', handle_raw, True)
-    do('test_2', handle_median_filter, True)
+    # do('test_1', handle_raw, True)
+    # do('test_2', handle_median_filter, True)
     do('test_3', handle_median_filter, True)
     do('test_4', handle_periodic_noise, True)
 

@@ -3,23 +3,7 @@ from typing import Callable
 from src.processing import boxes_with_ssim
 from src.utils.images_io import *
 from src.utils.preprocesing import *
-
-BASE_PATH = './../images'
-PROCESS_PARAMS = {
-    'test_1': {},
-    'test_2': {
-        '01': {'min_defect_area': 50, 'thresh': 190},
-        '05': {'min_defect_area': 50, 'thresh': 150}
-    },
-    'test_3': {
-        '01': {'min_defect_area': 30, 'thresh': 120},
-        '05': {'min_defect_area': 30, 'thresh': 120}
-    },
-    'test_4': {
-        '01': {'notch': (540, 140)},
-        '05': {'notch': (450, 220)}
-    }
-}
+from config import BASE_PATH, PROCESS_PARAMS
 
 
 def handle_raw(test:MatLike, template:MatLike, test_raw:MatLike) -> MatLike:

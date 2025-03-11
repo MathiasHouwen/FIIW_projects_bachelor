@@ -1,7 +1,4 @@
-from typing import Callable, Optional, Any
-
-import cv2
-from matplotlib import pyplot as plt
+from typing import Callable
 
 from src.processing import boxes_with_ssim
 from src.utils.images_io import *
@@ -11,8 +8,8 @@ BASE_PATH = './../images'
 PROCESS_PARAMS = {
     'test_1': {},
     'test_2': {
-        '01': {'min_defect_area': 50, 'thresh': 40},
-        '05': {'min_defect_area': 50, 'thresh': 40}
+        '01': {'min_defect_area': 50, 'thresh': 190},
+        '05': {'min_defect_area': 50, 'thresh': 150}
     },
     'test_3': {
         '01': {'min_defect_area': 30, 'thresh': 120},
@@ -28,29 +25,21 @@ PROCESS_PARAMS = {
 def handle_raw(test:MatLike, template:MatLike, test_raw:MatLike) -> MatLike:
     return boxes_with_ssim(test, template, test_raw)
 
-def handle_test_4(test:MatLike, template:MatLike, test_raw:MatLike, params:dict) -> MatLike:
+def handle_periodic_noise(test:MatLike, template:MatLike, test_raw:MatLike, params:dict) -> MatLike:
     filtered = remove_periodische_ruis(test, params['notch'])
     return boxes_with_ssim(filtered, template, test_raw)
 
 def handle_median_filter(test:MatLike, template:MatLike, test_raw:MatLike, params:dict) -> MatLike:
     filtered_test = remove_pepper_and_salt(test)
     filtered_template = remove_pepper_and_salt(template)
-    # plt.imshow(filtered_test)
-    # plt.figure()
-    # plt.imshow(filtered_template)
-    # plt.figure()
-    # plt.imshow(cv2.subtract(filtered_template, filtered_test), cmap='turbo')
-    # plt.show()
     return boxes_with_ssim(filtered_test, filtered_template, test_raw, min_defect_area=params['min_defect_area'], thresh=params['thresh'])
 
 
 def main():
-    # removenoise_test_4()
-
     do('test_1', handle_raw, True)
     do('test_2', handle_median_filter, True)
-    # do('test_3', handle_median_filter, True)
-    # do('test_4', handle_test_4, True)
+    do('test_3', handle_median_filter, True)
+    do('test_4', handle_periodic_noise, True)
 
 def do(test_dir_name:str, process:Callable[..., MatLike], gray=False):
     folder = ImageFolder(BASE_PATH, test_dir_name, gray)

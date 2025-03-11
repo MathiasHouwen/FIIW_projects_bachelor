@@ -16,14 +16,14 @@ def remove_periodische_ruis(img:MatLike, notch_position:tuple[int]):
     filtered = cv2.normalize(img_filtered, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8U)
     # plt.imshow(filtered, cmap='gray')
     # plt.figure()
-    # plt.imshow(fshift_filtered_magnitude, cmap='gray')
+    # plt.imshow(fshift_filtered_magnitude, cmap='turbo')
     # plt.show()
     return filtered
 
 
-def remove_pepper_and_salt(img:MatLike, kernel=3):
+def remove_pepper_and_salt(img:MatLike, kernel=7):
     # Apply median blur
-    denoised = cv2.medianBlur(img, 3)  # Kernel size can be 3, 5, or 7 (must be odd)
+    denoised = cv2.medianBlur(img, kernel)  # Kernel size can be 3, 5, or 7 (must be odd)
     return denoised
 
 '''

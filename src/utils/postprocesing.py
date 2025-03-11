@@ -17,7 +17,7 @@ def draw_bounding_boxes(img, contours, min_defect_area=1, pad=10, box_merge_area
 
     # Draw refined bounding boxes
     for x1, y1, x2, y2 in boxes:
-        cv2.rectangle(img, (x1 - pad, y1 - pad), (x2 + pad, y2 + pad), (255, 0, 0), 3)  # Red in BGR
+        cv2.rectangle(img, (x1 - pad, y1 - pad), (x2 + pad, y2 + pad), (0, 0, 255), 3)  # Red in BGR
 
     return img
 

@@ -1,5 +1,6 @@
 from typing import Callable, Optional, Any
 
+import cv2
 from matplotlib import pyplot as plt
 
 from src.processing import boxes_with_ssim
@@ -10,12 +11,12 @@ BASE_PATH = './../images'
 PROCESS_PARAMS = {
     'test_1': {},
     'test_2': {
-        '01': {'min_defect_area': 50},
-        '05': {'min_defect_area': 50}
+        '01': {'min_defect_area': 50, 'thresh': 40},
+        '05': {'min_defect_area': 50, 'thresh': 40}
     },
     'test_3': {
-        '01': {'min_defect_area': 30},
-        '05': {'min_defect_area': 30}
+        '01': {'min_defect_area': 30, 'thresh': 120},
+        '05': {'min_defect_area': 30, 'thresh': 120}
     },
     'test_4': {
         '01': {'notch': (540, 140)},
@@ -23,27 +24,32 @@ PROCESS_PARAMS = {
     }
 }
 
-def handle_test_1(test:MatLike, template:MatLike) -> MatLike:
-    return boxes_with_ssim(test, template)
 
-def handle_test_2(test:MatLike, template:MatLike, params:dict) -> MatLike:
-    return boxes_with_ssim(test, template, min_defect_area=params['min_defect_area'])
+def handle_raw(test:MatLike, template:MatLike, test_raw:MatLike) -> MatLike:
+    return boxes_with_ssim(test, template, test_raw)
 
-def handle_test_4(test:MatLike, template:MatLike, params:dict) -> MatLike:
+def handle_test_4(test:MatLike, template:MatLike, test_raw:MatLike, params:dict) -> MatLike:
     filtered = remove_periodische_ruis(test, params['notch'])
-    return boxes_with_ssim(filtered, template)
+    return boxes_with_ssim(filtered, template, test_raw)
 
-def handle_test_3(test:MatLike, template:MatLike, params:dict) -> MatLike:
-    filtered = remove_pepper_and_salt(test)
-    return boxes_with_ssim(filtered, template, min_defect_area=params['min_defect_area'])
+def handle_median_filter(test:MatLike, template:MatLike, test_raw:MatLike, params:dict) -> MatLike:
+    filtered_test = remove_pepper_and_salt(test)
+    filtered_template = remove_pepper_and_salt(template)
+    # plt.imshow(filtered_test)
+    # plt.figure()
+    # plt.imshow(filtered_template)
+    # plt.figure()
+    # plt.imshow(cv2.subtract(filtered_template, filtered_test), cmap='turbo')
+    # plt.show()
+    return boxes_with_ssim(filtered_test, filtered_template, test_raw, min_defect_area=params['min_defect_area'], thresh=params['thresh'])
 
 
 def main():
     # removenoise_test_4()
 
-    # do('test_1', handle_test_1, True)
-    # do('test_2', handle_test_2, True)
-    do('test_3', handle_test_3, True)
+    do('test_1', handle_raw, True)
+    do('test_2', handle_median_filter, True)
+    # do('test_3', handle_median_filter, True)
     # do('test_4', handle_test_4, True)
 
 def do(test_dir_name:str, process:Callable[..., MatLike], gray=False):
@@ -51,7 +57,7 @@ def do(test_dir_name:str, process:Callable[..., MatLike], gray=False):
     folder.clean_and_make_out_folder()
     for image_pair in folder.images:
         params = PROCESS_PARAMS[test_dir_name].get(image_pair.pcb_id)
-        out_img = process(image_pair.test, image_pair.template, params) if params else process(image_pair.test,image_pair.template)
+        out_img = process(image_pair.test, image_pair.template, image_pair.test_raw, params) if params else process(image_pair.test,image_pair.template, image_pair.test_raw)
         folder.write_out_image(out_img, image_pair)
 
 if __name__ == '__main__':

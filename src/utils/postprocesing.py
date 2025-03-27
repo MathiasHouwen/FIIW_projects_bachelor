@@ -3,8 +3,9 @@ import cv2
 
 
 
-def draw_bounding_boxes(img, contours, min_defect_area=1, pad=10, box_merge_area=50):
+def draw_bounding_boxes(img, contours, min_defect_area=1, padding_indication_boxes=10, image_ignore_padding=20, box_merge_area=50, draw_padding=True):
     boxes = []
+    height, width, _ = img.shape
 
     # Collect valid bounding boxes
     for contour in contours:
@@ -17,7 +18,13 @@ def draw_bounding_boxes(img, contours, min_defect_area=1, pad=10, box_merge_area
 
     # Draw refined bounding boxes
     for x1, y1, x2, y2 in boxes:
-        cv2.rectangle(img, (x1 - pad, y1 - pad), (x2 + pad, y2 + pad), (0, 0, 255), 3)  # Red in BGR
+        xs_in_range = _in_range(x1, width, image_ignore_padding) and _in_range(x2, width, image_ignore_padding)
+        ys_in_range = _in_range(y1, height, image_ignore_padding) and _in_range(y2, height, image_ignore_padding)
+        if xs_in_range and ys_in_range:
+            cv2.rectangle(img, (x1 - padding_indication_boxes, y1 - padding_indication_boxes), (x2 + padding_indication_boxes, y2 + padding_indication_boxes), (0, 0, 255), 3)  # Red in BGR
+
+    if draw_padding:
+        cv2.rectangle(img, (image_ignore_padding, image_ignore_padding), (width-image_ignore_padding, height-image_ignore_padding), (255, 255, 0),3)
 
     return img
 
@@ -44,3 +51,6 @@ def merge_boxes(boxes, merge_distance):
         merged_boxes.append((x1, y1, x2, y2))
 
     return merged_boxes
+
+def _in_range(x, dimension, padding):
+    return padding <= x <= dimension - padding

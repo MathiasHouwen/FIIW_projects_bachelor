@@ -7,8 +7,8 @@ PROCESS_PARAMS = {
         '05': {'min_defect_area': 50, 'thresh': 150}
     },
     'test_3': {
-        '01': {'min_defect_area': 30, 'thresh': 120},
-        '05': {'min_defect_area': 30, 'thresh': 120}
+        '01': {'min_defect_area': 30, 'thresh': 180},
+        '05': {'min_defect_area': 30, 'thresh': 180}
     },
     'test_4': {
         '01': {'notch': (540, 140)},

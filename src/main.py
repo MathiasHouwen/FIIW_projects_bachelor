@@ -5,7 +5,7 @@ from src.utils.images_io import *
 from src.utils.preprocesing import *
 from config import BASE_PATH, PROCESS_PARAMS
 
-PLOT = False
+PLOT = True
 
 def handle_raw(test:MatLike, template:MatLike, test_raw:MatLike) -> tuple[MatLike, MatLike]:
     return boxes_with_ssim(test, template, test_raw, plot=PLOT), test
@@ -15,15 +15,20 @@ def handle_periodic_noise(test:MatLike, template:MatLike, test_raw:MatLike, para
     return boxes_with_ssim(filtered, template, test_raw, plot=PLOT), filtered
 
 def handle_median_filter(test:MatLike, template:MatLike, test_raw:MatLike, params:dict) -> tuple[MatLike, MatLike]:
-    filtered_test = remove_pepper_and_salt(test)
-    filtered_template = remove_pepper_and_salt(template)
+    filtered_test = median(test)
+    filtered_template = median(template)
     min_defect, thresh = params['min_defect_area'], params['thresh']
     return boxes_with_ssim(filtered_test, filtered_template, test_raw, min_defect_area=min_defect, thresh=thresh, plot=PLOT), filtered_test
 
+def handle_gaussian_filter(test:MatLike, template:MatLike, test_raw:MatLike, params:dict) -> tuple[MatLike, MatLike]:
+    filtered_test = gaussian(test)
+    filtered_template = gaussian(template)
+    min_defect, thresh = params['min_defect_area'], params['thresh']
+    return boxes_with_ssim(filtered_test, filtered_template, test_raw, min_defect_area=min_defect, thresh=thresh, plot=PLOT), filtered_test
 
 def main():
-    do('test_1', handle_raw, True)
-    do('test_2', handle_median_filter, True)
+    # do('test_1', handle_raw, True)
+    do('test_2', handle_gaussian_filter, True)
     do('test_3', handle_median_filter, True)
     do('test_4', handle_periodic_noise, True)
 

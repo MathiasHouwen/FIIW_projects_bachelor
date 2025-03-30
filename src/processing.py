@@ -40,6 +40,7 @@ def undo_transform(keypoints1, keypoints2, matches:list[cv2.DMatch], template, t
     src_pts = np.float32([keypoints1[m.queryIdx].pt for m in matches]).reshape(-1, 1, 2)
     dst_pts = np.float32([keypoints2[m.trainIdx].pt for m in matches]).reshape(-1, 1, 2)
 
+    # De homography is al invers. Daarom wordt de test transf niet inverted en de template wel
     homography, _ = cv2.findHomography(dst_pts, src_pts, cv2.RANSAC)
     # CORRECTIE TEST IMAGE (om te zien of de transform volledig undone is)
     h, w = template.shape[:2]
@@ -86,7 +87,7 @@ def boxes_with_ssim(test:MatLike, template:MatLike, test_raw:MatLike, min_defect
         plt.colorbar()
         plt.figure()
         plt.title('Below threshold')
-        plt.imshow(thresh, cmap='turbo')
+        plt.imshow(thresh)
         plt.colorbar()
     contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     return draw_bounding_boxes(test_raw, contours, min_defect_area)

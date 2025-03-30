@@ -40,11 +40,11 @@ def handle_feature_matching(test:MatLike, template:MatLike, test_raw:MatLike, pa
 
 
 def main():
-    # do('test_1', handle_raw, True)
-    # do('test_2', handle_gaussian_filter, True)
-    # do('test_3', handle_median_filter, True)
-    # do('test_4', handle_periodic_noise, True)
-    # do('test_5', handle_feature_matching, True)
+    do('test_1', handle_raw, True)
+    do('test_2', handle_gaussian_filter, True)
+    do('test_3', handle_median_filter, True)
+    do('test_4', handle_periodic_noise, True)
+    do('test_5', handle_feature_matching, True)
     do('test_6', handle_feature_matching, True)
 
     plt.show()

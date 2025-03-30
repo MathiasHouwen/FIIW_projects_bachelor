@@ -27,27 +27,11 @@ def handle_gaussian_filter(test:MatLike, template:MatLike, test_raw:MatLike, par
     min_defect, thresh = params['min_defect_area'], params['thresh']
     return boxes_with_ssim(filtered_test, filtered_template, test_raw, min_defect_area=min_defect, thresh=thresh, plot=PLOT), filtered_test
 
-def test5test(test:MatLike, template:MatLike, test_raw:MatLike):
-    # Initialize SIFT detector
-    detector_name = "SIFT"
-    keypoints1, descriptors1 = detect_features(detector_name, template)
-    keypoints2, descriptors2 = detect_features(detector_name, test)
-
-    good_matches = match_features(detector_name, keypoints1, descriptors1, keypoints2, descriptors2)
-    good_matches = sorted(good_matches, key=lambda x: x.distance)[:50]  # Show top 50 matches
-
-    img_matches = cv2.drawMatches(template, keypoints1, test, keypoints2, good_matches, None,
-                                  flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
-
-    # Display the results
-    plt.figure(figsize=(12, 6))
-    plt.imshow(img_matches)
-    plt.title(f"Feature Matching using {detector_name}")
-    plt.axis("off")
-    plt.show()
-
-    print(f"Number of good matches found: {len(good_matches)}")
-    return
+def handle_feature_matching(test:MatLike, template:MatLike, test_raw:MatLike):
+    corrected_test, inv_corrected_templ = feature_matching_undo_transform(test, template)
+    # corrected test doet een 'undo' op de transfrom van de test, bewijst dat de feature matching + homography werkt
+    # inv_corrected_templ gaat de inverse 'correctie' op de template doen. Dan kan SSIM daarop en blijft de output in perspectief van de test img
+    return boxes_with_ssim(test, inv_corrected_templ, test_raw, plot=PLOT), corrected_test
 
 
 def main():
@@ -55,7 +39,9 @@ def main():
     # do('test_2', handle_gaussian_filter, True)
     # do('test_3', handle_median_filter, True)
     # do('test_4', handle_periodic_noise, True)
-    do('test_5', test5test, True)
+    do('test_5', handle_feature_matching, True)
+
+    plt.show()
 
 def do(test_dir_name:str, process:Callable[..., MatLike], gray=False):
     print(f"handling test_dir: {test_dir_name}")

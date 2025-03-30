@@ -15,11 +15,11 @@ def remove_periodische_ruis(img:MatLike, notch_position:tuple[int]):
     fshift_filtered_magnitude = np.log1p(np.abs(fshift_filtered))
     img_filtered = inverse_fourier_transform(fshift_filtered)
     filtered = cv2.normalize(img_filtered, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8U)
+    plt.figure()
     # plt.imshow(filtered, cmap='turbo')
     plt.imshow(fshift_magnitude, cmap='turbo')
     plt.figure()
     plt.imshow(fshift_filtered_magnitude, cmap='turbo')
-    plt.show()
     return filtered
 
 

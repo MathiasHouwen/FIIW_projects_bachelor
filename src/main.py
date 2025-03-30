@@ -5,33 +5,33 @@ from src.utils.images_io import *
 from src.utils.preprocesing import *
 from config import BASE_PATH, PROCESS_PARAMS
 
-PLOT = False
+PLOT_SSIM = True
 
 
 def handle_raw(test:MatLike, template:MatLike, test_raw:MatLike) -> tuple[MatLike, MatLike]:
-    return boxes_with_ssim(test, template, test_raw, plot=PLOT), test
+    return boxes_with_ssim(test, template, test_raw, plot=PLOT_SSIM), test
 
 def handle_periodic_noise(test:MatLike, template:MatLike, test_raw:MatLike, params:dict) -> tuple[MatLike, MatLike]:
     filtered = remove_periodische_ruis(test, params['notch'])
-    return boxes_with_ssim(filtered, template, test_raw, plot=PLOT), filtered
+    return boxes_with_ssim(filtered, template, test_raw, plot=PLOT_SSIM), filtered
 
 def handle_median_filter(test:MatLike, template:MatLike, test_raw:MatLike, params:dict) -> tuple[MatLike, MatLike]:
     filtered_test = median(test)
     filtered_template = median(template)
     min_defect, thresh = params['min_defect_area'], params['thresh']
-    return boxes_with_ssim(filtered_test, filtered_template, test_raw, min_defect_area=min_defect, thresh=thresh, plot=PLOT), filtered_test
+    return boxes_with_ssim(filtered_test, filtered_template, test_raw, min_defect_area=min_defect, thresh=thresh, plot=PLOT_SSIM), filtered_test
 
 def handle_gaussian_filter(test:MatLike, template:MatLike, test_raw:MatLike, params:dict) -> tuple[MatLike, MatLike]:
     filtered_test = gaussian(test)
     filtered_template = gaussian(template)
     min_defect, thresh = params['min_defect_area'], params['thresh']
-    return boxes_with_ssim(filtered_test, filtered_template, test_raw, min_defect_area=min_defect, thresh=thresh, plot=PLOT), filtered_test
+    return boxes_with_ssim(filtered_test, filtered_template, test_raw, min_defect_area=min_defect, thresh=thresh, plot=PLOT_SSIM), filtered_test
 
 def handle_feature_matching(test:MatLike, template:MatLike, test_raw:MatLike):
     corrected_test, inv_corrected_templ = feature_matching_undo_transform(test, template)
     # corrected test doet een 'undo' op de transfrom van de test, bewijst dat de feature matching + homography werkt
     # inv_corrected_templ gaat de inverse 'correctie' op de template doen. Dan kan SSIM daarop en blijft de output in perspectief van de test img
-    return boxes_with_ssim(test, inv_corrected_templ, test_raw, plot=PLOT), corrected_test
+    return boxes_with_ssim(test, inv_corrected_templ, test_raw, plot=PLOT_SSIM), corrected_test
 
 
 def main():

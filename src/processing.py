@@ -69,18 +69,24 @@ def feature_matching_undo_transform(test:MatLike, template:MatLike, algorithm:st
 
 def boxes_with_ssim(test:MatLike, template:MatLike, test_raw:MatLike, min_defect_area=1, thresh=75, plot=True) -> MatLike:
     # Vind de defecten d.m.v. ssim
-    score, diff = ssim(test, template, full=True)
-    # diff = (diff - diff.min()) / (diff.max() - diff.min())
-    diff = (diff * 255).astype("uint8")
-    _, thresh = cv2.threshold(diff, thresh, 255, cv2.THRESH_BINARY_INV)
 
+    score, diff = ssim(test, template, full=True)
+    diff = (diff * 255).astype("uint8")
+
+    # >>> VOOR TEST_5 EN 6 (werkt ook zonder, maar dit is cleaner):
+    mask = (template > 0).astype(np.uint8) # mask voor waar (getransfromeerde) template niet 0 is. (rotatie geeft lege hoeken van 0)
+    mask_eroded = cv2.erode(mask, np.ones((15, 15), np.uint8), iterations=4) # erosie: "verdikt" de rand van de mask. Anders is de rand van de geroteerde pcb zichtbaar in SSIM
+    diff_masked = np.where(mask_eroded, diff, 255) # lege gebied 255 maken (255 = 100% simularity, 0% difference)
+    # <<<
+    _, thresh = cv2.threshold(diff_masked, thresh, 255, cv2.THRESH_BINARY_INV)
     if plot:
         plt.figure()
-        plt.title('SSIM difference')
-        plt.imshow(diff, cmap='turbo')
+        plt.title('SSIM similarity')
+        plt.imshow(diff_masked, cmap='turbo')
         plt.colorbar()
         plt.figure()
         plt.title('Below threshold')
-        plt.imshow(thresh)
+        plt.imshow(thresh, cmap='turbo')
+        plt.colorbar()
     contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     return draw_bounding_boxes(test_raw, contours, min_defect_area)

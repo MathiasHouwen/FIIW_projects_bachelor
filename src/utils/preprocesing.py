@@ -18,8 +18,10 @@ def remove_periodische_ruis(img:MatLike, notch_position:tuple[int]):
     plt.figure()
     # plt.imshow(filtered, cmap='turbo')
     plt.imshow(fshift_magnitude, cmap='turbo')
+    plt.colorbar()
     plt.figure()
     plt.imshow(fshift_filtered_magnitude, cmap='turbo')
+    plt.colorbar()
     return filtered
 
 

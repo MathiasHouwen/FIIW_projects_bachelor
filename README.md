@@ -4,4 +4,4 @@
 
 [Processed and Output images](images)
 
-[Plots used in report that are not exported to image](report_images/plots)
+[Plots used in report (plots are not automatically saved to image in the test folders)](report_images/plots)

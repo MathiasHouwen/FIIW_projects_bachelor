@@ -27,11 +27,16 @@ def handle_gaussian_filter(test:MatLike, template:MatLike, test_raw:MatLike, par
     min_defect, thresh = params['min_defect_area'], params['thresh']
     return boxes_with_ssim(filtered_test, filtered_template, test_raw, min_defect_area=min_defect, thresh=thresh, plot=PLOT_SSIM), filtered_test
 
-def handle_feature_matching(test:MatLike, template:MatLike, test_raw:MatLike):
-    corrected_test, inv_corrected_templ = feature_matching_undo_transform(test, template)
+def handle_feature_matching(test:MatLike, template:MatLike, test_raw:MatLike, params:dict):
+    do_filter = params['filter']
+    filtered_test = gaussian(test) if do_filter else test
+    filtered_template = gaussian(template) if do_filter else template
+    corrected_test, inv_corrected_templ = feature_matching_undo_transform(filtered_test, filtered_template)
     # corrected test doet een 'undo' op de transfrom van de test, bewijst dat de feature matching + homography werkt
     # inv_corrected_templ gaat de inverse 'correctie' op de template doen. Dan kan SSIM daarop en blijft de output in perspectief van de test img
-    return boxes_with_ssim(test, inv_corrected_templ, test_raw, plot=PLOT_SSIM), corrected_test
+    if 'thresh' in params:
+        return boxes_with_ssim(filtered_test, inv_corrected_templ, test_raw, plot=PLOT_SSIM, thresh=params['thresh']), corrected_test
+    return boxes_with_ssim(filtered_test, inv_corrected_templ, test_raw, plot=PLOT_SSIM), corrected_test
 
 
 def main():
@@ -39,11 +44,12 @@ def main():
     # do('test_2', handle_gaussian_filter, True)
     # do('test_3', handle_median_filter, True)
     # do('test_4', handle_periodic_noise, True)
-    do('test_5', handle_feature_matching, True)
+    # do('test_5', handle_feature_matching, True)
+    do('test_6', handle_feature_matching, True)
 
     plt.show()
 
-def do(test_dir_name:str, process:Callable[..., MatLike], gray=False):
+def do(test_dir_name:str, process:Callable[..., tuple[MatLike, MatLike]], gray=False):
     print(f"handling test_dir: {test_dir_name}")
     folder = ImageFolder(BASE_PATH, test_dir_name, gray)
     folder.clean_and_make_out_and_processed_folder()

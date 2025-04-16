@@ -1,4 +1,6 @@
 import math
+from dataclasses import dataclass
+
 import cv2
 import numpy as np
 from typing import Tuple
@@ -64,21 +66,59 @@ class GrayCodeEncoder(Encoder):
     def get_encoding_pattern(self, depth) -> np.array:
         return self.patterns[depth]
 
+@dataclass
+class FramesGroup:
+    h:np.ndarray|None
+    v:np.ndarray|None
+    h_inv:np.ndarray|None
+    v_inv:np.ndarray|None
+
+    def validate_not_none(self):
+        if any(x is None for x in [self.h, self.v, self.h_inv, self.v_inv]):
+            raise ValueError("Ik heb toch niks aan lege frames")
 
 class GrayCodeDecoder(Decoder):
     def __init__(self, cols: int, rows: int, depth: int):
         super().__init__(cols, rows)
         self.n = depth * 4
+        # volgorde:
+        # - eerst depth*2 x horizontal images
+        # - dan depth*2 x vertical images
+        #   - elke groep van depth*2 images =
+        #     - normal frame 0
+        #     - inverted frame 0
+        #     - normal frame 1
+        #     - inverted frame 1
+        #     ...
+        #     - normal frame depth-1
+        #     - inverted frame depth-1
         self.frames = self.n * [None]
 
-    def decode_frames(self) -> Tuple[np.array, np.array, np.array]:
+    def decode_frames(self) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
         horizontal_codes = np.zeros((self.cols, self.rows))
         vertical_codes = np.zeros((self.cols, self.rows))
+        # mask is voor onzeker pixels.
+        #  - onzeker pixel: het 'dark' / 'light' result is dezelfde waarde voor de normal en inverted image
         mask = np.zeros((self.cols, self.rows))
 
-        # TODO: compute the unique indices for each pixel
+        for frame_group in self._frames_grouped_iterator():
+            horizontal = frame_group.h
+            vertical = frame_group.v
+            horizontal_inverted = frame_group.h_inv
+            vertical_inverted = frame_group.v_inv
+
+
 
         return horizontal_codes, vertical_codes, mask
 
-    def set_frame(self, depth: int, frame: np.array):
+    def set_frame(self, depth: int, frame: np.ndarray):
         self.frames[depth] = frame
+
+    def _frames_grouped_iterator(self):
+        for n in range(0, self.n//2, 2):
+            group = FramesGroup(h=self.frames[n],
+                                v=self.frames[n+1],
+                                h_inv=self.frames[self.n//2 + n],
+                                v_inv=self.frames[self.n//2 + n+1])
+            group.validate_not_none()
+            yield group

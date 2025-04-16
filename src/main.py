@@ -12,8 +12,8 @@ def load_views(view_paths: List[str]) -> List[np.array]:
 
 def show_graycode_captures():
     views = [
-        "../dataset/GrayCodes/graycodes_view0.xml",
-        "../dataset/GrayCodes/graycodes_view1.xml"
+        "../dataset/GrayCodes_HighRes/graycodes_view0.xml",
+        "../dataset/GrayCodes_HighRes/graycodes_view1.xml",
     ]
     left_view, right_view = load_views(views)
     show_captures(left_view, right_view)
@@ -65,3 +65,4 @@ def show_encoder_patterns(encoder: Encoder):
 
 if __name__ == "__main__":
     show_graycode_captures()
+    # show_graycode_patterns()

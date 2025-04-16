@@ -82,8 +82,8 @@ def show_pattern_decoded():
 
 
 def show_captures_decoded():
-    decoder = GrayCodeDecoder(4752, 3168, 10)
-    views = ["../dataset/GrayCodes_HighRes/graycodes_view0.xml","../dataset/GrayCodes_HighRes/graycodes_view1.xml",]
+    decoder = GrayCodeDecoder(1200, 800, 10)
+    views = ["../dataset/GrayCodes/graycodes_view0.xml","../dataset/GrayCodes/graycodes_view1.xml",]
     left_view, right_view = load_views(views)
     for n, view in enumerate(left_view[2:]): # splicing vanaf 2 want image 0 en 1 zijn full lit of full dark
         decoder.set_frame(n, view)

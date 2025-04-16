@@ -120,8 +120,18 @@ class GrayCodeDecoder(Decoder):
 
             # als normal 'veel'(threshold) hoger is dan inv, dan is die lit
             # lit = 255, dark = -255, unsure = 0
-            h_lit, h_unsure  = h_delta >= threshold, abs(h_delta) < threshold
-            v_lit, v_unsure = v_delta >= threshold, abs(v_delta) < threshold
+            h_lit, h_unsure  = h_delta >= threshold, np.abs(h_delta) < threshold
+            v_lit, v_unsure = v_delta >= threshold, np.abs(v_delta) < threshold
+            if bit_index == 6:
+                plt.figure()
+                plt.imshow(h_delta)
+                plt.colorbar()
+                plt.figure()
+                plt.imshow(h_lit)
+                plt.colorbar()
+                plt.figure()
+                plt.imshow(h_unsure)
+                plt.colorbar()
 
             horizontal_codes[h_lit] |= (1 << bit_index)
             vertical_codes[v_lit] |= (1 << bit_index)

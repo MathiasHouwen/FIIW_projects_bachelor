@@ -104,7 +104,7 @@ class GrayCodeDecoder(Decoder):
         #     - inverted frame depth-1
         self.frames = self.n * [None]
 
-    def decode_frames(self, threshold:int = 100) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    def decode_frames(self, threshold:int = 10) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
         horizontal_codes = np.zeros((self.rows, self.cols), dtype=np.int16)
         vertical_codes = np.zeros((self.rows, self.cols), dtype=np.int16)
         # mask is voor onzeker pixels.

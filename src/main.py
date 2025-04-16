@@ -9,6 +9,7 @@ from codec import Encoder
 from GrayCodeCodec import GrayCodeEncoder
 from src.GrayCodeCodec import GrayCodeDecoder
 from src.codec import Decoder
+from src.visualisation import visualise_decoder_output
 
 
 def load_views(view_paths: List[str]) -> List[np.array]:
@@ -55,38 +56,47 @@ def show_encoder_patterns(encoder: Encoder):
     cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
     cv2.resizeWindow(window_name, encoder.cols // 2, encoder.rows // 2)
 
-    decoder = GrayCodeDecoder(encoder.cols, encoder.rows, 10)
-
     for n in range(encoder.n):
         pattern = encoder.get_encoding_pattern(n)
         dummy = np.copy(pattern)
         pattern = cv2.resize(dummy, (encoder.cols, encoder.rows))
-        decoder.set_frame(n, pattern)
 
-        # cv2.imshow(window_name, pattern)
-        # key = cv2.waitKey(1000)
-        # if key == "27":
-        #     break
-
-    h_dec, v_dec, mask_dec = decoder.decode_frames()
-    plt.figure()
-    plt.subplot(1, 2, 1)
-    plt.imshow(h_dec)
-    plt.title("Horizontal graycode values\nof reference pattern")
-    plt.subplot(1, 2, 2)
-    plt.imshow(v_dec)
-    plt.title("Vertical graycode values\nof reference pattern")
-    plt.colorbar()
-
-    plt.figure()
-    false_color = utils.create_false_color(h_dec, v_dec, mask_dec)
-    plt.imshow(false_color)
-    plt.title("False Color of reference pattern")
+        cv2.imshow(window_name, pattern)
+        key = cv2.waitKey(1000)
+        if key == "27":
+            break
 
     cv2.destroyAllWindows()
 
 
+def show_pattern_decoded():
+    encoder = GrayCodeEncoder(1080, 1920, 10)
+    decoder = GrayCodeDecoder(encoder.cols, encoder.rows, 10)
+    for n in range(encoder.n):
+        pattern = encoder.get_encoding_pattern(n)
+        pattern = cv2.resize(np.copy(pattern), (encoder.cols, encoder.rows))
+        decoder.set_frame(n, pattern)
+
+    h_dec, v_dec, mask_dec = decoder.decode_frames()
+    visualise_decoder_output(h_dec, v_dec, mask_dec, "reference pattern")
+
+
+def show_captures_decoded():
+    decoder = GrayCodeDecoder(4752, 3168, 10)
+    views = ["../dataset/GrayCodes_HighRes/graycodes_view0.xml","../dataset/GrayCodes_HighRes/graycodes_view1.xml",]
+    left_view, right_view = load_views(views)
+    for n, view in enumerate(left_view[2:]): # splicing vanaf 2 want image 0 en 1 zijn full lit of full dark
+        decoder.set_frame(n, view)
+    h_dec, v_dec, mask_dec = decoder.decode_frames()
+    visualise_decoder_output(h_dec, v_dec, mask_dec, "left captures")
+    for n, view in enumerate(right_view[2:]):
+        decoder.set_frame(n, view)
+    h_dec, v_dec, mask_dec = decoder.decode_frames()
+    visualise_decoder_output(h_dec, v_dec, mask_dec, "right captures")
+
 if __name__ == "__main__":
+    show_pattern_decoded()
+    show_captures_decoded()
+    # show_graycode_patterns()
     # show_graycode_captures()
-    show_graycode_patterns()
     plt.show()

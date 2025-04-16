@@ -1,9 +1,14 @@
 from typing import List
+
+import matplotlib.pyplot as plt
+
 import utils
 import numpy as np
 import cv2
 from codec import Encoder
 from GrayCodeCodec import GrayCodeEncoder
+from src.GrayCodeCodec import GrayCodeDecoder
+from src.codec import Decoder
 
 
 def load_views(view_paths: List[str]) -> List[np.array]:
@@ -50,19 +55,38 @@ def show_encoder_patterns(encoder: Encoder):
     cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
     cv2.resizeWindow(window_name, encoder.cols // 2, encoder.rows // 2)
 
+    decoder = GrayCodeDecoder(encoder.cols, encoder.rows, 10)
+
     for n in range(encoder.n):
         pattern = encoder.get_encoding_pattern(n)
         dummy = np.copy(pattern)
         pattern = cv2.resize(dummy, (encoder.cols, encoder.rows))
+        decoder.set_frame(n, pattern)
 
-        cv2.imshow(window_name, pattern)
-        key = cv2.waitKey(1000)
-        if key == "27":
-            break
+        # cv2.imshow(window_name, pattern)
+        # key = cv2.waitKey(1000)
+        # if key == "27":
+        #     break
+
+    h_dec, v_dec, mask_dec = decoder.decode_frames()
+    plt.figure()
+    plt.subplot(1, 2, 1)
+    plt.imshow(h_dec)
+    plt.title("Horizontal graycode values\nof reference pattern")
+    plt.subplot(1, 2, 2)
+    plt.imshow(v_dec)
+    plt.title("Vertical graycode values\nof reference pattern")
+    plt.colorbar()
+
+    plt.figure()
+    false_color = utils.create_false_color(h_dec, v_dec, mask_dec)
+    plt.imshow(false_color)
+    plt.title("False Color of reference pattern")
 
     cv2.destroyAllWindows()
 
 
 if __name__ == "__main__":
-    show_graycode_captures()
-    # show_graycode_patterns()
+    # show_graycode_captures()
+    show_graycode_patterns()
+    plt.show()

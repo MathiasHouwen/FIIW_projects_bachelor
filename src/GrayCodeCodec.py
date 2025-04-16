@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 import cv2
 import numpy as np
-from typing import Tuple
+from typing import Tuple, Callable
 
 from codec import Encoder, Decoder
 
@@ -77,6 +77,14 @@ class FramesGroup:
         if any(x is None for x in [self.h, self.v, self.h_inv, self.v_inv]):
             raise ValueError("Ik heb toch niks aan lege frames")
 
+    def apply_to_all(self, func: Callable[[np.ndarray], np.ndarray]):
+        return FramesGroup(
+            h=func(self.h),
+            h_inv=func(self.h_inv),
+            v=func(self.v),
+            v_inv=func(self.v_inv),
+        )
+
 class GrayCodeDecoder(Decoder):
     def __init__(self, cols: int, rows: int, depth: int):
         super().__init__(cols, rows)
@@ -94,20 +102,28 @@ class GrayCodeDecoder(Decoder):
         #     - inverted frame depth-1
         self.frames = self.n * [None]
 
-    def decode_frames(self) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-        horizontal_codes = np.zeros((self.cols, self.rows))
-        vertical_codes = np.zeros((self.cols, self.rows))
+    def decode_frames(self, threshold:int = 20) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+        horizontal_codes = np.zeros((self.cols, self.rows), dtype=np.int16)
+        vertical_codes = np.zeros((self.cols, self.rows), dtype=np.int16)
         # mask is voor onzeker pixels.
         #  - onzeker pixel: het 'dark' / 'light' result is dezelfde waarde voor de normal en inverted image
-        mask = np.zeros((self.cols, self.rows))
+        mask = np.zeros((self.cols, self.rows), dtype=np.uint8)
 
-        for frame_group in self._frames_grouped_iterator():
-            horizontal = frame_group.h
-            vertical = frame_group.v
-            horizontal_inverted = frame_group.h_inv
-            vertical_inverted = frame_group.v_inv
+        for frame_group, bit_index in self._frames_grouped_iterator():
+            gray_group = frame_group.apply_to_all(lambda img: cv2.cvtColor(img, cv2.COLOR_BGR2GRAY))
+            gray_group_int = gray_group.apply_to_all(lambda img: img.astype(np.int16))
 
+            h_delta = gray_group_int.h - gray_group_int.h_inv
+            v_delta = gray_group_int.v - gray_group_int.v_inv
 
+            # als normal 'veel'(threshold) hoger is dan inv, dan is die lit
+            h_lit, h_unsure  = h_delta >= threshold, h_delta < threshold
+            v_lit, v_unsure = v_delta >= threshold, v_delta < threshold
+
+            horizontal_codes[h_lit] |= (1 << bit_index)
+            vertical_codes[v_lit] |= (1 << bit_index)
+
+            mask = h_unsure | v_unsure
 
         return horizontal_codes, vertical_codes, mask
 
@@ -119,6 +135,6 @@ class GrayCodeDecoder(Decoder):
             group = FramesGroup(h=self.frames[n],
                                 v=self.frames[n+1],
                                 h_inv=self.frames[self.n//2 + n],
-                                v_inv=self.frames[self.n//2 + n+1])
+                                v_inv=self.frames[self.n//2 + n+1],)
             group.validate_not_none()
-            yield group
+            yield group, n // 2

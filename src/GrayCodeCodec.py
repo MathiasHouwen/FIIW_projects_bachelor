@@ -120,17 +120,18 @@ class GrayCodeDecoder(Decoder):
 
             # als normal 'veel'(threshold) hoger is dan inv, dan is die lit
             # lit = 255, dark = -255, unsure = 0
-            h_lit, h_unsure  = h_delta >= threshold, np.abs(h_delta) < threshold
-            v_lit, v_unsure = v_delta >= threshold, np.abs(v_delta) < threshold
-            if bit_index == 6:
+            h_lit, h_dark, h_unsure = h_delta >= threshold, h_delta <= -threshold, np.abs(h_delta) < threshold
+            v_lit, v_dark, v_unsure = v_delta >= threshold, v_delta <= -threshold, np.abs(v_delta) < threshold
+            if bit_index in [3,0]:
                 plt.figure()
                 plt.imshow(h_delta)
+                plt.title(f"difference with inverted image [bit {bit_index}]")
                 plt.colorbar()
+
+                h_classified = np.select([h_lit, h_unsure, h_dark], [1, 0, -1], default=0)
                 plt.figure()
-                plt.imshow(h_lit)
-                plt.colorbar()
-                plt.figure()
-                plt.imshow(h_unsure)
+                plt.imshow(h_classified)
+                plt.title(f"stripes recognition [bit {bit_index}]\n 1 = lit, -1 = dark, 0 = unsure(mask)")
                 plt.colorbar()
 
             horizontal_codes[h_lit] |= (1 << bit_index)

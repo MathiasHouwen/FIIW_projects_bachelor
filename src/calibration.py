@@ -1,3 +1,5 @@
+import os
+
 import cv2
 import numpy as np
 import glob
@@ -5,7 +7,7 @@ import glob
 from matplotlib import pyplot as plt
 
 
-def calibrate_camera_from_checkerboard(images_path_pattern: str, checkerboard_size = (9, 7), square_size=1.0):
+def calibrate_camera_from_checkerboard(images: list[np.ndarray], out_folder:str, checkerboard_size = (9, 7), square_size=1.0):
     # Criteria for cornerSubPix
     criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 
@@ -16,15 +18,7 @@ def calibrate_camera_from_checkerboard(images_path_pattern: str, checkerboard_si
     objpoints = []  # 3D points in real world
     imgpoints = []  # 2D points in image
 
-    image_files = glob.glob(images_path_pattern)
-    print(f"Found {len(image_files)} images: {image_files}")
-    for i, fname in enumerate(image_files):
-        # if i > 15: continue
-        image = cv2.imread(fname)
-        if image is None:
-            print(f"Failed to load: {fname}")
-            continue
-
+    for i, image in enumerate(images):
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
         ret, corners = cv2.findChessboardCorners(gray, checkerboard_size, None)
@@ -33,7 +27,8 @@ def calibrate_camera_from_checkerboard(images_path_pattern: str, checkerboard_si
             corners2 = cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), criteria)
             imgpoints.append(corners2)
 
-            image = cv2.drawChessboardCorners(image, checkerboard_size, corners2, ret)
+            img_copy = cv2.drawChessboardCorners(gray, checkerboard_size, corners2, ret)
+            cv2.imwrite(f"{out_folder}/pattern_{i:>02}.jpg", img_copy)
             # plt.figure()
             # plt.imshow(image)
             # plt.title(fname)

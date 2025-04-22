@@ -5,7 +5,7 @@ import cv2
 import numpy as np
 
 
-def load_images(path: str) -> Optional[List[np.array]]:
+def load_images(path: str) -> Optional[list[np.ndarray]]:
     try:
         tree = ET.parse(path)
         if tree is None:

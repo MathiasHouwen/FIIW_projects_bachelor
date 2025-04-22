@@ -1,5 +1,6 @@
 import random
 
+import cv2
 import matplotlib
 import numpy as np
 from matplotlib import pyplot as plt
@@ -7,7 +8,7 @@ from matplotlib import pyplot as plt
 from src import utils
 
 
-def visualise_decoder_output(h_codes:np.ndarray, v_codes:np.ndarray, mask:np.ndarray, title:str):
+def visualise_and_save_decoder_output(h_codes:np.ndarray, v_codes:np.ndarray, mask:np.ndarray, title:str, output_folder:str):
     plt.figure()
     plt.subplot(1, 2, 1)
     plt.imshow(h_codes, cmap='turbo')
@@ -21,9 +22,10 @@ def visualise_decoder_output(h_codes:np.ndarray, v_codes:np.ndarray, mask:np.nda
     false_color = utils.create_false_color(h_codes, v_codes, mask)
     plt.imshow(false_color)
     plt.title(f"False Color of {title}")
+    cv2.imwrite(f"{output_folder}/false_color.jpg", false_color)
 
 
-def draw_random_matches(left_img, right_img, left_pts, right_pts, num_matches=500):
+def draw_and_save_random_matches(left_img, right_img, left_pts, right_pts, output_folder:str, num_matches=100):
     combined = np.hstack((left_img, right_img))
     offset = left_img.shape[1]
 
@@ -43,7 +45,9 @@ def draw_random_matches(left_img, right_img, left_pts, right_pts, num_matches=50
                     color=color, s=5)
         plt.title("Random Sample of Matches")
 
-def visualise_point_cloud(points_3d, pts, color_img, downsample=False, view_angle=(-45, -30, -60)):
+    plt.savefig(f"{output_folder}/plotted_matches.png")
+
+def visualise_and_save_point_cloud(points_3d, pts, color_img, output_folder:str, downsample=False, view_angle=(-45, -30, -60)):
     x = np.clip(pts[:, 0].astype(int), 0, color_img.shape[1] - 1)
     y = np.clip(pts[:, 1].astype(int), 0, color_img.shape[0] - 1)
     colors = color_img[y, x] / 255.0  # int 0-255 to float 0-1
@@ -64,3 +68,4 @@ def visualise_point_cloud(points_3d, pts, color_img, downsample=False, view_angl
     el, az, rl = view_angle
     ax.view_init(elev=el, azim=az, roll=rl)
     plt.tight_layout()
+    plt.savefig(f"{output_folder}/point_cloud.png")

@@ -1,3 +1,4 @@
+import time
 from typing import List
 
 import matplotlib.pyplot as plt
@@ -83,8 +84,8 @@ def show_pattern_decoded():
 
 
 def show_captures_decoded():
-    # info = {"w":1200, "h":800, "folder": "GrayCodes"}
-    info = {"w":4752, "h":3168, "folder": "GrayCodes_HighRes"}
+    info = {"w":1200, "h":800, "folder": "GrayCodes"}
+    # info = {"w":4752, "h":3168, "folder": "GrayCodes_HighRes"}
     decoder = GrayCodeDecoder(info["w"], info["h"], 10)
     views = [f"../dataset/{info["folder"]}/graycodes_view0.xml",f"../dataset/{info["folder"]}/graycodes_view1.xml",]
     left_view, right_view = load_views(views)
@@ -111,9 +112,15 @@ if __name__ == "__main__":
     undistorted = undistort_image(image, K, dist)
 
     # Show result
-    cv2.imshow("Original", image)
-    cv2.imshow("Undistorted", undistorted)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    plt.figure()
+    plt.imshow(image)
+    plt.title("original")
+    plt.figure()
+    plt.imshow(undistorted)
+    plt.title("undistorted")
+    # cv2.imshow("Original", image)
+    # cv2.imshow("Undistorted", undistorted)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
 
-    # plt.show()
+    plt.show()

@@ -2,6 +2,8 @@ import cv2
 import numpy as np
 import glob
 
+from matplotlib import pyplot as plt
+
 
 def calibrate_camera_from_checkerboard(images_path_pattern: str, checkerboard_size = (9, 7), square_size=1.0):
     # Criteria for cornerSubPix
@@ -32,8 +34,11 @@ def calibrate_camera_from_checkerboard(images_path_pattern: str, checkerboard_si
             imgpoints.append(corners2)
 
             img = cv2.drawChessboardCorners(img, checkerboard_size, corners2, ret)
-            cv2.imshow('Corners', img)
-            cv2.waitKey(100)
+            plt.figure()
+            plt.imshow(img)
+            plt.title(fname)
+            # cv2.imshow('Corners', img)
+            # cv2.waitKey(1000)
 
     if not objpoints:
         raise ValueError("No checkerboards detected. Check paths or images.")

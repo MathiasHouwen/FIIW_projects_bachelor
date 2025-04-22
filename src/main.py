@@ -8,6 +8,7 @@ import cv2
 from codec import Encoder
 from GrayCodeCodec import GrayCodeEncoder
 from src.GrayCodeCodec import GrayCodeDecoder
+from src.calibration import calibrate_camera_from_checkerboard, undistort_image
 from src.codec import Decoder
 from src.visualisation import visualise_decoder_output
 
@@ -101,4 +102,18 @@ if __name__ == "__main__":
     show_captures_decoded()
     # show_graycode_patterns()
     # show_graycode_captures()
-    plt.show()
+
+    # Calibrate using checkerboard images
+    ret, K, dist, rvecs, tvecs = calibrate_camera_from_checkerboard("../dataset/GrayCodes/chess/*.jpg")
+
+    # Load and undistort an image
+    image = cv2.imread("../dataset/GrayCodes/chess/02.jpg")
+    undistorted = undistort_image(image, K, dist)
+
+    # Show result
+    cv2.imshow("Original", image)
+    cv2.imshow("Undistorted", undistorted)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+    # plt.show()

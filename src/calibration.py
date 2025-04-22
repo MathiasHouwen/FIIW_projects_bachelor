@@ -19,7 +19,7 @@ def calibrate_camera_from_checkerboard(images_path_pattern: str, checkerboard_si
     image_files = glob.glob(images_path_pattern)
     print(f"Found {len(image_files)} images: {image_files}")
     for i, fname in enumerate(image_files):
-        if i > 15: continue
+        # if i > 15: continue
         image = cv2.imread(fname)
         if image is None:
             print(f"Failed to load: {fname}")
@@ -34,11 +34,10 @@ def calibrate_camera_from_checkerboard(images_path_pattern: str, checkerboard_si
             imgpoints.append(corners2)
 
             image = cv2.drawChessboardCorners(image, checkerboard_size, corners2, ret)
-            plt.figure()
-            plt.imshow(image)
-            plt.title(fname)
-            # cv2.imshow('Corners', img)
-            # cv2.waitKey(1000)
+            # plt.figure()
+            # plt.imshow(image)
+            # plt.title(fname)
+
 
     if not objpoints:
         raise ValueError("No checkerboards detected. Check paths or images.")

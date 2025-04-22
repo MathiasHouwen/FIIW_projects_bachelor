@@ -21,8 +21,15 @@ def get_coordinates(dec_h, dec_v, mask) -> tuple[list[Coord], list[Code]]:
 
 def build_dict(coords: list[Coord], codes: list[Code]) -> dict[Code, Coord]:
     code_dict = {}
+    duplicates_count = 0
     for coord, code in zip(coords, codes):
-        code_dict[code] = coord
+        if code in code_dict:
+            duplicates_count += 1
+            code_dict[code] = None # als er 2 duplicate graycodes zijn kunnen we die niet vertrouwen want je weet later niet welke van de 2 bij welke match hoort
+        else:
+            code_dict[code] = coord
+    code_dict = {k: v for k, v in code_dict.items() if v is not None}
+    print(f"removed {duplicates_count} duplicate graycodes. Good matches: {len(code_dict)}")
     return code_dict
 
 def match_coordinates(dict1: dict[Code, Coord], dict2: dict[Code, Coord]) -> tuple[np.ndarray, np.ndarray]:

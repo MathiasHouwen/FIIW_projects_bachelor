@@ -22,7 +22,7 @@ def visualise_decoder_output(h_codes:np.ndarray, v_codes:np.ndarray, mask:np.nda
     plt.title(f"False Color of {title}")
 
 
-def draw_random_matches(left_img, right_img, left_pts, right_pts, num_matches=50):
+def draw_random_matches(left_img, right_img, left_pts, right_pts, num_matches=500):
     combined = np.hstack((left_img, right_img))
     offset = left_img.shape[1]
 
@@ -31,7 +31,7 @@ def draw_random_matches(left_img, right_img, left_pts, right_pts, num_matches=50
     sampled_pts2 = right_pts[idx]
 
     plt.figure(figsize=(12, 6))
-    plt.imshow(combined.astype(np.uint8))
+    plt.imshow(combined.astype(np.uint8), cmap='grey')
     for p1, p2 in zip(sampled_pts1, sampled_pts2):
         x1, y1 = p1
         x2, y2 = p2

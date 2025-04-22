@@ -113,10 +113,10 @@ class GrayCodeDecoder(Decoder):
 
         for frame_group, bit_index in self._frames_grouped_iterator():
             gray_group = frame_group.apply_to_all(lambda img: cv2.cvtColor(img, cv2.COLOR_BGR2GRAY))
-            gray_group_int = gray_group.apply_to_all(lambda img: img.astype(np.int16)) # -255 tot 255
+            frame_group_int = gray_group.apply_to_all(lambda img: img.astype(np.int16)) # -255 tot 255
 
-            h_delta = gray_group_int.h - gray_group_int.h_inv # -255 tot 255
-            v_delta = gray_group_int.v - gray_group_int.v_inv
+            h_delta = frame_group_int.h - frame_group_int.h_inv # -255 tot 255
+            v_delta = frame_group_int.v - frame_group_int.v_inv
 
             # als normal 'veel'(threshold) hoger is dan inv, dan is die lit
             # lit = 255, dark = -255, unsure = 0

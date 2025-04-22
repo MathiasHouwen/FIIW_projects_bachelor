@@ -98,17 +98,9 @@ def show_captures_decoded():
     h_dec, v_dec, mask_dec = decoder.decode_frames()
     visualise_decoder_output(h_dec, v_dec, mask_dec, "right captures")
 
-if __name__ == "__main__":
-    show_pattern_decoded()
-    show_captures_decoded()
-    # show_graycode_patterns()
-    # show_graycode_captures()
 
-    # Calibrate using checkerboard images
-    ret, K, dist, rvecs, tvecs = calibrate_camera_from_checkerboard("../dataset/GrayCodes/chess/*.jpg")
-
-    # Load and undistort an image
-    image = cv2.imread("../dataset/GrayCodes/chess/02.jpg")
+def undistort(path:str, K, dist):
+    image = cv2.imread(path)
     undistorted = undistort_image(image, K, dist)
 
     # Show result
@@ -118,9 +110,31 @@ if __name__ == "__main__":
     plt.figure()
     plt.imshow(undistorted)
     plt.title("undistorted")
+
+if __name__ == "__main__":
+    # show_pattern_decoded()
+    # show_captures_decoded()
+    # show_graycode_patterns()
+    # show_graycode_captures()
+
+    # Calibrate using checkerboard images
+    ret, K, dist, rvecs, tvecs = calibrate_camera_from_checkerboard("../dataset/GrayCodes/chess/*.jpg")
+    undistort("../dataset/GrayCodes/chess/00.jpg", K, dist)
+    undistort("../dataset/GrayCodes/chess/01.jpg", K, dist)
+    undistort("../dataset/GrayCodes/chess/02.jpg", K, dist)
+    undistort("../dataset/GrayCodes/chess/03.jpg", K, dist)
+    undistort("../dataset/GrayCodes/chess/04.jpg", K, dist)
+    undistort("../dataset/GrayCodes/chess/05.jpg", K, dist)
+    undistort("../dataset/GrayCodes/chess/06.jpg", K, dist)
+    undistort("../dataset/GrayCodes/chess/07.jpg", K, dist)
+
+    # Load and undistort an image
+
     # cv2.imshow("Original", image)
     # cv2.imshow("Undistorted", undistorted)
     # cv2.waitKey(0)
     # cv2.destroyAllWindows()
 
     plt.show()
+
+

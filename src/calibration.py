@@ -10,7 +10,7 @@ def calibrate_camera_from_checkerboard(images_path_pattern: str, checkerboard_si
     criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 
     objp = np.zeros((checkerboard_size[0] * checkerboard_size[1], 3), np.float32)
-    objp[:, :2] = np.mgrid[0:checkerboard_size[1], 0:checkerboard_size[0]].T.reshape(-1, 2)
+    objp[:, :2] = np.mgrid[0:checkerboard_size[0], 0:checkerboard_size[1]].T.reshape(-1, 2)
     objp *= square_size
 
     objpoints = []  # 3D points in real world
@@ -18,14 +18,14 @@ def calibrate_camera_from_checkerboard(images_path_pattern: str, checkerboard_si
 
     image_files = glob.glob(images_path_pattern)
     print(f"Found {len(image_files)} images: {image_files}")
-    for fname in image_files:
+    for i, fname in enumerate(image_files):
+        if i > 15: continue
         image = cv2.imread(fname)
         if image is None:
             print(f"Failed to load: {fname}")
             continue
 
-        img = cv2.imread(fname)
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
         ret, corners = cv2.findChessboardCorners(gray, checkerboard_size, None)
         if ret:
@@ -33,9 +33,9 @@ def calibrate_camera_from_checkerboard(images_path_pattern: str, checkerboard_si
             corners2 = cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), criteria)
             imgpoints.append(corners2)
 
-            img = cv2.drawChessboardCorners(img, checkerboard_size, corners2, ret)
+            image = cv2.drawChessboardCorners(image, checkerboard_size, corners2, ret)
             plt.figure()
-            plt.imshow(img)
+            plt.imshow(image)
             plt.title(fname)
             # cv2.imshow('Corners', img)
             # cv2.waitKey(1000)
@@ -51,4 +51,6 @@ def undistort_image(image: np.ndarray, K: np.ndarray, dist: np.ndarray) -> np.nd
     h, w = image.shape[:2]
     new_K, roi = cv2.getOptimalNewCameraMatrix(K, dist, (w, h), 1, (w, h))
     undistorted = cv2.undistort(image, K, dist, None, new_K)
+    x, y, w, h = roi
+    undistorted = undistorted[y:y + h, x:x + w]
     return undistorted

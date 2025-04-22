@@ -1,5 +1,3 @@
-import os
-import time
 from typing import List
 
 import matplotlib.pyplot as plt
@@ -13,66 +11,12 @@ from codec import Encoder
 from GrayCodeCodec import GrayCodeEncoder
 from src.GrayCodeCodec import GrayCodeDecoder
 from src.calibration import calibrate_camera_from_checkerboard, undistort_image
-from src.codec import Decoder
 from src.matching import get_matches_for_essentialMat
-from src.visualisation import visualise_decoder_output, draw_random_matches
+from src.visualisation import visualise_decoder_output, draw_random_matches, visualise_point_cloud
 
 
 def load_views(view_paths: List[str]) -> List[np.array]:
     return [utils.load_images(view) for view in view_paths]
-
-
-def show_graycode_captures():
-    views = [
-        "../dataset/GrayCodes_HighRes/graycodes_view0.xml",
-        "../dataset/GrayCodes_HighRes/graycodes_view1.xml",
-    ]
-    left_view, right_view = load_views(views)
-    show_captures(left_view, right_view)
-
-def show_captures(left_view: List[np.array], right_view: List[np.array]):
-    window_size = (int(left_view[0].shape[1]/2), int(left_view[0].shape[0]/2))
-    left_window_name = "Left view"
-    right_window_name = "Right view"
-
-    cv2.namedWindow(left_window_name, cv2.WINDOW_NORMAL)
-    cv2.resizeWindow(left_window_name, width=window_size[0], height=window_size[1])
-    cv2.namedWindow(right_window_name, cv2.WINDOW_NORMAL)
-    cv2.resizeWindow(right_window_name, width=window_size[0], height=window_size[1])
-
-    for image_left,  image_right in zip(left_view, right_view):
-        cv2.imshow(left_window_name, image_left)
-        cv2.imshow(right_window_name, image_right)
-
-        key = cv2.waitKey(1000)
-        if key == 27:
-            break
-
-    cv2.destroyAllWindows()
-
-
-def show_graycode_patterns():
-    encoder = GrayCodeEncoder(1080, 1920, 10)
-    show_encoder_patterns(encoder)
-
-
-def show_encoder_patterns(encoder: Encoder):
-    window_name = "Pattern"
-    cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
-    cv2.resizeWindow(window_name, encoder.cols // 2, encoder.rows // 2)
-
-    for n in range(encoder.n):
-        pattern = encoder.get_encoding_pattern(n)
-        dummy = np.copy(pattern)
-        pattern = cv2.resize(dummy, (encoder.cols, encoder.rows))
-
-        cv2.imshow(window_name, pattern)
-        key = cv2.waitKey(1000)
-        if key == "27":
-            break
-
-    cv2.destroyAllWindows()
-
 
 def show_pattern_decoded():
     encoder = GrayCodeEncoder(1080, 1920, 10)
@@ -120,107 +64,22 @@ def undistort(path:str, K, dist):
     plt.title("undistorted")
 
 
-def rectify_images(left_img, right_img, K, dist, R, T, width, height):
-    R1, R2, P1, P2, Q, _, _ = cv2.stereoRectify(K, dist, K, dist, (width, height), R, T, alpha=0)
-
-    # Undistort and rectify the images
-    map1x, map1y = cv2.initUndistortRectifyMap(K, dist, R1, P1, (width, height), cv2.CV_32F)
-    map2x, map2y = cv2.initUndistortRectifyMap(K, dist, R2, P2, (width, height), cv2.CV_32F)
-
-    rectified_left = cv2.remap(left_img, map1x, map1y, cv2.INTER_LINEAR)
-    rectified_right = cv2.remap(right_img, map2x, map2y, cv2.INTER_LINEAR)
-
-    return rectified_left, rectified_right, Q
-
-
-def compute_disparity(rectified_left, rectified_right):
-
-    # StereoBM parameters adjustment
-    stereo = cv2.StereoBM_create(numDisparities=64, blockSize=21)
-    disparity = stereo.compute(rectified_left, rectified_right)
-    disparity_normalized = cv2.normalize(disparity, None, 0, 255, cv2.NORM_MINMAX)
-    disparity_normalized = np.uint8(disparity_normalized)
-
-
-
-    plt.figure()
-    plt.imshow(disparity_normalized, cmap='jet')
-    plt.colorbar()
-    plt.title("Disparity Map")
-    plt.show()
-
-    return disparity_normalized
-
-
-def create_point_cloud(disparity, Q):
-    # Convert disparity map to 3D points
-    points_3d = cv2.reprojectImageTo3D(disparity, Q)
-    return points_3d
-
-
-def visualize_point_cloud(points_3d):
-
-    # Visualize the 3D points (only take the valid ones)
-    mask = points_3d[:, :, 2] > 0
-    valid_points = points_3d[mask]
-    print(valid_points.shape[0], mask.shape[0])
-
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-    ax.scatter(valid_points[:, 0], valid_points[:, 1], valid_points[:, 2], s=1)
-
-def draw_horizontal_lines(img, num_lines=10):
-    h, w = img.shape
-    step = h // num_lines
-    color_img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-    for y in range(step, h, step):
-        cv2.line(color_img, (0, y), (w, y), (0, 255, 0), 1)
-    return color_img
-
-def pad_image(image:np.ndarray, pad_width:int):
-    return cv2.copyMakeBorder(image, 0, 0, pad_width, pad_width, cv2.BORDER_CONSTANT, value=[0])
-
 if __name__ == "__main__":
 
-    # Step 1: Get matched points and images
     pts_l, pts_r, left_img, right_img = decode_captures_and_match()
-
-    # Step 2: Calibrate camera using checkerboard
     ret, K, dist, rvecs, tvecs = calibrate_camera_from_checkerboard("../dataset/GrayCodes/chess/*.jpg")
 
-    # Step 3: Find essential matrix and recover relative pose
+    # camera projection:
     E, mask = cv2.findEssentialMat(pts_l, pts_r, K, method=cv2.RANSAC, prob=0.999, threshold=1.0)
     _, R, T, mask_pose = cv2.recoverPose(E, pts_l, pts_r, K)
 
-    print("Rotation Matrix (R):\n", R)
-    print("Translation Vector (T):\n", T)
-
-    # Step 4: Triangulate 2D points directly to 3D
+    # 2d points -> 3d:
     P_l = K @ np.hstack((np.eye(3), np.zeros((3, 1))))  # Left camera projection matrix
     P_r = K @ np.hstack((R, T))                         # Right camera projection matrix
-
-    # Convert to shape (2, N)
-    pts_l_h = pts_l.T
-    pts_r_h = pts_r.T
-
-    # Triangulate
-    points_4d = cv2.triangulatePoints(P_l, P_r, pts_l_h, pts_r_h)
+    points_4d = cv2.triangulatePoints(P_l, P_r, pts_l.T, pts_r.T) # transpose zodat shape 2,N is ipv N,2
     points_3d = cv2.convertPointsFromHomogeneous(points_4d.T).reshape(-1, 3)
 
-    # Step 5: Visualize point cloud
-    x = np.clip(pts_l[:, 0].astype(int), 0, left_img.shape[1] - 1)
-    y = np.clip(pts_l[:, 1].astype(int), 0, left_img.shape[0] - 1)
-    colors = left_img[y, x] / 255.0  # normalize if grayscale
-    if len(colors.shape) == 1:  # grayscale → convert to RGB
-        colors = np.stack([colors] * 3, axis=1)
-    matplotlib.use("TkAgg") # force een echte window zodat de 3d interactive is want pycharm captured windows in de IDE
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-    ax.scatter(points_3d[:, 0], points_3d[:, 1], points_3d[:, 2], c=colors, s=0.5)
-    ax.set_title("3D Point Cloud")
-    ax.set_xlabel("X")
-    ax.set_ylabel("Y")
-    ax.set_zlabel("Z")
-    ax.view_init(elev=90, azim=90)
-    plt.tight_layout()
+    # visualisation:
+    visualise_point_cloud(points_3d, pts_l, left_img, downsample=False, view_angle=(-45, -30, -60))
+
     plt.show()

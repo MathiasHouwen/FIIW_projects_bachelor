@@ -70,8 +70,8 @@ def calibrate_camera_and_undistort(info:dict[str, Any], out_folder:str):
 
 
 if __name__ == "__main__":
-    info = {"w": 1200, "h": 800, "folder": "GrayCodes"}
-    # info = {"w":4752, "h":3168, "folder": "GrayCodes_HighRes"}
+    # info = {"w": 1200, "h": 800, "folder": "GrayCodes"}
+    info = {"w":4752, "h":3168, "folder": "GrayCodes_HighRes"}
 
     out_folder = "../dataset_output"
     out_folder_chess = "../dataset_output/chess"

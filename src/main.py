@@ -11,7 +11,8 @@ from GrayCodeCodec import GrayCodeEncoder
 from src.GrayCodeCodec import GrayCodeDecoder
 from src.calibration import calibrate_camera_from_checkerboard, undistort_image
 from src.codec import Decoder
-from src.visualisation import visualise_decoder_output
+from src.matching import get_matches_for_essentialMat
+from src.visualisation import visualise_decoder_output, draw_random_matches
 
 
 def load_views(view_paths: List[str]) -> List[np.array]:
@@ -91,13 +92,17 @@ def show_captures_decoded():
     left_view, right_view = load_views(views)
     for n, view in enumerate(left_view[2:]): # splicing vanaf 2 want image 0 en 1 zijn full lit of full dark
         decoder.set_frame(n, view)
-    h_dec, v_dec, mask_dec = decoder.decode_frames()
-    visualise_decoder_output(h_dec, v_dec, mask_dec, "left captures")
+    h_dec_l, v_dec_l, mask_dec_l = decoder.decode_frames()
+    visualise_decoder_output(h_dec_l, v_dec_l, mask_dec_l, "left captures")
     for n, view in enumerate(right_view[2:]):
         decoder.set_frame(n, view)
-    h_dec, v_dec, mask_dec = decoder.decode_frames()
-    visualise_decoder_output(h_dec, v_dec, mask_dec, "right captures")
+    h_dec_r, v_dec_r, mask_dec_r = decoder.decode_frames()
+    visualise_decoder_output(h_dec_r, v_dec_r, mask_dec_r, "right captures")
 
+    pts_l, pts_r = get_matches_for_essentialMat(h_dec_l, v_dec_l, mask_dec_l,
+                                                h_dec_r, v_dec_r, mask_dec_r)
+
+    draw_random_matches(left_view[0], right_view[0], pts_l, pts_r)
 
 def undistort(path:str, K, dist):
     image = cv2.imread(path)
@@ -113,20 +118,20 @@ def undistort(path:str, K, dist):
 
 if __name__ == "__main__":
     # show_pattern_decoded()
-    # show_captures_decoded()
+    show_captures_decoded()
     # show_graycode_patterns()
     # show_graycode_captures()
 
     # Calibrate using checkerboard images
-    ret, K, dist, rvecs, tvecs = calibrate_camera_from_checkerboard("../dataset/GrayCodes/chess/*.jpg")
-    undistort("../dataset/GrayCodes/chess/00.jpg", K, dist)
-    undistort("../dataset/GrayCodes/chess/01.jpg", K, dist)
-    undistort("../dataset/GrayCodes/chess/02.jpg", K, dist)
-    undistort("../dataset/GrayCodes/chess/03.jpg", K, dist)
-    undistort("../dataset/GrayCodes/chess/04.jpg", K, dist)
-    undistort("../dataset/GrayCodes/chess/05.jpg", K, dist)
-    undistort("../dataset/GrayCodes/chess/06.jpg", K, dist)
-    undistort("../dataset/GrayCodes/chess/07.jpg", K, dist)
+    # ret, K, dist, rvecs, tvecs = calibrate_camera_from_checkerboard("../dataset/GrayCodes/chess/*.jpg")
+    # undistort("../dataset/GrayCodes/chess/00.jpg", K, dist)
+    # undistort("../dataset/GrayCodes/chess/01.jpg", K, dist)
+    # undistort("../dataset/GrayCodes/chess/02.jpg", K, dist)
+    # undistort("../dataset/GrayCodes/chess/03.jpg", K, dist)
+    # undistort("../dataset/GrayCodes/chess/04.jpg", K, dist)
+    # undistort("../dataset/GrayCodes/chess/05.jpg", K, dist)
+    # undistort("../dataset/GrayCodes/chess/06.jpg", K, dist)
+    # undistort("../dataset/GrayCodes/chess/07.jpg", K, dist)
 
     # Load and undistort an image
 

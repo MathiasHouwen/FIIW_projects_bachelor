@@ -4,21 +4,6 @@ import glob
 
 
 def calibrate_camera_from_checkerboard(images_path_pattern: str, checkerboard_size = (9, 7), square_size=1.0):
-    """
-    Calibrate camera from checkerboard images.
-
-    Args:
-        images_path_pattern: Path pattern to find checkerboard images (e.g., 'calib/*.png').
-        checkerboard_size: (rows, cols) of inner corners on checkerboard.
-        square_size: Size of one square on the checkerboard, in your preferred unit (e.g., cm).
-
-    Returns:
-        ret: Reprojection error
-        K: Camera matrix
-        dist: Distortion coefficients
-        rvecs: Rotation vectors
-        tvecs: Translation vectors
-    """
     # Criteria for cornerSubPix
     criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 
@@ -58,9 +43,6 @@ def calibrate_camera_from_checkerboard(images_path_pattern: str, checkerboard_si
 
 
 def undistort_image(image: np.ndarray, K: np.ndarray, dist: np.ndarray) -> np.ndarray:
-    """
-    Undistort an image using the camera matrix and distortion coefficients.
-    """
     h, w = image.shape[:2]
     new_K, roi = cv2.getOptimalNewCameraMatrix(K, dist, (w, h), 1, (w, h))
     undistorted = cv2.undistort(image, K, dist, None, new_K)

@@ -63,3 +63,7 @@ def load_images(folder, image_size: tuple):
 
     return (images[indices[:split_idx]], class_ids[indices[:split_idx]]),\
         (images[indices[split_idx:]], class_ids[indices[split_idx:]])
+
+
+if __name__ == "__main__":
+    create_dataset(50, "./Data")

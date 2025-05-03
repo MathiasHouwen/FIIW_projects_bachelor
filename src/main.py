@@ -1,56 +1,79 @@
 import tensorflow as tf
 import keras
+import cv2
+import os
+import numpy as np
 from keras import layers
 import matplotlib.pyplot as plt
 
 from utils import load_images
 
-path = ""
-image_size = 0
+# -------- CONFIG --------
+IMAGE_SIZE = (224, 224)
+DATA_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'Data'))
 
-# Load dataset
-(x_train, y_train), (x_test, y_test) = load_images("./Data", image_size)
+# -------- LOAD DATASET --------
+(x_train, y_train), (x_test, y_test) = load_images(DATA_PATH, IMAGE_SIZE)
 
-# Create CNN
-num_classes = 2
+# -------- CUSTOM CNN --------
+def build_custom_model():
+    model = keras.Sequential([
+        layers.Conv2D(32, (3, 3), activation='relu', input_shape=(IMAGE_SIZE[0], IMAGE_SIZE[1], 3)),
+        layers.MaxPooling2D(2, 2),
+        layers.Conv2D(64, (3, 3), activation='relu'),
+        layers.MaxPooling2D(2, 2),
+        layers.Flatten(),
+        layers.Dense(64, activation='relu'),
+        layers.Dense(1, activation='sigmoid')  # Binary classification
+    ])
+    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+    return model
 
-model = keras.Sequential([
-    keras.Input(shape=(image_size, image_size, 1)),  # Or 3 if RGB images
-    layers.Conv2D(32, kernel_size=(3, 3), activation="relu"),
-    layers.MaxPooling2D(pool_size=(2, 2)),
-    layers.Conv2D(64, kernel_size=(3, 3), activation="relu"),
-    layers.MaxPooling2D(pool_size=(2, 2)),
-    layers.Flatten(),
-    layers.Dropout(0.5),
-    layers.Dense(num_classes, activation="softmax"),
-])
+model_custom = build_custom_model()
+history_custom = model_custom.fit(x_train, y_train, epochs=10, validation_data=(x_test, y_test))
 
-model.compile(loss="sparse_categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
+# -------- EVALUATE & PLOT --------
+def plot_history(history, title="Model Accuracy"):
+    plt.plot(history.history['accuracy'], label='Train Acc')
+    plt.plot(history.history['val_accuracy'], label='Val Acc')
+    plt.title(title)
+    plt.xlabel('Epoch')
+    plt.ylabel('Accuracy')
+    plt.legend()
+    plt.show()
 
-# Train data
-history = model.fit(
-    x_train, y_train,
-    batch_size=32,
-    epochs=15,
-    validation_split=0.1  # 10% of training data for validation
-)
+plot_history(history_custom, "Custom CNN Accuracy")
 
-plt.figure(figsize=(12, 4))
+# -------- TESTING CUSTOM MODEL --------
+def test_webcam(model, preprocess=None):
+    cap = cv2.VideoCapture(0)
+    print("Press 'q' to quit.")
 
-plt.subplot(1, 2, 1)
-plt.plot(history.history['accuracy'], label='train acc')
-plt.plot(history.history['val_accuracy'], label='val acc')
-plt.title('Accuracy')
-plt.legend()
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
 
-plt.subplot(1, 2, 2)
-plt.plot(history.history['loss'], label='train loss')
-plt.plot(history.history['val_loss'], label='val loss')
-plt.title('Loss')
-plt.legend()
+        input_img = cv2.resize(frame, (IMAGE_SIZE, IMAGE_SIZE))
+        input_img = np.expand_dims(input_img, axis=0).astype('float32')
 
-plt.show()
+        if preprocess:
+            input_img = preprocess(input_img)
+        else:
+            input_img /= 255.0
 
-# Evaluation
-test_loss, test_acc = model.evaluate(x_test, y_test, verbose=2)
-print(f"Test accuracy: {test_acc:.2f}")
+        pred = model.predict(input_img)[0][0]
+        label = "Gesture" if pred > 0.5 else "No Gesture"
+
+        cv2.putText(frame, f"{label} ({pred:.2f})", (10, 30),
+                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0) if pred > 0.5 else (0, 0, 255), 2)
+
+        cv2.imshow('Gesture Prediction', frame)
+
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+test_webcam(model_custom)  # Uncomment to test

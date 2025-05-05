@@ -36,7 +36,7 @@ def create_dataset(num_images: int, location: str):
             print(f"Image of pose b saved \t images_a: {images_a} \t images_b: {images_b} \t total: {images_a + images_b}")
 
 
-def load_images(folder, image_size: tuple):
+def load_images(folder, image_size: tuple, gray:bool):
     class_names = [dir for dir in os.listdir(folder) if os.path.isdir(os.path.join(folder, dir))]
 
     images = []
@@ -47,7 +47,10 @@ def load_images(folder, image_size: tuple):
 
         for file in os.listdir(class_path):
             image = cv2.imread(os.path.join(class_path, file))
-            image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+            if gray:
+                image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+            else:
+                image = cv2.cvtColor(image, cv2.COLOR_BAYER_BG2RGB)
             image = cv2.resize(image, image_size)
 
             images.append(image)

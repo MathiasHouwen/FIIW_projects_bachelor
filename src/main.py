@@ -1,9 +1,13 @@
 from os.path import abspath, dirname, join
+
+import numpy as np
 from tensorflow import config as tf_config
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout, BatchNormalization
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.image import rgb_to_grayscale
+
 from utils import load_images
 from visualisation import plot_history, show_augmentations
 from webcam_test import webcam
@@ -14,15 +18,20 @@ gpus = tf_config.experimental.list_physical_devices('GPU')
 print("GPU devices:", gpus)
 IMAGE_SIZE = (224, 224)
 DATA_PATH = abspath(join(dirname(__file__), '..', 'Data'))
+GRAY = True
 
 # -------- LOAD DATASET --------
-(x_train, y_train), (x_test, y_test) = load_images(DATA_PATH, IMAGE_SIZE)
+(x_train, y_train), (x_test, y_test) = load_images(DATA_PATH, IMAGE_SIZE, GRAY)
+if GRAY:
+    x_train = np.expand_dims(x_train, axis=-1) # add one channel dimension cuz gray removes all RGB channels
+    x_test = np.expand_dims(x_test, axis=-1)
+
 
 # -------- CUSTOM CNN --------
 
 def build_custom_model():
     model = Sequential([
-        Conv2D(32, (5, 5), activation='relu', input_shape=(IMAGE_SIZE[0], IMAGE_SIZE[1], 3)),
+        Conv2D(32, (5, 5), activation='relu', input_shape=(IMAGE_SIZE[0], IMAGE_SIZE[1], 1 if GRAY else 3)),
         BatchNormalization(),
         MaxPooling2D(2, 2),
 
@@ -60,7 +69,7 @@ show_augmentations(train_datagen, x_train[0])
 
 
 model = build_custom_model()
-train_generator = train_datagen.flow(x_train, y_train, batch_size=16)
+train_generator = train_datagen.flow(x_train, y_train, batch_size=8)
 val_generator = test_datagen.flow(x_test, y_test)
 history = model.fit(train_generator, epochs=20, validation_data=val_generator)
 

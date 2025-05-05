@@ -68,7 +68,7 @@ def train_main(imsize, datapath, gray):
     model = build_custom_model(gray)
     train_generator = train_datagen().flow(x_train, y_train, batch_size=16)
     val_generator = test_datagen().flow(x_test, y_test)
-    history = model.fit(train_generator, epochs=100, validation_data=val_generator)
+    history = model.fit(train_generator, epochs=20, validation_data=val_generator)
     
     plot_history(history)
     return model

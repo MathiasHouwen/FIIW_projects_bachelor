@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 import cv2
 
-def webcam_main(model, imsize, gray, preprocess=None):
+def webcam_main(model, imsize, gray, threshold=75, preprocess=None):
     cap = cv2.VideoCapture(0)
     print("Press 'q' to quit.")
 
@@ -30,13 +30,13 @@ def webcam_main(model, imsize, gray, preprocess=None):
             input_img = input_img / 255.0  # normalize if no preprocessing function
 
         # Predict
-        pred = model.predict(input_img, verbose=0)[0][0]
-        label = "Gesture" if pred > 0.5 else "No Gesture"
+        pred = (1 - model.predict(input_img, verbose=0)[0][0]) * 100
+        label = "Mondje open" if pred > threshold else "Mondje dicht"
 
         # Display label
         display_frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR) if not gray else cv2.cvtColor(frame, cv2.COLOR_GRAY2BGR)
-        cv2.putText(display_frame, f"{label} ({pred:.2f})", (10, 30),
-                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0) if pred > 0.5 else (0, 0, 255), 2)
+        cv2.putText(display_frame, f"{label} ({round(pred)}%)", (10, 30),
+                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0) if pred > threshold else (0, 0, 255), 2)
 
         cv2.imshow('Gesture Prediction', display_frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):

@@ -5,8 +5,8 @@ from webcam_test import webcam_main
 
 
 # -------- CONFIG --------
-MODE = 'TRAIN'
-# MODE = 'PLAY'
+# MODE = 'TRAIN'
+MODE = 'PLAY'
 IMAGE_SIZE = (224, 224)
 DATA_PATH = abspath(join(dirname(__file__), '..', 'Data'))
 GRAY = False

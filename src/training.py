@@ -15,43 +15,64 @@ from visualisation import plot_history, show_augmentations
 
 # -------- CUSTOM CNN --------
 
-def build_custom_model(gray):
+def build_custom_model(gray, imsize):
     # base_model = EfficientNetB0(weights='imagenet', include_top=False, input_shape=(224, 224, 1 if gray else 3))
-    base_model = MobileNetV2(weights='imagenet', include_top=False, input_shape=(224, 224, 1 if gray else 3))
-    base_model.trainable = True
-    for layer in base_model.layers[:-20]:  # Freeze all but last 20 layers
-        layer.trainable = False
+    # base_model = MobileNetV2(weights='imagenet', include_top=False, input_shape=(imsize[0], imsize[1], 1 if gray else 3))
+    # base_model.trainable = True
+    # for layer in base_model.layers[:-20]:  # Freeze all but last 20 layers
+    #     layer.trainable = False
 
-    inputs = Input(shape=(224, 224, 3))
-    x = base_model(inputs, training=False)
-    x = GlobalAveragePooling2D()(x)
-    x = Dropout(0.3)(x)
-    outputs = Dense(1, activation='sigmoid')(x)
+    # inputs = Input(shape=(imsize[0], imsize[1], 3))
+    # x = base_model(inputs, training=False)
+    # x = GlobalAveragePooling2D()(x)
+    # x = Dropout(0.3)(x)
+    # outputs = Dense(1, activation='sigmoid')(x)
 
-    model = Model(inputs, outputs)
-    model.compile(optimizer=Adam(learning_rate=1e-5), loss='binary_crossentropy', metrics=['accuracy'])
+    # model = Model(inputs, outputs)
+    # model.compile(optimizer=Adam(learning_rate=1e-5), loss='binary_crossentropy', metrics=['accuracy'])
+    # return model
+    model = Sequential([
+        Conv2D(32, (5, 5), activation='relu', input_shape=(224, 224, 1 if gray else 3)),
+        BatchNormalization(),
+        MaxPooling2D(2, 2),
+
+        Conv2D(64, (3, 3), activation='relu'),
+        BatchNormalization(),
+        MaxPooling2D(2, 2),
+
+        Conv2D(128, (3, 3), activation='relu'),  # Added 3rd conv layer
+        BatchNormalization(),
+        MaxPooling2D(2, 2),
+
+        Flatten(),
+        Dense(128, activation='relu'),
+        Dropout(0.4),
+        Dense(1, activation='sigmoid')
+    ])
+    model.compile(optimizer=Adam(learning_rate=1e-4), loss='binary_crossentropy', metrics=['accuracy'])
     return model
+
 
 
 def train_datagen():
     return ImageDataGenerator(
-    preprocessing_function=preprocess_input,
-    horizontal_flip=True
+    # preprocessing_function=preprocess_input,
+    # horizontal_flip=True
     
-    # rescale=1./255,
-    # rotation_range=3,
-    # zoom_range=0.4,
-    # shear_range=1,
-    # width_shift_range=0.05,
-    # height_shift_range=0.05,
-    # brightness_range=[0.9, 1.1],
-    # horizontal_flip=True,
-    # fill_mode='nearest'
+    rescale=1./255,
+    rotation_range=3,
+    zoom_range=0.4,
+    shear_range=1,
+    width_shift_range=0.05,
+    height_shift_range=0.05,
+    brightness_range=[0.5, 1.3],
+    horizontal_flip=True,
+    fill_mode='nearest'
 )
 def test_datagen():
     return ImageDataGenerator(
-    preprocessing_function=preprocess_input,
-    # rescale=1./255
+    # preprocessing_function=preprocess_input,
+    rescale=1./255
 )
 
 def train_main(imsize, datapath, gray):
@@ -66,11 +87,12 @@ def train_main(imsize, datapath, gray):
         
     show_augmentations(train_datagen(), x_train[0])    
 
-    model = build_custom_model(gray)
+    model = build_custom_model(gray, imsize)
     train_generator = train_datagen().flow(x_train, y_train, batch_size=16)
     val_generator = test_datagen().flow(x_test, y_test)
-    history = model.fit(train_generator, epochs=20, validation_data=val_generator)
+    history = model.fit(train_generator, epochs=50, validation_data=val_generator)
     
     plot_history(history)
+
     return model
 

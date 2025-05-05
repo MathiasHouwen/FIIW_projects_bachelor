@@ -6,12 +6,12 @@ from game_controller import GestureGameController
 
 
 # -------- CONFIG --------
-# MODE = 'TRAIN'
-MODE = 'PLAY'
+MODE = 'TRAIN'
+# MODE = 'PLAY'
 # MODE = 'TEST'
 IMAGE_SIZE = (224, 224)
 DATA_PATH = abspath(join(dirname(__file__), '..', 'Data'))
-GRAY = False
+GRAY = True
 
 if MODE == 'TRAIN':
     model = train_main(IMAGE_SIZE, DATA_PATH, GRAY)

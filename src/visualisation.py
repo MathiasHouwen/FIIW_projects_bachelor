@@ -1,14 +1,31 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-def plot_history(history, title="Model Accuracy"):
-    plt.plot(history.history['accuracy'], label='Train Acc')
-    plt.plot(history.history['val_accuracy'], label='Val Acc')
-    plt.title(title)
-    plt.xlabel('Epoch')
-    plt.ylabel('Accuracy')
-    plt.legend()
+
+import matplotlib.pyplot as plt
+
+def plot_history(history, title="Model Performance"):
+    fig, axs = plt.subplots(1, 2, figsize=(12, 5))
+
+    # Accuracy plot
+    axs[0].plot(history.history['accuracy'], label='Train Acc')
+    axs[0].plot(history.history['val_accuracy'], label='Val Acc')
+    axs[0].set_title(f"{title} - Accuracy")
+    axs[0].set_xlabel('Epoch')
+    axs[0].set_ylabel('Accuracy')
+    axs[0].legend()
+
+    # Loss plot
+    axs[1].plot(history.history['loss'], label='Train Loss')
+    axs[1].plot(history.history['val_loss'], label='Val Loss')
+    axs[1].set_title(f"{title} - Loss")
+    axs[1].set_xlabel('Epoch')
+    axs[1].set_ylabel('Loss')
+    axs[1].legend()
+
+    plt.tight_layout()
     plt.show()
+
 
 
 def show_augmentations(datagen, sample_img):

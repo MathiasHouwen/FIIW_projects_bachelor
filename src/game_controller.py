@@ -5,12 +5,13 @@ import time
 
 
 class GestureGameController:
-    def __init__(self, model, image_size=(224, 224), threshold=75, cooldown=1.0):
+    def __init__(self, model, image_size=(224, 224), threshold=75, cooldown_seconds=0.5):
         self.model = model
         self.image_size = image_size
         self.threshold = threshold
-        self.cooldown = cooldown
+        self.cooldown_seconds = cooldown_seconds
         self.last_action_time = 0
+        self.gesture_active = False
         self.cap = cv2.VideoCapture(0)
 
     def preprocess(self, frame):
@@ -28,13 +29,17 @@ class GestureGameController:
 
             img = self.preprocess(frame)
             pred = (1 - self.model.predict(img, verbose=0)[0][0]) * 100
-            
+            gesture_detected = pred > self.threshold
+            current_time = time.time()
 
-            if pred > self.threshold and time.time() - self.last_action_time > self.cooldown:
-                self.perform_action()
-                self.last_action_time = time.time()
+            if gesture_detected:
+                if not self.gesture_active and (current_time - self.last_action_time) > self.cooldown_seconds:
+                    self.perform_action()
+                    self.last_action_time = current_time
+                    self.gesture_active = True
                 label = "Mondje open"
             else:
+                self.gesture_active = False
                 label = "Mondje dicht"
 
             self.display_frame(frame, label, pred)
@@ -46,9 +51,7 @@ class GestureGameController:
 
     def perform_action(self):
         print("Performing action: SPACE")
-        pyautogui.keyDown('space')
-        time.sleep(0.1)
-        pyautogui.keyUp('space')
+        pyautogui.press('space')
 
     def display_frame(self, frame, label, pred):
         cv2.putText(frame, f"{label} ({pred:.2f})", (10, 30),

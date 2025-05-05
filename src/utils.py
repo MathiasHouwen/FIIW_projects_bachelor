@@ -50,7 +50,7 @@ def load_images(folder, image_size: tuple, gray:bool):
             if gray:
                 image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
             else:
-                image = cv2.cvtColor(image, cv2.COLOR_BAYER_BG2RGB)
+                image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
             image = cv2.resize(image, image_size)
 
             images.append(image)

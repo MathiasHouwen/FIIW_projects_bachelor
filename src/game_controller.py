@@ -2,13 +2,11 @@ import cv2
 import numpy as np
 import pyautogui
 import time
-from keras import *
-from keras.src.saving import load_model
 
 
 class GestureGameController:
-    def __init__(self, model_path, image_size=(224, 224), threshold=0.5, cooldown=1.0):
-        self.model = load_model(model_path)
+    def __init__(self, model, image_size=(224, 224), threshold=75, cooldown=1.0):
+        self.model = model
         self.image_size = image_size
         self.threshold = threshold
         self.cooldown = cooldown
@@ -16,9 +14,10 @@ class GestureGameController:
         self.cap = cv2.VideoCapture(0)
 
     def preprocess(self, frame):
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         img = cv2.resize(frame, self.image_size)
-        img = img.astype("float32") / 255.0
-        return np.expand_dims(img, axis=0)
+        img = np.expand_dims(img, axis=0).astype('float32')
+        return img / 255.0
 
     def detect_and_act(self):
         print("Gesture control started. Press 'q' to quit.")
@@ -28,14 +27,15 @@ class GestureGameController:
                 break
 
             img = self.preprocess(frame)
-            pred = self.model.predict(img)[0][0]
+            pred = (1 - self.model.predict(img, verbose=0)[0][0]) * 100
+            
 
             if pred > self.threshold and time.time() - self.last_action_time > self.cooldown:
                 self.perform_action()
                 self.last_action_time = time.time()
-                label = "Gesture Detected"
+                label = "Mondje open"
             else:
-                label = "No Gesture"
+                label = "Mondje dicht"
 
             self.display_frame(frame, label, pred)
 

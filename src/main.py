@@ -6,8 +6,8 @@ from game_controller import GestureGameController
 
 
 # -------- CONFIG --------
-MODE = 'TRAIN'
-# MODE = 'PLAY'
+# MODE = 'TRAIN'
+MODE = 'PLAY'
 # MODE = 'TEST'
 IMAGE_SIZE = (224, 224)
 DATA_PATH = abspath(join(dirname(__file__), '..', 'Data'))
@@ -21,13 +21,14 @@ elif MODE == 'TEST':
     model = load_model("trained_model.h5")
     model.load_weights("trained_model_weights.h5")
 
-    webcam_main(model, IMAGE_SIZE, GRAY)  # Uncomment to test
+    webcam_main(model, IMAGE_SIZE, GRAY, threshold=75)  # Uncomment to test
 else:
+    model = load_model("trained_model.h5")
+    model.load_weights("trained_model_weights.h5")
     controller = GestureGameController(
-        model_path="trained_model.h5",
-        image_size=(224, 224),
-        threshold=0.5,
-        cooldown=1.0
+        model=model,
+        image_size=IMAGE_SIZE,
+        threshold=75
     )
 
     controller.detect_and_act()

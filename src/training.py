@@ -1,5 +1,5 @@
 import numpy as np
-from tensorflow.keras.applications import MobileNetV2
+from tensorflow.keras.applications import MobileNetV2, EfficientNetB0
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 from tensorflow import config as tf_config
 from tensorflow.keras.models import Sequential, Model, load_model
@@ -16,7 +16,8 @@ from visualisation import plot_history, show_augmentations
 # -------- CUSTOM CNN --------
 
 def build_custom_model(gray):
-    base_model = MobileNetV2(include_top=False, weights='imagenet', input_shape=(224, 224, 1 if gray else 3))
+    # base_model = EfficientNetB0(weights='imagenet', include_top=False, input_shape=(224, 224, 1 if gray else 3))
+    base_model = MobileNetV2(weights='imagenet', include_top=False, input_shape=(224, 224, 1 if gray else 3))
     base_model.trainable = True
     for layer in base_model.layers[:-20]:  # Freeze all but last 20 layers
         layer.trainable = False

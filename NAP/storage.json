@@ -1,0 +1,18 @@
+{
+    "afe09ab9-cb13-4b9f-973e-14aa9b81feec": {
+        "organizer": "organisator@example.com",
+        "dates": {
+            "2025-06-01": [
+                "jan@example.com"
+            ],
+            "2025-06-02": [
+                "jan@example.com"
+            ],
+            "2025-06-03": []
+        },
+        "voted": [
+            "jan@example.com"
+        ],
+        "final_date": null
+    }
+}

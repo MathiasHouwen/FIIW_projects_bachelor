@@ -8,11 +8,12 @@
       const organizer = document.getElementById("organizer").value;
       const dates = document.getElementById("dates").value.split(",");
       const invitees = document.getElementById("invitees").value.split(",");
+      const eventName = document.getElementById("event_name").value;
 
       const res = await fetch("/create_poll", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ organizer_email: organizer, dates, invitees })
+        body: JSON.stringify({ event_name: eventName, organizer_email: organizer, dates, invitees })
       });
 
       const data = await res.json();
@@ -22,6 +23,9 @@
 </head>
 <body style="font-family: sans-serif; padding: 2em">
   <h1>Evenement Poll Aanmaken</h1>
+
+  <label>Naam van het evenement:</label><br />
+  <input id="event_name" type="text" placeholder="BBQ, vergadering..." /><br /><br />
 
   <label>Organisator E-mail:</label><br />
   <input id="organizer" type="email" /><br /><br />

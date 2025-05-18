@@ -8,10 +8,11 @@ app = Flask(__name__)
 @app.route("/create_poll", methods=["POST"])
 def create():
     data = request.json
-    poll_id = create_poll(data["organizer_email"], data["dates"])
+    poll_id = create_poll(data["event_name"], data["organizer_email"], data["dates"])
     for email in data["invitees"]:
-        send_invitation(email, poll_id)
+        send_invitation(email, poll_id, data["event_name"])
     return jsonify({"poll_id": poll_id})
+
 
 @app.route("/vote", methods=["POST"])
 def vote_endpoint():
@@ -22,6 +23,14 @@ def vote_endpoint():
     poll = get_poll(data["poll_id"])
     send_update_to_organizer(poll["organizer"], data["user_email"])
     return jsonify({"status": "Succesvol gestemd"})
+
+@app.route("/poll/<poll_id>")
+def vote_page(poll_id):
+    poll = get_poll(poll_id)
+    if not poll:
+        return "Poll niet gevonden", 404
+    weather = {date: get_weather_for_date(date) for date in poll["dates"]}
+    return render_template("vote.html", poll_id=poll_id, poll=poll, weather=weather)
 
 @app.route("/poll/<poll_id>", methods=["GET"])
 def get_poll_info(poll_id):

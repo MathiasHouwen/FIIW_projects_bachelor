@@ -14,10 +14,11 @@ def save_storage(data):
     with open(STORAGE_FILE, "w") as f:
         json.dump(data, f, indent=4)
 
-def create_poll(organizer_email, dates):
+def create_poll(event_name, organizer_email, dates):
     poll_id = str(uuid.uuid4())
     data = load_storage()
     data[poll_id] = {
+        "event_name": event_name,
         "organizer": organizer_email,
         "dates": {date: [] for date in dates},
         "voted": [],
@@ -26,8 +27,11 @@ def create_poll(organizer_email, dates):
     save_storage(data)
     return poll_id
 
+
 def vote(poll_id, user_email, selected_dates):
     data = load_storage()
+    poll = data.get(poll_id)
+
     if poll_id not in data or user_email in data[poll_id]["voted"]:
         return False
 

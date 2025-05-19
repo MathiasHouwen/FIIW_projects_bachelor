@@ -43,3 +43,63 @@ strategieDynamisch (huidig:_) =
       | h > 20     = if v > mv then 3 else 0
       | otherwise  = min mk (min bf (v - mv + 1))
   in fromInteger tegengas
+
+-- ============================================== --
+-- =============== SIM FUNC ===================== --
+-- ============================================== --
+
+-- Simulatiefunctie
+simuleerLanding :: Strategie -> Maanlander -> IO ()
+simuleerLanding strategie maanlander = simuleerHelper strategie [maanlander] 0
+
+-- Hulpfunctie: recursieve simulatie per seconde
+simuleerHelper :: Strategie -> [Maanlander] -> Int -> IO ()
+simuleerHelper strategie geschiedenis tijd = do
+  let huidig = head geschiedenis
+  let gas = strategie geschiedenis
+  let gasInteger = toInteger gas
+
+  -- Bereken nieuwe waarden
+  let versnelling = zwaartekracht huidig - gasInteger
+  let nieuweSnelheid = snelheid huidig + versnelling
+  let nieuweHoogte = hoogte huidig - nieuweSnelheid
+  let nieuweBrandstof = max 0 (brandstof huidig - gasInteger)
+
+  -- Nieuwe toestand
+  let nieuw = Maanlander
+        { hoogte = max 0 nieuweHoogte
+        , snelheid = nieuweSnelheid
+        , brandstof = nieuweBrandstof
+        , motorkracht = motorkracht huidig
+        , maxSnelheid = maxSnelheid huidig
+        , zwaartekracht = zwaartekracht huidig
+        }
+
+  -- Toon status
+  putStrLn ("Tijd: " ++ show tijd ++ "s | Hoogte: " ++ show (hoogte nieuw)
+    ++ " m | Snelheid: " ++ show (snelheid nieuw) ++ " m/s | Brandstof: "
+    ++ show (brandstof nieuw) ++ " | Tegengas: " ++ show gas)
+
+  -- Check voor landing
+  if hoogte nieuw <= 0
+    then
+      if snelheid nieuw <= maxSnelheid nieuw
+        then putStrLn "\n GELAND! Zachte landing."
+        else putStrLn "\n CRASH! Te snel geraakt."
+    else
+      simuleerHelper strategie (nieuw : geschiedenis) (tijd + 1)
+
+-- Beginwaarde voor de maanlander
+startMaanlander :: Maanlander
+startMaanlander = Maanlander
+  { hoogte = 500
+  , snelheid = 0
+  , brandstof = 120
+  , motorkracht = 5
+  , maxSnelheid = 5
+  , zwaartekracht = 2
+  }
+
+-- Main om te testen
+main :: IO ()
+main = simuleerLanding strategieConstanteRemming startMaanlander

@@ -1,6 +1,8 @@
 import Data.Char (toLower)
 import Data.List (nub)
 import qualified Data.Set as Set
+import GHC.Float (Floating(sqrt))
+import GHC.Real (fromIntegral)
 
 -- Type klasse
 class Similarity a where
@@ -34,21 +36,30 @@ instance Similarity String where
     distance s1 s2 = 1 - similarity s1 s2
 
 instance Similarity Int where
-    similarity x y = 1 - (absDist / maxDist)
-      where
-        absDist = fromIntegral (abs (x - y))
-        maxDist = 100
-    
-    distance x y = fromIntegral (abs (x - y))
+  similarity x y = 1 - (absDist / maxDist)
+    where
+      absDist = fromIntegral (abs (x - y))
+      maxDist = 100
+  
+  distance x y = fromIntegral (abs (x - y))
 
 data Point = Point Double Double deriving (Show, Eq)
 instance Similarity Point where
-    similarity (Point x1 y1) (Point x2 y2) = 1 - (d / maxD)
-      where
-        d = sqrt ((x2 - x1)^2 + (y2 - y1)^2)
-        maxD = 100
+  similarity p1 p2 = 1 - (distance p1 p2 / maxD)
+    where
+      maxD = 100
 
-    distance (Point x1 y1) (Point x2 y2) = sqrt ((x2 - x1)^2 + (y2 - y1)^2)
+  distance (Point x1 y1) (Point x2 y2) =
+    sqrt ((x2 - x1)^2 + (y2 - y1)^2)
+
+data Color = Color Int Int Int deriving (Show, Eq)
+instance Similarity Color where
+  similarity c1 c2 = 1 - (distance c1 c2 / maxD)
+    where
+      maxD = sqrt (3 * (255^2))
+
+  distance (Color r1 g1 b1) (Color r2 g2 b2) =
+    sqrt (fromIntegral ((r1 - r2)^2 + (g1 - g2)^2 + (b1 - b2)^2))
 
 -- Verieste functies
 filterBySimilarity :: (Similarity a) => [a] -> Double -> a -> [a]

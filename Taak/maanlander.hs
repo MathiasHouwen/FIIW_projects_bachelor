@@ -44,6 +44,23 @@ strategieDynamisch (huidig:_) =
       | otherwise  = min mk (min bf (v - mv + 1))
   in fromInteger tegengas
 
+-- Strategie 4: Gebaseerd op aangepaste afrem-logica
+strategie4 :: Strategie
+strategie4 (huidig:_) =
+  let
+    fmax = motorkracht huidig
+    vmax = maxSnelheid huidig
+    v    = snelheid huidig
+    h    = hoogte huidig
+    gVal = zwaartekracht huidig
+    bf   = brandstof huidig
+
+    vLimiet = fmax - gVal
+    gas
+      | v > vLimiet = min fmax (min bf (v - vLimiet + gVal))
+      | otherwise   = 0
+  in fromInteger gas
+
 -- ============================================== --
 -- =============== SIM FUNC ===================== --
 -- ============================================== --
@@ -94,7 +111,7 @@ startMaanlander :: Maanlander
 startMaanlander = Maanlander
   { hoogte = 500
   , snelheid = 0
-  , brandstof = 120
+  , brandstof = 500
   , motorkracht = 5
   , maxSnelheid = 5
   , zwaartekracht = 2
@@ -102,4 +119,4 @@ startMaanlander = Maanlander
 
 -- Main om te testen
 main :: IO ()
-main = simuleerLanding strategieConstanteRemming startMaanlander
+main = simuleerLanding strategie4 startMaanlander

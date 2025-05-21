@@ -5,7 +5,7 @@ public class RobotMovement : MonoBehaviour
     public Robot robot;
     public float moveSpeed = 2f;
     public float verticalBeamLength = 1.0f;
-    private enum MovePhase { None, MoveUp, MoveXZ, MoveDown }
+    private enum MovePhase { None, MoveUp, MoveZ, MoveX, MoveDown }
     private MovePhase currentPhase = MovePhase.None;
     public System.Action OnMovementComplete; // ✅ Callback here
     private Vector3? fullTarget = null; // Final target for the tip
@@ -56,13 +56,27 @@ public class RobotMovement : MonoBehaviour
                 }
                 else
                 {
-                    currentPhase = MovePhase.MoveXZ;
+                    currentPhase = MovePhase.MoveZ;
                 }
                 break;
 
-            case MovePhase.MoveXZ:
+            case MovePhase.MoveZ:
                 Vector2 currentXZ = new Vector2(currentTip.x, currentTip.z);
-                Vector2 targetXZ = new Vector2(target.x, target.z);
+                Vector2 targetXZ = new Vector2(currentTip.x, target.z);
+
+                if ((currentXZ - targetXZ).magnitude > 0.01f)
+                {
+                    MoveTipXZ(targetXZ, step);
+                }
+                else
+                {
+                    currentPhase = MovePhase.MoveX;
+                }
+                break;
+
+            case MovePhase.MoveX:
+                currentXZ = new Vector2(currentTip.x, currentTip.z);
+                targetXZ = new Vector2(target.x, currentTip.z);
 
                 if ((currentXZ - targetXZ).magnitude > 0.01f)
                 {

@@ -4,6 +4,8 @@ public class BlockSpawner : MonoBehaviour
 {
     public GameObject blockObjectPrefab;
     public Transform spawnPoint;
+
+    public Transform parentBin;
     public float randomOffset = 0.2f;
 
     public void SpawnCube()
@@ -13,6 +15,7 @@ public class BlockSpawner : MonoBehaviour
            0f,
            Random.Range(-randomOffset, randomOffset)
        );
-        Instantiate(blockObjectPrefab, spawnPoint.position + randomOffsetVector, Quaternion.identity);
+        GameObject block = Instantiate(blockObjectPrefab, spawnPoint.position + randomOffsetVector, Quaternion.identity);
+        block.transform.SetParent(parentBin);
     }
 }

@@ -8,7 +8,7 @@ public class RobotMovement : MonoBehaviour
     private enum MovePhase { None, MoveUp, MoveZ, MoveX, MoveDown }
     private MovePhase currentPhase = MovePhase.None;
     public System.Action OnMovementComplete; // ✅ Callback here
-    private Vector3? fullTarget = null; // Final target for the tip
+    private Vector3? targetPos = null; // Final target for the tip
     private Vector3 horizontalBeamPos;
     private Vector3 verticalBeamPos;
 
@@ -26,7 +26,7 @@ public class RobotMovement : MonoBehaviour
 
     void Update()
     {
-        if (fullTarget.HasValue)
+        if (targetPos.HasValue)
         {
             HandleMovement();
         }
@@ -34,7 +34,7 @@ public class RobotMovement : MonoBehaviour
 
     public void MoveTipTo(Vector3 target)
     {
-        fullTarget = target;
+        targetPos = target;
         currentPhase = MovePhase.MoveUp;
     }
 
@@ -44,7 +44,7 @@ public class RobotMovement : MonoBehaviour
         currentTip.y -= verticalBeamLength;
 
         float step = moveSpeed * Time.deltaTime;
-        Vector3 target = fullTarget.Value;
+        Vector3 target = targetPos.Value;
 
         switch (currentPhase)
         {
@@ -96,7 +96,7 @@ public class RobotMovement : MonoBehaviour
                 else
                 {
                     currentPhase = MovePhase.None;
-                    fullTarget = null;
+                    targetPos = null;
 
                     OnMovementComplete?.Invoke(); // ✅ Callback trigger
                 }

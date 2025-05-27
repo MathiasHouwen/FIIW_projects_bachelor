@@ -4,7 +4,7 @@ public class RobotMovement : MonoBehaviour
 {
     public Robot robot;
     public float moveSpeed = 2f;
-    public float verticalBeamLength = 1.0f;
+    public float verticalBeamLength =5.0f;
     private enum MovePhase { None, MoveUp, MoveZ, MoveX, MoveDown }
     private MovePhase currentPhase = MovePhase.None;
     public System.Action OnMovementComplete; // ✅ Callback here
@@ -41,7 +41,6 @@ public class RobotMovement : MonoBehaviour
     private void HandleMovement()
     {
         Vector3 currentTip = robot.verticalBeam.localPosition;
-        currentTip.y -= verticalBeamLength;
 
         float step = moveSpeed * Time.deltaTime;
         Vector3 target = targetPos.Value;
@@ -49,8 +48,9 @@ public class RobotMovement : MonoBehaviour
         switch (currentPhase)
         {
             case MovePhase.MoveUp:
+                Debug.Log("⬆️Moving up");
                 float targetY = robot.horizontalBeam.localPosition.y; // height of horizontal beam
-                if (Mathf.Abs(currentTip.y - targetY) > 0.01f)
+                if (Mathf.Abs((currentTip.y - (verticalBeamLength /2 )) - targetY) > 0.01f)
                 {
                     MoveTipVertically(targetY, step);
                 }
@@ -61,6 +61,7 @@ public class RobotMovement : MonoBehaviour
                 break;
 
             case MovePhase.MoveZ:
+                Debug.Log("➡️Moving Z");
                 Vector2 currentXZ = new Vector2(currentTip.x, currentTip.z);
                 Vector2 targetXZ = new Vector2(currentTip.x, target.z);
 
@@ -75,6 +76,7 @@ public class RobotMovement : MonoBehaviour
                 break;
 
             case MovePhase.MoveX:
+                Debug.Log("➡️Moving X");
                 currentXZ = new Vector2(currentTip.x, currentTip.z);
                 targetXZ = new Vector2(target.x, currentTip.z);
 
@@ -89,7 +91,8 @@ public class RobotMovement : MonoBehaviour
                 break;
 
             case MovePhase.MoveDown:
-                if (Mathf.Abs(currentTip.y - target.y) > 0.01f)
+                Debug.Log("⬇️Moving down");
+                if (Mathf.Abs((currentTip.y - (verticalBeamLength / 2)) - target.y) > 0.01f)
                 {
                     MoveTipVertically(target.y, step);
                 }
@@ -107,9 +110,9 @@ public class RobotMovement : MonoBehaviour
     private void MoveTipVertically(float targetTipY, float step)
     {
         Vector3 current = robot.verticalBeam.localPosition;
-        float currentTipY = current.y - verticalBeamLength;
+        float currentTipY = current.y - (verticalBeamLength / 2);
         float newTipY = Mathf.MoveTowards(currentTipY, targetTipY, step);
-        current.y = newTipY + verticalBeamLength;
+        current.y = newTipY + (verticalBeamLength / 2);
         robot.verticalBeam.localPosition = current;
     }
 

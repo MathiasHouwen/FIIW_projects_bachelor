@@ -7,7 +7,8 @@ public class Robot : MonoBehaviour
 
     private RobotMovement movement;
 
-    void Start()
+    // override
+    public void Start()
     {
         if (horizontalBeam == null || verticalBeam == null)
         {
@@ -24,12 +25,18 @@ public class Robot : MonoBehaviour
         movement.OnMovementComplete += OnMoveComplete;
     }
 
-    void Update()
+    // override
+    public void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
             MoveTo(new Vector3(2f, 0.5f, 3f));
         }
+    }
+
+    public void MoveToTransform(Transform target)
+    {
+        MoveTo(target.position);
     }
 
     public void MoveTo(Vector3 target)

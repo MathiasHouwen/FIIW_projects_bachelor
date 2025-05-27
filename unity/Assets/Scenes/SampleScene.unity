@@ -483,8 +483,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.33867246, y: -0.45898283, z: 0.19481139, w: 0.79792506}
-  m_LocalPosition: {x: 19.4599, y: 19.516455, z: 4.1035395}
+  m_LocalRotation: {x: 0.30359194, y: -0.48085162, z: 0.18198167, w: 0.8021823}
+  m_LocalPosition: {x: 24.7, y: 21.77, z: 2.02}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3517,7 +3517,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   robot: {fileID: 1947400945}
-  moveSpeed: 100
+  moveSpeed: 50
   verticalBeamLength: 5
 --- !u!114 &1947400945
 MonoBehaviour:

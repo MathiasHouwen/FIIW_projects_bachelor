@@ -1,4 +1,5 @@
-k k c
-c c k
-l l k
-q q k c
+g f
+n m g f
+f g n
+q q
+m n m

@@ -3,9 +3,9 @@
 /Taak/dist/
 /Taak/.stack-work/
 
-/Taak-Augustus/dist-newstyle/
-/Taak-Augustus/dist/
-/Taak-Augustus/.stack-work/
+/Taak_Augutus/dist-newstyle/
+/Taak_Augutus/dist/
+/Taak_Augutus/.stack-work/
 
 # Common Haskell build artifacts
 *.hi

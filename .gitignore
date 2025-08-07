@@ -1,11 +1,11 @@
 # Ignore build artifacts from both subprojects
-/taak/dist-newstyle/
-/taak/dist/
-/taak/.stack-work/
+/Taak/dist-newstyle/
+/Taak/dist/
+/Taak/.stack-work/
 
-/taak-augustus/dist-newstyle/
-/taak-augustus/dist/
-/taak-augustus/.stack-work/
+/Taak-Augustus/dist-newstyle/
+/Taak-Augustus/dist/
+/Taak-Augustus/.stack-work/
 
 # Common Haskell build artifacts
 *.hi

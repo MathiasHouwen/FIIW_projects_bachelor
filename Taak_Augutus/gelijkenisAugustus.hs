@@ -1,6 +1,5 @@
 import Data.Char (toLower)
 import Data.List (nub)
-import qualified Data.Set as Set
 import GHC.Float (Floating(sqrt))
 import GHC.Real (fromIntegral)
 
@@ -40,7 +39,7 @@ instance Similarity Int where
     where
       absDist = fromIntegral (abs (x - y))
       maxDist = 100
-  
+
   distance x y = fromIntegral (abs (x - y))
 
 data Point = Point Double Double deriving (Show, Eq)
@@ -62,3 +61,29 @@ instance Similarity Color where
     sqrt (fromIntegral ((r1 - r2)^2 + (g1 - g2)^2 + (b1 - b2)^2))
 
 -- Verieste functies
+similarityList :: (Similarity a) => [a] -> Double -> a -> [a]
+similarityList xs threshold refrence = filter (\x -> similarity x refrence >= threshold) xs
+
+checkTriangleInequality :: (Similarity a, Eq a) => [a] -> Bool
+checkTriangleInequality xs = all driehoeksongelijkheids [(x, y, z) | x <- xs, y <- xs, x /= y, z <- xs, x /= z, y /= z]
+  where
+    driehoeksongelijkheids (a, b, c) = distance a b + distance b c >= distance a c
+
+reachableWithinSimilarityStep :: (Similarity a, Eq a) => [a] -> a -> a -> Double -> Bool
+reachableWithinSimilarityStep lijst start end maxStep = 
+  zoekPad lijst start end maxStep []
+
+zoekPad :: (Similarity a, Eq a) => [a] -> a -> a -> Double -> [a] -> Bool
+zoekPad lijst huidig doel maxStep visited
+  | huidig == doel        = True
+  | huidig `elem` visited = False
+  | otherwise             = any (\neighbour -> 
+                                  zoekPad lijst neighbour doel maxStep (huidig : visited)
+                                ) validNeighbours
+  where
+    validNeighbours = [ x
+                      | x <- lijst
+                      , x /= huidig
+                      , similarity huidig x > 1 - maxStep
+                      ]
+

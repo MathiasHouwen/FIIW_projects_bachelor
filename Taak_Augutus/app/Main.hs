@@ -1,56 +1,89 @@
-module Main (main) where
+import Data.Char (toLower)
 import Data.List (nub)
-import System.Random
-import System.Random.Shuffle (shuffleM)
+import GHC.Float (Floating(sqrt))
+import GHC.Real (fromIntegral)
 
-{-
-printInts = do
-  g <- newStdGen
-  let numbers = (randomRs (1, 10) g) :: [Integer]
-  let n10 = take 10 numbers
-  print n10 
+-- Type klasse
+class Similarity a where
+    similarity :: a -> a -> Double  -- tussen 0 en 1
+    distance :: a -> a -> Double    -- afstand (pseudo-metriek)
 
-printChars = do
-    g <- newStdGen
-    let chars = (randomRs ('a', 'z') g)
-    let c10 = take 10 chars
-    print c10
--}
+-- Gemeenschappelijk klinkers helpers
+vowels :: [Char]
+vowels = "aeiou"
 
-willekeurigeWoningen :: [a] -> Int -> Int -> IO [a]
-willekeurigeWoningen ws minC maxC = do
-  aantal <- randomRIO (minC, min maxC (length ws))
-  take aantal <$> shuffleM ws
+commonVowels :: String -> String -> Int
+commonVowels s1 s2 = length $ nub $ filter (`elem` s2Vowels) s1Vowels
+  where
+    s1Vowels = filter (`elem` vowels) (map toLower s1)
+    s2Vowels = filter (`elem` vowels) (map toLower s2)
 
-getUniqueChars :: Int -> IO [Char]
-getUniqueChars n = do
-  g <- newStdGen
-  let chars = randomRs ('a', 'z') g
-      uniqueChars = nub chars
-  return (take n uniqueChars)
+totalVowels :: String -> String -> Int
+totalVowels s1 s2 = length $ nub (s1Vowels ++ s2Vowels)
+  where
+    s1Vowels = filter (`elem` vowels) (map toLower s1)
+    s2Vowels = filter (`elem` vowels) (map toLower s2)
 
-genereerLijn :: String -> [String] -> Int -> Int -> IO String
-genereerLijn w ws minC maxC = do
-  willekeurig <- willekeurigeWoningen ws minC maxC
-  return $ w ++ " " ++ unwords willekeurig
+instance Similarity String where
+    similarity s1 s2
+        | total == 0 = 0
+        | otherwise = fromIntegral common / fromIntegral total
+      where
+        common = commonVowels s1 s2
+        total = totalVowels s1 s2
 
-genereerBestand :: FilePath -> [String] -> Int -> Int -> IO ()
-genereerBestand filePath woningen minC maxC = do
-  lijnen <- mapM (\w -> genereerLijn w woningen minC maxC) woningen
-  writeFile filePath (unlines lijnen)
+    distance s1 s2 = 1 - similarity s1 s2
 
-main :: IO ()
-main = do
-  putStrLn "Hoeveel woningen wil je genereren? (bijv. 10):"
-  aantal <- readLn
+instance Similarity Int where
+  similarity x y = 1 - (absDist / maxDist)
+    where
+      absDist = fromIntegral (abs (x - y))
+      maxDist = 100
 
-  putStrLn "Geef het minimum aantal connecties per woning:"
-  minC <- readLn
+  distance x y = fromIntegral (abs (x - y))
 
-  putStrLn "Geef het maximum aantal connecties per woning:"
-  maxC <- readLn
+data Point = Point Double Double deriving (Show, Eq)
+instance Similarity Point where
+  similarity p1 p2 = 1 - (distance p1 p2 / maxD)
+    where
+      maxD = 100
 
-  chars <- getUniqueChars aantal
-  let woningen = map (:[]) chars
+  distance (Point x1 y1) (Point x2 y2) =
+    sqrt ((x2 - x1)^2 + (y2 - y1)^2)
 
-  genereerBestand "gegenereerd.txt" woningen minC maxC
+data Color = Color Int Int Int deriving (Show, Eq)
+instance Similarity Color where
+  similarity c1 c2 = 1 - (distance c1 c2 / maxD)
+    where
+      maxD = sqrt (3 * (255^2))
+
+  distance (Color r1 g1 b1) (Color r2 g2 b2) =
+    sqrt (fromIntegral ((r1 - r2)^2 + (g1 - g2)^2 + (b1 - b2)^2))
+
+-- Verieste functies
+similarityList :: (Similarity a) => [a] -> Double -> a -> [a]
+similarityList xs threshold refrence = filter (\x -> similarity x refrence >= threshold) xs
+
+checkTriangleInequality :: (Similarity a, Eq a) => [a] -> Bool
+checkTriangleInequality xs = all driehoeksongelijkheids [(x, y, z) | x <- xs, y <- xs, x /= y, z <- xs, x /= z, y /= z]
+  where
+    driehoeksongelijkheids (a, b, c) = distance a b + distance b c >= distance a c
+
+reachableWithinSimilarityStep :: (Similarity a, Eq a) => [a] -> a -> a -> Double -> Bool
+reachableWithinSimilarityStep lijst start end maxStep = 
+  zoekPad lijst start end maxStep []
+
+zoekPad :: (Similarity a, Eq a) => [a] -> a -> a -> Double -> [a] -> Bool
+zoekPad lijst huidig doel maxStep visited
+  | huidig == doel        = True
+  | huidig `elem` visited = False
+  | otherwise             = any (\neighbour -> 
+                                  zoekPad lijst neighbour doel maxStep (huidig : visited)
+                                ) validNeighbours
+  where
+    validNeighbours = [ x
+                      | x <- lijst
+                      , x /= huidig
+                      , similarity huidig x > 1 - maxStep
+                      ]
+

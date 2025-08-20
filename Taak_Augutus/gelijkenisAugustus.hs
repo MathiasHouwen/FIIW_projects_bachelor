@@ -86,4 +86,3 @@ zoekPad lijst huidig doel maxStep visited
                       , x /= huidig
                       , similarity huidig x > 1 - maxStep
                       ]
-

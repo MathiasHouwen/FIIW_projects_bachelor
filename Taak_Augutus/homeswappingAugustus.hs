@@ -24,7 +24,6 @@ toEdges xs = Set.fromList [ (w, v) | (w, vs) <- xs, v <- vs ]
 filterdEdges :: Eq a => Set.Set (a, a) -> Set.Set (a, a)
 filterdEdges edges = Set.filter (\(x, y)-> x /= y) edges
 
-
 main :: IO ()
 main = do
   content <- readFile "gegenereerd.txt"

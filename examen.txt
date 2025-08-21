@@ -1,0 +1,10 @@
+Gesloten boek:
+1. Monoid weten kunnen toepassen of een gekozen datatype en definitie voor een semigroup en monoid kunnen make
+dit geval -> SortedInts = sorted [Ints]
+2. lazinees kunnen herkenen in code
+Open boek:
+1. O(notatie) berekenen code
+2. type inferentie zelf kunnen toepassen
+3.a en 3.b horge orde functies en foldr
+4. list comp, 
+5. RUST borrowing en ownership error kunnen identificeren. RUST traits omzetten naar haskell

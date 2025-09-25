@@ -1,0 +1,86 @@
+import cv2
+import numpy as np
+from cv2.typing import MatLike
+from matplotlib import pyplot as plt
+
+'''
+NOISE REMOVAL
+'''
+
+def remove_periodische_ruis(img:MatLike, notch_position:tuple[int]):
+    fshift = fourier_transform(img)
+    fshift_magnitude = np.log1p(np.abs(fshift))
+    gaussian_mask = gaussian_notch_filter(img, notch_position)
+    fshift_filtered = fshift * gaussian_mask
+    fshift_filtered_magnitude = np.log1p(np.abs(fshift_filtered))
+    img_filtered = inverse_fourier_transform(fshift_filtered)
+    filtered = cv2.normalize(img_filtered, None, 0, 255, cv2.NORM_MINMAX, cv2.CV_8U)
+    plt.figure()
+    # plt.imshow(filtered, cmap='turbo')
+    plt.imshow(fshift_magnitude, cmap='turbo')
+    plt.colorbar()
+    plt.figure()
+    plt.imshow(fshift_filtered_magnitude, cmap='turbo')
+    plt.colorbar()
+    return filtered
+
+
+def gaussian(img:MatLike, kernel=7):
+    # Apply median blur
+    denoised = cv2.GaussianBlur(img, (kernel, kernel), 0)  # Kernel size can be 3, 5, or 7 (must be odd)
+    return denoised
+
+def median(img:MatLike, kernel=7):
+    # Apply median blur
+    denoised = cv2.medianBlur(img, kernel)  # Kernel size can be 3, 5, or 7 (must be odd)    return denoised
+    return denoised
+
+'''
+HULP FUNCTIES
+'''
+
+def magnitude_transform(fshift):
+    return 20 * np.log1p(np.abs(fshift))
+
+
+def fourier_transform(img: MatLike):
+    f = np.fft.fft2(img)
+    fshift = np.fft.fftshift(f)
+    return fshift
+
+
+def gaussian_notch_filter(img: MatLike, notch_offset, sigma = 100):
+    rows, cols = img.shape
+    center = (rows // 2, cols // 2)
+
+    # Create an all-ones mask
+    gaussian_mask = np.ones((rows, cols), np.float32)
+
+    def apply_gaussian_notch(mask, center_x, center_y, sigma=10):
+        """ Apply a smooth Gaussian attenuation at a specific frequency location. """
+        x, y = np.meshgrid(np.arange(cols), np.arange(rows))
+        gaussian = np.exp(-((x - center_x) ** 2 + (y - center_y) ** 2) / (2 * sigma ** 2))
+        mask *= (1 - gaussian)  # Subtract Gaussian from 1 to create a notch
+        return mask
+
+    gaussian_mask = apply_gaussian_notch(gaussian_mask, center[1] + notch_offset[0], center[0] + notch_offset[1], sigma)
+    gaussian_mask = apply_gaussian_notch(gaussian_mask, center[1] - notch_offset[0], center[0] - notch_offset[1], sigma)
+    return gaussian_mask
+
+
+def low_pass_filter(img: MatLike, radius = 50):
+    rows, cols = img.shape
+    crow, ccol = rows // 2, cols // 2
+
+    mask = np.zeros((rows, cols), np.uint8)
+    cv2.circle(mask, (ccol, crow), radius, 1, -1)
+    return mask
+
+
+def inverse_fourier_transform(img):
+    f_ishift = np.fft.ifftshift(img)
+    image_filtered = np.fft.ifft2(f_ishift)
+    image_filtered = np.abs(image_filtered)
+
+    # image_filtered = cv2.normalize(image_filtered, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
+    return image_filtered

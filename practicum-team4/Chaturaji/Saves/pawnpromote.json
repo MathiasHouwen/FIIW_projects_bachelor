@@ -1,0 +1,43 @@
+{
+    "board": [
+        {"x": 4, "y": 7,
+            "piece": {"type": "king", "color": "red", "homeside": "bottom"}},
+        {"x": 2, "y": 2,
+            "piece": {"type": "pawn", "color": "red", "homeside": "bottom"}},
+
+        {"x": 5, "y": 4,
+            "piece": {"type": "king", "color": "green", "homeside": "right"}}
+
+    ],
+    "currentPlayer": "red",
+    "players": [
+        {
+            "alive": true,
+            "color": "red",
+            "home": "bottom",
+            "name": "rode player",
+            "score": 10
+        },
+        {
+            "alive": true,
+            "color": "green",
+            "home": "right",
+            "name": "groene player",
+            "score": 10
+        },
+        {
+            "alive": false,
+            "color": "blue",
+            "home": "left",
+            "name": "niemand",
+            "score": 0
+        },
+        {
+            "alive": false,
+            "color": "yellow",
+            "home": "top",
+            "name": "ook niemand",
+            "score": 0
+        }
+    ]
+}

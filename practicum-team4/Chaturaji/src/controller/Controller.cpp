@@ -1,0 +1,187 @@
+// taakverdeling: zie h-file
+//nieuw sinds practicum 2 (controller class uit practicum 1 is 100% vervangen [verwijderd])
+
+#include <QFileDialog>
+#include <QInputDialog>
+#include <iostream>
+#include "Controller.h"
+#include "../model/game/enums_and_structs/EnumStringifier.h"
+
+
+Controller::Controller(GameController& gameController, BoardView* boardView, DiceAndMovesView* diceAndMovesView, FileIOView* fileIoView, PlayersView* playersView)
+        : QObject(nullptr), gameController(gameController), boardView(boardView),
+        diceAndMovesView(diceAndMovesView), fileIoView(fileIoView), playersView(playersView){
+    // connect alle signals van views met de handlers in controller
+    connect(boardView, &BoardView::cellClicked, this, &Controller::onCellClicked);
+    connect(boardView, &BoardView::cellHoverChanged, this, &Controller::onCellHoverChanged);
+    connect(diceAndMovesView, &DiceAndMovesView::skipButtonClicked, this, &Controller::onSkipButtonClicked);
+    connect(fileIoView, &FileIOView::onLoad, this, &Controller::onLoad);
+    connect(fileIoView, &FileIOView::onSave, this, &Controller::onSave);
+}
+
+void Controller::start() {
+
+    io.load(gameController.getGame(), QString(SAVES_PATH) + "/startingFile.json");
+
+    boardView->updateFullBoard(gameController.getGame().getGameState().getBoard());
+    initPlayersView();
+    update();
+
+}
+void Controller::onCellClicked(QPoint cell) {
+    if(gameController.moveIsPawnPromote(cell)){
+        PieceType chosenType = openPawnPromoteDialog();
+        gameController.handleCellSelect(cell, chosenType);
+    } else {
+        gameController.handleCellSelect(cell);
+    }
+    update();
+}
+
+
+// handle een enter of leave op een cell (gewoon een "cursor" highlight toepassen)
+void Controller::onCellHoverChanged(QPoint cell, bool hover) {
+    if(currentHighlights.contains(cell)) return; // behoud oude hightligts: hover highlight heeft lage prioriteit
+    auto highlight = hover
+            ? SquareView::HighLight::HOVER
+            : SquareView::HighLight::NONE;
+    boardView->updateHighlight(cell, highlight);
+}
+
+// cleart alle current highlights uit view (onthouden via private: currentHighlights chache)
+void Controller::clearHighLights() {
+    for(QPoint cell : currentHighlights)
+        boardView->updateHighlight(cell, SquareView::HighLight::NONE);
+    currentHighlights.clear();
+}
+
+// update de movePiece en dobbelstenen view
+void Controller::updateMoveAndDiceView() {
+    diceAndMovesView->updateMoveLabel(gameController.getGame().getGameState().getCurrentMove());
+    diceAndMovesView->updateDiceNumbers(gameController.getGame().getGameState().getDice().asNumber(0), gameController.getGame().getGameState().getDice().asNumber(1));
+    diceAndMovesView->updatePiecePreviews(gameController.getGame().getGameState().getDice().getAllowedTypes());
+    diceAndMovesView->updateDisableDie(0, gameController.getGame().getGameState().getDice().isUsed(0));
+    diceAndMovesView->updateDisableDie(1, gameController.getGame().getGameState().getDice().isUsed(1));
+}
+
+// handled een move skip (game::skip en update alles movePiece/turn gerelateerd)
+void Controller::onSkipButtonClicked() {
+    gameController.skip();
+    update();
+}
+
+void Controller::endGame() {
+    qDebug() << "\nEND GAME";
+    qDebug() << "WINNER: " << gameController.getCurrentPlayerName();
+    _sleep(5000);
+    start();
+}
+
+//handled de file save knop
+void Controller::onSave(){
+    qDebug("Save button clicked!");
+    QString filePath = QFileDialog::getSaveFileName(
+            fileIoView,
+            "Save File",
+            "../Saves",
+            "Text Files (*.json)"
+    );
+
+    if (!filePath.isEmpty()) {
+        if (!filePath.endsWith(".json", Qt::CaseInsensitive)) {
+            filePath += ".json";
+        }
+        qDebug() << "Saving to file:" << filePath;
+
+        io.save(gameController.getGame(), filePath);
+    } else {
+        qDebug() << ">:( Geen naam";
+    }
+}
+
+//handled de file load knop
+void Controller::onLoad(){
+    qDebug("Load button clicked!");
+    QString filePath = QFileDialog::getOpenFileName(
+            fileIoView,
+            "Select a file to load",
+            "../Saves",
+            "Text Files (*.json)"
+    );
+
+    if (!filePath.isEmpty()) {
+        qDebug() << "FilePath:" << filePath;
+        gameController.getGame().getGameState().clearPlayers();
+        io.load(gameController.getGame(), filePath);
+        boardView->updateFullBoard(gameController.getGame().getGameState().getBoard());
+        initPlayersView();
+        update();
+    } else {
+        qDebug() << ">:( Geen geldig filepath";
+    }
+}
+
+void Controller::initPlayersView() {
+    playersView->clear();
+    for(Color color : {Color::RED, Color::GREEN, Color::BLUE, Color::YELLOW}){
+        auto p = gameController.getGame().getGameState().getPlayerByColor(color);
+        playersView->addPlayerView(p);
+        playersView->updateScore(p->getColor(), p->getScore());
+    }
+    playersView->updateSetBigAndToTop(gameController.getGame().getGameState().getCurrentTurn());
+}
+
+void Controller::updateHighlights() {
+    auto selectables = gameController.getSelectablesForHighlight();
+    boardView->updateHighlights(selectables, SquareView::HighLight::SELECTSUGGEST);
+
+    currentHighlights.unite(selectables);
+    auto moves = gameController.getMovesForHighlight();
+
+    for(auto move : moves){
+        auto highlight = move.moveType == MoveType::NORMAL ? SquareView::HighLight::MOVESUGGEST
+                                                           : SquareView::HighLight::ATTACKSUGGEST;
+        if(move.specialMoveType != SpecialMoveType::NONE) highlight = SquareView::HighLight::SPECIAL;
+        boardView->updateHighlight(move.destination, highlight);
+        currentHighlights.insert(move.destination);
+    }
+
+    auto selectedCell = gameController.getSelectedCell();
+    if(selectedCell.has_value()){
+        currentHighlights.insert(selectedCell.value());
+        boardView->updateHighlight(selectedCell.value(), SquareView::HighLight::SELECTED);
+    }
+}
+
+void Controller::update() {
+    boardView->updateFullBoard(gameController.getGame().getGameState().getBoard());
+    auto highlights = gameController.getMovesForHighlight();
+    auto selectedCell = gameController.getSelectedCell();
+    clearHighLights();
+    updateHighlights();
+    updateMoveAndDiceView();
+    for(auto color : {Color::RED, Color::GREEN, Color::BLUE, Color::YELLOW}){
+        auto p = gameController.getGame().getGameState().getPlayerByColor(color);
+        playersView->updateScore(color,  p->getScore());
+        if(!p->isAlive())
+            playersView->updateSetGrey(color);
+    }
+
+    playersView->updateSetBigAndToTop(gameController.getGame().getGameState().getCurrentTurn());
+    if(gameController.getGame().getGameState().isGameOver()){endGame();}
+}
+
+PieceType Controller::openPawnPromoteDialog() {
+    auto types = {PieceType::BOAT, PieceType::HORSE, PieceType::KING, PieceType::ELEPHANT};
+    QList<QString> optionStrings = {};
+    for(auto type : types)
+        optionStrings.append(EnumStringifier::tToString(type));
+    // Show the input dialog
+    bool ok = false;
+    QString chosenTypeString;
+    while(!ok){
+        chosenTypeString = QInputDialog::getItem(nullptr,"Pawn promote","Select new piece type:",optionStrings,0,false,&ok);
+
+    }
+    return EnumStringifier::tFromString(chosenTypeString);
+}

@@ -1,0 +1,53 @@
+// taakverdeling: zie h-file
+
+
+#include "BoardQuerier.h"
+
+std::optional<Piece> BoardQuerier::movePiece(QPoint fromCell, QPoint toCell) {
+    if(board.isEmptyAt(fromCell)){
+        qWarning() << "no piece to move at " << fromCell;
+        return std::nullopt;
+    }
+    auto fromPiece = board.getPieceAt(fromCell);
+    auto toPiece = board.getPieceAt(toCell);
+    board.putPieceAt(toCell, fromPiece.value()); // frompiece.value() bestaat als isEmptyAt false is
+    board.clearCell(fromCell);
+    return toPiece;
+}
+
+QSet<QPoint> BoardQuerier::getPiecesFromColor(Color color) {
+    // Log N is niet erg want board is toch maar klein
+    QSet<QPoint> result{};
+    for(auto cell : board.iterableCells()){
+        if(board.getPieceAt(cell)->getColor() == color) result.insert(cell);
+    }
+    return result;
+}
+
+BoardQuerier::BoardQuerier(Board &board) : board(board) {}
+
+QSet<QPoint> BoardQuerier::getPiecesFromBoardHomeSide(HomeBoardSide homeSide) {
+    // Log N is niet erg want board is toch maar klein
+    QSet<QPoint> result{};
+    for(auto cell : board.iterableCells()){
+        if(board.getPieceAt(cell)->getHomeSide() == homeSide) result.insert(cell);
+    }
+    return result;
+}
+
+QSet<QPoint> BoardQuerier::getPiecesWithTypesAndColor(QSet<PieceType> types, Color color) {
+    // Log N is niet erg want board is toch maar klein
+    QSet<QPoint> result{};
+    QSet<QPoint> colorPieces = getPiecesFromColor(color);
+    for(auto cell : colorPieces){
+        if(types.contains(board.getPieceAt(cell)->getType())) result.insert(cell);
+    }
+    return result;
+}
+
+bool BoardQuerier::isPointFromBoardSideEdge(QPoint cell, HomeBoardSide boardSide) {
+    return cell.x() == 0 && boardSide == HomeBoardSide::LEFT
+    || cell.x() == Board::dimension.getSize()-1 && boardSide == HomeBoardSide::RIGHT
+    || cell.y() == 0 && boardSide == HomeBoardSide::TOP
+    || cell.y() == Board::dimension.getSize()-1 && boardSide == HomeBoardSide::BOTTOM;
+}

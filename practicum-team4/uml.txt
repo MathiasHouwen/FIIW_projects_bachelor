@@ -1,0 +1,292 @@
+@startuml
+' Define enums
+enum MoveType {
+    NORMAL
+    ATTACK
+}
+
+enum SpecialMoveType {
+    NONE
+    PAWNPROMOTE
+    VRIHANNAUKA
+    SINHASANA
+}
+
+enum Color {
+    RED
+    GREEN
+    BLUE
+    YELLOW
+    NONE
+}
+
+enum HomeBoardSide {
+    LEFT
+    RIGHT
+    TOP
+    BOTTOM
+}
+
+enum PlayerType {
+    HUMAN
+    PASSIVE_BOT
+    AGGRESSIVE_BOT
+}
+
+enum PieceType {
+    PAWN
+    BOAT
+    ELEPHANT
+    HORSE
+    KING
+}
+
+' Define structures
+class ClassifiedMove {
+    QPoint destination
+    MoveType moveType
+    SpecialMoveType specialMoveType
+    +operator==(rhs: ClassifiedMove): bool
+    +operator!=(rhs: ClassifiedMove): bool
+}
+
+class Pattern {
+    int forward
+    QList<int> sideways
+    bool forwardOnly
+    bool infinite
+    QPoint forwardDirection
+}
+
+' Define classes
+class GameController {
+    StepState state
+    Game game
+    std::optional<QPoint> selectedCell
+    MovesManager movesManager
+    BoardQuerier querier
+    +getMovesForHighlight(): QSet<ClassifiedMove>
+    +getSelectablesForHighlight(): QSet<QPoint>
+    +handleCellSelect(QPoint, PieceType pawnPromoteType)
+    +moveIsPawnPromote(QPoint): bool
+    +getState(): StepState
+    +getSelectedCell(): std::optional<QPoint>
+    +getGame(): Game
+}
+
+class Controller {
+    GameController& gameController
+    BoardView* boardView
+    DiceAndMovesView* diceAndMovesView
+    FileIOView* fileIoView
+    PlayersView* playersView
+    FileIO io
+    QSet<QPoint> currentHighlights
+    int numberOfBotMoves
+    -clearHighLights()
+    -updateHighlights()
+    -updateMoveAndDiceView()
+    -initPlayersView()
+    -endGame()
+    -update()
+    +start()
+    +startBot()
+    +onCellClicked(QPoint)
+    +onCellHoverChanged(QPoint, bool)
+    +onSkipButtonClicked()
+    +onLoad()
+    +onSave()
+}
+
+abstract class MoveStrategy {
+    +getNextMove(Game&, QSet<ClassifiedMove>): QPoint
+}
+
+class AggressiveMoveStrategy {
+    +getNextMove(Game&, QSet<ClassifiedMove>): QPoint
+}
+
+class PassiveMoveStrategy {
+    +getNextMove(Game&, QSet<ClassifiedMove>): QPoint
+}
+
+class Bot {
+    Color color
+    std::shared_ptr<MoveStrategy> strategy
+    +getNextMove(Game&, QSet<ClassifiedMove>): QPoint
+}
+
+class SpecialRulesExecutor {
+    Board& board
+    BoardQuerier querier
+    +SpecialRulesExecutor(Board &board)
+    +promotePawn(QPoint location, PieceType newPieceType)
+    +vrihannauka(QPoint location)
+    +sinhasana(QPoint location)
+    +isSquareFilledWithBoats(QPoint topLeft): bool
+    +captureBoats(QPoint topLeft)
+}
+
+class MovesManager {
+    Board& board
+    PossibleMovesCalculator calculator
+    SpecialRulesChecker rulesChecker
+    -classifySpecialMove(Piece piece, QPoint destination): SpecialMoveType
+    +MovesManager(Board &board)
+    +generateClassifiedMoves(Piece piece, QPoint location): QSet<ClassifiedMove>
+}
+
+class PossibleMovesCalculator {
+    Board& board
+    -getPossibleMoves(Pattern pattern, QPoint cell): QSet<QPoint>
+    -sideToForwardDirection(HomeBoardSide side): QPoint
+    -convertToPatterns(PieceType type, HomeBoardSide side): Patterns
+    +generatePossibleMoves(QPoint location, HomeBoardSide side, PieceType pieceType, bool attack): QSet<QPoint>
+}
+
+class SpecialRulesChecker {
+    Board& board
+    +SpecialRulesChecker(Board &board)
+    +validPawnPromotion(PieceType type, HomeBoardSide homeSide, QPoint destination): bool
+    +validVrihannauka(PieceType type, HomeBoardSide homeSide, QPoint destination): bool
+    +validSinhasana(PieceType type, HomeBoardSide homeSide, QPoint destination): bool
+    +isSquareFilledWithBoats(QPoint topLeft): bool
+}
+
+class BoardQuerier {
+    Board& board
+    +BoardQuerier(Board &board)
+    +movePiece(QPoint fromCell, QPoint toCell): std::optional<Piece>
+    +getPiecesFromColor(Color color): QSet<QPoint>
+    +getPiecesFromBoardHomeSide(HomeBoardSide homeSide): QSet<QPoint>
+    +getPiecesWithTypesAndColor(QSet<PieceType> types, Color color): QSet<QPoint>
+}
+
+class Piece {
+    Color color
+    PieceType type
+    HomeBoardSide homeSide
+    +Piece(Color color, PieceType type, HomeBoardSide homeSide)
+    +getType(): PieceType
+    +getHomeSide(): HomeBoardSide
+    +getColor(): Color
+}
+
+class Player {
+    int score
+    bool alive
+    QString name
+    Color color
+    +Player(Color color, QString name, int startingScore)
+    +increaseScore(int extraScore)
+    +kill()
+    +getScore(): int
+    +isAlive(): bool
+    +getName(): QString
+    +getColor(): Color
+}
+
+class Board {
+    QHash<QPoint, Piece> piecesMap
+    +putPieceAt(QPoint cell, Piece piece)
+    +clearCell(QPoint cell)
+    +clear()
+    +isEmptyAt(QPoint cell): bool
+    +getPieceAt(QPoint cell): std::optional<Piece>
+}
+
+class Dice {
+    -Die dice[2]
+    +doubleDobbel()
+    +allowsType(PieceType type): bool
+    +asNumber(int die): int
+    +isUsed(int die): bool
+    +setUsed(PieceType type)
+    +getAllowedTypes(): QSet<PieceType>
+}
+
+class GameState {
+    Board board
+    QHash<Color, Player> players
+    Dice dice
+    bool gameOver
+    int turn
+    int move
+    +advance()
+    +getBoard(): Board&
+    +isGameOver(): bool
+    +getCurrentTurn(): Color
+    +getCurrentMove(): int
+    +getCurrentPlayer(): Player&
+    +getDice(): Dice&
+    +getPlayerByColor(Color color): Player&
+    +addPlayer(QString name, PlayerType type)
+    +addPlayer(Player player)
+    +clearPlayers()
+}
+
+class SquareDimension {
+    const int size
+    +SquareDimension(int size)
+    +getSize(): int
+    +includes(QPoint coordinate): bool
+}
+
+class FileIO {
+    +FileIO()
+    +load(Game& game, QString filePath)
+    +jsonToPiece(const QJsonObject& jsonObject): Piece
+    +pieceTypeToString(PieceType type): QString
+    +ColorToString(Color color): QString
+    +homeBoardSideToString(HomeBoardSide side): QString
+    +pieceTypeFromString(QString type): PieceType
+    +ColorFromString(QString color): Color
+    +homeBoardSideFromString(QString side): HomeBoardSide
+}
+
+class Game {
+    GameState gameState
+    MovesManager movesManager
+    BoardQuerier querier
+    SpecialRulesExecutor rulesExecutor
+    -executeClassifiedMove(QPoint from, ClassifiedMove move, PieceType pawnPromoteType)
+    +Game()
+    +getGameState(): GameState&
+    +doMove(QPoint from, QPoint to, PieceType pawnPromoteType): bool
+    +isCellFromCurrentPlayer(QPoint cell): bool
+}
+
+' Define relationships
+Controller --> GameController
+Controller *-- BoardView
+Controller *-- DiceAndMovesView
+Controller *-- FileIOView
+Controller *-- PlayersView
+Controller *-- FileIO
+Controller *-- QSet
+GameController *-- Game
+GameController *-- MovesManager
+GameController *-- BoardQuerier
+Bot --> MoveStrategy
+AggressiveMoveStrategy --> MoveStrategy
+PassiveMoveStrategy --> MoveStrategy
+SpecialRulesExecutor --> Board
+SpecialRulesExecutor --> BoardQuerier
+MovesManager --> Board
+MovesManager --> PossibleMovesCalculator
+MovesManager --> SpecialRulesChecker
+PossibleMovesCalculator --> Board
+SpecialRulesChecker --> Board
+BoardQuerier --> Board
+Game --> GameState
+Game --> MovesManager
+Game --> BoardQuerier
+Game --> SpecialRulesExecutor
+GameState --> Board
+GameState --> Player
+GameState --> Dice
+GameState --> SquareDimension
+FileIO --> Board
+FileIO --> Game
+FileIO --> Player
+@enduml

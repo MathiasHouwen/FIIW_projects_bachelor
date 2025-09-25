@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="45.2" height="45.2" stroke="#000"
+    xmlns:v="https://vecta.io/nano">
+    <g stroke-linecap="round" fill="darkblue" stroke="grey">
+        <path d="M8.323 32.513l28.179.063.748-.25c5.426-4.262 5.034-8.544 5.034-8.544l-5.096 4.046H13.859l-.861-2.384H2.231v2.384h3.948l2.01 4.624" stroke-width="1.5"/>
+        <g fill="none">
+            <path d="M7.543 25.209h0L24.985 8.132l14.858 17.672" stroke-width=".8"/>
+            <path d="M24.985 8.203v19.169" stroke-width="1.5"/>
+        </g>
+        <path d="M34.387 24.448s2.03-6.635-1.774-12.545h-.072-17.565-.195c3.804 5.91 1.866 12.49 2.005 12.545l.836-.007 16.765.007z" stroke-width="1.5"/>
+    </g>
+</svg>

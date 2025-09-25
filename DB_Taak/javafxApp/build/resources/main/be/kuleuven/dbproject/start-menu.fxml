@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="720.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.kuleuven.dbproject.controller.StartMenuController">
+   <children>
+      <VBox alignment="CENTER" fillWidth="false" layoutX="-2.0" prefHeight="721.0" prefWidth="1023.0">
+         <children>
+            <Label text="Welkom op Tennis Vlaanderen">
+               <padding>
+                  <Insets bottom="20.0" />
+               </padding>
+               <font>
+                  <Font name="ArtifaktElement-Thin" size="45.0" />
+               </font>
+            </Label>
+            <VBox prefHeight="200.0" prefWidth="249.0">
+               <Label text="Login"/>
+               <TextField fx:id="emailInput" prefHeight="26.0" prefWidth="235.0" promptText="email"/>
+               <Button fx:id="loginBtn" mnemonicParsing="false" prefHeight="26.0" prefWidth="999.0"
+                       text="Ga naar speler"/>
+               <Label fx:id="errorLbl" text="&lt;...&gt;" textFill="#f40505">
+                  <font>
+                     <Font name="System Bold" size="12.0"/>
+                  </font>
+               </Label>
+            </VBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

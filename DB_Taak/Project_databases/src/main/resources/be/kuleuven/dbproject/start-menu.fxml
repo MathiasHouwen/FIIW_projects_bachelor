@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="680.0" prefWidth="980.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.kuleuven.dbproject.controller.StartMenuController">
+   <children>
+      <VBox alignment="CENTER" fillWidth="false" layoutX="-2.0" prefHeight="680.0" prefWidth="980.0">
+         <children>
+            <Label text="Welkom op Tennis Vlaanderen">
+               <padding>
+                  <Insets bottom="20.0" />
+               </padding>
+               <font>
+                  <Font name="ArtifaktElement-Thin" size="45.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER" fillHeight="false" prefHeight="104.0" prefWidth="924.0" spacing="50.0">
+               <children>
+                  <VBox prefHeight="118.0" prefWidth="250.0">
+                     <Label text="Login">
+                        <font>
+                           <Font name="System Bold" size="12.0" />
+                        </font>
+                     </Label>
+                     <Label text="Vul een email in om te identificeren" />
+                     <TextField fx:id="emailInput" prefHeight="26.0" prefWidth="235.0" promptText="email" />
+                     <Button fx:id="loginBtn" mnemonicParsing="false" prefHeight="26.0" prefWidth="999.0" text="Ga naar speler" />
+                     <Label fx:id="errorLbl" text="&lt;...&gt;" textFill="#f40505">
+                        <font>
+                           <Font name="System Bold" size="12.0" />
+                        </font>
+                     </Label>
+                  </VBox>
+                  <HBox prefHeight="100.0" prefWidth="519.0" spacing="10.0">
+                     <children>
+                        <VBox prefHeight="104.0" prefWidth="217.0">
+                           <children>
+                              <Label text="Voeg nieuwe speler toe">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Label text="email" />
+                              <TextField fx:id="newEmailInput" prefHeight="26.0" prefWidth="170.0" promptText="email" />
+                              <Label text="naam" />
+                              <TextField fx:id="newNaamInput" prefHeight="26.0" prefWidth="170.0" promptText="naam" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="BOTTOM_CENTER" prefHeight="104.0" prefWidth="92.0">
+                           <children>
+                              <Label text="Geslacht" />
+                              <ChoiceBox fx:id="geslachtSelect" prefWidth="150.0" />
+                              <Label text="Leeftijd" />
+                              <TextField fx:id="leeftijdInput" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="BOTTOM_CENTER" prefHeight="104.0" prefWidth="176.0">
+                           <children>
+                              <Label text="(nummer = AutoInc per club)" />
+                              <Label text="club" />
+                              <ChoiceBox fx:id="clubSelect" prefHeight="26.0" prefWidth="199.0" />
+                              <Label fx:id="errorLbl1" text="&lt;...&gt;" textFill="#f40505">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="newSpelerBtn" mnemonicParsing="false" prefHeight="26.0" prefWidth="199.0" text="Voeg toe" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <Label text="Developper cheats:" textFill="#c77612">
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Label>
+            <Label text="(dit is er natuurlijk niet in een realistische app. Het maakt voor nu Demo en Debug wat makkelijker)" />
+            <HBox prefHeight="395.0" prefWidth="950.0" spacing="10.0" style="-fx-background-color: lightyellow; -fx-border-color: black;">
+               <children>
+                  <VBox prefHeight="381.0" prefWidth="397.0">
+                     <children>
+                        <Label text="Alle spelers (dubbelklik = vul email in)">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <TableView fx:id="devCheats_spelersTbl" prefHeight="413.0" prefWidth="437.0" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="434.0" prefWidth="630.0">
+                     <children>
+                        <Label text="random wedstrijd generator">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <HBox alignment="CENTER" prefHeight="239.0" prefWidth="586.0" spacing="5.0">
+                           <children>
+                              <VBox prefHeight="100.0" prefWidth="286.0">
+                                 <children>
+                                    <Label text="Selecteer een ongespeelde reeks:" />
+                                    <TableView fx:id="devCheat_ongespeeldeReeksenTbl" prefHeight="222.0" prefWidth="286.0" />
+                                 </children>
+                              </VBox>
+                              <Label text="-&gt;">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <VBox prefHeight="100.0" prefWidth="271.0">
+                                 <children>
+                                    <Label text="Resultaat: deelnemers in gegenereerde wedstrijd" />
+                                    <Label text="Klik om naar toernooi scherm te gaan" />
+                                    <TableView fx:id="devCheat_deelnemersTbl" prefHeight="214.0" prefWidth="271.0" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <HBox alignment="BOTTOM_LEFT" prefHeight="62.0" prefWidth="552.0" spacing="10.0">
+                           <children>
+                              <VBox alignment="TOP_RIGHT" prefHeight="53.0" prefWidth="282.0">
+                                 <children>
+                                    <Label text="Reeks:" />
+                                    <Label text="Aantal huidige inschrijvingen in deze reeks:" />
+                                    <Label prefHeight="30.0" prefWidth="172.0" text="Vul inschrijvingen aan tot aantal:" />
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="61.0" prefWidth="326.0">
+                                 <children>
+                                    <Label fx:id="devCheats_reeksenLbl" text="&lt;...&gt;" />
+                                    <Label fx:id="devCHeats_inschrijvingLbl" text="&lt;...&gt;" />
+                                    <HBox prefHeight="100.0" prefWidth="200.0" spacing="50.0">
+                                       <children>
+                                          <ChoiceBox fx:id="devCheats_inschrijvingAanvulInput" prefHeight="26.0" prefWidth="78.0" />
+                                          <Button fx:id="devCheat_wedstrijdGenerateBtn" mnemonicParsing="false" prefHeight="26.0" prefWidth="150.0" text="Generate" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <Label text="insert een nieuw ongespeeld toernooi">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <HBox prefHeight="42.0" prefWidth="586.0">
+                           <children>
+                              <VBox alignment="CENTER" prefHeight="43.0" prefWidth="182.0">
+                                 <children>
+                                    <Label text="club" />
+                                    <ChoiceBox fx:id="devCheats_clubSelect" prefHeight="26.0" prefWidth="189.0" />
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" prefHeight="43.0" prefWidth="137.0">
+                                 <children>
+                                    <CheckBox fx:id="devCheats_alleenVolwassenInput" mnemonicParsing="false" text="Alleen 18+ reeksen" />
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" prefHeight="43.0" prefWidth="156.0">
+                                 <children>
+                                    <Label text="Datum" />
+                                    <DatePicker fx:id="devCheats_datumInput" />
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                    <Label text="(Leider=random)" />
+                                    <Button fx:id="devCheats_insertBtn" mnemonicParsing="false" prefHeight="26.0" prefWidth="86.0" text="Insert" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

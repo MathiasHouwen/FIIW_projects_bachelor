@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="323.0" prefWidth="902.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.kuleuven.dbproject.controller.DashboardController">
+   <children>
+      <Label layoutX="208.0" layoutY="14.0" text="DASHBOARD" />
+      <Label layoutX="42.0" layoutY="54.0" text="NAAM:" />
+
+      <Label fx:id="club_lbl" layoutX="136.0" layoutY="85.0" prefHeight="18.0" prefWidth="302.0" text="Label" />
+      <Label layoutX="42.0" layoutY="86.0" text="CLUB:" />
+      <Label fx:id="naam_id" layoutX="136.0" layoutY="54.0" prefHeight="18.0" prefWidth="302.0" text="Label" />
+      <Label layoutX="44.0" layoutY="120.0" prefHeight="18.0" prefWidth="82.0" text="OPKOMENDE" />
+      <Label layoutX="44.0" layoutY="138.0" text="WEDSTRIJDEN:" />
+      <Label fx:id="opkomende_id" layoutX="136.0" layoutY="129.0" prefHeight="18.0" prefWidth="302.0" text="Label" />
+      <Label layoutX="42.0" layoutY="181.0" text="BESTE" />
+      <Label layoutX="42.0" layoutY="199.0" text="RANKING:" />
+      <Label fx:id="ranking_id" layoutX="136.0" layoutY="190.0" text="Label" />
+      <TextField layoutX="278.0" layoutY="242.0" />
+      <Button layoutX="296.0" layoutY="267.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="113.0" text="ZOEK TOERNOOI" />
+      <Button fx:id="scheidsrechter_id" layoutX="57.0" layoutY="229.0" mnemonicParsing="false" text="SCHEIDSRECHTER" />
+      <Line endX="107.00003051757812" endY="-1.52587890625E-5" layoutX="239.0" layoutY="31.0" startX="-100.0" />
+      <Line endX="100.0" layoutX="-108.0" layoutY="72.0" startX="594.0" startY="-1.52587890625E-5" />
+      <Line endX="93.00000762939453" endY="-1.52587890625E-5" layoutX="-93.0" layoutY="103.0" startX="579.0" startY="-1.52587890625E-5" />
+      <Line endX="387.0000305175781" endY="0.4999847412109375" layoutX="99.0" layoutY="159.0" startX="-100.0" />
+      <Line endX="278.0000305175781" endY="-1.52587890625E-5" layoutX="208.0" layoutY="217.0" startX="-208.0" startY="-1.52587890625E-5" />
+      <Line endX="100.0" endY="72.0" layoutX="385.0" layoutY="251.0" startX="100.0" startY="-266.79998779296875" />
+      <Button fx:id="wedstrijdleider_id" layoutX="56.0" layoutY="267.0" mnemonicParsing="false" text="WEDSTRIJDLEIDER" />
+      <Label layoutX="517.0" layoutY="162.0" prefHeight="18.0" prefWidth="310.0" text="Opkomende reeksen" />
+      <TableView fx:id="reeksTbl" layoutX="517.0" layoutY="188.0" prefHeight="184.0" prefWidth="350.0">
+      </TableView>
+      <Label layoutX="517.0" layoutY="23.0" text="Deelgenomen toernooien" />
+      <TableView fx:id="toernooienTbl" layoutX="517.0" layoutY="47.0" prefHeight="94.0" prefWidth="230.0" />
+   </children>
+</AnchorPane>

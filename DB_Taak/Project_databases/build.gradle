@@ -1,0 +1,40 @@
+plugins {
+  id 'java'
+  id 'application'
+  id 'org.javamodularity.moduleplugin' version '1.8.12'
+  id 'org.openjfx.javafxplugin' version '0.0.13'
+}
+
+group 'be.kuleuven'
+version '1.0-SNAPSHOT'
+
+repositories {
+  mavenCentral()
+}
+
+sourceCompatibility = '21'
+targetCompatibility = '21'
+
+application {
+  mainModule = 'be.kuleuven.dbproject'
+  mainClass = 'be.kuleuven.dbproject.Application'
+}
+
+javafx {
+  version = '21'
+  modules = ['javafx.controls', 'javafx.fxml']
+}
+
+dependencies {
+  implementation('org.controlsfx:controlsfx:11.1.2')
+
+  implementation 'org.xerial:sqlite-jdbc:3.45.3.0'
+  implementation 'mysql:mysql-connector-java:8.0.23'
+  implementation 'ch.qos.logback:logback-classic:1.2.3'
+
+  testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
+  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.0")
+}
+
+test {
+useJUnitPlatform()}

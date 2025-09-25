@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="bf769fbb-ba8a-41a8-a83b-64fa29aab7d2" name="Changes" comment="beide knoppen af" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;RobinLambregts&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:EbbeWertzStudentUH/Databases-Project.git&quot;,
+    &quot;accountId&quot;: &quot;86f9b187-3bee-4845-8f5d-c4ca18c722b0&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="2h3O3jhjwd230upSsyyfXFHdD37" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.javafxApp [run].executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/robin/Documents/Databases/Databases-Project/Project_databases",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="javafxApp [run]" type="GradleRunConfiguration" factoryName="Gradle" nameIsGenerated="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="run" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-18abd8497189-intellij.indexing.shared.core-IU-241.14494.240" />
+        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-IU-241.14494.240" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="bf769fbb-ba8a-41a8-a83b-64fa29aab7d2" name="Changes" comment="" />
+      <created>1716819101331</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1716819101331</updated>
+      <workItem from="1716819103436" duration="8437000" />
+      <workItem from="1716842296076" duration="2501000" />
+      <workItem from="1716880831480" duration="648000" />
+      <workItem from="1716902983326" duration="6586000" />
+      <workItem from="1716918559782" duration="838000" />
+      <workItem from="1716988029050" duration="10542000" />
+      <workItem from="1717142730643" duration="375000" />
+      <workItem from="1717143123753" duration="40000" />
+    </task>
+    <task id="LOCAL-00001" summary="leiders en schijters tussencommit">
+      <option name="closed" value="true" />
+      <created>1716833647197</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1716833647197</updated>
+    </task>
+    <task id="LOCAL-00002" summary="nog iets fout met die fillTable bij wedstrijdleiders">
+      <option name="closed" value="true" />
+      <created>1716844777670</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1716844777670</updated>
+    </task>
+    <task id="LOCAL-00003" summary="toernooi beetje verandert">
+      <option name="closed" value="true" />
+      <created>1716905155015</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1716905155015</updated>
+    </task>
+    <task id="LOCAL-00004" summary="wedstrijdleiders klaar">
+      <option name="closed" value="true" />
+      <created>1716908638930</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1716908638930</updated>
+    </task>
+    <task id="LOCAL-00005" summary="scheidsrechters klaar">
+      <option name="closed" value="true" />
+      <created>1716919392449</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1716919392449</updated>
+    </task>
+    <task id="LOCAL-00006" summary="inhoud leiders gefixt">
+      <option name="closed" value="true" />
+      <created>1716991974822</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1716991974822</updated>
+    </task>
+    <task id="LOCAL-00007" summary="buttons disabled">
+      <option name="closed" value="true" />
+      <created>1716992484865</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1716992484865</updated>
+    </task>
+    <task id="LOCAL-00008" summary="beide knoppen af">
+      <option name="closed" value="true" />
+      <created>1716998885361</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1716998885361</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="leiders en schijters tussencommit" />
+    <MESSAGE value="nog iets fout met die fillTable bij wedstrijdleiders" />
+    <MESSAGE value="toernooi beetje verandert" />
+    <MESSAGE value="wedstrijdleiders klaar" />
+    <MESSAGE value="scheidsrechters klaar" />
+    <MESSAGE value="inhoud leiders gefixt" />
+    <MESSAGE value="buttons disabled" />
+    <MESSAGE value="beide knoppen af" />
+    <option name="LAST_COMMIT_MESSAGE" value="beide knoppen af" />
+  </component>
+</project>

@@ -1,0 +1,750 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "../protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/school_furniture/protos/Clock.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/humans/pedestrian/protos/Pedestrian.proto"
+EXTERNPROTO "../protos/Shelf.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/stairs/protos/StraightStairs.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/stairs/protos/StraightStairsRail.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/apartment_structure/protos/Door.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/plants/protos/PottedTree.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/conveyors/protos/ConveyorBelt.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/BrushedAluminium.proto"
+EXTERNPROTO "../protos/OmniBot.proto"
+
+WorldInfo {
+}
+Viewpoint {
+  orientation -0.5105370874353636 0.5387437656229576 0.6701544876783352 1.9105413234809978
+  position -0.9437823368280803 -7.4794982470861395 40.40442138770221
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 20 20
+  wallHeight 3
+  wallAppearance BrushedAluminium {
+    colorOverride 1 0.9 0.7
+  }
+}
+ConveyorBelt {
+  hidden translation_1 0 0 0.14987444755205165
+  translation 4.93 9.5 0
+  size 10 0.7 0.2
+  borderHeight 0.05
+}
+PottedTree {
+  translation 9.66 3.83 0
+}
+Door {
+  hidden translation_5 0.0019235640556222455 0.0002887218502140021 1.9984014443252818e-15
+  hidden rotation_5 0 0 -1 0.0019437540267453826
+  translation 10.14 5.16 0
+  rotation 0 0 1 3.14159
+  position -0.0019437540267579542
+}
+StraightStairs {
+  translation 9.35 6.1 -0.01
+  rotation 0 0 1 1.5708
+  stepSize 0.2 1.27 0.03
+  nSteps 20
+  leftRail [
+    StraightStairsRail {
+      translation 0 0 -0.14
+      run 4
+      rise 3
+      newelHeight 1.02
+    }
+  ]
+  rightRail []
+}
+Shelf {
+  translation -7.92 -9.47 0
+}
+Shelf {
+  translation -7.92 -6.98 0
+  name "shelf(8)"
+}
+Shelf {
+  translation -7.92 -3.58 0
+  name "shelf(9)"
+}
+Shelf {
+  translation -7.92 -2.61 0
+  name "shelf(20)"
+}
+Shelf {
+  translation -7.92 -5.97 0
+  name "shelf(13)"
+}
+Shelf {
+  translation -7.81 6.1 0
+  rotation 0 0 1 -1.5707953071795862
+  name "shelf(19)"
+}
+Shelf {
+  translation -5.28 6.1 0
+  rotation 0 0 1 -1.5707953071795862
+  name "shelf(17)"
+}
+Shelf {
+  translation -2.77 6.1 0
+  rotation 0 0 1 -1.5707953071795862
+  name "shelf(18)"
+}
+Shelf {
+  translation -3.94 -9.47 0
+  name "shelf(2)"
+}
+Shelf {
+  translation -3.94 -6.98 0
+  name "shelf(7)"
+}
+Shelf {
+  translation -3.94 -5.95 0
+  name "shelf(10)"
+}
+Shelf {
+  translation -3.94 -3.61 0
+  name "shelf(14)"
+}
+Shelf {
+  translation -3.94 -2.64 0
+  name "shelf(21)"
+}
+Shelf {
+  translation 0.03 -9.47 0
+  name "shelf(3)"
+}
+Shelf {
+  translation 4.03 -9.47 0
+  name "shelf(4)"
+}
+Shelf {
+  translation 4.03 -6.95 0
+  name "shelf(6)"
+}
+Shelf {
+  translation 4.03 -5.95 0
+  name "shelf(11)"
+}
+Shelf {
+  translation 4.03 -3.53 0
+  name "shelf(15)"
+}
+Shelf {
+  translation 4.03 -2.52 0
+  name "shelf(22)"
+}
+Shelf {
+  translation 8 -9.47 0
+  name "shelf(5)"
+}
+Shelf {
+  translation 8 -6.96 0
+  name "shelf(1)"
+}
+Shelf {
+  translation 8 -5.98 0
+  name "shelf(12)"
+}
+Shelf {
+  translation 8 -3.48 0
+  name "shelf(16)"
+}
+Shelf {
+  translation 8 -2.55 0
+  name "shelf(23)"
+}
+Pedestrian {
+  translation 9.15 5.01 1.26
+  rotation 0 -1 0 -5.307179586466759e-06
+  name "Koen Yskout"
+}
+Clock {
+  translation 9.99 3.97 2.25
+  rotation 0 0 1 3.14159
+}
+Omnibot {
+  name "A"
+  translation 6.870736999964723 8.306911978292824 0.057464745376310016
+  rotation 0 0 1 0.0
+  controller "straight_line"
+}
+Omnibot {
+  name "B"
+  translation 5.259124093674785 8.306362552983856 0.057464745376310016
+  rotation 0 0 1 0.0
+  controller "straight_line"
+}
+Omnibot {
+  name "C"
+  translation 3.6475124380434565 8.305813128101256 0.057464745376310016
+  rotation 0 0 1 0.0
+  controller "straight_line"
+}
+#Omnibot {
+#  name "robot_1"
+#  translation 0 0 0
+#  controller "straight_line"
+#}
+#Omnibot {
+#  name "robot_2"
+#  translation 1 0 0
+#  controller "straight_line2"
+#}
+#Omnibot {
+#  name "robot_3"
+#  translation 2 0 0
+#  controller "straight_line3"
+#}
+
+# Witte bolletjes
+Solid {
+  name "bol (1)"
+  translation -0.022 -1.471 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0 # Zwart
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+
+Solid {
+  name "bol (2)"
+  translation -0.022 -4.779 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+
+Solid {
+  name "bol (3)"
+  translation -0.022 -8.299 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+
+Solid {
+  name "bol (4)"
+  translation -6.402 3.389 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+
+Solid {
+  name "bol (5)"
+  translation -3.838 3.364 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+
+Solid {
+  name "bol (6)"
+  translation -3.863 8.505 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+
+Solid {
+  name "bol (7)"
+  translation -1.355 8.530 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+
+Solid {
+  name "bol (8)"
+  translation -9.188 8.530 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+
+Solid {
+  name "bol (9)"
+  translation -9.115 3.389 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+
+Solid {
+  name "bol (10)"
+  translation -9.188 1.649 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+
+Solid {
+  name "bol (11)"
+  translation -6.402 1.649 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+
+Solid {
+  name "bol (12)"
+  translation -3.838 1.632 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+
+Solid {
+  name "bol (13)"
+  translation -1.380 1.632 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+
+Solid {
+  name "bol (14)"
+  translation 0.625 1.632 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+
+Solid {
+  name "bol (15)"
+  translation 3.128 1.632 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+
+Solid {
+  name "bol (16)"
+  translation 3.128 3.383 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+
+Solid {
+  name "bol (17)"
+  translation -1.169 -1.471 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+
+Solid {
+  name "bol (18)"
+  translation -9.288 -1.485 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+
+Solid {
+  name "bol (19)"
+  translation -9.313 -4.779 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+
+Solid {
+  name "bol (20)"
+  translation -9.313 -8.299 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+
+Solid {
+  name "bol (21)"
+  translation 1.217 -1.471 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+
+Solid {
+  name "bol (22)"
+  translation -1.169 -4.779 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+
+Solid {
+  name "bol (23)"
+  translation 1.217 -4.779 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+
+Solid {
+  name "bol (24)"
+  translation -1.169 -8.299 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+
+Solid {
+  name "bol (25)"
+  translation 1.217 -8.299 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+
+Solid {
+  name "bol (26)"
+  translation -6.402 8.505 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+
+Solid {
+  name "bol (27)"
+  translation -1.380 3.389 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+
+Solid {
+  name "bol (28)"
+  translation 6.896 3.339 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+
+Solid {
+  name "bol (29)"
+  translation 0.425 3.383 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+
+Solid {
+  name "bol (30)"
+  translation 9.397 -1.464 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+
+Solid {
+  name "bol (31)"
+  translation 9.372 -4.758 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+
+Solid {
+  name "bol (32)"
+  translation 9.372 -8.278 0
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0 0
+        }
+      }
+      geometry Sphere {
+        radius 0.02
+      }
+    }
+  ]
+}
+

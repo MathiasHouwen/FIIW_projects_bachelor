@@ -1,0 +1,5 @@
+g f
+n m g f
+f g n
+q q
+m n m

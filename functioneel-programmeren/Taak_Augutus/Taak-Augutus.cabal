@@ -1,0 +1,53 @@
+cabal-version:      3.0
+
+name:               Taak-Augutus
+version:            0.1.0.0
+
+license:            MIT
+license-file:       LICENSE
+
+author:             MathiasHouwen
+maintainer:         mathias.houwen@student.uhasselt.be
+
+build-type:         Simple
+
+extra-doc-files:    CHANGELOG.md
+
+common warnings
+    ghc-options: -Wall
+
+library
+    import:           warnings
+
+    -- Here we include the matching module
+    exposed-modules:
+        MaxBipartiteMatching
+
+    -- Source files for the library live in the project root
+    hs-source-dirs:   .
+
+    -- Dependencies required by the library
+    build-depends:
+        base ^>=4.18.3.0,
+        containers
+
+    default-language: Haskell2010
+
+executable Taak-Augutus
+    import:           warnings
+
+    main-is:          Main.hs
+
+    -- Note: your executable's source files are in 'app/'
+    hs-source-dirs:   app
+
+    -- Dependencies: include both base + your library
+    build-depends:
+        base ^>=4.18.3.0,
+        containers,
+        random,
+        random-shuffle,
+        Taak-Augutus
+
+
+    default-language: Haskell2010

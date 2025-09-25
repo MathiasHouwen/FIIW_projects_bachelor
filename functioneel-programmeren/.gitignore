@@ -1,0 +1,20 @@
+# Ignore build artifacts from both subprojects
+/Taak/dist-newstyle/
+/Taak/dist/
+/Taak/.stack-work/
+
+/Taak_Augutus/dist-newstyle/
+/Taak_Augutus/dist/
+/Taak_Augutus/.stack-work/
+
+# Common Haskell build artifacts
+*.hi
+*.o
+*.prof
+*.aux
+*.hp
+*.eventlog
+*.dump-hi
+*.dump-asm
+*.dyn_hi
+*.dyn_o

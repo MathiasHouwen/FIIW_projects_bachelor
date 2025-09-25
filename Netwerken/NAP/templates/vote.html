@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Stem op datum</title>
+  <script>
+    async function vote() {
+      const email = document.getElementById("email").value;
+      const selected = Array.from(document.querySelectorAll("input[name='date']:checked")).map(cb => cb.value);
+      const res = await fetch("/vote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ poll_id: "{{ poll_id }}", user_email: email, dates: selected })
+      });
+      const data = await res.json();
+      alert(data.status || data.error);
+      window.location.reload();
+    }
+
+    async function finalizePoll() {
+      const email = document.getElementById("finalize_email").value;
+      const res = await fetch("/finalize_poll", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ poll_id: "{{ poll_id }}", organizer_email: email })
+      });
+      const data = await res.json();
+      const output = document.getElementById("finalizeResult");
+      if (data.final_date) {
+        output.innerText = "✅ Gekozen datum: " + data.final_date;
+        window.location.reload();
+      } else {
+        output.innerText = "❌ " + (data.error || "Fout bij finaliseren.");
+      }
+    }
+  </script>
+</head>
+<body style="font-family: sans-serif; padding: 2em">
+  <h1>Stem voor: {{ poll.event_name }}</h1>
+  <p><strong>Poll ID:</strong> {{ poll_id }}</p>
+  <p><strong>Organisator:</strong> {{ poll.organizer }}</p>
+
+  <h3>Weer per datum</h3>
+  <ul>
+    {% for date, info in weather.items() %}
+      <li>{{ date }} – {{ info }}</li>
+    {% endfor %}
+  </ul>
+
+  <h3>Stemmen</h3>
+  <input id="email" type="email" placeholder="jij@example.com" /><br /><br />
+  {% for date in poll.dates %}
+    <input type="checkbox" name="date" value="{{ date }}" /> {{ date }}<br />
+  {% endfor %}
+  <br />
+  <button onclick="vote()">Stem</button>
+
+  <h3>Live stemmen</h3>
+  <ul>
+    {% for date, stemmen in poll.dates.items() %}
+      <li>{{ date }} – {{ stemmen|length }} stemmen: {{ stemmen|join(", ") }}</li>
+    {% endfor %}
+  </ul>
+
+  {% if poll.final_date %}
+    <h2>✅ Definitieve datum: {{ poll.final_date }}</h2>
+  {% endif %}
+
+  <hr />
+  <h3>Poll Finaliseren (alleen organisator)</h3>
+  <input type="email" id="finalize_email" placeholder="Organisator e-mail" />
+  <button onclick="finalizePoll()">Finaliseer</button>
+  <p id="finalizeResult"></p>
+
+</body>
+</html>

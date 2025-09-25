@@ -1,0 +1,51 @@
+{
+    "541c3d75-ca1e-4cd1-b02e-7f5266ff8ce2": {
+        "event_name": "bbq",
+        "organizer": "test@test.test",
+        "dates": {
+            "2025-01-02": [
+                "help@gmail.com"
+            ]
+        },
+        "voted": [
+            "help@gmail.com"
+        ],
+        "final_date": "2025-01-02"
+    },
+    "975b182b-738b-4b93-9208-4a40c3c453a7": {
+        "event_name": "BBq",
+        "organizer": "test@test.test",
+        "dates": {
+            "2025-05-18": []
+        },
+        "voted": [],
+        "final_date": null
+    },
+    "05081385-cb03-4985-9d90-c3fe92427349": {
+        "event_name": "qsdf",
+        "organizer": "qsfd@sdf.c",
+        "dates": {
+            "2025-05-18": []
+        },
+        "voted": [],
+        "final_date": null
+    },
+    "a4e79c28-d28d-4ac5-baaf-140f5fb4c47e": {
+        "event_name": "qsfd",
+        "organizer": "test@test.test",
+        "dates": {
+            "2025-05-18": []
+        },
+        "voted": [],
+        "final_date": null
+    },
+    "b11fca09-a812-4b3a-9c11-247fe5261ebb": {
+        "event_name": "BBQ",
+        "organizer": "test@test.test",
+        "dates": {
+            "2025-05-18": []
+        },
+        "voted": [],
+        "final_date": null
+    }
+}
